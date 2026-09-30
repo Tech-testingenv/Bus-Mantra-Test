@@ -1,8 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f9fa;
+  --foreground: #0c1621;
+
+  /* BUS MANTRA Brand Color System */
+  --brand-orange: #ec6103;
+  --brand-orange-hover: #d55602;
+  --brand-orange-light: #fff4ed;
+  --brand-dark: #0c1621;
+  --brand-white: #ffffff;
+  --brand-gray: #6d737a;
+  --brand-gray-light: #f3f4f6;
+  --brand-border: #e5e7eb;
+  --brand-border-orange: #ec6103;
+  --brand-surface: #ffffff;
+  --brand-surface-subtle: #f8f9fa;
 }
 
 @theme inline {
@@ -10,13 +23,19 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* BUS MANTRA Brand Theme Tokens */
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-hover: var(--brand-orange-hover);
+  --color-brand-orange-light: var(--brand-orange-light);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-white: var(--brand-white);
+  --color-brand-gray: var(--brand-gray);
+  --color-brand-gray-light: var(--brand-gray-light);
+  --color-brand-border: var(--brand-border);
+  --color-brand-border-orange: var(--brand-border-orange);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-surface-subtle: var(--brand-surface-subtle);
 }
 
 body {
@@ -24,3 +43,4 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+

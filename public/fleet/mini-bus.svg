@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="100%" height="100%">
+  <defs>
+    <!-- Soft ground shadow -->
+    <radialGradient id="mb-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0c1621" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#0c1621" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#0c1621" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Body gradients -->
+    <linearGradient id="mb-body-side" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="85%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#e4e8ee"/>
+    </linearGradient>
+    <linearGradient id="mb-body-front" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#edf1f7"/>
+    </linearGradient>
+    <!-- Orange livery gradient -->
+    <linearGradient id="mb-orange" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#ec6103"/>
+      <stop offset="100%" stop-color="#ff7919"/>
+    </linearGradient>
+    <!-- Glass gradient -->
+    <linearGradient id="mb-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142233"/>
+      <stop offset="50%" stop-color="#0c1621"/>
+      <stop offset="100%" stop-color="#070d14"/>
+    </linearGradient>
+    <linearGradient id="mb-glass-front" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#223348"/>
+      <stop offset="100%" stop-color="#0c1621"/>
+    </linearGradient>
+    <!-- Wheel gradient -->
+    <radialGradient id="mb-wheel" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3d4957"/>
+      <stop offset="65%" stop-color="#1b222c"/>
+      <stop offset="100%" stop-color="#0c1219"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Ground Shadow -->
+  <ellipse cx="300" cy="328" rx="240" ry="22" fill="url(#mb-shadow)"/>
+  <ellipse cx="290" cy="325" rx="200" ry="14" fill="#0c1621" opacity="0.18"/>
+
+  <!-- Mini Bus Group (Compact wheelbase, high roof) -->
+  <g transform="translate(15, 5)">
+    <!-- Roof AC Unit -->
+    <path d="M 230 78 L 390 78 Q 410 78 415 85 L 420 95 L 205 95 L 210 85 Q 215 78 230 78 Z" fill="#e2e7ef" stroke="#cbd3e0" stroke-width="1.5"/>
+    <rect x="240" y="83" width="30" height="7" rx="3" fill="#cbd3e0"/>
+    <rect x="280" y="83" width="30" height="7" rx="3" fill="#cbd3e0"/>
+    <rect x="320" y="83" width="30" height="7" rx="3" fill="#cbd3e0"/>
+    <rect x="360" y="83" width="30" height="7" rx="3" fill="#cbd3e0"/>
+
+    <!-- Main Body Side & Roof -->
+    <path d="M 185 95 Q 195 95 210 95 L 490 95 Q 515 95 520 115 L 515 275 Q 515 285 505 285 L 185 285 L 160 270 L 160 115 Q 165 95 185 95 Z" fill="url(#mb-body-side)" stroke="#cbd3e0" stroke-width="1.5"/>
+
+    <!-- Front Cap (3/4 Angled Face) -->
+    <path d="M 105 155 Q 115 105 160 98 L 185 95 L 185 285 L 115 282 Q 95 280 92 250 L 98 175 Q 102 160 105 155 Z" fill="url(#mb-body-front)" stroke="#cbd3e0" stroke-width="1.5"/>
+
+    <!-- Front Windshield -->
+    <path d="M 112 150 Q 120 115 158 108 L 185 106 L 185 205 L 115 205 L 108 170 Q 110 155 112 150 Z" fill="url(#mb-glass-front)"/>
+    <!-- Windshield Reflection -->
+    <path d="M 125 118 L 155 110 L 140 200 L 118 200 Z" fill="#ffffff" opacity="0.12"/>
+    <!-- Windshield Wipers -->
+    <line x1="145" y1="202" x2="165" y2="160" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="125" y1="202" x2="140" y2="165" stroke="#000000" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Side Passenger Windows (Compact 3-bay format) -->
+    <!-- Window 1: Driver / Front entry -->
+    <path d="M 195 108 L 265 108 L 265 195 L 195 195 Z" fill="url(#mb-glass)"/>
+    <!-- Window 2: Middle -->
+    <path d="M 273 108 L 380 108 L 380 195 L 273 195 Z" fill="url(#mb-glass)"/>
+    <!-- Window 3: Rear passenger -->
+    <path d="M 388 108 L 495 108 Q 508 108 508 125 L 505 195 L 388 195 Z" fill="url(#mb-glass)"/>
+
+    <!-- Window Pillar Highlights & Reflections -->
+    <polygon points="210,108 245,108 220,195 195,195" fill="#ffffff" opacity="0.08"/>
+    <polygon points="310,108 345,108 315,195 285,195" fill="#ffffff" opacity="0.08"/>
+    <polygon points="415,108 450,108 420,195 390,195" fill="#ffffff" opacity="0.08"/>
+
+    <!-- Brand Livery: Dynamic Orange Swoosh (Signature Bus Mantra Wave) -->
+    <path d="M 100 235 Q 130 235 170 230 Q 230 220 290 235 Q 360 255 440 220 L 515 220 L 515 255 Q 430 290 350 260 Q 270 230 210 248 L 105 258 Z" fill="url(#mb-orange)"/>
+    <path d="M 220 242 Q 280 228 360 258 Q 440 285 515 262 L 515 272 Q 440 295 350 270 Q 270 242 220 242 Z" fill="#0c1621" opacity="0.9"/>
+    <!-- Secondary orange accent curve -->
+    <path d="M 130 215 Q 160 212 185 215 L 185 222 Q 155 220 125 224 Z" fill="url(#mb-orange)"/>
+
+    <!-- Bus Mantra Side Logo Stamp -->
+    <g transform="translate(230, 203) scale(0.65)">
+      <rect x="0" y="0" width="140" height="20" rx="4" fill="#ffffff" opacity="0.9"/>
+      <text x="70" y="14" fill="#0c1621" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="900" text-anchor="middle" letter-spacing="1">BUS MANTRA</text>
+    </g>
+
+    <!-- Front Fascia & Details -->
+    <!-- Front Grille -->
+    <path d="M 98 230 L 175 228 L 175 242 L 97 245 Z" fill="#1b2533"/>
+    <rect x="110" y="233" width="50" height="5" rx="2.5" fill="#ec6103"/>
+    <!-- Headlight Unit (LED Projector style) -->
+    <path d="M 96 215 L 118 213 L 116 226 L 96 228 Z" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <polygon points="98,217 114,215 113,224 98,225" fill="#fef08a"/>
+    <circle cx="106" cy="220" r="3.5" fill="#ffffff"/>
+    <!-- Fog light / bumper trim -->
+    <rect x="94" y="258" width="14" height="8" rx="2" fill="#ec6103"/>
+
+    <!-- Front Bumper -->
+    <path d="M 92 265 L 185 265 L 185 285 L 110 283 Q 92 280 92 265 Z" fill="#1b2533"/>
+
+    <!-- Side Mirror (Aerodynamic coach style) -->
+    <path d="M 115 110 Q 90 100 85 125 Q 82 145 92 165 L 98 165 Q 90 145 92 130 Q 95 115 120 120 Z" fill="#ec6103" stroke="#0c1621" stroke-width="1"/>
+    <rect x="86" y="125" width="8" height="35" rx="3" fill="#1e293b"/>
+
+    <!-- Passenger Door Line -->
+    <line x1="205" y1="195" x2="205" y2="280" stroke="#cbd3e0" stroke-width="1.5"/>
+    <rect x="207" y="225" width="4" height="10" rx="1.5" fill="#64748b"/>
+
+    <!-- Wheel Wells & Wheels -->
+    <!-- Front Wheel Well -->
+    <path d="M 150 285 A 38 38 0 0 1 226 285 Z" fill="#0c1621"/>
+    <!-- Front Wheel -->
+    <circle cx="188" cy="285" r="34" fill="url(#mb-wheel)"/>
+    <circle cx="188" cy="285" r="22" fill="#64748b"/>
+    <circle cx="188" cy="285" r="14" fill="#cbd3e0"/>
+    <circle cx="188" cy="285" r="6" fill="#ec6103"/>
+    <!-- Rim bolts -->
+    <circle cx="188" cy="273" r="1.5" fill="#ffffff"/>
+    <circle cx="199" cy="281" r="1.5" fill="#ffffff"/>
+    <circle cx="195" cy="294" r="1.5" fill="#ffffff"/>
+    <circle cx="181" cy="294" r="1.5" fill="#ffffff"/>
+    <circle cx="177" cy="281" r="1.5" fill="#ffffff"/>
+
+    <!-- Rear Wheel Well -->
+    <path d="M 405 285 A 38 38 0 0 1 481 285 Z" fill="#0c1621"/>
+    <!-- Rear Wheel -->
+    <circle cx="443" cy="285" r="34" fill="url(#mb-wheel)"/>
+    <circle cx="443" cy="285" r="22" fill="#64748b"/>
+    <circle cx="443" cy="285" r="14" fill="#cbd3e0"/>
+    <circle cx="443" cy="285" r="6" fill="#ec6103"/>
+    <!-- Rim bolts -->
+    <circle cx="443" cy="273" r="1.5" fill="#ffffff"/>
+    <circle cx="454" cy="281" r="1.5" fill="#ffffff"/>
+    <circle cx="450" cy="294" r="1.5" fill="#ffffff"/>
+    <circle cx="436" cy="294" r="1.5" fill="#ffffff"/>
+    <circle cx="432" cy="281" r="1.5" fill="#ffffff"/>
+  </g>
+</svg>

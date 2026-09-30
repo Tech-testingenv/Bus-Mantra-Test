@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <!-- Alpine Morning Sky Gradient -->
+    <linearGradient id="manali-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="45%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#fff7ed"/>
+    </linearGradient>
+
+    <!-- Mountain Sun Glow -->
+    <radialGradient id="manali-sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fed7aa" stop-opacity="0.7"/>
+      <stop offset="60%" stop-color="#fff7ed" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- High Mountain Gradients -->
+    <linearGradient id="peak-lit" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="peak-shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <linearGradient id="peak-dark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+
+    <!-- Forest & Slope Gradients -->
+    <linearGradient id="forest-slope-1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="forest-slope-2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#14532d"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+
+    <!-- River Valley Gradient -->
+    <linearGradient id="beas-river" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky Background -->
+  <rect width="600" height="400" rx="16" fill="url(#manali-sky)"/>
+
+  <!-- Morning Mountain Sun -->
+  <circle cx="380" cy="110" r="110" fill="url(#manali-sun)"/>
+  <circle cx="380" cy="110" r="42" fill="#ffffff" opacity="0.6"/>
+
+  <!-- Subtle Decorative Travel Route Arcs -->
+  <path d="M 30 280 C 120 200, 240 180, 340 220 C 440 260, 520 180, 580 150" fill="none" stroke="#ec6103" stroke-width="1.5" stroke-dasharray="5 7" opacity="0.45"/>
+  <circle cx="90" cy="245" r="3" fill="#ec6103" opacity="0.7"/>
+  <circle cx="490" cy="205" r="3" fill="#ec6103" opacity="0.7"/>
+
+  <!-- TIER 1: FAR HIMALAYAN GLACIER PEAKS (Highest Peaks) -->
+  <!-- Far Left Peak -->
+  <polygon points="40,240 130,100 220,240" fill="url(#peak-shadow)"/>
+  <polygon points="130,100 85,240 130,240" fill="url(#peak-lit)"/>
+  <!-- Snowcap -->
+  <polygon points="130,100 110,135 125,142 130,132 142,145 155,135" fill="#ffffff"/>
+
+  <!-- Center Grand Peak (Rohtang / Solang Glacier) -->
+  <polygon points="160,260 280,60 410,260" fill="url(#peak-shadow)"/>
+  <polygon points="280,60 210,260 280,260" fill="url(#peak-lit)"/>
+  <!-- Grand Snowcap -->
+  <polygon points="280,60 250,110 270,120 280,106 298,125 320,108" fill="#ffffff"/>
+  <polygon points="280,60 235,140 260,152 280,135" fill="#ffffff" opacity="0.8"/>
+
+  <!-- Far Right Peak -->
+  <polygon points="340,260 460,80 570,260" fill="url(#peak-shadow)"/>
+  <polygon points="460,80 400,260 460,260" fill="url(#peak-lit)"/>
+  <!-- Snowcap -->
+  <polygon points="460,80 435,120 452,130 460,118 478,135 498,122" fill="#ffffff"/>
+
+  <!-- TIER 2: MIDDLE MOUNTAIN RIDGES & SLOPES -->
+  <!-- Left Middle Ridge -->
+  <path d="M -20 280 Q 90 200 210 230 L 260 320 L -20 320 Z" fill="#334155"/>
+  <path d="M -10 280 Q 90 210 190 235 L 210 250 L -10 295 Z" fill="#475569" opacity="0.5"/>
+
+  <!-- Right Middle Ridge -->
+  <path d="M 620 270 Q 500 190 350 240 L 320 320 L 620 320 Z" fill="#1e293b"/>
+  <path d="M 610 270 Q 500 200 370 245 L 350 265 L 610 290 Z" fill="#334155" opacity="0.6"/>
+
+  <!-- Distant Pine Tree Silhouette Layer -->
+  <g fill="#0f172a" opacity="0.7">
+    <!-- Tree cluster left -->
+    <polygon points="60,260 55,275 65,275"/>
+    <polygon points="75,255 70,272 80,272"/>
+    <polygon points="90,250 85,270 95,270"/>
+    <polygon points="110,248 105,268 115,268"/>
+    <polygon points="135,252 130,270 140,270"/>
+    <!-- Tree cluster right -->
+    <polygon points="420,255 415,275 425,275"/>
+    <polygon points="440,248 435,270 445,270"/>
+    <polygon points="465,242 460,265 470,265"/>
+    <polygon points="495,248 490,272 500,272"/>
+    <polygon points="525,255 520,278 530,278"/>
+  </g>
+
+  <!-- TIER 3: FOREGROUND PINE FOREST SLOPES (Lush Deodar & Cedar Forest) -->
+  <!-- Left Pine Slope -->
+  <path d="M -30 400 L -30 280 Q 140 280 240 360 L 240 400 Z" fill="url(#forest-slope-2)"/>
+  <!-- Right Pine Slope -->
+  <path d="M 630 400 L 630 270 Q 450 270 340 370 L 340 400 Z" fill="url(#forest-slope-2)"/>
+
+  <!-- Beas River Valley (Glistening Glacial River) -->
+  <path d="M 285 270 C 295 300, 270 330, 290 360 C 300 375, 290 390, 295 400 L 325 400 C 315 390, 325 375, 315 360 C 295 330, 320 300, 305 270 Z" fill="url(#beas-river)"/>
+  <path d="M 292 290 Q 302 315 288 340 Q 308 370 298 400" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.6"/>
+
+  <!-- SCENIC WINDING HIGHWAY (Manali Alpine Pass) -->
+  <!-- Road base -->
+  <path d="M 120 400 C 180 370, 250 365, 240 330 C 230 300, 320 305, 340 280 L 358 280 C 340 315, 250 315, 265 345 C 275 375, 200 385, 140 400 Z" fill="#334155"/>
+  <!-- Road orange/white centerline markings -->
+  <path d="M 130 400 C 190 372, 257 367, 248 335 C 240 308, 325 310, 348 280" fill="none" stroke="#ec6103" stroke-width="2.5" stroke-dasharray="6 6"/>
+
+  <!-- Lush Detailed Pine Trees in Foreground -->
+  <!-- Left Forest Cluster -->
+  <g fill="#064e3b">
+    <!-- Tall Pine 1 -->
+    <polygon points="35,245 22,280 48,280"/>
+    <polygon points="35,265 18,310 52,310"/>
+    <polygon points="35,290 12,345 58,345"/>
+    <rect x="33" y="345" width="5" height="20" fill="#451a03"/>
+
+    <!-- Tall Pine 2 -->
+    <polygon points="75,255 64,288 86,288"/>
+    <polygon points="75,275 58,320 92,320"/>
+    <polygon points="75,300 52,360 98,360"/>
+    <rect x="73" y="360" width="5" height="22" fill="#451a03"/>
+
+    <!-- Medium Pine 3 -->
+    <polygon points="120,290 110,320 130,320"/>
+    <polygon points="120,310 104,350 136,350"/>
+    <polygon points="120,335 98,380 142,380"/>
+    <rect x="118" y="380" width="5" height="15" fill="#451a03"/>
+  </g>
+
+  <!-- Right Forest Cluster -->
+  <g fill="#064e3b">
+    <!-- Tall Pine 4 -->
+    <polygon points="545,240 532,275 558,275"/>
+    <polygon points="545,260 528,305 562,305"/>
+    <polygon points="545,285 522,345 568,345"/>
+    <rect x="543" y="345" width="5" height="20" fill="#451a03"/>
+
+    <!-- Tall Pine 5 -->
+    <polygon points="495,250 484,285 506,285"/>
+    <polygon points="495,270 478,315 512,315"/>
+    <polygon points="495,295 472,355 518,355"/>
+    <rect x="493" y="355" width="5" height="22" fill="#451a03"/>
+
+    <!-- Medium Pine 6 -->
+    <polygon points="440,295 430,325 450,325"/>
+    <polygon points="440,315 424,355 456,355"/>
+    <polygon points="440,340 418,385 462,385"/>
+    <rect x="438" y="385" width="5" height="15" fill="#451a03"/>
+  </g>
+
+  <!-- Elegant Location Marker & Brand Accent -->
+  <g transform="translate(300, 360)">
+    <circle cx="0" cy="0" r="12" fill="#ec6103" opacity="0.2"/>
+    <circle cx="0" cy="0" r="6" fill="#ec6103"/>
+    <circle cx="0" cy="0" r="2.5" fill="#ffffff"/>
+  </g>
+</svg>
