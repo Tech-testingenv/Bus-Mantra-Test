@@ -8,7 +8,7 @@ export default function BusMantraServices({
   services = servicesData,
 }) {
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+    <section className="relative w-full py-14 sm:py-20 lg:py-28 my-6 sm:my-10 rounded-3xl lg:rounded-[36px] bg-[#fbf9f6] border border-orange-100/70 overflow-hidden">
       {/* Subtle Travel-Themed Background Route Decoration */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-25">
         <svg
@@ -78,19 +78,17 @@ export default function BusMantraServices({
             return (
               <div
                 key={service.id}
-                className={`group relative bg-white rounded-3xl sm:rounded-[26px] border flex flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-2 ${
-                  isFeatured
+                className={`group relative bg-white rounded-3xl sm:rounded-[26px] border flex flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-2 ${isFeatured
                     ? "border-brand-orange/50 shadow-[0_15px_35px_rgba(236,97,3,0.1)] ring-1 ring-brand-orange/25"
                     : "border-neutral-200/70 hover:border-brand-orange/40 shadow-[0_10px_30px_rgba(12,22,33,0.04)] hover:shadow-[0_20px_40px_rgba(236,97,3,0.12)]"
-                }`}
+                  }`}
               >
                 {/* Upper Area: Dedicated Vector Illustration */}
                 <div
-                  className={`relative w-full overflow-hidden flex items-center justify-center border-b border-neutral-100 transition-colors duration-300 p-5 sm:p-6 ${
-                    isFeatured
+                  className={`relative w-full overflow-hidden flex items-center justify-center border-b border-neutral-100 transition-colors duration-300 p-5 sm:p-6 ${isFeatured
                       ? "bg-[#fff9f5] group-hover:bg-[#fff4ed] min-h-60 sm:min-h-65 lg:min-h-70"
                       : "bg-[#fbf9f6] group-hover:bg-[#fdf6ee] min-h-52.5 sm:min-h-57.5 lg:min-h-60"
-                  }`}
+                    }`}
                 >
                   {/* Category Pill Tag (Top-Left) */}
                   <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-brand-orange/20 text-brand-orange text-xs font-semibold shadow-xs">
@@ -113,11 +111,10 @@ export default function BusMantraServices({
                       alt={`${service.title} - Bus Mantra Transportation Services`}
                       width={520}
                       height={330}
-                      className={`w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.04] group-hover:translate-x-1.5 select-none pointer-events-none drop-shadow-sm ${
-                        isFeatured
+                      className={`w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.04] group-hover:translate-x-1.5 select-none pointer-events-none drop-shadow-sm ${isFeatured
                           ? "max-h-47.5 sm:max-h-52.5 lg:max-h-56.25"
                           : "max-h-41.25 sm:max-h-45 lg:max-h-47.5"
-                      }`}
+                        }`}
                       priority={isFeatured}
                     />
                   </div>
@@ -140,26 +137,23 @@ export default function BusMantraServices({
                   {/* Explore Service CTA Button */}
                   <Link
                     href={service.href || "#booking-form"}
-                    className={`w-full py-3 px-5 rounded-xl text-center text-sm font-semibold transition-all duration-200 flex items-center justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange shadow-xs group/btn ${
-                      isFeatured
+                    className={`w-full py-3 px-5 rounded-xl text-center text-sm font-semibold transition-all duration-200 flex items-center justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange shadow-xs group/btn ${isFeatured
                         ? "bg-brand-orange text-white hover:bg-brand-orange-hover hover:shadow-md"
                         : "bg-[#f1f4f8] text-brand-dark hover:bg-brand-orange hover:text-white hover:shadow-md"
-                    }`}
+                      }`}
                   >
                     <span>{service.cta}</span>
                     <div
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
-                        isFeatured
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${isFeatured
                           ? "bg-white/20 group-hover/btn:bg-white/30"
                           : "bg-white/70 group-hover/btn:bg-white/20"
-                      }`}
+                        }`}
                     >
                       <ArrowRight
-                        className={`w-4 h-4 stroke-[2.5] transition-transform duration-200 group-hover/btn:translate-x-1 ${
-                          isFeatured
+                        className={`w-4 h-4 stroke-[2.5] transition-transform duration-200 group-hover/btn:translate-x-1 ${isFeatured
                             ? "text-white"
                             : "text-brand-dark group-hover/btn:text-white"
-                        }`}
+                          }`}
                       />
                     </div>
                   </Link>

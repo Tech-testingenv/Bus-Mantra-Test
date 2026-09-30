@@ -8,7 +8,7 @@ export default function FleetTypes({
   fleets = fleetTypesData,
 }) {
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+    <section className="relative w-full py-14 sm:py-20 lg:py-28 my-6 sm:my-10 rounded-3xl lg:rounded-[36px] bg-[#fbf9f6] border border-orange-100/70 overflow-hidden">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10 sm:mb-14">
         {/* Eyebrow */}
@@ -37,8 +37,8 @@ export default function FleetTypes({
             <div
               key={fleet.id}
               className={`relative bg-brand-surface rounded-3xl sm:rounded-[26px] border flex flex-col justify-between overflow-hidden transition-all duration-300 group hover:-translate-y-1.5 ${isFeatured
-                  ? "border-brand-orange/60 shadow-[0_15px_35px_rgba(236,97,3,0.12)] ring-1 ring-brand-orange/30"
-                  : "border-brand-border/70 hover:border-brand-orange/50 shadow-[0_10px_30px_rgba(12,22,33,0.04)] hover:shadow-[0_20px_40px_rgba(12,22,33,0.08)]"
+                ? "border-brand-orange/60 shadow-[0_15px_35px_rgba(236,97,3,0.12)] ring-1 ring-brand-orange/30"
+                : "border-brand-border/70 hover:border-brand-orange/50 shadow-[0_10px_30px_rgba(12,22,33,0.04)] hover:shadow-[0_20px_40px_rgba(12,22,33,0.08)]"
                 }`}
             >
               {/* Premium Badge */}
@@ -98,8 +98,8 @@ export default function FleetTypes({
                 <Link
                   href={fleet.href || "#booking-form"}
                   className={`w-full py-2.5 px-4 rounded-xl text-center text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange ${isFeatured
-                      ? "bg-brand-orange text-white hover:bg-brand-orange-hover shadow-sm"
-                      : "bg-[#f1f4f8] text-brand-dark group-hover:bg-brand-orange group-hover:text-white"
+                    ? "bg-brand-orange text-white hover:bg-brand-orange-hover shadow-sm"
+                    : "bg-[#f1f4f8] text-brand-dark group-hover:bg-brand-orange group-hover:text-white"
                     }`}
                 >
                   <span>{fleet.cta}</span>

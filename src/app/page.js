@@ -13,7 +13,7 @@ export default function Home() {
       <section className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20">
         <HeroSection />
         <AboutSection />
-        <HolidayPackages />
+        {/* <HolidayPackages /> */}
         <FleetTypes />
         <PopularDestinations />
         <BusMantraServices />

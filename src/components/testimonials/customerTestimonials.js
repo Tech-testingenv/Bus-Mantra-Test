@@ -35,7 +35,7 @@ export default function CustomerTestimonials({
   }
 
   return (
-    <section className="relative w-full py-14 sm:py-20 lg:py-28 my-6 sm:my-10 rounded-3xl lg:rounded-[36px] bg-[#fbf9f6] border border-orange-100/70 overflow-hidden">
+    <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
       {/* Subtle Travel-Themed Decorative Route Background */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-25">
         <svg
