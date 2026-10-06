@@ -1,8 +1,8 @@
 export const heroData = {
   eyebrow: "FULL BUS BOOKING",
-  titleLines: ["Your Group.", "Your Bus."],
+  titleLines: ["Luxury Coach at ₹1/KM.", "Yes, You Read That Right."],
   description:
-    "Book an entire bus for your next trip. Simple, comfortable and made for travelling together.",
+    "Book an entire luxury coach for your group and travel together in comfort, without the hassle.",
   primaryButton: {
     label: "Book a Bus",
     href: "#booking-form",
@@ -18,7 +18,7 @@ export const heroData = {
     },
     {
       value: "4.9/5",
-      label: "Charter Satisfaction",
+      label: "Fleet Satisfaction",
     },
     {
       value: "24/7",
@@ -33,7 +33,7 @@ export const heroData = {
   },
   form: {
     badge: "FULL BUS RESERVATION",
-    title: "Quick Bus Charter Search",
+    title: "Quick Bus Fleet Search",
     defaultValues: {
       fullName: "",
       mobile: "",
@@ -337,7 +337,7 @@ export const popularDestinationsData = [
     name: "Jaipur",
     route: "Delhi → Jaipur • ~5.5 HRS",
     description: "Royal architecture & weekend getaways",
-    ctaText: "Charter to Jaipur",
+    ctaText: "Fleet to Jaipur",
     image: "/images/destinations/jaipur.png",
     href: "#booking-form",
   },
@@ -347,7 +347,7 @@ export const popularDestinationsData = [
     name: "Manali",
     route: "Delhi → Manali • ~11.0 HRS",
     description: "Mountain escapes & group tours",
-    ctaText: "Charter to Manali",
+    ctaText: "Fleetto Manali",
     image: "/images/destinations/mountain.png",
     href: "#booking-form",
   },
@@ -357,7 +357,7 @@ export const popularDestinationsData = [
     name: "Agra",
     route: "Delhi → Agra • ~3.5 HRS",
     description: "Heritage trips & weekend travel",
-    ctaText: "Charter to Agra",
+    ctaText: "Fleetto Agra",
     image: "/images/destinations/taj.png",
     href: "#booking-form",
   },
@@ -367,7 +367,7 @@ export const popularDestinationsData = [
     name: "Haridwar",
     route: "Delhi → Haridwar • ~4.5 HRS",
     description: "Pilgrimage & group journeys",
-    ctaText: "Charter to Haridwar",
+    ctaText: "Fleetto Haridwar",
     image: "/images/destinations/screen.png",
     href: "#booking-form",
   },
@@ -571,7 +571,7 @@ export const ctaData = {
 export const footerData = {
   brand: {
     name: "BUS MANTRA",
-    tagline: "FULL BUS CHARTER PLATFORM",
+    tagline: "FULL BUS FLEET PLATFORM",
     description:
       "India's trusted platform for full-bus charters and group road travel. Reserving the entire vehicle for weddings, corporate offsites, school trips, and pilgrimage tours with verified professional chauffeurs.",
     logo: "/logo.png",
@@ -618,7 +618,7 @@ export const footerData = {
     eyebrow: "PARTNER WITH US",
     title: "Become A Vendor",
     description:
-      "Bus operator or fleet owner? Partner with Bus Mantra to get verified corporate, wedding & holiday charter bookings with guaranteed payouts.",
+      "Bus operator or fleet owner? Partner with Bus Mantra to get verified corporate, wedding & holiday Fleetbookings with guaranteed payouts.",
     benefits: [
       "Zero Onboarding Fee",
       "100% Full-Bus Charters",

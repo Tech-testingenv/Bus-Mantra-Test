@@ -36,7 +36,23 @@ export default function HeroSection({ data = heroData }) {
     }
   };
 
-  const titleLines = data.titleLines || ["Your Group.", "Your Bus."];
+  const line1 = data.titleLines?.[0] || "Luxury Coach at ₹1/KM.";
+  const line2 = data.titleLines?.[1] || "Yes, You Read That Right.";
+
+  const renderLine1 = (text) => {
+    if (typeof text === "string" && text.includes("₹1/KM.")) {
+      const parts = text.split("₹1/KM.");
+      return (
+        <>
+          {parts[0]}
+          <span className="text-black font-black">₹1/KM.</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return text;
+  };
+
   const stats = data.stats || [];
 
   return (
@@ -53,16 +69,17 @@ export default function HeroSection({ data = heroData }) {
           </div>
 
           {/* Large Bold Headline */}
-          <h1 className="text-5xl xl:text-[62px] font-black text-neutral-900 leading-[1.08] tracking-tight mb-5">
-            {titleLines.map((line, idx) => (
-              <span key={idx} className="block">
-                {line}
-              </span>
-            ))}
+          <h1 className="text-3xl sm:text-4xl lg:text-[34px] xl:text-[40px] 2xl:text-[44px] font-black leading-[1.12] tracking-tight mb-5">
+            <span className="block text-neutral-900 font-extrabold">
+              {renderLine1(line1)}
+            </span>
+            <span className="block text-brand-orange font-black">
+              {line2}
+            </span>
           </h1>
 
           {/* Short Paragraph */}
-          <p className="text-base xl:text-lg text-neutral-600 leading-relaxed mb-7 max-w-md">
+          <p className="text-base xl:text-lg text-neutral-600 leading-relaxed mb-7 max-w-lg">
             {data.description}
           </p>
 
@@ -74,20 +91,14 @@ export default function HeroSection({ data = heroData }) {
               className="px-6 py-3.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm xl:text-base inline-flex items-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-[0.98] group"
             >
               <span>{data.primaryButton?.label || "Book a Bus"}</span>
-              <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-0.5">
-                →
-              </span>
             </Link>
 
             <Link
               href={data.secondaryButton?.href || "#fleets"}
               onClick={scrollToFleet}
-              className="text-neutral-800 hover:text-brand-orange font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group py-1"
+              className="text-brand-orange border border-brand-orange/50 px-6 py-3.5 rounded-xl font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group"
             >
               <span>{data.secondaryButton?.label || "Explore Fleet"}</span>
-              <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-0.5">
-                →
-              </span>
             </Link>
           </div>
 
@@ -135,12 +146,13 @@ export default function HeroSection({ data = heroData }) {
         </div>
 
         {/* 2. Headline */}
-        <h1 className="text-4xl sm:text-5xl font-black text-neutral-900 leading-[1.08] tracking-tight">
-          {titleLines.map((line, idx) => (
-            <span key={idx} className="block">
-              {line}
-            </span>
-          ))}
+        <h1 className="text-[26px] sm:text-3xl md:text-4xl font-black leading-[1.14] tracking-tight">
+          <span className="block text-neutral-900 font-extrabold">
+            {renderLine1(line1)}
+          </span>
+          <span className="block text-brand-orange font-black">
+            {line2}
+          </span>
         </h1>
 
         {/* 3. Description */}
@@ -156,7 +168,6 @@ export default function HeroSection({ data = heroData }) {
             className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-base inline-flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.98]"
           >
             <span>{data.primaryButton?.label || "Book a Bus"}</span>
-            <span>→</span>
           </Link>
 
           <Link
@@ -165,7 +176,6 @@ export default function HeroSection({ data = heroData }) {
             className="text-neutral-800 hover:text-brand-orange font-semibold text-base inline-flex items-center gap-1.5 transition-colors py-1.5"
           >
             <span>{data.secondaryButton?.label || "Explore Fleet"}</span>
-            <span>→</span>
           </Link>
         </div>
 

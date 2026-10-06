@@ -45,7 +45,7 @@ export default function FleetTypes({
       </div>
 
       {/* ========================================================= */}
-      {/* DESKTOP FLEET CARDS (Horizontal row of 3) (>= 768px)       */}
+      {/* DESKTOP Fleet CARDS (Horizontal row of 3) (>= 768px)       */}
       {/* ========================================================= */}
       <div className="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
         {fleetList.map((bus) => (
@@ -54,7 +54,7 @@ export default function FleetTypes({
       </div>
 
       {/* ========================================================= */}
-      {/* MOBILE FLEET CAROUSEL (< 768px)                           */}
+      {/* MOBILE Fleet CAROUSEL (< 768px)                           */}
       {/* Horizontal swipeable showing 1 full card + peek of next   */}
       {/* ========================================================= */}
       <div className="md:hidden">
@@ -80,11 +80,10 @@ export default function FleetTypes({
               key={idx}
               type="button"
               onClick={() => scrollToSlide(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                activeSlide === idx
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${activeSlide === idx
                   ? "w-6 bg-brand-orange"
                   : "w-1.5 bg-neutral-300"
-              }`}
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           ))}

@@ -77,7 +77,7 @@ export default function PopularDestinations({
       >
         {items.map((dest) => {
           // Format CTA label (strip trailing arrow character if provided in text)
-          const rawCta = dest.ctaText || dest.cta || `Charter to ${dest.name}`;
+          const rawCta = dest.ctaText || dest.cta || `Fleet to ${dest.name}`;
           const ctaLabel = rawCta.replace(/\s*→$/, "");
 
           return (
@@ -121,7 +121,7 @@ export default function PopularDestinations({
                   {/* Subtle horizontal divider */}
                   <div className="my-4.5 border-t border-neutral-100" />
 
-                  {/* Bottom: Charter to [Destination] + Orange Arrow */}
+                  {/* Bottom: Fleet to [Destination] + Orange Arrow */}
                   <div className="flex items-center justify-between text-sm font-semibold text-neutral-900">
                     <span>{ctaLabel}</span>
                     <ArrowRight className="w-4 h-4 text-brand-orange transition-transform duration-200 group-hover:translate-x-1.5 stroke-[2.2]" />

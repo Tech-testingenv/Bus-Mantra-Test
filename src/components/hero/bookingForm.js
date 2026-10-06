@@ -637,7 +637,6 @@ export default function BookingForm({ data = heroData?.form }) {
               <span>
                 Confirm Time ({customHour}:{isMinuteValid ? getNormalizedMinute() : customMinute || "00"} {customPeriod})
               </span>
-              <span className="font-bold">→</span>
             </button>
           </div>
         )}
@@ -786,9 +785,8 @@ export default function BookingForm({ data = heroData?.form }) {
                 {labels.destination || "DESTINATION"}
               </label>
               <ChevronDown
-                className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ${
-                  isDestOpen ? "rotate-180 text-brand-orange" : ""
-                }`}
+                className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ${isDestOpen ? "rotate-180 text-brand-orange" : ""
+                  }`}
               />
             </div>
             <div className="flex items-center gap-2">
@@ -845,11 +843,10 @@ export default function BookingForm({ data = heroData?.form }) {
                           setIsDestOpen(false);
                           setDestSearch("");
                         }}
-                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
-                          isSelected
-                            ? "bg-orange-50 text-brand-orange"
-                            : "hover:bg-neutral-100 text-neutral-700"
-                        }`}
+                        className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${isSelected
+                          ? "bg-orange-50 text-brand-orange"
+                          : "hover:bg-neutral-100 text-neutral-700"
+                          }`}
                       >
                         <span>{city}</span>
                         {isSelected && (
@@ -868,11 +865,10 @@ export default function BookingForm({ data = heroData?.form }) {
           {/* ========================================================= */}
           <div
             onClick={() => openPicker("departure", "date")}
-            className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${
-              activePicker === "departure"
-                ? "bg-white border-brand-orange ring-2 ring-brand-orange/30"
-                : "border-transparent"
-            } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
+            className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${activePicker === "departure"
+              ? "bg-white border-brand-orange ring-2 ring-brand-orange/30"
+              : "border-transparent"
+              } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
             role="button"
             tabIndex={0}
             aria-label="Select Departure Date and Time"
@@ -941,11 +937,10 @@ export default function BookingForm({ data = heroData?.form }) {
           {/* ========================================================= */}
           <div
             onClick={() => openPicker("return", "date")}
-            className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${
-              activePicker === "return"
-                ? "bg-white border-brand-orange ring-2 ring-brand-orange/30"
-                : "border-transparent"
-            } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
+            className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${activePicker === "return"
+              ? "bg-white border-brand-orange ring-2 ring-brand-orange/30"
+              : "border-transparent"
+              } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
             role="button"
             tabIndex={0}
             aria-label="Select Return Date and Time"
@@ -1009,16 +1004,13 @@ export default function BookingForm({ data = heroData?.form }) {
             {activePicker === "return" && renderPickerPopover("return")}
           </div>
 
-          {/* Primary CTA: Find Buses → */}
+          {/* Primary CTA: Find Buses */}
           <div className="col-span-1 sm:col-span-2 lg:col-span-1 flex items-stretch">
             <button
               type="submit"
               className="w-full h-full min-h-14 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 select-none group"
             >
               <span>{submitted ? (submitButton.successLabel || "Buses Found!") : (submitButton.idleLabel || "Find Buses")}</span>
-              <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-0.5">
-                →
-              </span>
             </button>
           </div>
         </div>

@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, ArrowRight } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Fleet", href: "#fleets", targetId: "fleets" },
-  { label: "Services", href: "#services", targetId: "services" },
-  { label: "How It Works", href: "#how-it-works", targetId: "how-it-works" },
-  { label: "About", href: "#about", targetId: "about" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Bus Mantra Fleet", href: "/fleets" },
+  { label: "Services", href: "/services" },
+  { label: "Destinations", href: "/destinations" },
 ];
 
 export default function Navbar() {
@@ -65,8 +66,28 @@ export default function Navbar() {
     }
   }, [isOpen]);
 
+  // Helper to check if a navigation item is active
+  const isItemActive = (href) => {
+    if (!pathname) return false;
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   // Smooth scroll handler for sections
   const scrollToTarget = (e, item) => {
+    if (item.href === "/") {
+      if (pathname === "/") {
+        if (e) e.preventDefault();
+        closeMenu();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      closeMenu();
+      return;
+    }
+
     if (pathname !== "/") {
       closeMenu();
       return;
@@ -75,7 +96,7 @@ export default function Navbar() {
     if (e) e.preventDefault();
     closeMenu();
 
-    const targetKey = item.targetId || item.href.replace("#", "");
+    const targetKey = (item.targetId || item.href).replace("#", "").replace(/^\//, "");
     let targetEl = document.getElementById(targetKey);
 
     // Dynamic section finder if exact ID not on section
@@ -86,7 +107,7 @@ export default function Navbar() {
           h.textContent.toLowerCase().includes("fleet")
         );
         targetEl = match?.closest("section") || match;
-      } else if (targetKey.includes("services")) {
+      } else if (targetKey.includes("service")) {
         const match = headings.find((h) =>
           h.textContent.toLowerCase().includes("services")
         );
@@ -97,10 +118,10 @@ export default function Navbar() {
           h.textContent.toLowerCase().includes("smart group travel")
         );
         targetEl = match?.closest("section") || match;
-      } else if (targetKey.includes("how")) {
+      } else if (targetKey.includes("destination")) {
         const match = headings.find((h) =>
-          h.textContent.toLowerCase().includes("services") ||
-          h.textContent.toLowerCase().includes("choose")
+          h.textContent.toLowerCase().includes("destination") ||
+          h.textContent.toLowerCase().includes("where will your group go")
         );
         targetEl = match?.closest("section") || match;
       }
@@ -153,15 +174,14 @@ export default function Navbar() {
       {/* MAIN NAVBAR (DESKTOP & MOBILE HEADER)                     */}
       {/* ========================================================= */}
       <header
-        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-200 ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] border-b border-neutral-100"
-            : "bg-white border-b border-neutral-100/90"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-200 ${scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] border-b border-neutral-100"
+          : "bg-white border-b border-neutral-100/90"
+          }`}
       >
         <div
           ref={navRef}
-          className="w-full max-w-340 mx-auto px-5 sm:px-7 lg:px-10 h-18 sm:h-20 flex items-center justify-between relative"
+          className="w-full max-w-360 mx-auto px-5 sm:px-7 lg:px-10 h-18 sm:h-20 flex items-center justify-between relative"
         >
           {/* ========================================================= */}
           {/* LEFT: BRAND LOGO                                          */}
@@ -195,41 +215,52 @@ export default function Navbar() {
             className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-8 xl:gap-11"
             aria-label="Primary Navigation"
           >
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={(e) => scrollToTarget(e, item)}
-                className="text-[15px] font-medium text-neutral-700 hover:text-brand-orange transition-colors duration-150 py-1.5 px-0.5 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const active = isItemActive(item.href);
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => scrollToTarget(e, item)}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative text-[15px] py-1.5 px-0.5 select-none transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-xs ${active
+                    ? "text-brand-orange font-semibold"
+                    : "text-neutral-700 font-medium hover:text-brand-orange"
+                    }`}
+                >
+                  <span>{item.label}</span>
+                  {active && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-brand-orange rounded-full"
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* ========================================================= */}
           {/* RIGHT: DESKTOP CTAS (>= 1024px)                           */}
           {/* ========================================================= */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-3.5 shrink-0">
-            {/* Primary Orange Button: Book a Bus → */}
+          <div className="hidden lg:flex items-center gap-2.5 xl:gap-3 shrink-0">
+            {/* Primary Orange Button: Book a Bus */}
             <Link
               href="#booking-form"
               onClick={handleBookBus}
-              className="inline-flex items-center gap-2 px-5.5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[15px] transition-all duration-200 shadow-xs hover:shadow-md active:scale-[0.98] select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+              className="h-10.5 inline-flex items-center gap-2 px-5 sm:px-5.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[14.5px] transition-all duration-200 shadow-sm shadow-orange-500/20 hover:shadow-md hover:shadow-orange-500/30 active:scale-[0.98] select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
             >
               <span>Book a Bus</span>
-              <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-0.5">
-                →
-              </span>
             </Link>
 
-            {/* Circular User/Account Button */}
+            {/* Secondary Account / Sign In Button */}
             <Link
               href="/login"
-              className="w-10 h-10 rounded-full bg-[#9c3409] hover:bg-[#862a05] text-white flex items-center justify-center transition-all duration-200 shadow-xs hover:scale-105 active:scale-95 shrink-0 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
-              aria-label="My Account"
+              className="h-10.5 px-3.5 rounded-xl border border-neutral-200/90 hover:border-neutral-300 bg-white hover:bg-neutral-50/80 text-neutral-700 hover:text-neutral-900 font-semibold text-sm inline-flex items-center gap-2 transition-all duration-150 select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 shadow-2xs"
+              aria-label="Sign In to your account"
             >
-              <User className="w-4.5 h-4.5 stroke-[2.4]" />
+              <User className="w-3.5 h-3.5 stroke-[2.3]" />
+              <span>Sign In</span>
             </Link>
           </div>
 
@@ -254,9 +285,8 @@ export default function Navbar() {
       {/* ========================================================= */}
       {/* 1. Backdrop Overlay */}
       <div
-        className={`fixed inset-0 bg-black/45 backdrop-blur-[2px] z-50 lg:hidden transition-opacity duration-300 ease-out ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-black/45 backdrop-blur-[2px] z-50 lg:hidden transition-opacity duration-300 ease-out ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
         onClick={closeMenu}
         aria-hidden="true"
       />
@@ -264,9 +294,8 @@ export default function Navbar() {
       {/* 2. Full-Height Drawer */}
       <aside
         id="mobile-nav-drawer"
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[320px] sm:max-w-90 h-full bg-white shadow-2xl flex flex-col justify-between lg:hidden transition-transform duration-350 ease-out transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[320px] sm:max-w-90 h-full bg-white shadow-2xl flex flex-col justify-between lg:hidden transition-transform duration-350 ease-out transform ${isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile Navigation Drawer"
@@ -312,19 +341,39 @@ export default function Navbar() {
             className="px-6 py-6 flex flex-col space-y-1"
             aria-label="Mobile Navigation Links"
           >
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={(e) => scrollToTarget(e, item)}
-                className="py-3 px-3.5 rounded-xl text-[17px] font-semibold text-neutral-800 hover:text-brand-orange hover:bg-orange-50/70 transition-all flex items-center justify-between group"
-              >
-                <span>{item.label}</span>
-                <span className="text-neutral-400 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all text-sm font-medium">
-                  ›
-                </span>
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const active = isItemActive(item.href);
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => scrollToTarget(e, item)}
+                  aria-current={active ? "page" : undefined}
+                  className={`py-3 px-3.5 rounded-xl text-[17px] transition-all flex items-center justify-between group ${active
+                    ? "bg-orange-50 text-brand-orange font-bold shadow-2xs"
+                    : "font-semibold text-neutral-800 hover:text-brand-orange hover:bg-orange-50/70"
+                    }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    {active && (
+                      <span
+                        aria-hidden="true"
+                        className="w-2 h-2 rounded-full bg-brand-orange shrink-0 animate-pulse"
+                      />
+                    )}
+                    <span>{item.label}</span>
+                  </span>
+                  <span
+                    className={`transition-all text-sm font-medium ${active
+                      ? "text-brand-orange translate-x-0.5 font-bold"
+                      : "text-neutral-400 group-hover:text-brand-orange group-hover:translate-x-0.5"
+                      }`}
+                  >
+                    ›
+                  </span>
+                </Link>
+              );
+            })}
 
             {/* Prominent Full-Width Orange Button */}
             <div className="pt-5">
@@ -334,9 +383,6 @@ export default function Navbar() {
                 className="w-full py-3.5 px-6 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-base flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 active:scale-[0.99] transition-all select-none group"
               >
                 <span>Book a Bus</span>
-                <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-1">
-                  →
-                </span>
               </Link>
             </div>
           </nav>
@@ -356,7 +402,7 @@ export default function Navbar() {
             onClick={closeMenu}
             className="w-full py-3 px-4 rounded-xl bg-white border border-neutral-200 hover:border-neutral-300 text-center text-neutral-700 font-medium text-sm flex items-center justify-center gap-2.5 transition-colors shadow-2xs"
           >
-            <div className="w-5 h-5 rounded-full bg-[#9c3409] text-white flex items-center justify-center">
+            <div className="w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center shadow-xs">
               <User className="w-3 h-3 stroke-[2.5]" />
             </div>
             <span>Login / My Account</span>
