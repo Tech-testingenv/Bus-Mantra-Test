@@ -36,44 +36,10 @@ export default function CustomerTestimonials({
 
   return (
     <section className="relative w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-      {/* Subtle Travel-Themed Decorative Route Background */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-25">
-        <svg
-          className="absolute w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 800"
-          preserveAspectRatio="none"
-          fill="none"
-        >
-          {/* Subtle curved route lines */}
-          <path
-            d="M -30 200 C 220 120, 480 300, 720 180 C 960 60, 1140 220, 1240 160"
-            stroke="#ec6103"
-            strokeWidth="1.5"
-            strokeDasharray="6 8"
-            opacity="0.35"
-          />
-          <path
-            d="M -20 620 C 240 520, 520 680, 800 560 C 1040 460, 1160 580, 1240 520"
-            stroke="#94a3b8"
-            strokeWidth="1.2"
-            strokeDasharray="5 7"
-            opacity="0.3"
-          />
-          <circle cx="210" cy="140" r="3" fill="#ec6103" opacity="0.5" />
-          <circle cx="720" cy="180" r="3.5" fill="#ec6103" opacity="0.5" />
-          <circle cx="960" cy="80" r="2.5" fill="#ec6103" opacity="0.4" />
-        </svg>
-      </div>
 
       <div className="relative max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-50 border border-brand-orange/20 text-brand-orange text-xs font-semibold tracking-wider uppercase mb-3.5 sm:mb-4 select-none">
-            <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
-            <span>{sectionData.eyebrow}</span>
-          </div>
 
           {/* Heading */}
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-brand-dark leading-[1.16] tracking-tight mb-3.5 sm:mb-4">
@@ -286,6 +252,6 @@ export default function CustomerTestimonials({
           </div>
         )}
       </div>
-    </section>
+    </section >
   );
 }

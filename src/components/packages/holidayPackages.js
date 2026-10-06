@@ -122,7 +122,7 @@ export default function HolidayPackages({
                       <span>{pkg.capacity}</span>
                     </span>
                     <span className="text-xs font-medium text-brand-gray">
-                      Full Coach Charter
+                      {pkg.charterType || "Full Coach Charter"}
                     </span>
                   </div>
 

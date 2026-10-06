@@ -1,22 +1,20 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, User } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Fleets", href: "/fleets" },
-  { label: "Destinations", href: "/destinations" },
-  { label: "Services", href: "/services" },
-  { label: "Blogs", href: "/blogs" },
+  { label: "Fleet", href: "#fleets", targetId: "fleets" },
+  { label: "Services", href: "#services", targetId: "services" },
+  { label: "How It Works", href: "#how-it-works", targetId: "how-it-works" },
+  { label: "About", href: "#about", targetId: "about" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const navRef = useRef(null);
 
@@ -24,7 +22,17 @@ export default function Navbar() {
     setIsOpen(false);
   }, []);
 
-  // Close mobile menu on Escape key press
+  // Listen for scroll to apply subtle shadow
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile drawer on Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -35,22 +43,7 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeMenu]);
 
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (isOpen && navRef.current && !navRef.current.contains(e.target)) {
-        closeMenu();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [isOpen, closeMenu]);
-
-  // Close menu if viewport is resized to desktop width (>= 1024px)
+  // Close drawer if resized to desktop width (>= 1024px)
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024 && isOpen) {
@@ -61,7 +54,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, [isOpen, closeMenu]);
 
-  // Prevent awkward page scroll while mobile menu is open
+  // Lock page scroll when mobile drawer is open
   useEffect(() => {
     if (isOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -72,154 +65,304 @@ export default function Navbar() {
     }
   }, [isOpen]);
 
+  // Smooth scroll handler for sections
+  const scrollToTarget = (e, item) => {
+    if (pathname !== "/") {
+      closeMenu();
+      return;
+    }
+
+    if (e) e.preventDefault();
+    closeMenu();
+
+    const targetKey = item.targetId || item.href.replace("#", "");
+    let targetEl = document.getElementById(targetKey);
+
+    // Dynamic section finder if exact ID not on section
+    if (!targetEl) {
+      const headings = Array.from(document.querySelectorAll("h2, h3, span"));
+      if (targetKey.includes("fleet")) {
+        const match = headings.find((h) =>
+          h.textContent.toLowerCase().includes("fleet")
+        );
+        targetEl = match?.closest("section") || match;
+      } else if (targetKey.includes("services")) {
+        const match = headings.find((h) =>
+          h.textContent.toLowerCase().includes("services")
+        );
+        targetEl = match?.closest("section") || match;
+      } else if (targetKey.includes("about")) {
+        const match = headings.find((h) =>
+          h.textContent.toLowerCase().includes("about bus mantra") ||
+          h.textContent.toLowerCase().includes("smart group travel")
+        );
+        targetEl = match?.closest("section") || match;
+      } else if (targetKey.includes("how")) {
+        const match = headings.find((h) =>
+          h.textContent.toLowerCase().includes("services") ||
+          h.textContent.toLowerCase().includes("choose")
+        );
+        targetEl = match?.closest("section") || match;
+      }
+    }
+
+    if (targetEl) {
+      const navOffset = 76;
+      const targetPos =
+        targetEl.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({
+        top: Math.max(0, targetPos),
+        behavior: "smooth",
+      });
+      window.history.pushState(null, "", item.href);
+    }
+  };
+
+  // Scroll to booking form for "Book a Bus" CTA
+  const handleBookBus = (e) => {
+    if (pathname !== "/") {
+      closeMenu();
+      return;
+    }
+
+    if (e) e.preventDefault();
+    closeMenu();
+
+    const bookingEl =
+      document.getElementById("booking-form") ||
+      document.querySelector("form");
+
+    if (bookingEl) {
+      const navOffset = 80;
+      const targetPos =
+        bookingEl.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({
+        top: Math.max(0, targetPos),
+        behavior: "smooth",
+      });
+      const firstInput = bookingEl.querySelector("input, select, button");
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 350);
+      }
+    }
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 pt-4 sm:pt-6 px-4 sm:px-6 lg:px-8 pointer-events-none">
-      <div ref={navRef} className="relative max-w-8xl mx-auto pointer-events-auto">
-        {/* Main Floating Navbar Pill */}
-        <div className="bg-brand-surface/85 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-5 sm:px-7 py-3 sm:py-3.5 flex items-center justify-between border border-brand-border/40 transition-all duration-200">
-          {/* BUS MANTRA Logo */}
+    <>
+      {/* ========================================================= */}
+      {/* MAIN NAVBAR (DESKTOP & MOBILE HEADER)                     */}
+      {/* ========================================================= */}
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-200 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] border-b border-neutral-100"
+            : "bg-white border-b border-neutral-100/90"
+        }`}
+      >
+        <div
+          ref={navRef}
+          className="w-full max-w-340 mx-auto px-5 sm:px-7 lg:px-10 h-18 sm:h-20 flex items-center justify-between relative"
+        >
+          {/* ========================================================= */}
+          {/* LEFT: BRAND LOGO                                          */}
+          {/* ========================================================= */}
           <Link
             href="/"
-            onClick={closeMenu}
-            className="flex items-center shrink-0 select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-lg"
-            aria-label="Bus Mantra - Home"
+            onClick={(e) => {
+              if (pathname === "/") {
+                e.preventDefault();
+                closeMenu();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+            className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-lg select-none shrink-0"
+            aria-label="BUS MANTRA - Home"
           >
-            <Image
-              src="/logo.png"
-              alt="Bus Mantra - Your Group. Your Bus. Your Journey."
-              width={158}
-              height={60}
-              priority
-              className="h-8 sm:h-9 lg:h-10 w-auto object-contain transition-transform group-hover:scale-[1.02]"
-            />
+            {/* Orange BM Rounded Badge */}
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-orange flex items-center justify-center text-white font-black text-sm sm:text-base tracking-tight shadow-xs transition-transform duration-200 group-hover:scale-105">
+              BM
+            </div>
+            {/* BUS MANTRA Brand Typography */}
+            <span className="text-[17px] sm:text-lg lg:text-[19px] font-black tracking-tight text-neutral-900 group-hover:text-black transition-colors">
+              BUS MANTRA
+            </span>
           </Link>
 
-          {/* Desktop Navigation Links (>= 1024px) */}
+          {/* ========================================================= */}
+          {/* CENTER: DESKTOP NAVIGATION (>= 1024px)                     */}
+          {/* ========================================================= */}
           <nav
-            className="hidden lg:flex items-center gap-1 xl:gap-2.5"
-            aria-label="Main Navigation"
+            className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-8 xl:gap-11"
+            aria-label="Primary Navigation"
           >
-            {NAV_ITEMS.map((item) => {
-              const isActive =
-                pathname === item.href ||
-                (item.href === "/" && (pathname === "" || pathname === "/"));
-
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`transition-all duration-200 text-sm lg:text-[15px] font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange ${isActive
-                    ? "px-5 py-2 rounded-full bg-brand-orange text-brand-white shadow-sm"
-                    : "px-3.5 py-2 rounded-full text-brand-gray hover:text-brand-orange"
-                    }`}
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={(e) => scrollToTarget(e, item)}
+                className="text-[15px] font-medium text-neutral-700 hover:text-brand-orange transition-colors duration-150 py-1.5 px-0.5 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-sm"
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Desktop Action Buttons (Contact Us & Login) */}
-          <div className="hidden lg:flex items-center gap-2.5 xl:gap-3 shrink-0">
+          {/* ========================================================= */}
+          {/* RIGHT: DESKTOP CTAS (>= 1024px)                           */}
+          {/* ========================================================= */}
+          <div className="hidden lg:flex items-center gap-3 xl:gap-3.5 shrink-0">
+            {/* Primary Orange Button: Book a Bus → */}
             <Link
-              href="/contact"
-              className="px-5 xl:px-6 py-2 xl:py-2.5 rounded-full bg-brand-orange hover:bg-brand-orange-hover text-brand-white font-medium text-sm lg:text-[15px] shadow-sm transition-all duration-200 active:scale-[0.98] whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+              href="#booking-form"
+              onClick={handleBookBus}
+              className="inline-flex items-center gap-2 px-5.5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[15px] transition-all duration-200 shadow-xs hover:shadow-md active:scale-[0.98] select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
             >
-              Contact Us
+              <span>Book a Bus</span>
+              <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-0.5">
+                →
+              </span>
             </Link>
+
+            {/* Circular User/Account Button */}
             <Link
               href="/login"
-              className="px-4 xl:px-5 py-2 xl:py-2.5 rounded-full border border-brand-orange text-brand-orange hover:bg-brand-orange/5 font-medium text-sm lg:text-[15px] flex items-center gap-2 transition-all duration-200 active:scale-[0.98] whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+              className="w-10 h-10 rounded-full bg-[#9c3409] hover:bg-[#862a05] text-white flex items-center justify-center transition-all duration-200 shadow-xs hover:scale-105 active:scale-95 shrink-0 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+              aria-label="My Account"
             >
-              <User className="w-3 h-3 stroke-[2.5]" />
-              <span>Login</span>
+              <User className="w-4.5 h-4.5 stroke-[2.4]" />
             </Link>
           </div>
 
-          {/* Mobile / Tablet Menu Button (< 1024px) */}
+          {/* ========================================================= */}
+          {/* RIGHT: MOBILE HAMBURGER BUTTON (< 1024px)                  */}
+          {/* ========================================================= */}
           <button
             type="button"
-            onClick={() => setIsOpen((prev) => !prev)}
-            className="lg:hidden w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-brand-orange hover:bg-brand-orange-hover text-brand-white flex items-center justify-center shadow-sm transition-all duration-200 active:scale-95 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
-            aria-label={isOpen ? "Close menu" : "Open menu"}
+            onClick={() => setIsOpen(true)}
+            className="lg:hidden w-10 h-10 rounded-xl text-neutral-800 hover:text-brand-orange hover:bg-neutral-100/70 flex items-center justify-center transition-all duration-150 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+            aria-label="Open mobile navigation menu"
             aria-expanded={isOpen}
-            aria-controls="mobile-navigation-menu"
+            aria-controls="mobile-nav-drawer"
           >
-            {isOpen ? (
-              <X className="w-5 h-5 stroke-[2.5] transition-transform duration-200" />
-            ) : (
-              <Menu className="w-5 h-5 stroke-[2.5] transition-transform duration-200" />
-            )}
+            <Menu className="w-6 h-6 stroke-[2.3]" />
           </button>
         </div>
+      </header>
 
-        {/* Mobile Menu Panel (Conditionally rendered absolute overlay) */}
-        {isOpen && (
-          <>
-            {/* Soft Backdrop Blur on Page when Mobile Menu is Open */}
-            <div
-              className="fixed inset-0 bg-brand-dark/20 backdrop-blur-xs lg:hidden pointer-events-auto -z-10 transition-opacity duration-200"
-              onClick={closeMenu}
-              aria-hidden="true"
-            />
-            <div
-              id="mobile-navigation-menu"
-              className="lg:hidden absolute top-full right-0 mt-3 sm:mt-4 w-full max-w-[320px] sm:max-w-90 z-50"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Mobile Navigation"
+      {/* ========================================================= */}
+      {/* MOBILE DRAWER — RIGHT TO LEFT SLIDE                       */}
+      {/* ========================================================= */}
+      {/* 1. Backdrop Overlay */}
+      <div
+        className={`fixed inset-0 bg-black/45 backdrop-blur-[2px] z-50 lg:hidden transition-opacity duration-300 ease-out ${
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
+
+      {/* 2. Full-Height Drawer */}
+      <aside
+        id="mobile-nav-drawer"
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[320px] sm:max-w-90 h-full bg-white shadow-2xl flex flex-col justify-between lg:hidden transition-transform duration-350 ease-out transform ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation Drawer"
+      >
+        {/* Top: Drawer Header + Links */}
+        <div>
+          {/* Header: Logo & Close Button */}
+          <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  closeMenu();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                } else {
+                  closeMenu();
+                }
+              }}
+              className="flex items-center gap-2.5 focus:outline-none select-none"
+              aria-label="BUS MANTRA - Home"
             >
-              <div className="bg-brand-surface/90 backdrop-blur-xl rounded-[28px] sm:rounded-4xl shadow-[0_20px_45px_-12px_rgba(0,0,0,0.15)] border border-brand-border/60 p-6 sm:p-7 flex flex-col">
-                {/* Vertical Navigation Links */}
-                <nav className="flex flex-col space-y-2" aria-label="Mobile Links">
-                  {NAV_ITEMS.map((item) => {
-                    const isActive =
-                      pathname === item.href ||
-                      (item.href === "/" && (pathname === "" || pathname === "/"));
-
-                    return (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        onClick={closeMenu}
-                        className={`w-full text-left font-medium text-base transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange ${isActive
-                          ? "px-5 py-3 rounded-full bg-brand-orange text-brand-white shadow-sm"
-                          : "px-5 py-2.5 rounded-full text-brand-gray hover:text-brand-orange"
-                          }`}
-                        aria-current={isActive ? "page" : undefined}
-                      >
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-                </nav>
-
-                {/* Generous spacing before bottom buttons matching reference screenshot */}
-                <div className="min-h-82.5 sm:min-h-42.5" aria-hidden="true" />
-
-                {/* Bottom Actions: Contact Us & Login */}
-                <div className="flex flex-col space-y-3">
-                  <Link
-                    href="/contact"
-                    onClick={closeMenu}
-                    className="w-full py-3.5 px-6 rounded-full bg-brand-orange hover:bg-brand-orange-hover text-brand-white font-medium text-base text-center shadow-sm transition-all duration-200 active:scale-[0.99] block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
-                  >
-                    Contact Us
-                  </Link>
-                  <Link
-                    href="/login"
-                    onClick={closeMenu}
-                    className="w-full py-3.5 px-6 rounded-full bg-brand-white border border-brand-orange text-brand-orange hover:bg-brand-orange/5 font-medium text-base text-center transition-all duration-200 active:scale-[0.99] block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
-                  >
-                    Login
-                  </Link>
-                </div>
+              <div className="w-9 h-9 rounded-xl bg-brand-orange flex items-center justify-center text-white font-black text-sm tracking-tight shadow-xs">
+                BM
               </div>
+              <span className="text-base font-black tracking-tight text-neutral-900">
+                BUS MANTRA
+              </span>
+            </Link>
+
+            <button
+              type="button"
+              onClick={closeMenu}
+              className="w-10 h-10 rounded-full flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5 stroke-[2.3]" />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <nav
+            className="px-6 py-6 flex flex-col space-y-1"
+            aria-label="Mobile Navigation Links"
+          >
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={(e) => scrollToTarget(e, item)}
+                className="py-3 px-3.5 rounded-xl text-[17px] font-semibold text-neutral-800 hover:text-brand-orange hover:bg-orange-50/70 transition-all flex items-center justify-between group"
+              >
+                <span>{item.label}</span>
+                <span className="text-neutral-400 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all text-sm font-medium">
+                  ›
+                </span>
+              </Link>
+            ))}
+
+            {/* Prominent Full-Width Orange Button */}
+            <div className="pt-5">
+              <Link
+                href="#booking-form"
+                onClick={handleBookBus}
+                className="w-full py-3.5 px-6 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-base flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 active:scale-[0.99] transition-all select-none group"
+              >
+                <span>Book a Bus</span>
+                <span className="text-base font-bold transition-transform duration-200 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
             </div>
-          </>
-        )}
-      </div>
-    </header>
+          </nav>
+        </div>
+
+        {/* Drawer Bottom Actions: Contact Us & Account */}
+        <div className="p-6 border-t border-neutral-100 flex flex-col gap-3 bg-neutral-50/60">
+          <Link
+            href="/contact"
+            onClick={closeMenu}
+            className="w-full py-3 px-4 rounded-xl border border-neutral-200 hover:border-brand-orange text-center text-neutral-700 hover:text-brand-orange font-medium text-sm transition-colors bg-white shadow-2xs"
+          >
+            Contact Us
+          </Link>
+          <Link
+            href="/login"
+            onClick={closeMenu}
+            className="w-full py-3 px-4 rounded-xl bg-white border border-neutral-200 hover:border-neutral-300 text-center text-neutral-700 font-medium text-sm flex items-center justify-center gap-2.5 transition-colors shadow-2xs"
+          >
+            <div className="w-5 h-5 rounded-full bg-[#9c3409] text-white flex items-center justify-center">
+              <User className="w-3 h-3 stroke-[2.5]" />
+            </div>
+            <span>Login / My Account</span>
+          </Link>
+        </div>
+      </aside>
+    </>
   );
 }

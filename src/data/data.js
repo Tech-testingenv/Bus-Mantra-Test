@@ -1,27 +1,90 @@
 export const heroData = {
-  eyebrow: "FULL BUS BOOKING FOR EVERY JOURNEY",
-  titlePrefix: "Book Your ",
-  highlightedTitle: "Luxury Coach",
-  priceText: "@ ₹1/KM",
+  eyebrow: "FULL BUS BOOKING",
+  titleLines: ["Your Group.", "Your Bus."],
   description:
-    "Perfect for weddings, school trips, corporate events, family tours, and every group journey.",
+    "Book an entire bus for your next trip. Simple, comfortable and made for travelling together.",
   primaryButton: {
-    label: "Book Bus Now",
+    label: "Book a Bus",
     href: "#booking-form",
   },
   secondaryButton: {
-    label: "Explore Fleets",
-    href: "/fleets",
+    label: "Explore Fleet",
+    href: "#fleets",
   },
+  stats: [
+    {
+      value: "100%",
+      label: "Dedicated Vehicle",
+    },
+    {
+      value: "4.9/5",
+      label: "Charter Satisfaction",
+    },
+    {
+      value: "24/7",
+      label: "Dispatch Support",
+    },
+  ],
   image: {
-    src: "/hero.png",
-    alt: "Bus Mantra Luxury Coach Illustration",
-    width: 1436,
-    height: 556,
+    src: "/fleet/fleet.png",
+    alt: "BUS MANTRA Modern Luxury Coach Bus",
+    width: 1920,
+    height: 1080,
   },
   form: {
     badge: "FULL BUS RESERVATION",
     title: "Quick Bus Charter Search",
+    defaultValues: {
+      fullName: "",
+      mobile: "",
+      email: "",
+      passengers: "",
+      pickupPoint: "Delhi NCR",
+      destination: "Jaipur",
+      departureDateTime: "30-09-2026 | 07:00 AM",
+      returnDateTime: "02-10-2026 | 09:00 PM",
+    },
+    destinationOptions: [
+      "Jaipur",
+      "Agra",
+      "Delhi NCR",
+      "Udaipur",
+      "Manali",
+      "Shimla",
+      "Rishikesh",
+      "Haridwar",
+      "Goa",
+      "Amritsar",
+    ],
+    labels: {
+      fullName: "FULL NAME",
+      mobile: "MOBILE NUMBER",
+      email: "EMAIL ADDRESS",
+      passengers: "NO. OF PASSENGERS",
+      pickupPoint: "PICK-UP POINT",
+      destination: "DESTINATION",
+      departureDateTime: "DEPARTURE DATE & TIME",
+      returnDateTime: "RETURN DATE & TIME",
+    },
+    placeholders: {
+      fullName: "e.g. Rahul Sharma",
+      mobile: "+91 XXXXX XXXXX",
+      email: "eg@example.com",
+      passengers: "20",
+      pickupPoint: "e.g. Delhi NCR",
+      destination: "e.g. Jaipur",
+      departureDateTime: "30-09-2026 | 07:00 AM",
+      returnDateTime: "02-10-2026 | 09:00 PM",
+    },
+    submitButton: {
+      idleLabel: "Find Buses",
+      successLabel: "Buses Found!",
+    },
+    routeSummary: {
+      badge: "FULL COACH",
+      label: "Selected Itinerary:",
+      subtext: "Full Luxury Coach · Entire Bus Reserved",
+    },
     row1: [
       {
         id: "fullName",
@@ -121,17 +184,6 @@ export const heroData = {
         iconColor: "text-brand-orange bg-orange-50",
       },
     ],
-    submitButton: {
-      label: "Find Buses",
-    },
-    routeSummary: {
-      from: "Delhi NCR",
-      stop: "Jaipur",
-      returnTo: "Delhi NCR",
-      tripType: "Return",
-      text: "Delhi NCR → Jaipur → Delhi NCR (Return)",
-      badge: "Full Coach",
-    },
   },
 };
 
@@ -147,13 +199,13 @@ export const aboutData = {
   ],
   cta: {
     label: "Know More About Us",
-    href: "/about",
+    href: "#booking-form",
   },
   image: {
-    src: "/about-bus.jpg",
-    alt: "Bus Mantra Group Transportation Journey",
-    width: 1024,
-    height: 768,
+    src: "/about-bus.png",
+    alt: "BUS MANTRA luxury coach travelling on a scenic mountain road",
+    width: 1920,
+    height: 1280,
   },
   highlights: [
     {
@@ -176,71 +228,47 @@ export const aboutData = {
 
 export const fleetTypesData = [
   {
-    id: "mini-bus",
-    name: "MINI BUS",
-    description:
-      "Compact and comfortable for smaller groups and short-distance journeys.",
+    id: "mini-coach",
+    name: "Mini Coach",
     capacity: "15–25 Seats",
-    features: ["AC", "Comfortable Seating", "Ideal for Small Groups"],
-    image: "/fleet/mini-bus.svg",
-    cta: "View Details",
-    href: "/fleets/mini-bus",
-    isPremium: false,
+    badge: "City & Regional",
+    isPopular: false,
+    image: "/fleet/mini-coach.jpg",
+    description:
+      "Agile maneuverability, ideal for medium corporate teams, wedding parties, and airport pickups.",
+    ctaText: "View Details",
+    href: "#booking-form",
   },
   {
-    id: "standard-coach",
-    name: "STANDARD COACH",
+    id: "premium-coach",
+    name: "Premium Coach",
+    capacity: "25–45 Seats",
+    badge: "Most Popular",
+    isPopular: true,
+    image: "/fleet/premium-coach.jpg",
     description:
-      "A practical choice for school trips, local tours and group transfers.",
-    capacity: "30–40 Seats",
-    features: ["AC", "Pushback Seats", "Ample Luggage Space"],
-    image: "/fleet/standard-coach.svg",
-    cta: "View Details",
-    href: "/fleets/standard-coach",
-    isPremium: false,
+      "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for multi-hour transit.",
+    ctaText: "View Details",
+    href: "#booking-form",
   },
   {
     id: "luxury-coach",
-    name: "LUXURY COACH",
+    name: "Luxury Coach",
+    capacity: "45–60 Seats",
+    badge: "Long Distance",
+    isPopular: false,
+    image: "/fleet/luxury-coach.jpg",
     description:
-      "Premium comfort for weddings, corporate events, family tours and long journeys.",
-    capacity: "40–50 Seats",
-    features: [
-      "Luxury Interior",
-      "AC",
-      "Pushback Seats",
-      "Entertainment",
-    ],
-    image: "/fleet/luxury-coach.svg",
-    cta: "View Details",
-    href: "/fleets/luxury-coach",
-    isPremium: true,
-    badge: "Most Popular",
-  },
-  {
-    id: "sleeper-coach",
-    name: "SLEEPER / PREMIUM COACH",
-    description:
-      "Designed for comfortable long-distance and overnight group journeys.",
-    capacity: "30–40 Berths",
-    features: [
-      "Sleeper Berths",
-      "AC",
-      "Charging Points",
-      "Luggage Space",
-    ],
-    image: "/fleet/sleeper-coach.svg",
-    cta: "View Details",
-    href: "/fleets/sleeper-coach",
-    isPremium: false,
+      "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays.",
+    ctaText: "View Details",
+    href: "#booking-form",
   },
 ];
 
 export const fleetSectionData = {
   eyebrow: "OUR FLEET",
-  heading: "Popular BUS MANTRA Fleet Types",
-  description:
-    "Choose the right coach for your group and journey. From compact group transfers to premium luxury coaches, book the entire bus that fits your travel needs.",
+  heading: "Choose your bus.",
+  description: "Comfortable coaches for every group size.",
   fleets: fleetTypesData,
 };
 
@@ -251,6 +279,7 @@ export const holidayPackagesData = [
     destinationBadge: "Rajasthan Heritage",
     busType: "Luxury Coach",
     capacity: "40–50 Passengers",
+    charterType: "Full Coach Charter",
     description:
       "Travel together and explore Jaipur comfortably with a dedicated luxury coach for your group.",
     highlights: ["AC Coach", "Pushback Seats", "Large Luggage Space"],
@@ -264,6 +293,7 @@ export const holidayPackagesData = [
     destinationBadge: "Himachal Hills",
     busType: "Premium Coach",
     capacity: "30–40 Passengers",
+    charterType: "Full Coach Charter",
     description:
       "Make your mountain getaway comfortable with a dedicated coach for your entire group.",
     highlights: ["AC Coach", "Comfortable Seating", "Experienced Driver"],
@@ -277,6 +307,7 @@ export const holidayPackagesData = [
     destinationBadge: "Coastal Getaway",
     busType: "Luxury Coach",
     capacity: "40–50 Passengers",
+    charterType: "Full Coach Charter",
     description:
       "Travel with your entire group and enjoy a comfortable journey to your Goa holiday.",
     highlights: ["Luxury Seating", "AC Coach", "Ample Luggage"],
@@ -301,161 +332,124 @@ export const holidaySectionData = {
 
 export const popularDestinationsData = [
   {
-    id: "agra",
-    name: "Agra",
-    subtitle: "Heritage & History",
-    landmark: "Taj Mahal",
-    image: "/images/destinations/agra.svg",
-    cta: "Explore Destination",
-    href: "#booking-form",
-    featured: true,
-  },
-  {
     id: "jaipur",
+    number: "01",
     name: "Jaipur",
-    subtitle: "The Pink City",
-    landmark: "Hawa Mahal",
-    image: "/images/destinations/jaipur.svg",
-    cta: "Explore Destination",
+    route: "Delhi → Jaipur • ~5.5 HRS",
+    description: "Royal architecture & weekend getaways",
+    ctaText: "Charter to Jaipur",
+    image: "/images/destinations/jaipur.png",
     href: "#booking-form",
-    featured: false,
-  },
-  {
-    id: "delhi",
-    name: "Delhi",
-    subtitle: "Capital City",
-    landmark: "India Gate",
-    image: "/images/destinations/delhi.svg",
-    cta: "Explore Destination",
-    href: "#booking-form",
-    featured: false,
   },
   {
     id: "manali",
+    number: "02",
     name: "Manali",
-    subtitle: "Mountain Escape",
-    landmark: "Himalayan Peaks",
-    image: "/images/destinations/manali.svg",
-    cta: "Explore Destination",
+    route: "Delhi → Manali • ~11.0 HRS",
+    description: "Mountain escapes & group tours",
+    ctaText: "Charter to Manali",
+    image: "/images/destinations/mountain.png",
     href: "#booking-form",
-    featured: false,
   },
   {
-    id: "goa",
-    name: "Goa",
-    subtitle: "Coastal Getaway",
-    landmark: "Beaches & Palms",
-    image: "/images/destinations/goa.svg",
-    cta: "Explore Destination",
+    id: "agra",
+    number: "03",
+    name: "Agra",
+    route: "Delhi → Agra • ~3.5 HRS",
+    description: "Heritage trips & weekend travel",
+    ctaText: "Charter to Agra",
+    image: "/images/destinations/taj.png",
     href: "#booking-form",
-    featured: false,
   },
   {
-    id: "udaipur",
-    name: "Udaipur",
-    subtitle: "The City of Lakes",
-    landmark: "City Palace & Lake Pichola",
-    image: "/images/destinations/udaipur.svg",
-    cta: "Explore Destination",
+    id: "haridwar",
+    number: "04",
+    name: "Haridwar",
+    route: "Delhi → Haridwar • ~4.5 HRS",
+    description: "Pilgrimage & group journeys",
+    ctaText: "Charter to Haridwar",
+    image: "/images/destinations/screen.png",
     href: "#booking-form",
-    featured: true,
   },
 ];
 
 export const destinationsSectionData = {
-  eyebrow: "EXPLORE INDIA",
-  heading: "Popular Destinations",
-  description:
-    "Discover popular destinations with comfortable group travel from BUS MANTRA. Book an entire bus and travel together, wherever your journey takes you.",
-  destinations: popularDestinationsData,
-  secondaryCta: {
-    prompt: "Planning a different destination?",
-    buttonText: "Explore All Destinations",
+  eyebrow: "DESTINATIONS",
+  heading: "Where will your group go?",
+  description: "Explore popular destinations for your next group journey.",
+  headerCta: {
+    label: "View All Destinations",
     href: "#booking-form",
   },
+  destinations: popularDestinationsData,
 };
 
 export const servicesData = [
   {
     id: "corporate",
+    number: "01",
     title: "Corporate",
-    category: "BUSINESS TRAVEL",
     description:
-      "Reliable group transportation for meetings, conferences, corporate events and employee travel.",
-    image: "/images/services/corporate.svg",
-    cta: "Explore Service",
-    href: "#booking-form",
-    featured: true,
-    badge: "POPULAR",
+      "Reliable transportation for teams, employees, client meetings, conferences and corporate events.",
+    bottomLabel: "Professional group transport",
+    icon: "briefcase",
   },
   {
     id: "group-tours",
+    number: "02",
     title: "Group Tours",
-    category: "LEISURE & HOLIDAYS",
     description:
-      "Travel together comfortably with a dedicated bus for family trips, holidays, excursions and group adventures.",
-    image: "/images/services/group-tours.svg",
-    cta: "Explore Service",
-    href: "#booking-form",
-    featured: false,
+      "Comfortable coach transportation for sightseeing, weekend getaways, multi-city tours and long-distance group journeys.",
+    bottomLabel: "Travel together with ease",
+    icon: "map",
   },
   {
     id: "events",
+    number: "03",
     title: "Events",
-    category: "WEDDINGS & CELEBRATIONS",
     description:
-      "Make transportation simple for weddings, celebrations, exhibitions, conferences and special occasions.",
-    image: "/images/services/events.svg",
-    cta: "Explore Service",
-    href: "#booking-form",
-    featured: false,
+      "Seamless transportation for weddings, celebrations, conferences, exhibitions and large-scale events.",
+    bottomLabel: "Coordinated event transport",
+    icon: "calendar",
   },
   {
     id: "school-trips",
+    number: "04",
     title: "School Trips",
-    category: "EDUCATIONAL TOURS",
     description:
-      "Comfortable and organized transportation for school excursions, educational tours and student group travel.",
-    image: "/images/services/school-trips.svg",
-    cta: "Explore Service",
-    href: "#booking-form",
-    featured: false,
+      "Safe and comfortable bus transportation for school excursions, educational trips, college tours and student groups.",
+    bottomLabel: "Comfortable group travel",
+    icon: "graduation-cap",
   },
   {
     id: "airport-transfer",
+    number: "05",
     title: "Airport Pick Up & Transfer",
-    category: "AIRPORT TRANSFERS",
     description:
-      "Convenient full-bus airport transfers for groups, with comfortable pickup and drop-off coordination.",
-    image: "/images/services/airport-transfer.svg",
-    cta: "Explore Service",
-    href: "#booking-form",
-    featured: false,
+      "Reliable airport transportation for groups, with convenient pickup and drop-off arrangements.",
+    bottomLabel: "Easy airport transfers",
+    icon: "plane",
   },
   {
     id: "hotel-transfer",
+    number: "06",
     title: "Hotel Pick Up & Transfer",
-    category: "HOSPITALITY TRANSFERS",
     description:
-      "Easy and reliable group transfers between hotels, destinations, venues and transport hubs.",
-    image: "/images/services/hotel-transfer.svg",
-    cta: "Explore Service",
-    href: "#booking-form",
-    featured: false,
+      "Convenient hotel transfers for groups, guests, corporate teams and tour passengers.",
+    bottomLabel: "Door-to-door convenience",
+    icon: "hotel",
   },
 ];
 
+export const useCasesData = servicesData;
+
 export const servicesSectionData = {
-  eyebrow: "WHAT WE OFFER",
-  heading: "Services Bus Mantra Provides",
+  eyebrow: "SERVICES",
+  heading: "Travel solutions for every group.",
   description:
-    "From corporate travel and school trips to events, airport transfers and group holidays, BUS MANTRA provides comfortable full-bus transportation for every occasion.",
+    "From business travel to airport transfers, we make group transportation simple, comfortable and reliable.",
   services: servicesData,
-  bottomCta: {
-    prompt: "Planning transportation for your next group journey?",
-    buttonText: "Book Your Bus",
-    href: "#booking-form",
-  },
+  useCases: servicesData,
 };
 
 export const testimonialsData = [
@@ -562,26 +556,16 @@ export const testimonialsSectionData = {
 };
 
 export const ctaData = {
-  eyebrow: "READY TO TRAVEL TOGETHER?",
-  title: "Your Group. One Bus. One Journey.",
-  titleLines: ["Your Group.", "One Bus.", "One Journey."],
-  description:
-    "From weddings and school trips to corporate events and holidays, book a comfortable bus for your entire group and travel together with ease.",
-  primaryButton: {
-    label: "Book Your Bus",
-    href: "#booking-form",
-  },
-  secondaryButton: {
-    label: "Request a Quote",
-    href: "#booking-form",
-  },
-  reassurance: "Quick response • Flexible options • Dedicated group travel",
-  reassuranceItems: [
-    "Quick response",
-    "Flexible options",
-    "Dedicated group travel",
+  eyebrow: "RESERVE IN MINUTES",
+  heading: "Ready to travel together?",
+  descriptionLines: [
+    "Book your entire bus in just a few simple steps.",
+    "Guaranteed equipment, upfront pricing.",
   ],
-  image: "/images/cta/cta-coach.svg",
+  button: {
+    label: "Book a Bus",
+    href: "#booking-form",
+  },
 };
 
 export const footerData = {
@@ -606,39 +590,29 @@ export const footerData = {
     { name: "YouTube", href: "https://youtube.com", key: "youtube" },
   ],
   quickLinks: [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "#about" },
-    { label: "Bus Mantra Fleets", href: "#fleets" },
-    { label: "Destinations", href: "#destinations" },
-    { label: "Services", href: "#services" },
+    { label: "About Us", href: "/about" },
     { label: "Blogs", href: "/blogs" },
-    { label: "Contact Us", href: "#booking-form" },
+    { label: "Terms and Conditions", href: "/terms-conditions" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Contact Us", href: "/contact" },
   ],
   fleets: [
-    { label: "Volvo Multi-Axle", href: "#fleets" },
-    { label: "BharatBenz Sleeper", href: "#fleets" },
-    { label: "Mini Buses (12–20 Seats)", href: "#fleets" },
-    { label: "Luxury Highway Coaches", href: "#fleets" },
-    { label: "Mercedes VIP Coach", href: "#fleets" },
-    { label: "Explore All Fleets →", href: "#fleets", isCta: true },
+    ...fleetTypesData.map((fleet) => ({
+      label: fleet.capacity ? `${fleet.name} (${fleet.capacity})` : fleet.name,
+      href: fleet.href || "#fleets",
+    })),
   ],
   services: [
-    { label: "Corporate Offsites", href: "#services" },
-    { label: "Wedding Transportation", href: "#services" },
-    { label: "Group & Family Tours", href: "#services" },
-    { label: "School & College Trips", href: "#services" },
-    { label: "Airport Pick-up & Transfer", href: "#services" },
-    { label: "Pilgrimage Circuits", href: "#services" },
-    { label: "All Services →", href: "#services", isCta: true },
+    ...servicesData.map((service) => ({
+      label: service.title,
+      href: "#services",
+    })),
   ],
   destinations: [
-    { label: "Jaipur (Pink City)", href: "#destinations" },
-    { label: "Agra & Taj Mahal", href: "#destinations" },
-    { label: "Delhi NCR Hub", href: "#destinations" },
-    { label: "Udaipur (Lake City)", href: "#destinations" },
-    { label: "Manali & Himachal", href: "#destinations" },
-    { label: "Goa Beach Circuits", href: "#destinations" },
-    { label: "All Destinations →", href: "#destinations", isCta: true },
+    ...popularDestinationsData.map((dest) => ({
+      label: dest.name,
+      href: dest.href || "#destinations",
+    })),
   ],
   partner: {
     eyebrow: "PARTNER WITH US",
@@ -655,7 +629,7 @@ export const footerData = {
     subtext: "Fast 2-minute registration",
   },
   copyright:
-    "© 2026 Bus Mantra Pvt Ltd. All rights reserved. Full Bus Charter Marketplace.",
+    "© 2026 Bus Mantra Pvt Ltd. All rights reserved.",
   developer: {
     prefix: "Developed by",
     name: "Kanak Drishti Infotech Pvt. Ltd.",

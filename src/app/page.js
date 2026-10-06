@@ -15,8 +15,8 @@ export default function Home() {
         <AboutSection />
         {/* <HolidayPackages /> */}
         <FleetTypes />
-        <PopularDestinations />
         <BusMantraServices />
+        <PopularDestinations />
         <CustomerTestimonials />
         <FinalCtaSection />
       </section>

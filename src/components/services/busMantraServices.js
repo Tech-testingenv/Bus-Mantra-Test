@@ -1,183 +1,182 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Sparkles, Compass } from "lucide-react";
+"use client";
+
+import { useState, useRef } from "react";
+import {
+  Briefcase,
+  Map,
+  Calendar,
+  GraduationCap,
+  Plane,
+  Hotel,
+} from "lucide-react";
 import { servicesSectionData, servicesData } from "@/data/data";
+
+const ICON_MAP = {
+  briefcase: Briefcase,
+  map: Map,
+  calendar: Calendar,
+  "graduation-cap": GraduationCap,
+  plane: Plane,
+  hotel: Hotel,
+};
 
 export default function BusMantraServices({
   sectionData = servicesSectionData,
   services = servicesData,
 }) {
+  const items = sectionData?.services || sectionData?.useCases || services || [];
+  const [activeSlide, setActiveSlide] = useState(0);
+  const scrollContainerRef = useRef(null);
+
+  const handleScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, clientWidth } = scrollContainerRef.current;
+    const cardWidth = clientWidth * 0.82 + 16;
+    const slideIndex = Math.round(scrollLeft / cardWidth);
+    setActiveSlide(Math.min(items.length - 1, Math.max(0, slideIndex)));
+  };
+
+  const scrollToSlide = (index) => {
+    if (!scrollContainerRef.current) return;
+    const cardWidth = scrollContainerRef.current.clientWidth * 0.82 + 16;
+    scrollContainerRef.current.scrollTo({
+      left: index * cardWidth,
+      behavior: "smooth",
+    });
+    setActiveSlide(index);
+  };
+
   return (
-    <section className="relative w-full py-14 sm:py-20 lg:py-28 my-6 sm:my-10 rounded-3xl lg:rounded-[36px] bg-[#fbf9f6] border border-orange-100/70 overflow-hidden">
-      {/* Subtle Travel-Themed Background Route Decoration */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-25">
-        <svg
-          className="absolute w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 800"
-          preserveAspectRatio="none"
-          fill="none"
-        >
-          {/* Subtle curved route lines connecting services */}
-          <path
-            d="M -30 240 C 220 150, 480 340, 720 200 C 960 60, 1140 240, 1240 180"
-            stroke="#ec6103"
-            strokeWidth="1.5"
-            strokeDasharray="6 8"
-            opacity="0.35"
-          />
-          <path
-            d="M -20 640 C 240 540, 520 700, 800 580 C 1040 480, 1160 600, 1240 540"
-            stroke="#94a3b8"
-            strokeWidth="1.2"
-            strokeDasharray="5 7"
-            opacity="0.3"
-          />
-
-          {/* Low-contrast decorative route dots & pin markers */}
-          <circle cx="190" cy="180" r="3" fill="#ec6103" opacity="0.5" />
-          <circle cx="480" cy="310" r="2.5" fill="#ec6103" opacity="0.4" />
-          <circle cx="720" cy="200" r="3.5" fill="#ec6103" opacity="0.5" />
-          <circle cx="980" cy="100" r="2.5" fill="#ec6103" opacity="0.4" />
-          <circle cx="810" cy="580" r="3" fill="#0c1621" opacity="0.25" />
-
-          <g transform="translate(716, 180) scale(0.6)" opacity="0.5">
-            <path
-              d="M12 2C7.58 2 4 5.58 4 10c0 5.25 8 13 8 13s8-7.75 8-13c0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
-              fill="#ec6103"
-            />
-          </g>
-        </svg>
-      </div>
-
-      <div className="relative max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-50 border border-brand-orange/20 text-brand-orange text-xs font-semibold tracking-wider uppercase mb-3.5 sm:mb-4 select-none">
-            <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
-            <span>{sectionData.eyebrow}</span>
-          </div>
-
-          {/* Heading */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-brand-dark leading-[1.16] tracking-tight mb-3.5 sm:mb-4">
-            {sectionData.heading}
+    <section id="services" className="relative w-full py-12 sm:py-16 lg:py-20 my-4 sm:my-6">
+      {/* ========================================================= */}
+      {/* SECTION HEADER: Two-column layout on desktop              */}
+      {/* Left: Eyebrow + Large Heading | Right: Supporting text     */}
+      {/* ========================================================= */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-12 items-end mb-10 sm:mb-14">
+        {/* Left Column */}
+        <div className="lg:col-span-7 flex flex-col items-start text-left">
+          <span className="text-[11px] sm:text-xs font-bold tracking-wider text-neutral-400 uppercase mb-2.5 sm:mb-3 select-none">
+            {sectionData?.eyebrow || "SERVICES"}
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-neutral-900 tracking-tight leading-[1.14]">
+            {sectionData?.heading || "Travel solutions for every group."}
           </h2>
-
-          {/* Description */}
-          <p className="text-base sm:text-lg text-brand-gray leading-relaxed">
-            {sectionData.description}
-          </p>
         </div>
 
-        {/* 3-Column Asymmetric Service Showcase Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {services.map((service) => {
-            const isFeatured = service.featured;
+        {/* Right Column */}
+        <div className="lg:col-span-5 flex flex-col justify-end text-left lg:pb-1">
+          <p className="text-sm sm:text-base text-neutral-500 font-normal leading-relaxed max-w-lg">
+            {sectionData?.description ||
+              "From business travel to airport transfers, we make group transportation simple, comfortable and reliable."}
+          </p>
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* DESKTOP & TABLET 3-COLUMN × 2-ROW GRID (>= 640px)         */}
+      {/* ========================================================= */}
+      <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        {items.map((item) => {
+          const IconComponent = ICON_MAP[item.icon] || Briefcase;
+
+          return (
+            <div
+              key={item.id || item.number}
+              className="group bg-white rounded-[20px] border border-neutral-200/80 hover:border-brand-orange/30 p-7 sm:p-8 flex flex-col justify-between shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-200"
+            >
+              <div>
+                {/* Number Badge with subtle orange accent dot */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="inline-flex items-center justify-center px-2.5 py-1 rounded-md bg-[#f0f2f5] text-neutral-700 text-xs font-bold tracking-wide select-none">
+                    {item.number}
+                  </div>
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-orange/40 group-hover:bg-brand-orange transition-colors" />
+                </div>
+
+                {/* Card Title */}
+                <h3 className="text-xl font-bold text-neutral-900 tracking-tight mb-2.5 group-hover:text-neutral-950 transition-colors">
+                  {item.title}
+                </h3>
+
+                {/* Card Description */}
+                <p className="text-sm text-neutral-500 leading-relaxed font-normal mb-8">
+                  {item.description}
+                </p>
+              </div>
+
+              {/* Bottom Label + Line Icon */}
+              <div className="mt-auto pt-4 flex items-center gap-2.5 text-xs sm:text-[13px] font-medium text-neutral-600 border-t border-neutral-100/80">
+                <IconComponent className="w-4 h-4 text-brand-orange shrink-0 stroke-[1.8]" />
+                <span>{item.bottomLabel}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ========================================================= */}
+      {/* MOBILE HORIZONTAL SWIPEABLE CAROUSEL (< 640px)            */}
+      {/* Shows approximately 1 full card and part of next card     */}
+      {/* ========================================================= */}
+      <div className="sm:hidden">
+        <div
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 -mx-4 px-4 scrollbar-none"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {items.map((item) => {
+            const IconComponent = ICON_MAP[item.icon] || Briefcase;
 
             return (
               <div
-                key={service.id}
-                className={`group relative bg-white rounded-3xl sm:rounded-[26px] border flex flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-2 ${isFeatured
-                    ? "border-brand-orange/50 shadow-[0_15px_35px_rgba(236,97,3,0.1)] ring-1 ring-brand-orange/25"
-                    : "border-neutral-200/70 hover:border-brand-orange/40 shadow-[0_10px_30px_rgba(12,22,33,0.04)] hover:shadow-[0_20px_40px_rgba(236,97,3,0.12)]"
-                  }`}
+                key={item.id || item.number}
+                className="w-[82vw] max-w-85 shrink-0 snap-center bg-white rounded-[20px] border border-neutral-200/80 p-6 sm:p-7 flex flex-col justify-between shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
               >
-                {/* Upper Area: Dedicated Vector Illustration */}
-                <div
-                  className={`relative w-full overflow-hidden flex items-center justify-center border-b border-neutral-100 transition-colors duration-300 p-5 sm:p-6 ${isFeatured
-                      ? "bg-[#fff9f5] group-hover:bg-[#fff4ed] min-h-60 sm:min-h-65 lg:min-h-70"
-                      : "bg-[#fbf9f6] group-hover:bg-[#fdf6ee] min-h-52.5 sm:min-h-57.5 lg:min-h-60"
-                    }`}
-                >
-                  {/* Category Pill Tag (Top-Left) */}
-                  <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-brand-orange/20 text-brand-orange text-xs font-semibold shadow-xs">
-                    <Compass className="w-3.5 h-3.5 text-brand-orange stroke-[2.2]" />
-                    <span>{service.category}</span>
-                  </div>
-
-                  {/* Featured Badge (Top-Right) */}
-                  {service.badge && (
-                    <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-orange text-white text-[11px] font-bold tracking-wider uppercase shadow-xs">
-                      <Sparkles className="w-3 h-3 stroke-[2.5]" />
-                      <span>{service.badge}</span>
+                <div>
+                  {/* Number Badge */}
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="inline-flex items-center justify-center px-2.5 py-1 rounded-md bg-[#f0f2f5] text-neutral-700 text-xs font-bold tracking-wide select-none">
+                      {item.number}
                     </div>
-                  )}
-
-                  {/* Vector Illustration */}
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Image
-                      src={service.image}
-                      alt={`${service.title} - Bus Mantra Transportation Services`}
-                      width={520}
-                      height={330}
-                      className={`w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.04] group-hover:translate-x-1.5 select-none pointer-events-none drop-shadow-sm ${isFeatured
-                          ? "max-h-47.5 sm:max-h-52.5 lg:max-h-56.25"
-                          : "max-h-41.25 sm:max-h-45 lg:max-h-47.5"
-                        }`}
-                      priority={isFeatured}
-                    />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-orange/60" />
                   </div>
+
+                  {/* Card Title */}
+                  <h3 className="text-lg font-bold text-neutral-900 tracking-tight mb-2">
+                    {item.title}
+                  </h3>
+
+                  {/* Card Description */}
+                  <p className="text-xs text-neutral-500 leading-relaxed font-normal mb-6">
+                    {item.description}
+                  </p>
                 </div>
 
-                {/* Card Lower Body: Service Information & CTA */}
-                <div className="p-6 sm:p-7 flex flex-col flex-1 justify-between bg-white">
-                  <div>
-                    {/* Service Title */}
-                    <h3 className="text-xl sm:text-2xl font-bold text-brand-dark mb-2.5 tracking-tight group-hover:text-brand-orange transition-colors">
-                      {service.title}
-                    </h3>
-
-                    {/* Service Description */}
-                    <p className="text-sm text-brand-gray leading-relaxed mb-6">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  {/* Explore Service CTA Button */}
-                  <Link
-                    href={service.href || "#booking-form"}
-                    className={`w-full py-3 px-5 rounded-xl text-center text-sm font-semibold transition-all duration-200 flex items-center justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange shadow-xs group/btn ${isFeatured
-                        ? "bg-brand-orange text-white hover:bg-brand-orange-hover hover:shadow-md"
-                        : "bg-[#f1f4f8] text-brand-dark hover:bg-brand-orange hover:text-white hover:shadow-md"
-                      }`}
-                  >
-                    <span>{service.cta}</span>
-                    <div
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${isFeatured
-                          ? "bg-white/20 group-hover/btn:bg-white/30"
-                          : "bg-white/70 group-hover/btn:bg-white/20"
-                        }`}
-                    >
-                      <ArrowRight
-                        className={`w-4 h-4 stroke-[2.5] transition-transform duration-200 group-hover/btn:translate-x-1 ${isFeatured
-                            ? "text-white"
-                            : "text-brand-dark group-hover/btn:text-white"
-                          }`}
-                      />
-                    </div>
-                  </Link>
+                {/* Bottom Label + Line Icon */}
+                <div className="mt-auto pt-3.5 flex items-center gap-2 text-xs font-medium text-neutral-600 border-t border-neutral-100/80">
+                  <IconComponent className="w-3.5 h-3.5 text-brand-orange shrink-0 stroke-[1.8]" />
+                  <span>{item.bottomLabel}</span>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Section Bottom Centered CTA */}
-        {sectionData.bottomCta && (
-          <div className="mt-14 sm:mt-18 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 text-center">
-            <span className="text-sm sm:text-base font-medium text-brand-gray">
-              {sectionData.bottomCta.prompt}
-            </span>
-            <Link
-              href={sectionData.bottomCta.href || "#booking-form"}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 group/cta"
-            >
-              <span>{sectionData.bottomCta.buttonText}</span>
-              <ArrowRight className="w-4 h-4 stroke-[2.5] transition-transform duration-200 group-hover/cta:translate-x-1" />
-            </Link>
-          </div>
-        )}
+        {/* Subtle Pagination Indicators (6 dots) */}
+        <div className="flex items-center justify-center gap-1.5 mt-5">
+          {items.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => scrollToSlide(idx)}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                activeSlide === idx ? "w-6 bg-brand-orange" : "w-1.5 bg-neutral-300"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
