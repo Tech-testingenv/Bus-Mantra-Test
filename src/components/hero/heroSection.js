@@ -173,9 +173,9 @@ export default function HeroSection({ data = heroData }) {
           <Link
             href={data.secondaryButton?.href || "#fleets"}
             onClick={scrollToFleet}
-            className="text-neutral-800 hover:text-brand-orange font-semibold text-base inline-flex items-center gap-1.5 transition-colors py-1.5"
+            className="text-brand-orange border border-brand-orange/50 w-full py-3.5 rounded-xl font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group"
           >
-            <span>{data.secondaryButton?.label || "Explore Fleet"}</span>
+            <span className="w-full text-center">{data.secondaryButton?.label || "Explore Fleet"}</span>
           </Link>
         </div>
 
