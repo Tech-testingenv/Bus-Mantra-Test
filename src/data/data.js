@@ -9,7 +9,7 @@ export const heroData = {
   },
   secondaryButton: {
     label: "Explore Fleet",
-    href: "#fleets",
+    href: "/fleets",
   },
   stats: [
     {
@@ -229,39 +229,108 @@ export const aboutData = {
 export const fleetTypesData = [
   {
     id: "mini-coach",
+    slug: "mini-coach",
     name: "Mini Coach",
-    capacity: "15–25 Seats",
+    capacity: "15–19 Seats",
+    minSeats: 1,
+    maxSeats: 19,
+    ratePerKm: 28,
     badge: "City & Regional",
     isPopular: false,
     image: "/fleet/mini-coach.jpg",
+    gallery: [
+      "/fleet/mini-coach.jpg",
+      "/fleet/fleet.png",
+      "/fleet/coach.png",
+    ],
     description:
-      "Agile maneuverability, ideal for medium corporate teams, wedding parties, and airport pickups.",
+      "Agile maneuverability, ideal for medium corporate teams, wedding parties, family trips, and airport pickups.",
+    amenities: [
+      "AC & Climate Control",
+      "Push-back Reclining Seats",
+      "Dedicated Luggage Space",
+      "Music System & PA Mic",
+      "USB Charging at Every Seat",
+      "First Aid Kit & Fire Safety",
+    ],
+    features: {
+      luggage: "15–20 Standard Bags",
+      entertainment: "Stereo Audio & Mic",
+      climate: "Dual Powerful AC Vents",
+      seats: "Plush Recliners (2+2 Layout)",
+    },
     ctaText: "View Details",
-    href: "#booking-form",
+    href: "/fleets/mini-coach",
   },
   {
     id: "premium-coach",
+    slug: "premium-coach",
     name: "Premium Coach",
-    capacity: "25–45 Seats",
+    capacity: "20–45 Seats",
+    minSeats: 20,
+    maxSeats: 45,
+    ratePerKm: 42,
     badge: "Most Popular",
     isPopular: true,
     image: "/fleet/premium-coach.jpg",
+    gallery: [
+      "/fleet/premium-coach.jpg",
+      "/fleet/coach.png",
+      "/fleet/fleet.png",
+    ],
     description:
-      "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for multi-hour transit.",
+      "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for smooth multi-hour intercity transit.",
+    amenities: [
+      "Ergonomic Reclining Seats",
+      "Fast Onboard Wi-Fi",
+      "USB Charging at Every Seat",
+      "Individual AC Vents",
+      "Spacious Underfloor Luggage Bay",
+      "Chilled Mineral Water Dispenser",
+    ],
+    features: {
+      luggage: "40–45 Large Suitcases",
+      entertainment: "HD Screen & Sound System",
+      climate: "Individual Overhead AC",
+      seats: "Executive Recliner (2+2 Layout)",
+    },
     ctaText: "View Details",
-    href: "#booking-form",
+    href: "/fleets/premium-coach",
   },
   {
     id: "luxury-coach",
+    slug: "luxury-coach",
     name: "Luxury Coach",
-    capacity: "45–60 Seats",
+    capacity: "46–60 Seats",
+    minSeats: 46,
+    maxSeats: 60,
+    ratePerKm: 58,
     badge: "Long Distance",
     isPopular: false,
     image: "/fleet/luxury-coach.jpg",
+    gallery: [
+      "/fleet/luxury-coach.jpg",
+      "/fleet/fleet.png",
+      "/fleet/coach.png",
+    ],
     description:
-      "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays.",
+      "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays for long tours.",
+    amenities: [
+      "Executive Luxury Plush Seats",
+      "Expansive Undercarriage Bays",
+      "Dual LED Entertainment Screens",
+      "Air Suspension Ride for Smooth Transit",
+      "Onboard Clean Washroom",
+      "Surround Audio System & Wireless Mic",
+    ],
+    features: {
+      luggage: "60+ Large Suitcases",
+      entertainment: "Dual Full-HD Displays",
+      climate: "Multi-Zone Climate Control",
+      seats: "Ultra Luxury Ergonomic (2+2)",
+    },
     ctaText: "View Details",
-    href: "#booking-form",
+    href: "/fleets/luxury-coach",
   },
 ];
 
@@ -270,6 +339,34 @@ export const fleetSectionData = {
   heading: "Choose your bus.",
   description: "Comfortable coaches for every group size.",
   fleets: fleetTypesData,
+};
+
+export const fleetPageHeroData = {
+  eyebrow: "BUS MANTRA FLEET",
+  title: "One fleet. Every kind of journey.",
+  titleLines: ["One fleet.", "Every kind of journey."],
+  description:
+    "From compact coaches to premium luxury buses, our fleet is built to make group travel comfortable, reliable and easy — whatever the size of your journey.",
+  image: "/fleet/fleet.png",
+  imageAlt: "Bus Mantra luxury coach fleet",
+};
+
+export const fleetPageSectionData = {
+  heading: "Choose your fleet.",
+  description: "Explore our coaches and find the right fit for your group.",
+  fleets: fleetTypesData,
+};
+
+export const ctaData = {
+  eyebrow: "READY TO TRAVEL TOGETHER?",
+  heading: "Your group. Your bus. Your journey.",
+  headingLines: ["Your group. Your bus.", "Your journey."],
+  description:
+    "Tell us where you're going and we'll help you find the right coach for your group.",
+  button: {
+    label: "Book a Bus",
+    href: "/fleets",
+  },
 };
 
 export const holidayPackagesData = [
@@ -390,54 +487,66 @@ export const servicesData = [
     number: "01",
     title: "Corporate",
     description:
-      "Reliable transportation for teams, employees, client meetings, conferences and corporate events.",
+      "Reliable group transportation for meetings, conferences, team travel, employee movement and corporate events.",
     bottomLabel: "Professional group transport",
     icon: "briefcase",
+    ctaLabel: "Explore Service",
+    href: "/fleets",
   },
   {
     id: "group-tours",
     number: "02",
     title: "Group Tours",
     description:
-      "Comfortable coach transportation for sightseeing, weekend getaways, multi-city tours and long-distance group journeys.",
+      "Comfortable coaches for sightseeing, multi-city journeys, weekend trips and organised group travel.",
     bottomLabel: "Travel together with ease",
     icon: "map",
+    ctaLabel: "Explore Service",
+    href: "/fleets",
   },
   {
     id: "events",
     number: "03",
     title: "Events",
     description:
-      "Seamless transportation for weddings, celebrations, conferences, exhibitions and large-scale events.",
+      "Seamless transportation for weddings, celebrations, conferences, exhibitions and large gatherings.",
     bottomLabel: "Coordinated event transport",
     icon: "calendar",
+    ctaLabel: "Explore Service",
+    href: "/fleets",
   },
   {
     id: "school-trips",
     number: "04",
     title: "School Trips",
     description:
-      "Safe and comfortable bus transportation for school excursions, educational trips, college tours and student groups.",
+      "Safe and organised group transportation for school excursions, educational trips and student travel.",
     bottomLabel: "Comfortable group travel",
     icon: "graduation-cap",
+    ctaLabel: "Explore Service",
+    href: "/fleets",
   },
   {
     id: "airport-transfer",
     number: "05",
     title: "Airport Pick Up & Transfer",
     description:
-      "Reliable airport transportation for groups, with convenient pickup and drop-off arrangements.",
+      "Convenient group airport transfers with comfortable vehicles and coordinated pickup and drop-off.",
     bottomLabel: "Easy airport transfers",
     icon: "plane",
+    ctaLabel: "Explore Service",
+    href: "/fleets",
   },
   {
     id: "hotel-transfer",
     number: "06",
     title: "Hotel Pick Up & Transfer",
     description:
-      "Convenient hotel transfers for groups, guests, corporate teams and tour passengers.",
+      "Reliable hotel transfers for groups travelling together, with convenient pickup and destination coordination.",
     bottomLabel: "Door-to-door convenience",
     icon: "hotel",
+    ctaLabel: "Explore Service",
+    href: "/fleets",
   },
 ];
 
@@ -450,6 +559,50 @@ export const servicesSectionData = {
     "From business travel to airport transfers, we make group transportation simple, comfortable and reliable.",
   services: servicesData,
   useCases: servicesData,
+};
+
+export const servicesPageHeroData = {
+  eyebrow: "OUR SERVICES",
+  title: "Group travel, made simple.",
+  titleLines: ["Group travel,", "made simple."],
+  description:
+    "From corporate travel and school trips to airport transfers and group tours, Bus Mantra provides comfortable, reliable transportation for every kind of group journey.",
+  image: "/fleet/fleet.png",
+  imageAlt: "Bus Mantra comfortable coach fleet for group travel",
+};
+
+export const servicesPageSectionData = {
+  eyebrow: "OUR EXPERTISE",
+  heading: "Travel built around your needs.",
+  description:
+    "Whatever brings your group together, we provide the right vehicle and support to get everyone there comfortably.",
+  services: servicesData,
+};
+
+export const featuredServiceData = {
+  eyebrow: "GROUP TRAVEL ADVANTAGE",
+  heading: "Group Travel, Without the Hassle.",
+  description:
+    "Whether you're moving a corporate team, planning a school trip or organising transportation for a major event, Bus Mantra helps you manage the journey with one dedicated vehicle and one reliable service.",
+  image: "/about-bus.png",
+  imageAlt: "Bus Mantra dedicated group transportation coach",
+  points: [
+    {
+      title: "Dedicated vehicle",
+      description:
+        "One private coach reserved exclusively for your group, running on your schedule with private luggage space.",
+    },
+    {
+      title: "Professional service",
+      description:
+        "Experienced commercial chauffeurs, real-time dispatch monitoring, and 24/7 dedicated trip support.",
+    },
+    {
+      title: "Flexible group travel",
+      description:
+        "Custom pickup points, multi-city route options, and seamless coordination from departure to return.",
+    },
+  ],
 };
 
 export const testimonialsData = [
@@ -555,18 +708,6 @@ export const testimonialsSectionData = {
   },
 };
 
-export const ctaData = {
-  eyebrow: "RESERVE IN MINUTES",
-  heading: "Ready to travel together?",
-  descriptionLines: [
-    "Book your entire bus in just a few simple steps.",
-    "Guaranteed equipment, upfront pricing.",
-  ],
-  button: {
-    label: "Book a Bus",
-    href: "#booking-form",
-  },
-};
 
 export const footerData = {
   brand: {
@@ -599,19 +740,19 @@ export const footerData = {
   fleets: [
     ...fleetTypesData.map((fleet) => ({
       label: fleet.capacity ? `${fleet.name} (${fleet.capacity})` : fleet.name,
-      href: fleet.href || "#fleets",
+      href: "/fleets",
     })),
   ],
   services: [
     ...servicesData.map((service) => ({
       label: service.title,
-      href: "#services",
+      href: "/services",
     })),
   ],
   destinations: [
     ...popularDestinationsData.map((dest) => ({
       label: dest.name,
-      href: dest.href || "#destinations",
+      href: "/destinations",
     })),
   ],
   partner: {

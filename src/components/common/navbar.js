@@ -75,68 +75,33 @@ export default function Navbar() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  // Smooth scroll handler for sections
-  const scrollToTarget = (e, item) => {
-    if (item.href === "/") {
-      if (pathname === "/") {
-        if (e) e.preventDefault();
-        closeMenu();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        return;
-      }
-      closeMenu();
-      return;
-    }
-
-    if (pathname !== "/") {
-      closeMenu();
-      return;
-    }
-
-    if (e) e.preventDefault();
+  // Navigation link click handler
+  const handleNavClick = (e, item) => {
     closeMenu();
 
-    const targetKey = (item.targetId || item.href).replace("#", "").replace(/^\//, "");
-    let targetEl = document.getElementById(targetKey);
+    // If clicking Home while already on Home, scroll smoothly to the top
+    if (item.href === "/" && pathname === "/") {
+      if (e) e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
 
-    // Dynamic section finder if exact ID not on section
-    if (!targetEl) {
-      const headings = Array.from(document.querySelectorAll("h2, h3, span"));
-      if (targetKey.includes("fleet")) {
-        const match = headings.find((h) =>
-          h.textContent.toLowerCase().includes("fleet")
-        );
-        targetEl = match?.closest("section") || match;
-      } else if (targetKey.includes("service")) {
-        const match = headings.find((h) =>
-          h.textContent.toLowerCase().includes("services")
-        );
-        targetEl = match?.closest("section") || match;
-      } else if (targetKey.includes("about")) {
-        const match = headings.find((h) =>
-          h.textContent.toLowerCase().includes("about bus mantra") ||
-          h.textContent.toLowerCase().includes("smart group travel")
-        );
-        targetEl = match?.closest("section") || match;
-      } else if (targetKey.includes("destination")) {
-        const match = headings.find((h) =>
-          h.textContent.toLowerCase().includes("destination") ||
-          h.textContent.toLowerCase().includes("where will your group go")
-        );
-        targetEl = match?.closest("section") || match;
+    // If it's an anchor/hash link (e.g. #booking-form) on the current page
+    if (item.href?.startsWith("#")) {
+      if (e) e.preventDefault();
+      const targetId = item.href.replace("#", "");
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        const navOffset = 76;
+        const targetPos =
+          targetEl.getBoundingClientRect().top + window.scrollY - navOffset;
+        window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
       }
+      return;
     }
 
-    if (targetEl) {
-      const navOffset = 76;
-      const targetPos =
-        targetEl.getBoundingClientRect().top + window.scrollY - navOffset;
-      window.scrollTo({
-        top: Math.max(0, targetPos),
-        behavior: "smooth",
-      });
-      window.history.pushState(null, "", item.href);
-    }
+    // For all standard routes (/fleets, /about, /services, /destinations),
+    // let Next.js <Link> handle SPA client-side routing naturally.
   };
 
   // Scroll to booking form for "Book a Bus" CTA
@@ -221,7 +186,7 @@ export default function Navbar() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => scrollToTarget(e, item)}
+                  onClick={(e) => handleNavClick(e, item)}
                   aria-current={active ? "page" : undefined}
                   className={`relative text-[15px] py-1.5 px-0.5 select-none transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-xs ${active
                     ? "text-brand-orange font-semibold"
@@ -347,7 +312,7 @@ export default function Navbar() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => scrollToTarget(e, item)}
+                  onClick={(e) => handleNavClick(e, item)}
                   aria-current={active ? "page" : undefined}
                   className={`py-3 px-3.5 rounded-xl text-[17px] transition-all flex items-center justify-between group ${active
                     ? "bg-orange-50 text-brand-orange font-bold shadow-2xs"
@@ -405,7 +370,7 @@ export default function Navbar() {
             <div className="w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center shadow-xs">
               <User className="w-3 h-3 stroke-[2.5]" />
             </div>
-            <span>Login / My Account</span>
+            <span>Sign In</span>
           </Link>
         </div>
       </aside>

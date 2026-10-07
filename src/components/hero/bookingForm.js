@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import {
   User,
   Phone,
@@ -17,6 +18,8 @@ import {
   X,
 } from "lucide-react";
 import { heroData } from "@/data/data";
+import { getBusForPassengers } from "@/services/busSelectionService";
+import { saveBookingSession, encodeBookingToQuery } from "@/services/bookingState";
 
 const FALLBACK_DESTINATION_OPTIONS = [
   "Jaipur",
@@ -150,6 +153,9 @@ export default function BookingForm({ data = heroData?.form }) {
 
   const [formValues, setFormValues] = useState(defaultValues);
 
+  const router = useRouter();
+  const [capacityNotice, setCapacityNotice] = useState(null);
+  const [passengerError, setPassengerError] = useState("");
   const [isDestOpen, setIsDestOpen] = useState(false);
   const [destSearch, setDestSearch] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -326,18 +332,51 @@ export default function BookingForm({ data = heroData?.form }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    setPassengerError("");
+    setCapacityNotice(null);
 
-    const fleetHeading = Array.from(document.querySelectorAll("h2, h3")).find(
-      (h) => h.textContent.toLowerCase().includes("fleet")
-    );
-    if (fleetHeading) {
-      const section = fleetHeading.closest("section") || fleetHeading;
-      const targetPos =
-        section.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top: targetPos, behavior: "smooth" });
+    const passengerCount = parseInt(formValues.passengers, 10);
+    if (!formValues.passengers || isNaN(passengerCount) || passengerCount <= 0) {
+      setPassengerError("Please enter number of passengers (e.g. 15, 25, 45).");
+      const input = document.getElementById("passengers");
+      if (input) input.focus();
+      return;
     }
+
+    // Bus selection logic: SELECT THE SMALLEST AVAILABLE BUS CAPACITY THAT CAN ACCOMMODATE THE PASSENGER COUNT
+    const { bus, error, exceedsCapacity } = getBusForPassengers(passengerCount);
+
+    if (exceedsCapacity || !bus) {
+      setCapacityNotice(
+        error ||
+          "Your group size requires a larger vehicle. Please contact us for a custom arrangement."
+      );
+      return;
+    }
+
+    setSubmitted(true);
+
+    // Save full booking session state
+    const bookingPayload = {
+      pickupPoint: formValues.pickupPoint || "Delhi NCR",
+      destination: formValues.destination ? [formValues.destination] : ["Jaipur"],
+      passengers: String(passengerCount),
+      departureDateTime: formValues.departureDateTime,
+      returnDateTime: formValues.returnDateTime,
+      fullName: formValues.fullName,
+      mobile: formValues.mobile,
+      email: formValues.email,
+      selectedBusId: bus.id,
+      selectedBusName: bus.name,
+      hasDeterminedPassengers: true,
+    };
+
+    saveBookingSession(bookingPayload);
+    const queryString = encodeBookingToQuery(bookingPayload);
+
+    // Navigate to the corresponding Bus Detail page
+    const targetUrl = `/fleets/${bus.slug || bus.id}${queryString ? `?${queryString}` : ""}`;
+    router.push(targetUrl);
   };
 
   const filteredDestinations = destinationOptions.filter((opt) =>
@@ -721,7 +760,7 @@ export default function BookingForm({ data = heroData?.form }) {
           </div>
 
           {/* No. of Passengers */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className={`bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 ${passengerError ? "border-red-500 focus-within:ring-red-200" : "border-transparent focus-within:border-brand-orange focus-within:ring-brand-orange/30"} border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center`}>
             <label
               htmlFor="passengers"
               className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
@@ -735,13 +774,20 @@ export default function BookingForm({ data = heroData?.form }) {
                 name="passengers"
                 type="number"
                 min="1"
-                max="60"
                 value={formValues.passengers}
-                onChange={(e) => handleChange("passengers", e.target.value)}
+                onChange={(e) => {
+                  handleChange("passengers", e.target.value);
+                  if (passengerError) setPassengerError("");
+                }}
                 placeholder={placeholders.passengers || "20"}
                 className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
               />
             </div>
+            {passengerError && (
+              <p className="text-[10px] text-red-500 font-semibold mt-1">
+                {passengerError}
+              </p>
+            )}
           </div>
         </div>
 
@@ -1041,6 +1087,42 @@ export default function BookingForm({ data = heroData?.form }) {
           </div>
         </div>
       </form>
+
+      {/* Capacity Overflow Notice Modal */}
+      {capacityNotice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-neutral-100 text-center animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-13 h-13 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center mx-auto mb-3.5 border border-brand-orange/30">
+              <Users className="w-6 h-6 stroke-[2.2]" />
+            </div>
+            <span className="text-[10px] font-bold tracking-wider text-brand-orange uppercase block mb-1">
+              LARGE GROUP INQUIRY
+            </span>
+            <h4 className="text-xl font-black text-neutral-900 mb-2">
+              Custom Fleet Required
+            </h4>
+            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-6">
+              {capacityNotice}
+            </p>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setCapacityNotice(null)}
+                className="flex-1 py-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs sm:text-sm font-bold transition-all cursor-pointer"
+              >
+                Modify Group
+              </button>
+              <a
+                href="tel:+919876543210"
+                className="flex-1 py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+              >
+                <Phone className="w-4 h-4" />
+                <span>Contact Us</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

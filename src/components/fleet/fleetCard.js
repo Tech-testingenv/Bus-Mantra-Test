@@ -19,6 +19,8 @@ export default function FleetCard({
   description,
   ctaText = "View Details",
   href = "#booking-form",
+  amenities,
+  showAmenities = false,
   onSelect,
   className = "",
 }) {
@@ -30,8 +32,9 @@ export default function FleetCard({
     isPopular: bus?.isPopular ?? isPopular ?? false,
     image: bus?.image || image || "/fleet/mini-coach.jpg",
     description: bus?.description || description || "",
+    amenities: bus?.amenities || amenities || [],
     ctaText: bus?.ctaText || ctaText,
-    href: bus?.href || href,
+    href: bus?.href || (bus?.id ? `/fleets/${bus.id}` : href),
   };
 
   const handleClick = (e) => {
@@ -107,7 +110,7 @@ export default function FleetCard({
           className="inline-flex items-center gap-1.5 text-sm font-bold text-neutral-900 group-hover:text-brand-orange transition-colors duration-200 select-none cursor-pointer"
         >
           <span>{item.ctaText}</span>
-          <ArrowRight className="w-4 h-4 stroke-[2.4] transition-transform duration-200 group-hover:translate-x-1" />
+          <ArrowRight className="w-4 h-4 stroke-[2.4] text-brand-orange transition-transform duration-200 group-hover:translate-x-1" />
         </Link>
       </div>
     </div>

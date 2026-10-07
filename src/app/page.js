@@ -18,7 +18,6 @@ export default function Home() {
         <BusMantraServices />
         <PopularDestinations />
         <CustomerTestimonials />
-        <FinalCtaSection />
       </section>
     </>
   );

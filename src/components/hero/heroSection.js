@@ -22,6 +22,10 @@ export default function HeroSection({ data = heroData }) {
   };
 
   const scrollToFleet = (e) => {
+    const href = data.secondaryButton?.href || "#fleets";
+    if (href.startsWith("/")) {
+      return;
+    }
     e.preventDefault();
     const headings = Array.from(document.querySelectorAll("h2, h3"));
     const match = headings.find((h) =>

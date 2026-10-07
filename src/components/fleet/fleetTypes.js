@@ -7,6 +7,8 @@ import { fleetSectionData, fleetTypesData } from "@/data/data";
 export default function FleetTypes({
   sectionData = fleetSectionData,
   fleets = fleetSectionData?.fleets || fleetTypesData,
+  className = "",
+  id = "fleets",
 }) {
   const fleetList = sectionData?.fleets || fleets || [];
   const [activeSlide, setActiveSlide] = useState(0);
@@ -31,11 +33,16 @@ export default function FleetTypes({
   };
 
   return (
-    <section id="fleets" className="relative w-full py-12 sm:py-16 lg:py-20 my-4 sm:my-6">
+    <section id={id} className={`relative w-full ${className || "py-12 sm:py-16 lg:py-20 my-4 sm:my-6"}`}>
       {/* ========================================================= */}
       {/* SECTION HEADER: Left-aligned clean typography             */}
       {/* ========================================================= */}
-      <div className="text-left mb-8 sm:mb-12">
+      <div className="text-left mb-6 sm:mb-8 lg:mb-10">
+        {sectionData?.eyebrow && (
+          <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-3.5 select-none">
+            {sectionData.eyebrow}
+          </div>
+        )}
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 tracking-tight leading-[1.12]">
           {sectionData?.heading || "Choose your bus."}
         </h2>
