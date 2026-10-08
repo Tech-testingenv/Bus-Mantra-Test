@@ -240,7 +240,7 @@ export const aboutData = {
   ========================================================= */
 
   experienceImage: {
-    src: "/images/about/coach-road.png",
+    src: "/images/about/about-bus.png",
     alt: "Luxury coach travelling through a scenic mountain route in India",
     width: 1920,
     height: 1080,
