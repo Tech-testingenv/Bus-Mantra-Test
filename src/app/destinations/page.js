@@ -1,4 +1,7 @@
+import PageHero from "@/components/common/pageHero";
+import BookingForm from "@/components/hero/bookingForm";
 import PopularDestinations from "@/components/destinations/popularDestinations";
+import { destinationsPageHeroData } from "@/data/data";
 
 export const metadata = {
   title: "Group Travel Destinations - Bus Mantra",
@@ -8,8 +11,29 @@ export const metadata = {
 
 export default function DestinationsPage() {
   return (
-    <div className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-20">
-      <PopularDestinations />
+    <div className="relative mx-auto w-full max-w-360 px-4 pb-12 pt-20 sm:px-6 sm:pb-16 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-24">
+      {/* =========================================================
+          PAGE HERO
+      ========================================================= */}
+
+      <PageHero data={destinationsPageHeroData} />
+
+      {/* =========================================================
+          BOOKING FORM
+          SAME FORM USED ON FLEET PAGE
+      ========================================================= */}
+
+      <div className="mt-8 w-full sm:mt-10 lg:mt-12">
+        <BookingForm />
+      </div>
+
+      {/* =========================================================
+          POPULAR DESTINATIONS
+      ========================================================= */}
+
+      <div className="mt-10 sm:mt-12 lg:mt-14">
+        <PopularDestinations />
+      </div>
     </div>
   );
 }

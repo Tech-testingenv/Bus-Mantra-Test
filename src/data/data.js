@@ -188,42 +188,268 @@ export const heroData = {
 };
 
 export const aboutData = {
+  /* =========================================================
+     ABOUT HERO
+  ========================================================= */
+
   eyebrow: "ABOUT BUS MANTRA",
+
   heading: {
     line1: "Your Journey.",
     line2: "Our Responsibility.",
   },
+
+  intro:
+    "Bus Mantra makes group travel simple, comfortable and reliable. From weddings and school trips to corporate events and family tours, we help you book the right bus for your journey without the hassle of coordinating multiple vehicles.",
+
   paragraphs: [
-    "Bus Mantra makes group travel simple, comfortable and reliable. From weddings and school trips to corporate events and family tours, we help you book the right bus for your journey — without the hassle of coordinating multiple vehicles.",
+    "Bus Mantra makes group travel simple, comfortable and reliable. From weddings and school trips to corporate events and family tours, we help you book the right bus for your journey without the hassle of coordinating multiple vehicles.",
+
     "Whether you are planning a short local trip or a multi-day journey, our goal is simple: give your entire group one comfortable ride, one reliable coach and one journey to remember.",
   ],
+
   cta: {
     label: "Know More About Us",
     href: "#booking-form",
   },
+
+  /* =========================================================
+     HERO IMAGE
+  ========================================================= */
+
   image: {
-    src: "/about-bus.png",
-    alt: "BUS MANTRA luxury coach travelling on a scenic mountain road",
+    src: "/images/about/hero-bus.png",
+    alt: "Luxury Bus Mantra coach travelling through a scenic Indian mountain route",
     width: 1920,
-    height: 1280,
+    height: 1080,
   },
+
+  /* =========================================================
+     STORY IMAGE
+  ========================================================= */
+
+  storyImage: {
+    src: "/images/about/group-travel.png",
+    alt: "Indian group travelling together inside a luxury coach",
+    width: 1920,
+    height: 1080,
+  },
+
+  /* =========================================================
+     EXPERIENCE IMAGE
+  ========================================================= */
+
+  experienceImage: {
+    src: "/images/about/coach-road.png",
+    alt: "Luxury coach travelling through a scenic mountain route in India",
+    width: 1920,
+    height: 1080,
+  },
+
+  /* =========================================================
+     QUICK STATS
+  ========================================================= */
+
   highlights: [
     {
       value: "500+",
       label: "Buses Available",
       icon: "bus",
     },
+
     {
       value: "25+",
       label: "Cities Covered",
       icon: "mapPin",
     },
+
     {
       value: "10K+",
       label: "Group Journeys",
       icon: "users",
     },
   ],
+
+  /* =========================================================
+     OUR STORY
+  ========================================================= */
+
+  story: {
+    eyebrow: "WHY BUS MANTRA",
+
+    heading: "Built around the way groups actually travel.",
+
+    description:
+      "Group travel should feel coordinated, not complicated. Bus Mantra brings the vehicle, comfort and planning experience together so your group can focus on the journey instead of the logistics.",
+
+    points: [
+      "Reliable group travel",
+      "Comfortable coaches",
+      "Simple planning",
+      "One shared journey",
+    ],
+  },
+
+  /* =========================================================
+     OUR APPROACH / VALUES
+  ========================================================= */
+
+  values: [
+    {
+      number: "01",
+
+      title: "Reliable Travel",
+
+      description:
+        "We focus on dependable travel experiences that help groups move together with confidence.",
+    },
+
+    {
+      number: "02",
+
+      title: "Right Vehicle",
+
+      description:
+        "From smaller groups to larger gatherings, we help you find a coach that fits your journey.",
+    },
+
+    {
+      number: "03",
+
+      title: "Group Comfort",
+
+      description:
+        "One vehicle means one shared journey, making group travel easier and more comfortable.",
+    },
+
+    {
+      number: "04",
+
+      title: "Simple Planning",
+
+      description:
+        "We aim to remove the hassle of coordinating multiple vehicles, schedules and arrangements.",
+    },
+  ],
+
+  /* =========================================================
+     BUS MANTRA EXPERIENCE
+  ========================================================= */
+
+  experience: {
+    eyebrow: "THE BUS MANTRA DIFFERENCE",
+
+    heading: "More than getting from one place to another.",
+
+    paragraphs: [
+      "Every group journey has its own purpose. It could be a celebration, a business event, a school trip or simply time spent together with family and friends.",
+
+      "Our approach is built around making that journey easier from the moment you start planning until the moment you reach your destination.",
+    ],
+
+    features: [
+      {
+        label: "Dependable",
+        icon: "shield",
+      },
+
+      {
+        label: "Comfortable",
+        icon: "bus",
+      },
+
+      {
+        label: "Flexible",
+        icon: "route",
+      },
+    ],
+  },
+
+  /* =========================================================
+     JOURNEYS / OCCASIONS
+  ========================================================= */
+
+  occasions: {
+    eyebrow: "MADE FOR EVERY JOURNEY",
+
+    heading: "Different journeys. One trusted ride.",
+
+    items: [
+      {
+        number: "01",
+
+        title: "Weddings & Celebrations",
+
+        description:
+          "Keep your guests together and make transportation one less thing to coordinate.",
+
+        image: "/images/about/wedding-travel.png",
+
+        alt:
+          "Indian wedding guests travelling together inside a decorated luxury coach",
+      },
+
+      {
+        number: "02",
+
+        title: "Corporate Travel",
+
+        description:
+          "Move teams, clients and colleagues together for meetings, events and business travel.",
+
+        image: "/images/about/corporate-travel.png",
+
+        alt:
+          "Indian corporate professionals travelling together inside a premium coach",
+      },
+
+      {
+        number: "03",
+
+        title: "School & College Trips",
+
+        description:
+          "Organized transportation for educational trips, excursions and campus events.",
+
+        image: "/images/about/school-trip.png",
+
+        alt:
+          "Indian students travelling together inside a luxury coach",
+      },
+
+      {
+        number: "04",
+
+        title: "Family Tours",
+
+        description:
+          "Bring everyone together for comfortable local and multi-day family journeys.",
+
+        image: "/images/about/family-travel.png",
+
+        alt:
+          "Indian family travelling together inside a comfortable luxury coach",
+      },
+    ],
+  },
+
+  /* =========================================================
+     CLOSING CTA
+  ========================================================= */
+
+  closing: {
+    eyebrow: "READY TO TRAVEL?",
+
+    heading: "Your next group journey starts here.",
+
+    description:
+      "Tell us where you are going, how many people are travelling and what kind of journey you have in mind.",
+
+    cta: {
+      label: "Plan Your Journey",
+      href: "#booking-form",
+    },
+  },
 };
 
 export const fleetTypesData = [
@@ -309,7 +535,7 @@ export const fleetTypesData = [
     isPopular: false,
     image: "/fleet/luxury-coach.jpg",
     gallery: [
-      "/fleet/luxury-coach.jpg",
+      "/fleet/luxury-coach.jpeg",
       "/fleet/fleet.png",
       "/fleet/coach.png",
     ],
@@ -436,39 +662,77 @@ export const popularDestinationsData = [
     description: "Royal architecture & weekend getaways",
     ctaText: "Fleet to Jaipur",
     image: "/images/destinations/jaipur.png",
-    href: "#booking-form",
+    href: "/destinations/jaipur",
   },
+
   {
     id: "manali",
     number: "02",
     name: "Manali",
     route: "Delhi → Manali • ~11.0 HRS",
     description: "Mountain escapes & group tours",
-    ctaText: "Fleetto Manali",
+    ctaText: "Fleet to Manali",
     image: "/images/destinations/mountain.png",
-    href: "#booking-form",
+    href: "/destinations/manali",
   },
+
   {
     id: "agra",
     number: "03",
     name: "Agra",
     route: "Delhi → Agra • ~3.5 HRS",
     description: "Heritage trips & weekend travel",
-    ctaText: "Fleetto Agra",
+    ctaText: "Fleet to Agra",
     image: "/images/destinations/taj.png",
-    href: "#booking-form",
+    href: "/destinations/agra",
   },
+
   {
     id: "haridwar",
     number: "04",
     name: "Haridwar",
     route: "Delhi → Haridwar • ~4.5 HRS",
     description: "Pilgrimage & group journeys",
-    ctaText: "Fleetto Haridwar",
+    ctaText: "Fleet to Haridwar",
     image: "/images/destinations/screen.png",
-    href: "#booking-form",
+    href: "/destinations/haridwar",
+  },
+
+  {
+    id: "udaipur",
+    number: "05",
+    name: "Udaipur",
+    route: "Delhi → Udaipur • ~10 HRS",
+    description: "Lake city & group tours",
+    ctaText: "Fleet to Udaipur",
+    image: "/images/destinations/udaipur.png",
+    href: "/destinations/udaipur",
+  },
+
+  {
+    id: "goa",
+    number: "06",
+    name: "Goa",
+    route: "Delhi → Goa • ~18.0 HRS",
+    description: "Beaches & group getaways",
+    ctaText: "Fleet to Goa",
+    image: "/images/destinations/goa2.png",
+    href: "/destinations/goa",
   },
 ];
+export const destinationsPageHeroData = {
+  eyebrow: "POPULAR DESTINATIONS",
+  title: "Explore more.",
+  titleLines: [
+    "Explore more.",
+    "Travel together.",
+  ],
+  description:
+    "Discover popular destinations across India and make every group journey comfortable, convenient and memorable with Bus Mantra.",
+  image: "/fleet/fleet.png",
+  imageAlt:
+    "Bus Mantra coach ready for group travel across India",
+};
 
 export const destinationsSectionData = {
   eyebrow: "DESTINATIONS",
@@ -480,6 +744,310 @@ export const destinationsSectionData = {
   },
   destinations: popularDestinationsData,
 };
+export const destinationsData = {
+
+  /* =======================================================
+     JAIPUR
+  ======================================================= */
+
+  jaipur: {
+    slug: "jaipur",
+
+    name: "Jaipur",
+
+    badge: "POPULAR DESTINATION",
+
+    route: "Delhi → Jaipur",
+
+    description:
+      "Explore Jaipur with comfortable group transportation for heritage tours, weekend getaways, sightseeing and memorable journeys.",
+
+    gallery: [
+      "/images/destinations/jaipur.png",
+      "/images/destinations/jaipur-2.png",
+      "/images/destinations/jaipur-3.png",
+    ],
+
+    popularPlaces: [
+      {
+        id: "amber-fort",
+        name: "Amber Fort",
+        image: "/images/destinations/places/amber-fort.png",
+        description:
+          "Discover the grand Amber Fort, known for its impressive architecture, historic courtyards and beautiful views across the surrounding hills.",
+      },
+
+      {
+        id: "city-palace-jaipur",
+        name: "City Palace",
+        image: "/images/destinations/places/city-palace-jaipur.png",
+        description:
+          "Explore Jaipur's historic City Palace with its elegant courtyards, royal architecture and fascinating heritage that makes it a popular group sightseeing stop.",
+      },
+
+      {
+        id: "hawa-mahal",
+        name: "Hawa Mahal",
+        image: "/images/destinations/places/hawa-mahal.png",
+        description:
+          "Visit the iconic Hawa Mahal, one of Jaipur's most recognisable landmarks and a memorable stop for groups exploring the Pink City.",
+      },
+    ],
+  },
+
+
+  /* =======================================================
+     MANALI
+  ======================================================= */
+
+  manali: {
+    slug: "manali",
+
+    name: "Manali",
+
+    badge: "POPULAR DESTINATION",
+
+    route: "Delhi → Manali",
+
+    description:
+      "Travel comfortably to Manali for mountain escapes, group tours, weekend trips and memorable journeys through the Himalayas.",
+
+    gallery: [
+      "/images/destinations/mountain.png",
+      "/images/destinations/manali-2.png",
+      "/images/destinations/manali-3.png",
+    ],
+
+    popularPlaces: [
+      {
+        id: "solang-valley",
+        name: "Solang Valley",
+        image: "/images/destinations/places/solang-valley.png",
+        description:
+          "Enjoy the mountain scenery of Solang Valley, a popular destination for groups looking for beautiful landscapes and outdoor experiences.",
+      },
+
+      {
+        id: "hadimba-temple",
+        name: "Hadimba Temple",
+        image: "/images/destinations/places/hadimba-temple.png",
+        description:
+          "Visit the historic Hadimba Temple surrounded by tall cedar trees, offering a peaceful and memorable sightseeing experience in Manali.",
+      },
+
+      {
+        id: "mall-road-manali",
+        name: "Mall Road",
+        image: "/images/destinations/places/mall-road-manali.png",
+        description:
+          "Explore Mall Road for local shopping, restaurants and a relaxed evening experience while travelling through Manali with your group.",
+      },
+    ],
+  },
+
+
+  /* =======================================================
+     AGRA
+  ======================================================= */
+
+  agra: {
+    slug: "agra",
+
+    name: "Agra",
+
+    badge: "POPULAR DESTINATION",
+
+    route: "Delhi → Agra",
+
+    description:
+      "Discover Agra with comfortable group transportation for heritage tours, weekend travel and sightseeing around its famous landmarks.",
+
+    gallery: [
+      "/images/destinations/taj.png",
+      "/images/destinations/agra-2.png",
+      "/images/destinations/agra-3.png",
+    ],
+
+    popularPlaces: [
+      {
+        id: "taj-mahal",
+        name: "Taj Mahal",
+        image: "/images/destinations/places/taj-mahal.png",
+        description:
+          "Visit the iconic Taj Mahal and experience one of India's most famous heritage landmarks, making it an ideal stop for group sightseeing.",
+      },
+
+      {
+        id: "agra-fort",
+        name: "Agra Fort",
+        image: "/images/destinations/places/agra-fort.png",
+        description:
+          "Explore the historic Agra Fort with its impressive architecture, grand courtyards and fascinating connection to India's Mughal heritage.",
+      },
+
+      {
+        id: "mehtab-bagh",
+        name: "Mehtab Bagh",
+        image: "/images/destinations/places/mehtab-bagh.png",
+        description:
+          "Enjoy views of the Taj Mahal from Mehtab Bagh, a peaceful garden destination that works well as part of an Agra sightseeing itinerary.",
+      },
+    ],
+  },
+
+
+  /* =======================================================
+     HARIDWAR
+  ======================================================= */
+
+  haridwar: {
+    slug: "haridwar",
+
+    name: "Haridwar",
+
+    badge: "POPULAR DESTINATION",
+
+    route: "Delhi → Haridwar",
+
+    description:
+      "Travel comfortably to Haridwar for pilgrimage trips, spiritual journeys, sightseeing and organised group travel.",
+
+    gallery: [
+      "/images/destinations/screen.png",
+      "/images/destinations/haridwar-2.png",
+      "/images/destinations/haridwar-3.png",
+    ],
+
+    popularPlaces: [
+      {
+        id: "har-ki-pauri",
+        name: "Har Ki Pauri",
+        image: "/images/destinations/places/har-ki-pauri.png",
+        description:
+          "Visit Har Ki Pauri, one of Haridwar's most important spiritual landmarks and a popular destination for group pilgrimage journeys.",
+      },
+
+      {
+        id: "ganga-aarti",
+        name: "Ganga Aarti",
+        image: "/images/destinations/places/ganga-aarti.png",
+        description:
+          "Experience the atmosphere of the Ganga Aarti and the spiritual traditions that make Haridwar an important destination for visitors from across India.",
+      },
+
+      {
+        id: "mansa-devi",
+        name: "Mansa Devi Temple",
+        image: "/images/destinations/places/mansa-devi.png",
+        description:
+          "Explore Mansa Devi Temple and enjoy views across Haridwar while experiencing one of the city's important pilgrimage destinations.",
+      },
+    ],
+  },
+
+
+  /* =======================================================
+     UDAIPUR
+  ======================================================= */
+
+  udaipur: {
+    slug: "udaipur",
+
+    name: "Udaipur",
+
+    badge: "POPULAR DESTINATION",
+
+    route: "Delhi → Udaipur",
+
+    description:
+      "Experience the charm of Udaipur with comfortable group transportation for sightseeing, tours and memorable journeys.",
+
+    gallery: [
+      "/images/destinations/udaipur.png",
+      "/images/destinations/udaipur-2.png",
+      "/images/destinations/udaipur-3.png",
+    ],
+
+    popularPlaces: [
+      {
+        id: "city-palace-udaipur",
+        name: "City Palace",
+        image: "/images/destinations/places/city-palace-udaipur.png",
+        description:
+          "Explore the magnificent City Palace overlooking Lake Pichola, with grand courtyards, historic architecture and panoramic views.",
+      },
+
+      {
+        id: "lake-pichola",
+        name: "Lake Pichola",
+        image: "/images/destinations/places/lake-pichola.png",
+        description:
+          "Enjoy the peaceful beauty of Lake Pichola, surrounded by palaces, ghats and hills, making it one of Udaipur's most memorable attractions.",
+      },
+
+      {
+        id: "monsoon-palace",
+        name: "Sajjangarh Monsoon Palace",
+        image: "/images/destinations/places/monsoon-palace.png",
+        description:
+          "Located high above Udaipur, the Monsoon Palace offers beautiful views over the city, surrounding hills and lakes.",
+      },
+    ],
+  },
+
+
+  /* =======================================================
+     GOA
+  ======================================================= */
+
+  goa: {
+    slug: "goa",
+
+    name: "Goa",
+
+    badge: "POPULAR DESTINATION",
+
+    route: "Delhi → Goa",
+
+    description:
+      "Plan a comfortable group journey to Goa with reliable coach transportation for beach trips, holidays and group getaways.",
+
+    gallery: [
+      "/images/destinations/goa2.png",
+      "/images/destinations/goa-2.png",
+      "/images/destinations/goa-3.png",
+    ],
+
+    popularPlaces: [
+      {
+        id: "baga-beach",
+        name: "Baga Beach",
+        image: "/images/destinations/places/baga-beach.png",
+        description:
+          "Baga Beach is one of Goa's popular coastal destinations, known for its lively atmosphere, beach activities, restaurants and relaxed seaside experiences.",
+      },
+
+      {
+        id: "fort-aguada",
+        name: "Fort Aguada",
+        image: "/images/destinations/places/fort-aguada.png",
+        description:
+          "Visit the historic Fort Aguada for beautiful coastal views and a glimpse into Goa's Portuguese heritage.",
+      },
+
+      {
+        id: "calangute-beach",
+        name: "Calangute Beach",
+        image: "/images/destinations/places/calangute.png",
+        description:
+          "Calangute offers a lively beach experience with plenty of space for groups to relax, explore local attractions and enjoy Goa's coastline.",
+      },
+    ],
+  },
+};
+// ============================================================
+// SERVICES
+// ============================================================
 
 export const servicesData = [
   {
@@ -490,9 +1058,11 @@ export const servicesData = [
       "Reliable group transportation for meetings, conferences, team travel, employee movement and corporate events.",
     bottomLabel: "Professional group transport",
     icon: "briefcase",
+    image: "/images/services/corporate-india.jpg",
     ctaLabel: "Explore Service",
     href: "/fleets",
   },
+
   {
     id: "group-tours",
     number: "02",
@@ -501,9 +1071,11 @@ export const servicesData = [
       "Comfortable coaches for sightseeing, multi-city journeys, weekend trips and organised group travel.",
     bottomLabel: "Travel together with ease",
     icon: "map",
+    image: "/images/services/group-tours-india.jpg",
     ctaLabel: "Explore Service",
     href: "/fleets",
   },
+
   {
     id: "events",
     number: "03",
@@ -512,9 +1084,11 @@ export const servicesData = [
       "Seamless transportation for weddings, celebrations, conferences, exhibitions and large gatherings.",
     bottomLabel: "Coordinated event transport",
     icon: "calendar",
+    image: "/images/services/events-india.jpg",
     ctaLabel: "Explore Service",
     href: "/fleets",
   },
+
   {
     id: "school-trips",
     number: "04",
@@ -523,9 +1097,11 @@ export const servicesData = [
       "Safe and organised group transportation for school excursions, educational trips and student travel.",
     bottomLabel: "Comfortable group travel",
     icon: "graduation-cap",
+    image: "/images/services/school-trips-india.jpg",
     ctaLabel: "Explore Service",
     href: "/fleets",
   },
+
   {
     id: "airport-transfer",
     number: "05",
@@ -534,9 +1110,11 @@ export const servicesData = [
       "Convenient group airport transfers with comfortable vehicles and coordinated pickup and drop-off.",
     bottomLabel: "Easy airport transfers",
     icon: "plane",
+    image: "/images/services/airport-transfer-india.jpg",
     ctaLabel: "Explore Service",
     href: "/fleets",
   },
+
   {
     id: "hotel-transfer",
     number: "06",
@@ -545,12 +1123,18 @@ export const servicesData = [
       "Reliable hotel transfers for groups travelling together, with convenient pickup and destination coordination.",
     bottomLabel: "Door-to-door convenience",
     icon: "hotel",
+    image: "/images/services/hotel-transfer-india.jpg",
     ctaLabel: "Explore Service",
     href: "/fleets",
   },
 ];
 
 export const useCasesData = servicesData;
+
+
+// ============================================================
+// SERVICES SECTION
+// ============================================================
 
 export const servicesSectionData = {
   eyebrow: "SERVICES",
@@ -560,6 +1144,11 @@ export const servicesSectionData = {
   services: servicesData,
   useCases: servicesData,
 };
+
+
+// ============================================================
+// SERVICES PAGE HERO
+// ============================================================
 
 export const servicesPageHeroData = {
   eyebrow: "OUR SERVICES",
@@ -571,6 +1160,11 @@ export const servicesPageHeroData = {
   imageAlt: "Bus Mantra comfortable coach fleet for group travel",
 };
 
+
+// ============================================================
+// SERVICES PAGE SECTION
+// ============================================================
+
 export const servicesPageSectionData = {
   eyebrow: "OUR EXPERTISE",
   heading: "Travel built around your needs.",
@@ -579,30 +1173,41 @@ export const servicesPageSectionData = {
   services: servicesData,
 };
 
+
+// ============================================================
+// FEATURED SERVICE
+// ============================================================
+
 export const featuredServiceData = {
-  eyebrow: "GROUP TRAVEL ADVANTAGE",
-  heading: "Group Travel, Without the Hassle.",
+  eyebrow: "FULL-BUS CHARTERS",
+
+  heading: "Your group. Your journey. Your coach.",
+
   description:
-    "Whether you're moving a corporate team, planning a school trip or organising transportation for a major event, Bus Mantra helps you manage the journey with one dedicated vehicle and one reliable service.",
-  image: "/about-bus.png",
-  imageAlt: "Bus Mantra dedicated group transportation coach",
+    "For larger groups, full-bus charters provide a comfortable and convenient way to keep everyone travelling together from pickup to destination.",
+
   points: [
     {
-      title: "Dedicated vehicle",
+      title: "Comfortable group travel",
       description:
-        "One private coach reserved exclusively for your group, running on your schedule with private luggage space.",
+        "Give your entire group a shared, comfortable travel experience from start to finish.",
     },
     {
-      title: "Professional service",
+      title: "Flexible journey planning",
       description:
-        "Experienced commercial chauffeurs, real-time dispatch monitoring, and 24/7 dedicated trip support.",
+        "Choose pickup points, destinations and travel schedules around your group's requirements.",
     },
     {
-      title: "Flexible group travel",
+      title: "One coordinated journey",
       description:
-        "Custom pickup points, multi-city route options, and seamless coordination from departure to return.",
+        "Keep transportation simple with one coach, one coordinated plan and everyone travelling together.",
     },
   ],
+
+  image: "/fleet/fleet.png",
+
+  imageAlt:
+    "Bus Mantra luxury coach for full-bus group charter travel",
 };
 
 export const testimonialsData = [
