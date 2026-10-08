@@ -764,15 +764,15 @@ export const destinationsData = {
 
     gallery: [
       "/images/destinations/jaipur.png",
-      "/images/destinations/jaipur-2.png",
-      "/images/destinations/jaipur-3.png",
+      "/images/destinations/jaipur-2.jpg",
+      "/images/destinations/jaipur-3.jpg",
     ],
 
     popularPlaces: [
       {
         id: "amber-fort",
         name: "Amber Fort",
-        image: "/images/destinations/places/amber-fort.png",
+        image: "/images/destinations/amber-fort.jpg",
         description:
           "Discover the grand Amber Fort, known for its impressive architecture, historic courtyards and beautiful views across the surrounding hills.",
       },
@@ -780,7 +780,7 @@ export const destinationsData = {
       {
         id: "city-palace-jaipur",
         name: "City Palace",
-        image: "/images/destinations/places/city-palace-jaipur.png",
+        image: "/images/destinations/city-palace-jaipur.jpg",
         description:
           "Explore Jaipur's historic City Palace with its elegant courtyards, royal architecture and fascinating heritage that makes it a popular group sightseeing stop.",
       },
@@ -788,7 +788,7 @@ export const destinationsData = {
       {
         id: "hawa-mahal",
         name: "Hawa Mahal",
-        image: "/images/destinations/places/hawa-mahal.png",
+        image: "/images/destinations/hawa-mahal.jpg",
         description:
           "Visit the iconic Hawa Mahal, one of Jaipur's most recognisable landmarks and a memorable stop for groups exploring the Pink City.",
       },
@@ -814,15 +814,15 @@ export const destinationsData = {
 
     gallery: [
       "/images/destinations/mountain.png",
-      "/images/destinations/manali-2.png",
-      "/images/destinations/manali-3.png",
+      "/images/destinations/manali-2.jpg",
+      "/images/destinations/manali-3.jpg",
     ],
 
     popularPlaces: [
       {
         id: "solang-valley",
         name: "Solang Valley",
-        image: "/images/destinations/places/solang-valley.png",
+        image: "/images/destinations/solang-valley.jpg",
         description:
           "Enjoy the mountain scenery of Solang Valley, a popular destination for groups looking for beautiful landscapes and outdoor experiences.",
       },
@@ -830,7 +830,7 @@ export const destinationsData = {
       {
         id: "hadimba-temple",
         name: "Hadimba Temple",
-        image: "/images/destinations/places/hadimba-temple.png",
+        image: "/images/destinations/hadimba-temple.jpg",
         description:
           "Visit the historic Hadimba Temple surrounded by tall cedar trees, offering a peaceful and memorable sightseeing experience in Manali.",
       },
@@ -838,7 +838,7 @@ export const destinationsData = {
       {
         id: "mall-road-manali",
         name: "Mall Road",
-        image: "/images/destinations/places/mall-road-manali.png",
+        image: "/images/destinations/mall-road-manali.jpg",
         description:
           "Explore Mall Road for local shopping, restaurants and a relaxed evening experience while travelling through Manali with your group.",
       },
@@ -864,15 +864,15 @@ export const destinationsData = {
 
     gallery: [
       "/images/destinations/taj.png",
-      "/images/destinations/agra-2.png",
-      "/images/destinations/agra-3.png",
+      "/images/destinations/agra-2.jpg",
+      "/images/destinations/agra-3.jpg",
     ],
 
     popularPlaces: [
       {
         id: "taj-mahal",
         name: "Taj Mahal",
-        image: "/images/destinations/places/taj-mahal.png",
+        image: "/images/destinations/taj-mahal.jpg",
         description:
           "Visit the iconic Taj Mahal and experience one of India's most famous heritage landmarks, making it an ideal stop for group sightseeing.",
       },
@@ -880,7 +880,7 @@ export const destinationsData = {
       {
         id: "agra-fort",
         name: "Agra Fort",
-        image: "/images/destinations/places/agra-fort.png",
+        image: "/images/destinations/agra-fort.jpg",
         description:
           "Explore the historic Agra Fort with its impressive architecture, grand courtyards and fascinating connection to India's Mughal heritage.",
       },
@@ -888,7 +888,7 @@ export const destinationsData = {
       {
         id: "mehtab-bagh",
         name: "Mehtab Bagh",
-        image: "/images/destinations/places/mehtab-bagh.png",
+        image: "/images/destinations/mehtab-bagh.jpg",
         description:
           "Enjoy views of the Taj Mahal from Mehtab Bagh, a peaceful garden destination that works well as part of an Agra sightseeing itinerary.",
       },
@@ -914,15 +914,15 @@ export const destinationsData = {
 
     gallery: [
       "/images/destinations/screen.png",
-      "/images/destinations/haridwar-2.png",
-      "/images/destinations/haridwar-3.png",
+      "/images/destinations/haridwar-2.jpg",
+      "/images/destinations/haridwar-3.jpg",
     ],
 
     popularPlaces: [
       {
         id: "har-ki-pauri",
         name: "Har Ki Pauri",
-        image: "/images/destinations/places/har-ki-pauri.png",
+        image: "/images/destinations/har-ki-pauri.jpg",
         description:
           "Visit Har Ki Pauri, one of Haridwar's most important spiritual landmarks and a popular destination for group pilgrimage journeys.",
       },
@@ -930,7 +930,7 @@ export const destinationsData = {
       {
         id: "ganga-aarti",
         name: "Ganga Aarti",
-        image: "/images/destinations/places/ganga-aarti.png",
+        image: "/images/destinations/ganga-aarti.jpg",
         description:
           "Experience the atmosphere of the Ganga Aarti and the spiritual traditions that make Haridwar an important destination for visitors from across India.",
       },
@@ -938,7 +938,7 @@ export const destinationsData = {
       {
         id: "mansa-devi",
         name: "Mansa Devi Temple",
-        image: "/images/destinations/places/mansa-devi.png",
+        image: "/images/destinations/mansa-devi.jpg",
         description:
           "Explore Mansa Devi Temple and enjoy views across Haridwar while experiencing one of the city's important pilgrimage destinations.",
       },
@@ -972,7 +972,7 @@ export const destinationsData = {
       {
         id: "city-palace-udaipur",
         name: "City Palace",
-        image: "/images/destinations/places/city-palace-udaipur.png",
+        image: "/images/destinations/city-palace-udaipur.png",
         description:
           "Explore the magnificent City Palace overlooking Lake Pichola, with grand courtyards, historic architecture and panoramic views.",
       },
@@ -980,7 +980,7 @@ export const destinationsData = {
       {
         id: "lake-pichola",
         name: "Lake Pichola",
-        image: "/images/destinations/places/lake-pichola.png",
+        image: "/images/destinations/lake-pichola.png",
         description:
           "Enjoy the peaceful beauty of Lake Pichola, surrounded by palaces, ghats and hills, making it one of Udaipur's most memorable attractions.",
       },
@@ -988,7 +988,7 @@ export const destinationsData = {
       {
         id: "monsoon-palace",
         name: "Sajjangarh Monsoon Palace",
-        image: "/images/destinations/places/monsoon-palace.png",
+        image: "/images/destinations/monsoon-palace.png",
         description:
           "Located high above Udaipur, the Monsoon Palace offers beautiful views over the city, surrounding hills and lakes.",
       },
@@ -1022,7 +1022,7 @@ export const destinationsData = {
       {
         id: "baga-beach",
         name: "Baga Beach",
-        image: "/images/destinations/places/baga-beach.png",
+        image: "/images/destinations/baga-beach.png",
         description:
           "Baga Beach is one of Goa's popular coastal destinations, known for its lively atmosphere, beach activities, restaurants and relaxed seaside experiences.",
       },
@@ -1030,7 +1030,7 @@ export const destinationsData = {
       {
         id: "fort-aguada",
         name: "Fort Aguada",
-        image: "/images/destinations/places/fort-aguada.png",
+        image: "/images/destinations/fort-aguada.png",
         description:
           "Visit the historic Fort Aguada for beautiful coastal views and a glimpse into Goa's Portuguese heritage.",
       },
@@ -1038,7 +1038,7 @@ export const destinationsData = {
       {
         id: "calangute-beach",
         name: "Calangute Beach",
-        image: "/images/destinations/places/calangute.png",
+        image: "/images/destinations/calangute.png",
         description:
           "Calangute offers a lively beach experience with plenty of space for groups to relax, explore local attractions and enjoy Goa's coastline.",
       },
