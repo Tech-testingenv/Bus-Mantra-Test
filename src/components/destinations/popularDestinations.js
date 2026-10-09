@@ -111,14 +111,13 @@ export default function PopularDestinations({
           flex
           lg:grid
           lg:grid-cols-3
+          lg:auto-rows-fr
           overflow-x-auto
           lg:overflow-visible
           snap-x
           snap-mandatory
           lg:snap-none
-          gap-4
-          sm:gap-5
-          lg:gap-6
+          gap-6
           pb-2
           lg:pb-0
           -mx-4
@@ -153,9 +152,11 @@ export default function PopularDestinations({
                 w-[82vw]
                 max-w-85
                 sm:w-[320px]
-                lg:w-auto
+                lg:w-full
+                lg:max-w-none
                 shrink-0
                 lg:shrink
+                lg:h-full
                 snap-start
                 lg:snap-align-none
                 bg-white

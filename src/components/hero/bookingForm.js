@@ -982,7 +982,7 @@ export default function BookingForm({ data = heroData?.form }) {
               </button>
             </div>
 
-            <div className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-2">
+            <div className="text-[11px] font-semibold text-neutral-600 uppercase tracking-wider mb-2">
               Step 1: Select {fieldLabel} Date
             </div>
 
@@ -1162,7 +1162,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
             {/* Hour */}
             <div className="mb-3">
-              <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">
+              <div className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">
                 HOUR
               </div>
 
@@ -1201,7 +1201,7 @@ export default function BookingForm({ data = heroData?.form }) {
               <div className="flex items-center justify-between mb-1">
                 <label
                   htmlFor="customMinuteInput"
-                  className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider cursor-pointer"
+                  className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider cursor-pointer"
                 >
                   MINUTE
                 </label>
@@ -1235,7 +1235,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     }
                     placeholder="00"
                     maxLength={2}
-                    className="w-full text-center text-base font-bold text-neutral-900 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                    className="w-full text-center text-base font-bold text-neutral-900 placeholder:text-[#c7a27e] focus:outline-none bg-transparent"
                   />
                 </div>
 
@@ -1281,7 +1281,7 @@ export default function BookingForm({ data = heroData?.form }) {
               onClick={
                 handleSaveSelection
               }
-              className={`w-full py-2.5 px-4 rounded-xl text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-xs ${
+              className={`w-full py-2.5 px-4 rounded-xl text-neutral-900 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-xs ${
                 !isMinuteValid
                   ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
                   : "bg-brand-orange hover:bg-brand-orange-hover cursor-pointer active:scale-[0.98]"
@@ -1312,7 +1312,7 @@ export default function BookingForm({ data = heroData?.form }) {
   return (
     <div
       id="booking-form"
-      className="w-full bg-white rounded-2xl sm:rounded-3xl border border-neutral-100 shadow-[0_12px_40px_rgba(15,23,42,0.06)] p-5 sm:p-7 lg:p-8 transition-all duration-300 relative z-20"
+      className="w-full bg-neutral-950/70 rounded-2xl sm:rounded-3xl border border-neutral-200/10 shadow-[0_12px_40px_rgba(15,23,42,0.10)] p-5 sm:p-7 lg:p-8 transition-all duration-300 relative z-20"
     >
       <form
         onSubmit={handleSubmit}
@@ -1328,14 +1328,14 @@ export default function BookingForm({ data = heroData?.form }) {
           <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="fullName"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.fullName ||
                 "FULL NAME"}
             </label>
 
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-neutral-400 shrink-0 stroke-[2.2]" />
+              <User className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
 
               <input
                 id="fullName"
@@ -1354,7 +1354,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.fullName ||
                   "e.g. Rahul Sharma"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
               />
             </div>
           </div>
@@ -1363,14 +1363,14 @@ export default function BookingForm({ data = heroData?.form }) {
           <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="mobile"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.mobile ||
                 "MOBILE NUMBER"}
             </label>
 
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-neutral-400 shrink-0 stroke-[2.2]" />
+              <Phone className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
 
               <input
                 id="mobile"
@@ -1389,7 +1389,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.mobile ||
                   "+91 XXXXX XXXXX"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
               />
             </div>
           </div>
@@ -1398,14 +1398,14 @@ export default function BookingForm({ data = heroData?.form }) {
           <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="email"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.email ||
                 "EMAIL ADDRESS"}
             </label>
 
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-neutral-400 shrink-0 stroke-[2.2]" />
+              <Mail className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
 
               <input
                 id="email"
@@ -1424,7 +1424,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.email ||
                   "eg@example.com"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
               />
             </div>
           </div>
@@ -1439,7 +1439,7 @@ export default function BookingForm({ data = heroData?.form }) {
           >
             <label
               htmlFor="passengers"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.passengers ||
                 "NO. OF PASSENGERS"}
@@ -1470,7 +1470,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.passengers ||
                   "20"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
               />
             </div>
 
@@ -1492,7 +1492,7 @@ export default function BookingForm({ data = heroData?.form }) {
           <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="pickupPoint"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.pickupPoint ||
                 "PICK-UP POINT"}
@@ -1520,7 +1520,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.pickupPoint ||
                   "e.g. Delhi NCR"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
               />
             </div>
           </div>
@@ -1536,7 +1536,7 @@ export default function BookingForm({ data = heroData?.form }) {
             }
           >
             <div className="flex items-center justify-between">
-              <label className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer">
+              <label className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer">
                 {labels.destination ||
                   "DESTINATION"}
               </label>
@@ -1578,7 +1578,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.destination ||
                   "e.g. Jaipur"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
               />
             </div>
 
@@ -1604,7 +1604,7 @@ export default function BookingForm({ data = heroData?.form }) {
                       )
                     }
                     placeholder="Search city..."
-                    className="w-full text-xs font-semibold text-neutral-800 bg-transparent focus:outline-none"
+                    className="w-full text-xs font-semibold text-neutral-900 bg-transparent focus:outline-none"
                     autoFocus
                   />
 
@@ -1616,7 +1616,7 @@ export default function BookingForm({ data = heroData?.form }) {
                           ""
                         )
                       }
-                      className="text-neutral-400 hover:text-neutral-600"
+                      className="text-neutral-500 hover:text-neutral-700"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -1704,7 +1704,7 @@ export default function BookingForm({ data = heroData?.form }) {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="departureDateTime"
-                className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+                className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
               >
                 {labels.departureDateTime ||
                   "DEPARTURE DATE & TIME"}
@@ -1746,7 +1746,7 @@ export default function BookingForm({ data = heroData?.form }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-neutral-400 shrink-0 stroke-[2.2]" />
+              <Calendar className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
 
               <input
                 id="departureDateTime"
@@ -1767,7 +1767,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.departureDateTime ||
                   "30-09-2026 | 07:00 AM"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent cursor-pointer select-none"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent cursor-pointer select-none"
               />
             </div>
 
@@ -1811,7 +1811,7 @@ export default function BookingForm({ data = heroData?.form }) {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="returnDateTime"
-                className="text-[10px] sm:text-[11px] font-bold text-neutral-400 uppercase tracking-wider select-none mb-1 cursor-pointer"
+                className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
               >
                 {labels.returnDateTime ||
                   "RETURN DATE & TIME"}
@@ -1853,7 +1853,7 @@ export default function BookingForm({ data = heroData?.form }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-neutral-400 shrink-0 stroke-[2.2]" />
+              <Calendar className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
 
               <input
                 id="returnDateTime"
@@ -1874,7 +1874,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.returnDateTime ||
                   "02-10-2026 | 09:00 PM"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent cursor-pointer select-none"
+                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent cursor-pointer select-none"
               />
             </div>
 
@@ -1890,6 +1890,7 @@ export default function BookingForm({ data = heroData?.form }) {
             <button
               type="submit"
               className="w-full h-full min-h-14 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 select-none group"
+              
             >
               <span>
                 {submitted
@@ -1906,19 +1907,19 @@ export default function BookingForm({ data = heroData?.form }) {
         {/* BOOKING SUMMARY */}
         {/* ========================================================= */}
 
-        <div className="mt-4 pt-4 border-t border-neutral-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm">
+        <div className="mt-4 pt-4 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm">
           <div className="flex flex-wrap items-center gap-2">
             <span className="px-2 py-0.5 rounded bg-brand-orange text-white text-[10px] font-bold uppercase tracking-wider select-none">
               {routeSummary.badge ||
                 "FULL COACH"}
             </span>
 
-            <span className="text-neutral-500 font-normal">
+            <span className="text-neutral-300 font-normal">
               {routeSummary.label ||
                 "Selected Itinerary:"}
             </span>
 
-            <span className="font-semibold text-neutral-800">
+            <span className="font-semibold text-white">
               {formValues.pickupPoint ||
                 "Delhi NCR"}{" "}
               →{" "}
@@ -1931,7 +1932,7 @@ export default function BookingForm({ data = heroData?.form }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-neutral-600 text-xs sm:text-[13px] font-medium">
+          <div className="flex items-center gap-2 text-neutral-300 text-xs sm:text-[13px] font-medium">
             <span className="w-2 h-2 rounded-full bg-brand-orange shrink-0 inline-block" />
 
             <span>

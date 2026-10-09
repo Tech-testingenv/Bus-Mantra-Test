@@ -2,38 +2,35 @@
 
 import {
   use,
-  useState,
-  useEffect,
   useCallback,
+  useEffect,
+  useState,
   useTransition,
 } from "react";
 
-import { useSearchParams, notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 import {
-  Users,
-  MapPin,
-  Calendar,
   ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
+  Calendar,
   Check,
+  CheckCircle2,
+  Clock,
   Flame,
+  ImageIcon,
+  MapPin,
   Phone,
-  User,
+  PhoneCall,
   ShieldCheck,
   Sparkles,
-  ArrowRight,
-  CheckCircle2,
-  PhoneCall,
-  BadgeCheck,
-  Clock,
+  User,
+  Users,
+  X,
 } from "lucide-react";
-
-// ============================================================
-// BUS IMAGE CAROUSEL
-// Commented out as requested.
-// ============================================================
-// import BusImageCarousel from "@/components/fleet/busImageCarousel";
 
 import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
 
@@ -46,6 +43,69 @@ import {
   saveBookingSession,
 } from "@/services/bookingState";
 
+const DEFAULT_FLEET_IMAGE = "/fleet/fleet.png";
+
+const IMAGE_FIELDS = ["image", "imageUrl", "imagePath", "photo", "thumbnail"];
+
+const FALLBACK_FLEET_IMAGES = [
+  "/fleet/fleet.png",
+  "/fleet/coach.png",
+];
+
+function getFleetImages(fleet) {
+  const images = [
+    ...(Array.isArray(fleet?.gallery) ? fleet.gallery : []),
+    ...(Array.isArray(fleet?.images) ? fleet.images : []),
+    ...(Array.isArray(fleet?.imageGallery)
+      ? fleet.imageGallery
+      : []),
+    ...IMAGE_FIELDS.map((key) => fleet?.[key]).filter(Boolean),
+  ].filter(Boolean);
+
+  const uniqueImages = [...new Set(images)];
+
+  if (uniqueImages.length === 0) {
+    return [DEFAULT_FLEET_IMAGE];
+  }
+
+  return uniqueImages;
+}
+
+function SafeFleetImage({
+  src,
+  alt,
+  fill = true,
+  className = "",
+  sizes,
+  priority = false,
+}) {
+  const [currentSrc, setCurrentSrc] = useState(src);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+  }, [src]);
+
+  const handleError = () => {
+    if (currentSrc === DEFAULT_FLEET_IMAGE) {
+      return;
+    }
+
+    setCurrentSrc(DEFAULT_FLEET_IMAGE);
+  };
+
+  return (
+    <Image
+      src={currentSrc || DEFAULT_FLEET_IMAGE}
+      alt={alt}
+      fill={fill}
+      sizes={sizes}
+      priority={priority}
+      onError={handleError}
+      className={className}
+    />
+  );
+}
+
 export default function FleetDetailPage({ params }) {
   const unwrappedParams = use(params);
   const slug = unwrappedParams?.slug;
@@ -54,29 +114,47 @@ export default function FleetDetailPage({ params }) {
 
   const searchParams = useSearchParams();
 
-  // ============================================================
-  // BOOKING FORM STATE
-  // ============================================================
   const [bookingData, setBookingData] = useState(() =>
     resolveInitialBookingState(searchParams)
   );
 
-  // ============================================================
-  // COMPUTED ROUTE & PRICING STATE
-  // ============================================================
   const [distanceResult, setDistanceResult] = useState(null);
   const [pricingResult, setPricingResult] = useState(null);
+
   const [isBooked, setIsBooked] = useState(false);
+  const [showFleetModal, setShowFleetModal] = useState(false);
+  const [showQuote, setShowQuote] = useState(false);
 
   const [, startTransition] = useTransition();
 
   if (!bus) {
-    notFound();
+    return (
+      <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
+        <div className="text-center">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-brand-orange">
+            FLEET NOT FOUND
+          </span>
+
+          <h1 className="mt-2 text-3xl font-black text-neutral-900">
+            We couldn't find this coach.
+          </h1>
+
+          <p className="mt-2 text-sm text-neutral-500">
+            The fleet you're looking for is not available.
+          </p>
+
+          <Link
+            href="/fleets"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-orange px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-orange-hover"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Fleet
+          </Link>
+        </div>
+      </main>
+    );
   }
 
-  // ============================================================
-  // ROUTE CALCULATION
-  // ============================================================
   const updateRouteCalculation = useCallback(
     async (pickup, destinations) => {
       try {
@@ -94,16 +172,13 @@ export default function FleetDetailPage({ params }) {
           setDistanceResult(dist);
           setPricingResult(pricing);
         });
-      } catch (err) {
-        console.error("Calculation failed", err);
+      } catch (error) {
+        console.error("Calculation failed:", error);
       }
     },
-    [bus]
+    [bus, startTransition]
   );
 
-  // ============================================================
-  // INITIAL CALCULATION + LISTENER
-  // ============================================================
   useEffect(() => {
     updateRouteCalculation(
       bookingData.pickupPoint,
@@ -115,13 +190,10 @@ export default function FleetDetailPage({ params }) {
     updateRouteCalculation,
   ]);
 
-  // ============================================================
-  // FORM FIELD CHANGE
-  // ============================================================
   const handleFieldChange = (key, value) => {
-    setBookingData((prev) => {
+    setBookingData((previous) => {
       const updated = {
-        ...prev,
+        ...previous,
         [key]: value,
       };
 
@@ -131,765 +203,848 @@ export default function FleetDetailPage({ params }) {
     });
   };
 
-  // ============================================================
-  // DESTINATION CHANGE
-  // ============================================================
-  const handleDestinationsChange = (newDestinations) => {
-    handleFieldChange("destination", newDestinations);
+  const handleDestinationsChange = (destinations) => {
+    handleFieldChange("destination", destinations);
   };
 
-  // ============================================================
-  // CONFIRM BOOKING
-  // ============================================================
-  const handleConfirmBooking = (e) => {
-    e.preventDefault();
+  const handleConfirmBooking = (event) => {
+    event.preventDefault();
     setIsBooked(true);
   };
 
+  const openFleetModal = () => {
+    setShowFleetModal(true);
+  };
+
+  const closeFleetModal = () => {
+    setShowFleetModal(false);
+  };
+
   return (
-    <div className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-20">
-
-      {/* ========================================================
-          BACK LINK
-      ======================================================== */}
-      <div className="mb-6 sm:mb-8">
-        <Link
-          href="/fleets"
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-neutral-600 hover:text-brand-orange transition-colors group select-none"
-        >
-          <ArrowLeft className="w-4 h-4 stroke-[2.5] transition-transform group-hover:-translate-x-1 text-brand-orange" />
-
-          <span>Back to All Coaches</span>
-        </Link>
-      </div>
-
-      {/* ========================================================
-          MAIN TWO-COLUMN LAYOUT
-          
-          LEFT:
-          Coach information, specifications, amenities,
-          assurance section
-
-          RIGHT:
-          Booking form and live calculation
-      ======================================================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
-
-        {/* ======================================================
-            LEFT COLUMN
-        ====================================================== */}
-        <div className="lg:col-span-7 flex flex-col gap-8 w-full">
-
-          {/* ====================================================
-              BUS IMAGE CAROUSEL
-
-              COMMENTED OUT AS REQUESTED.
-
-              Keeping this commented instead of deleting it makes
-              it easy to restore later.
-          ==================================================== */}
-
-          {/*
-          <BusImageCarousel
-            images={bus?.gallery || [bus?.image]}
-            busName={bus?.name}
-          />
-          */}
-
-
-          {/* ====================================================
-              BUS TITLE, BADGES & OVERVIEW
-          ==================================================== */}
-          <div className="flex flex-col items-start text-left">
-
-            {/* Eyebrow & Badges */}
-            <div className="flex items-center gap-2 mb-3 select-none flex-wrap">
-
-              <span className="px-3 py-1 rounded-full bg-neutral-100 text-[11px] font-bold uppercase tracking-wider text-neutral-600">
-                {bus?.badge || "CHARTER COACH"}
-              </span>
-
-              {bus?.isPopular && (
-                <span className="px-3 py-1 rounded-full bg-orange-50 border border-brand-orange/30 text-[11px] font-bold uppercase tracking-wider text-brand-orange flex items-center gap-1">
-                  <Flame className="w-3 h-3 fill-brand-orange text-brand-orange" />
-
-                  <span>Most Popular</span>
-                </span>
-              )}
-
-              {/* Per KM fare removed */}
-            </div>
-
-
-            {/* Bus Name */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-neutral-900 tracking-tight leading-[1.12] mb-3">
-              {bus?.name}
-            </h1>
-
-
-            {/* Seating Capacity */}
-            <div className="flex items-center gap-2 text-sm sm:text-base font-semibold text-neutral-700 mb-4 select-none">
-              <Users className="w-4 h-4 text-brand-orange stroke-[2.2]" />
-
-              <span>
-                Capacity: {bus?.capacity}
-              </span>
-            </div>
-
-
-            {/* Description */}
-            <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
-              {bus?.description}
-            </p>
-
-          </div>
-
-
-          {/* ====================================================
-              VEHICLE SPECIFICATIONS
-          ==================================================== */}
-          {bus?.features && (
-            <div className="rounded-2xl sm:rounded-3xl bg-neutral-50/90 border border-neutral-200/80 p-5 sm:p-6">
-
-              <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-4 select-none">
-                VEHICLE SPECIFICATIONS
-              </h3>
-
-              <div className="grid grid-cols-2 gap-4 text-xs sm:text-sm">
-
-                {/* Luggage */}
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 border border-neutral-100 shadow-2xs">
-                  <span className="text-neutral-400 font-semibold block text-[10px] uppercase tracking-wider mb-0.5">
-                    Luggage Bay
-                  </span>
-
-                  <span className="font-bold text-neutral-900">
-                    {bus.features.luggage}
-                  </span>
-                </div>
-
-
-                {/* Climate */}
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 border border-neutral-100 shadow-2xs">
-                  <span className="text-neutral-400 font-semibold block text-[10px] uppercase tracking-wider mb-0.5">
-                    Climate Control
-                  </span>
-
-                  <span className="font-bold text-neutral-900">
-                    {bus.features.climate}
-                  </span>
-                </div>
-
-
-                {/* Seating */}
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 border border-neutral-100 shadow-2xs">
-                  <span className="text-neutral-400 font-semibold block text-[10px] uppercase tracking-wider mb-0.5">
-                    Seating Layout
-                  </span>
-
-                  <span className="font-bold text-neutral-900">
-                    {bus.features.seats}
-                  </span>
-                </div>
-
-
-                {/* Entertainment */}
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 border border-neutral-100 shadow-2xs">
-                  <span className="text-neutral-400 font-semibold block text-[10px] uppercase tracking-wider mb-0.5">
-                    Audio &amp; Visual
-                  </span>
-
-                  <span className="font-bold text-neutral-900">
-                    {bus.features.entertainment}
-                  </span>
-                </div>
-
-              </div>
-            </div>
-          )}
-
-
-          {/* ====================================================
-              INCLUDED COACH AMENITIES
-          ==================================================== */}
-          {bus?.amenities && (
-            <div className="rounded-2xl sm:rounded-3xl bg-white border border-neutral-200/80 p-5 sm:p-6 shadow-[0_8px_30px_rgba(0,0,0,0.02)]">
-
-              <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider mb-4 select-none">
-                INCLUDED COACH AMENITIES
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-                {bus.amenities.map((amenity, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-neutral-700"
-                  >
-                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3 stroke-[2.6]" />
-                    </div>
-
-                    <span>{amenity}</span>
-                  </div>
-                ))}
-
-              </div>
-            </div>
-          )}
-
-
-          {/* ====================================================
-              FLEET ASSURANCE
-          ==================================================== */}
-          <div className="rounded-2xl sm:rounded-3xl bg-neutral-900 text-white p-6 sm:p-7 shadow-lg">
-
-            <span className="text-[11px] font-bold text-brand-orange uppercase tracking-wider block mb-1">
-              BUS MANTRA FLEET ASSURANCE
-            </span>
-
-            <h3 className="text-lg sm:text-xl font-black text-white mb-4">
-              Premium Standards On Every Mile
-            </h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-neutral-300">
-
-              {/* Chauffeurs */}
-              <div className="flex items-start gap-2.5">
-                <ShieldCheck className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-
-                <div>
-                  <strong className="text-white block font-bold mb-0.5">
-                    Verified Chauffeurs
-                  </strong>
-
-                  <span>
-                    Experienced commercial highway drivers with spotless
-                    safety records.
-                  </span>
-                </div>
-              </div>
-
-
-              {/* Sanitized */}
-              <div className="flex items-start gap-2.5">
-                <Sparkles className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-
-                <div>
-                  <strong className="text-white block font-bold mb-0.5">
-                    Deeply Sanitized
-                  </strong>
-
-                  <span>
-                    Every vehicle is sanitized and mechanically inspected
-                    before every dispatch.
-                  </span>
-                </div>
-              </div>
-
-
-              {/* Support */}
-              <div className="flex items-start gap-2.5">
-                <Clock className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-
-                <div>
-                  <strong className="text-white block font-bold mb-0.5">
-                    24/7 Trip Support
-                  </strong>
-
-                  <span>
-                    Dedicated operations control room monitoring your
-                    schedule in real time.
-                  </span>
-                </div>
-              </div>
-
-
-              {/* Invoicing */}
-              <div className="flex items-start gap-2.5">
-                <BadgeCheck className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-
-                <div>
-                  <strong className="text-white block font-bold mb-0.5">
-                    Transparent Invoicing
-                  </strong>
-
-                  <span>
-                    Fuel, driver allowances, and standard GST included
-                    with zero hidden extras.
-                  </span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
+    <>
+      <main className="relative mx-auto w-full max-w-360 px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pt-32">
+        <div className="mb-6 sm:mb-8">
+          <Link
+            href="/fleets"
+            className="group inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-brand-orange sm:text-sm"
+          >
+            <ArrowLeft className="h-4 w-4 text-brand-orange transition-transform duration-200 group-hover:-translate-x-1" />
+            Back to All Coaches
+          </Link>
         </div>
 
-
-        {/* ======================================================
-            RIGHT COLUMN
-            BOOKING FORM
-        ====================================================== */}
-        <div className="lg:col-span-5 lg:sticky lg:top-24 w-full">
-
-          <div className="bg-white rounded-2xl sm:rounded-3xl border border-neutral-200/90 p-5 sm:p-7 shadow-[0_12px_40px_rgba(0,0,0,0.06)] space-y-5">
-
-            {/* ==================================================
-                BOOKING PANEL HEADER
-            ================================================== */}
-            <div className="flex items-center justify-between gap-3 pb-4 border-b border-neutral-100">
-
-              <div>
-                <span className="text-[10px] sm:text-[11px] font-bold text-brand-orange uppercase tracking-wider block mb-0.5">
-                  CUSTOM ROUTE &amp; FARE
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
+          <div className="flex w-full flex-col gap-8 lg:col-span-7">
+            <div>
+              <div className="mb-3 flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-neutral-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-neutral-600">
+                  {bus.badge || "CHARTER COACH"}
                 </span>
 
-                <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-                  Reserve {bus?.name}
+                {bus.isPopular && (
+                  <span className="flex items-center gap-1 rounded-full border border-brand-orange/30 bg-orange-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-brand-orange">
+                    <Flame className="h-3 w-3 fill-brand-orange" />
+                    Most Popular
+                  </span>
+                )}
+              </div>
+
+              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-neutral-900 sm:text-4xl lg:text-[42px]">
+                {bus.name}
+              </h1>
+
+              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-neutral-700">
+                <Users className="h-4 w-4 text-brand-orange" />
+                Capacity: {bus.capacity}
+              </div>
+
+              {bus.description && (
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-base">
+                  {bus.description}
+                </p>
+              )}
+            </div>
+
+            <FleetHeroImage bus={bus} />
+
+            {bus.features && (
+              <section className="rounded-2xl border border-neutral-200/80 bg-neutral-50 p-5 sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-400">
+                  VEHICLE SPECIFICATIONS
+                </h2>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <Specification
+                    label="Luggage Bay"
+                    value={bus.features.luggage}
+                  />
+
+                  <Specification
+                    label="Climate Control"
+                    value={bus.features.climate}
+                  />
+
+                  <Specification
+                    label="Seating Layout"
+                    value={bus.features.seats}
+                  />
+
+                  <Specification
+                    label="Audio & Visual"
+                    value={bus.features.entertainment}
+                  />
+                </div>
+              </section>
+            )}
+
+            {bus.amenities?.length > 0 && (
+              <section className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-400">
+                  INCLUDED COACH AMENITIES
+                </h2>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {bus.amenities.map((amenity, index) => (
+                    <div
+                      key={`${amenity}-${index}`}
+                      className="flex items-center gap-2.5 text-xs font-semibold text-neutral-700 sm:text-sm"
+                    >
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                        <Check className="h-3 w-3 stroke-[2.6]" />
+                      </span>
+
+                      {amenity}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <section className="rounded-2xl bg-neutral-900 p-6 text-white shadow-lg sm:rounded-3xl sm:p-7">
+              <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-brand-orange">
+                BUS MANTRA FLEET ASSURANCE
+              </span>
+
+              <h2 className="mb-5 text-lg font-black text-white sm:text-xl">
+                Premium Standards On Every Mile
+              </h2>
+
+              <div className="grid grid-cols-1 gap-4 text-xs text-neutral-300 sm:grid-cols-2">
+                <Assurance
+                  icon={ShieldCheck}
+                  title="Verified Chauffeurs"
+                  description="Experienced commercial highway drivers with spotless safety records."
+                />
+
+                <Assurance
+                  icon={Sparkles}
+                  title="Deeply Sanitized"
+                  description="Every vehicle is sanitized and mechanically inspected before dispatch."
+                />
+
+                <Assurance
+                  icon={Clock}
+                  title="24/7 Trip Support"
+                  description="Dedicated operations control room monitoring your schedule."
+                />
+
+                <Assurance
+                  icon={BadgeCheck}
+                  title="Transparent Invoicing"
+                  description="Fuel, driver allowances and standard GST included."
+                />
+              </div>
+            </section>
+          </div>
+
+          <div className="w-full lg:sticky lg:top-24 lg:col-span-5 lg:self-start">
+            <div className="space-y-5 rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7">
+              <div className="border-b border-neutral-100 pb-4">
+                <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-brand-orange sm:text-[11px]">
+                  CUSTOM ROUTE & FARE
+                </span>
+
+                <h2 className="text-xl font-black tracking-tight text-neutral-900 sm:text-2xl">
+                  Reserve {bus.name}
                 </h2>
               </div>
 
-              {/* Per KM fare removed */}
+              <div className="space-y-3.5">
+                <div className="rounded-xl bg-[#f4f5f7] px-4 py-3 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30">
+                  <label
+                    htmlFor="detailPickupPoint"
+                    className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400"
+                  >
+                    <MapPin className="h-3.5 w-3.5 text-brand-orange" />
+                    PICK-UP POINT
+                  </label>
 
-            </div>
+                  <input
+                    id="detailPickupPoint"
+                    type="text"
+                    value={bookingData.pickupPoint || ""}
+                    onChange={(event) =>
+                      handleFieldChange(
+                        "pickupPoint",
+                        event.target.value
+                      )
+                    }
+                    placeholder="Enter pickup point"
+                    className="w-full bg-transparent text-xs font-semibold text-neutral-800 placeholder:text-neutral-400 outline-none sm:text-sm"
+                  />
+                </div>
 
-
-            {/* ==================================================
-                FORM FIELDS
-            ================================================== */}
-            <div className="space-y-3.5">
-
-              {/* =================================================
-                  1. PICK-UP POINT
-              ================================================= */}
-              <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all flex flex-col justify-center">
-
-                <label
-                  htmlFor="detailPickupPoint"
-                  className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-0.5 flex items-center gap-1.5 cursor-pointer"
-                >
-                  <MapPin className="w-3.5 h-3.5 text-brand-orange" />
-
-                  <span>PICK-UP POINT</span>
-                </label>
-
-                <input
-                  id="detailPickupPoint"
-                  type="text"
-                  value={bookingData.pickupPoint}
-                  onChange={(e) =>
-                    handleFieldChange(
-                      "pickupPoint",
-                      e.target.value
-                    )
+                <DestinationMultiSelect
+                  selectedDestinations={
+                    Array.isArray(bookingData.destination)
+                      ? bookingData.destination
+                      : bookingData.destination
+                        ? [bookingData.destination]
+                        : []
                   }
-                  placeholder="Enter pickup point (e.g. Delhi NCR)"
-                  className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+                  onChange={handleDestinationsChange}
                 />
 
-              </div>
-
-
-              {/* =================================================
-                  2. DESTINATION
-              ================================================= */}
-              <DestinationMultiSelect
-                selectedDestinations={
-                  Array.isArray(bookingData.destination)
-                    ? bookingData.destination
-                    : [bookingData.destination]
-                }
-                onChange={handleDestinationsChange}
-              />
-
-
-              {/* =================================================
-                  3. TRAVEL DATES
-              ================================================= */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-                {/* Departure */}
-                <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all flex flex-col justify-center">
-
-                  <label
-                    htmlFor="detailDeparture"
-                    className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-0.5 flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Calendar className="w-3.5 h-3.5 text-brand-orange" />
-
-                    <span>DEPARTURE</span>
-                  </label>
-
-                  <input
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <FormField
                     id="detailDeparture"
-                    type="text"
-                    value={bookingData.departureDateTime}
-                    onChange={(e) =>
+                    icon={Calendar}
+                    label="DEPARTURE"
+                    value={bookingData.departureDateTime || ""}
+                    placeholder="30-09-2026 | 07:00 AM"
+                    onChange={(value) =>
                       handleFieldChange(
                         "departureDateTime",
-                        e.target.value
+                        value
                       )
                     }
-                    placeholder="30-09-2026 | 07:00 AM"
-                    className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
                   />
 
-                </div>
-
-
-                {/* Return */}
-                <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all flex flex-col justify-center">
-
-                  <label
-                    htmlFor="detailReturn"
-                    className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-0.5 flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Calendar className="w-3.5 h-3.5 text-brand-orange" />
-
-                    <span>RETURN</span>
-                  </label>
-
-                  <input
+                  <FormField
                     id="detailReturn"
-                    type="text"
-                    value={bookingData.returnDateTime}
-                    onChange={(e) =>
+                    icon={Calendar}
+                    label="RETURN"
+                    value={bookingData.returnDateTime || ""}
+                    placeholder="02-10-2026 | 09:00 PM"
+                    onChange={(value) =>
                       handleFieldChange(
                         "returnDateTime",
-                        e.target.value
+                        value
                       )
                     }
-                    placeholder="02-10-2026 | 09:00 PM"
-                    className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
                   />
-
                 </div>
 
-              </div>
-
-
-              {/* =================================================
-                  PASSENGERS FIELD REMOVED
-              ================================================= */}
-
-              {/*
-              {!bookingData.hasDeterminedPassengers && (
-                <div>
-                  ...
-                </div>
-              )}
-              */}
-
-
-              {/* =================================================
-                  4. CONTACT DETAILS
-              ================================================= */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-
-                {/* Lead Passenger */}
-                <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all flex flex-col justify-center">
-
-                  <label
-                    htmlFor="detailName"
-                    className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-0.5 flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <User className="w-3.5 h-3.5 text-neutral-500" />
-
-                    <span>LEAD PASSENGER</span>
-                  </label>
-
-                  <input
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <FormField
                     id="detailName"
-                    type="text"
-                    value={bookingData.fullName}
-                    onChange={(e) =>
+                    icon={User}
+                    label="LEAD PASSENGER"
+                    value={bookingData.fullName || ""}
+                    placeholder="Your name"
+                    onChange={(value) =>
                       handleFieldChange(
                         "fullName",
-                        e.target.value
+                        value
                       )
                     }
-                    placeholder="e.g. Rahul Sharma"
-                    className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
                   />
 
-                </div>
-
-
-                {/* Mobile */}
-                <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all flex flex-col justify-center">
-
-                  <label
-                    htmlFor="detailMobile"
-                    className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-0.5 flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Phone className="w-3.5 h-3.5 text-neutral-500" />
-
-                    <span>CONTACT MOBILE</span>
-                  </label>
-
-                  <input
+                  <FormField
                     id="detailMobile"
-                    type="tel"
-                    value={bookingData.mobile}
-                    onChange={(e) =>
+                    icon={Phone}
+                    label="CONTACT MOBILE"
+                    value={bookingData.mobile || ""}
+                    placeholder="+91 XXXXX XXXXX"
+                    onChange={(value) =>
                       handleFieldChange(
                         "mobile",
-                        e.target.value
+                        value
                       )
                     }
-                    placeholder="+91 XXXXX XXXXX"
-                    className="w-full text-xs sm:text-sm font-semibold text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
                   />
-
                 </div>
-
               </div>
 
-            </div>
-
-
-            {/* ==================================================
-                LIVE CALCULATION
-            ================================================== */}
-            <div className="pt-4 border-t border-neutral-100 space-y-3.5">
-
-              <div className="grid grid-cols-2 gap-3">
-
-                {/* Distance */}
-                <div className="bg-[#f8f9fa] rounded-xl p-3 sm:p-3.5 border border-neutral-100 flex flex-col justify-center">
-
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-0.5">
-                    EST. ROUND TRIP
-                  </span>
-
-                  <div className="flex items-baseline gap-1">
-
-                    <span className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-                      ≈ {distanceResult?.totalKm || 0}
+              <div className="space-y-3.5 border-t border-neutral-100 pt-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-xl border border-neutral-100 bg-[#f8f9fa] p-3.5">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                      EST. ROUND TRIP
                     </span>
 
-                    <span className="text-[11px] font-bold text-neutral-500 uppercase">
-                      KM
+                    <div className="mt-1">
+                      <span className="text-xl font-black text-neutral-900">
+                        ≈ {distanceResult?.totalKm || 0}
+                      </span>
+
+                      <span className="ml-1 text-[11px] font-bold uppercase text-neutral-500">
+                        KM
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-brand-orange/20 bg-orange-50/70 p-3.5">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-brand-orange">
+                      TOTAL ESTIMATED FARE
                     </span>
 
+                    <div className="mt-1 text-xl font-black text-neutral-900">
+                      {pricingResult?.formattedTotalPrice || "₹0"}
+                    </div>
                   </div>
-
                 </div>
 
-
-                {/* Total Fare */}
-                <div className="bg-orange-50/70 rounded-xl p-3 sm:p-3.5 border border-brand-orange/20 flex flex-col justify-center">
-
-                  <span className="text-[10px] font-bold text-brand-orange uppercase tracking-wider mb-0.5">
-                    TOTAL ESTIMATED FARE
-                  </span>
-
-                  <div className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-                    {pricingResult?.formattedTotalPrice || "₹0"}
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              {/* Route Summary */}
-              <div className="bg-[#f4f5f7] rounded-xl p-2.5 sm:p-3 flex items-start gap-2 border border-neutral-200/50">
-
-                <MapPin className="w-3.5 h-3.5 text-brand-orange shrink-0 mt-0.5" />
-
-                <div className="text-[11px] sm:text-xs text-neutral-700 leading-snug font-medium">
-
-                  <strong className="text-neutral-900 mr-1">
-                    Route Path:
-                  </strong>
+                <div className="flex items-start gap-2 rounded-xl bg-[#f4f5f7] p-3 text-[11px] font-medium leading-5 text-neutral-700">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand-orange" />
 
                   <span>
+                    <span className="font-bold text-neutral-800">
+                      Trip Route:
+                    </span>{" "}
                     {distanceResult?.routeSummaryText ||
-                      "Delhi NCR → Jaipur → Delhi NCR (Return)"}
+                      "Your selected pickup and destination route will appear here."}
                   </span>
-
                 </div>
 
+                <div className="grid grid-cols-2 gap-x-5 gap-y-2 px-0.5 pt-1 sm:grid-cols-3">
+                  <Benefit text="State Tax" />
+                  <Benefit text="Toll Tax" />
+                  <Benefit text="Parking" />
+                  <Benefit text="Driver Allowance" />
+                  <Benefit text="Fuel & GST Included" />
+                </div>
               </div>
 
+              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                <button
+                  type="button"
+                  onClick={openFleetModal}
+                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-3 text-xs font-bold text-neutral-800 transition-all hover:border-brand-orange/40 hover:bg-orange-50/50 hover:text-brand-orange active:scale-[0.98]"
+                >
+                  <ImageIcon className="h-4 w-4" />
+                  View Bus Images
+                </button>
 
-              {/* Inclusions */}
-              <div className="grid grid-cols-2 gap-2 text-[11px] font-medium text-neutral-600 pt-1">
+                <button
+                  type="button"
+                  onClick={handleConfirmBooking}
+                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand-orange px-3 py-3 text-xs font-bold text-white shadow-md shadow-brand-orange/20 transition-all hover:bg-brand-orange-hover active:scale-[0.98]"
+                >
+                  Confirm Booking
 
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Full Bus Charter</span>
-                </div>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
 
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Verified Chauffeur</span>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Fuel &amp; GST Included</span>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-brand-orange shrink-0" />
-                  <span>24/7 Dispatch Control</span>
-                </div>
-
+                <button
+                  type="button"
+                  onClick={() => setShowQuote(true)}
+                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-neutral-900 px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                >
+                  <PhoneCall className="h-4 w-4" />
+                  Request a Quote
+                </button>
               </div>
-
             </div>
-
-
-            {/* ==================================================
-                CONFIRM BOOKING
-            ================================================== */}
-            <button
-              type="button"
-              onClick={handleConfirmBooking}
-              className="w-full py-3.5 sm:py-4 px-6 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md shadow-brand-orange/20 active:scale-[0.98] transition-all cursor-pointer group"
-            >
-              <span>Confirm Booking Request</span>
-
-              <ArrowRight className="w-4 h-4 text-white stroke-[2.4] transition-transform duration-200 group-hover:translate-x-1" />
-            </button>
-
           </div>
         </div>
+      </main>
 
-      </div>
-
-
-      {/* ========================================================
-          BOOKING CONFIRMATION MODAL
-      ======================================================== */}
-      {isBooked && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-neutral-100 text-center animate-in fade-in zoom-in-95 duration-200">
-
-            {/* Success Icon */}
-            <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200/60">
-              <CheckCircle2 className="w-8 h-8 stroke-[2.2]" />
-            </div>
-
-
-            {/* Eyebrow */}
-            <span className="text-[11px] font-bold tracking-wider text-brand-orange uppercase block mb-1">
-              RESERVATION REQUEST RECEIVED
-            </span>
-
-
-            {/* Heading */}
-            <h4 className="text-xl sm:text-2xl font-black text-neutral-900 mb-2">
-              Your Bus Is Reserved!
-            </h4>
-
-
-            {/* Description */}
-            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-5">
-              Thank you! Our fleet operations team is preparing your
-              itinerary for{" "}
-              <strong className="text-neutral-900">
-                {bus?.name}
-              </strong>
-              . A dedicated trip coordinator will call you to confirm
-              your schedule.
-            </p>
-
-
-            {/* Booking Summary */}
-            <div className="bg-neutral-50 rounded-xl p-3.5 text-xs text-neutral-700 text-left mb-6 space-y-2 border border-neutral-200/60">
-
-              <div className="flex justify-between">
-                <span className="text-neutral-500">
-                  Coach:
-                </span>
-
-                <span className="font-bold text-neutral-900">
-                  {bus?.name}
-                </span>
-              </div>
-
-
-              <div className="flex justify-between">
-                <span className="text-neutral-500">
-                  Pickup:
-                </span>
-
-                <span className="font-semibold">
-                  {bookingData?.pickupPoint || "Delhi NCR"}
-                </span>
-              </div>
-
-
-              <div className="flex justify-between">
-                <span className="text-neutral-500">
-                  Destination:
-                </span>
-
-                <span className="font-semibold">
-                  {Array.isArray(bookingData?.destination)
-                    ? bookingData.destination.join(", ")
-                    : bookingData?.destination || "Jaipur"}
-                </span>
-              </div>
-
-
-              <div className="flex justify-between">
-                <span className="text-neutral-500">
-                  Departure:
-                </span>
-
-                <span className="font-semibold">
-                  {bookingData?.departureDateTime || "Scheduled"}
-                </span>
-              </div>
-
-
-              <div className="flex justify-between border-t border-neutral-200/60 pt-1.5">
-
-                <span className="text-neutral-500">
-                  Estimated Total:
-                </span>
-
-                <span className="font-bold text-brand-orange text-sm">
-                  {pricingResult?.formattedTotalPrice}
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* Modal Actions */}
-            <div className="flex items-center gap-3">
-
-              <button
-                type="button"
-                onClick={() => setIsBooked(false)}
-                className="flex-1 py-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs sm:text-sm font-bold transition-all cursor-pointer"
-              >
-                Close
-              </button>
-
-              <a
-                href="tel:+919876543210"
-                className="flex-1 py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
-              >
-                <PhoneCall className="w-4 h-4" />
-
-                <span>Call Support</span>
-              </a>
-
-            </div>
-
-          </div>
-        </div>
+      {showFleetModal && (
+        <FleetImagesModal
+          fleet={bus}
+          onClose={closeFleetModal}
+        />
       )}
 
+      {showQuote && (
+        <QuoteModal
+          bus={bus}
+          bookingData={bookingData}
+          onClose={() => setShowQuote(false)}
+        />
+      )}
+
+      {isBooked && (
+        <BookingConfirmation
+          bus={bus}
+          bookingData={bookingData}
+          pricingResult={pricingResult}
+          onClose={() => setIsBooked(false)}
+        />
+      )}
+    </>
+  );
+}
+
+function FleetImagesModal({ fleet, onClose }) {
+  const images = getFleetImages(fleet);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) {
+      return;
+    }
+
+    const html = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    const previousHtmlOverflow = html.style.overflow;
+    const previousHtmlOverscroll = html.style.overscrollBehavior;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyPosition = body.style.position;
+    const previousBodyTop = body.style.top;
+    const previousBodyWidth = body.style.width;
+    const previousBodyTouchAction = body.style.touchAction;
+    const previousBodyOverscroll = body.style.overscrollBehavior;
+
+    html.style.overflow = "hidden";
+    html.style.overscrollBehavior = "none";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.touchAction = "none";
+    body.style.overscrollBehavior = "none";
+
+    const preventScroll = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    window.addEventListener("wheel", preventScroll, {
+      passive: false,
+      capture: true,
+    });
+
+    window.addEventListener("touchmove", preventScroll, {
+      passive: false,
+      capture: true,
+    });
+
+    return () => {
+      window.removeEventListener("wheel", preventScroll, true);
+      window.removeEventListener("touchmove", preventScroll, true);
+
+      html.style.overflow = previousHtmlOverflow;
+      html.style.overscrollBehavior = previousHtmlOverscroll;
+      body.style.overflow = previousBodyOverflow;
+      body.style.position = previousBodyPosition;
+      body.style.top = previousBodyTop;
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = previousBodyWidth;
+      body.style.touchAction = previousBodyTouchAction;
+      body.style.overscrollBehavior = previousBodyOverscroll;
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [mounted]);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [onClose]);
+
+  if (!mounted) {
+    return null;
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-black/60 px-3 py-3 backdrop-blur-sm sm:px-5 sm:py-5"
+      style={{
+        overscrollBehavior: "none",
+        touchAction: "none",
+      }}
+      onClick={onClose}
+      onWheel={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+      onTouchMove={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="fleet-images-title"
+        className="relative flex max-h-[calc(100dvh-24px)] w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-white shadow-[0_30px_90px_rgba(0,0,0,0.3)] sm:max-h-[calc(100dvh-40px)]"
+        onClick={(event) => event.stopPropagation()}
+        onWheel={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+        onTouchMove={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        }}
+      >
+        <div className="shrink-0 border-b border-neutral-200 px-5 py-4 sm:px-7 sm:py-5">
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+                AVAILABLE FOR YOUR GROUP
+              </p>
+
+              <h3
+                id="fleet-images-title"
+                className="mt-1 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl"
+              >
+                Bus Images
+              </h3>
+
+              <p className="mt-1.5 text-xs text-neutral-500 sm:text-sm">
+                Explore the available images of your selected coach.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close bus images"
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-all hover:bg-neutral-200 hover:text-neutral-900"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="min-h-0 flex-1 overflow-hidden p-4 sm:p-6">
+          {images.length > 0 ? (
+            <div className="grid h-full min-h-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {images.map((image, index) => (
+                <div
+                  key={`${image}-${index}`}
+                  className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
+                >
+                  <SafeFleetImage
+                    src={image}
+                    alt={`${fleet?.name || "Selected coach"} image ${index + 1}`}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    priority={index === 0}
+                    className="object-cover transition-transform duration-500 hover:scale-[1.03]"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex h-full min-h-[220px] items-center justify-center rounded-2xl bg-neutral-50">
+              <div className="text-center">
+                <ImageIcon className="mx-auto h-8 w-8 text-neutral-300" />
+                <p className="mt-3 text-sm font-bold text-neutral-900">
+                  No bus images available
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="shrink-0 border-t border-neutral-200 px-5 py-4 sm:px-6">
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full cursor-pointer rounded-xl bg-neutral-900 px-5 py-3 text-sm font-bold text-white transition-all hover:bg-neutral-800"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FleetHeroImage({ bus }) {
+  const image = getFleetImages(bus)[0];
+
+  return (
+    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
+      <SafeFleetImage
+        src={image}
+        alt={bus?.name || "Bus Mantra coach"}
+        sizes="(max-width: 1024px) 100vw, 58vw"
+        priority
+        className="object-cover"
+      />
+    </div>
+  );
+}
+
+function Specification({ label, value }) {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-white p-3">
+      <span className="block text-[9px] font-bold uppercase tracking-wider text-neutral-400">
+        {label}
+      </span>
+
+      <span className="mt-1 block text-xs font-bold text-neutral-900">
+        {value || "Included"}
+      </span>
+    </div>
+  );
+}
+
+function Assurance({
+  icon: Icon,
+  title,
+  description,
+}) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange" />
+
+      <div>
+        <strong className="mb-0.5 block font-bold text-white">
+          {title}
+        </strong>
+
+        <span>{description}</span>
+      </div>
+    </div>
+  );
+}
+
+function MiniAssurance({
+  icon: Icon,
+  title,
+}) {
+  return (
+    <div className="flex items-center gap-2.5 text-xs font-semibold text-neutral-200">
+      <Icon className="h-4 w-4 text-brand-orange" />
+      {title}
+    </div>
+  );
+}
+
+function FormField({
+  id,
+  icon: Icon,
+  label,
+  value,
+  placeholder,
+  onChange,
+}) {
+  return (
+    <div className="rounded-xl bg-[#f4f5f7] px-4 py-3 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30">
+      <label
+        htmlFor={id}
+        className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400"
+      >
+        <Icon className="h-3.5 w-3.5 text-brand-orange" />
+        {label}
+      </label>
+
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="w-full bg-transparent text-xs font-semibold text-neutral-800 placeholder:text-neutral-400 outline-none sm:text-sm"
+      />
+    </div>
+  );
+}
+
+function Benefit({ text }) {
+  return (
+    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-neutral-600 sm:text-[11px]">
+      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+      <span>{text}</span>
+    </div>
+  );
+}
+
+function QuoteModal({
+  bus,
+  bookingData,
+  onClose,
+}) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl sm:rounded-3xl sm:p-8"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-5 top-5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+          REQUEST A QUOTE
+        </span>
+
+        <h3 className="pr-10 text-2xl font-black text-neutral-900">
+          Get a custom quote
+        </h3>
+
+        <p className="mt-2 text-sm leading-6 text-neutral-500">
+          Our trip coordinator will review your
+          route and contact you regarding the{" "}
+          {bus.name}.
+        </p>
+
+        <div className="mt-6 space-y-3">
+          <div className="rounded-xl bg-[#f4f5f7] p-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              CONTACT
+            </span>
+
+            <p className="mt-1 text-sm font-bold text-neutral-900">
+              {bookingData.fullName || "Your Name"}
+            </p>
+
+            <p className="mt-1 text-xs text-neutral-500">
+              {bookingData.mobile || "Mobile number"}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-[#f4f5f7] p-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              ROUTE
+            </span>
+
+            <p className="mt-1 text-sm font-bold text-neutral-900">
+              {bookingData.pickupPoint || "Pickup point"}
+            </p>
+
+            <p className="mt-1 text-xs text-neutral-500">
+              {Array.isArray(bookingData.destination)
+                ? bookingData.destination.join(", ")
+                : bookingData.destination || "Destination"}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 flex gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 cursor-pointer rounded-xl bg-neutral-100 py-3 text-sm font-bold text-neutral-800 hover:bg-neutral-200"
+          >
+            Close
+          </button>
+
+          <a
+            href="tel:+919876543210"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-orange py-3 text-sm font-bold text-white hover:bg-brand-orange-hover"
+          >
+            <PhoneCall className="h-4 w-4" />
+            Call Us
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BookingConfirmation({
+  bus,
+  bookingData,
+  pricingResult,
+  onClose,
+}) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl sm:p-8">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+          <CheckCircle2 className="h-8 w-8" />
+        </div>
+
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-brand-orange">
+          RESERVATION REQUEST RECEIVED
+        </span>
+
+        <h3 className="text-xl font-black text-neutral-900 sm:text-2xl">
+          Your Bus Is Reserved!
+        </h3>
+
+        <p className="mt-2 text-sm leading-6 text-neutral-600">
+          Our fleet operations team will contact
+          you to confirm your journey.
+        </p>
+
+        <div className="mt-5 space-y-2 rounded-xl bg-neutral-50 p-4 text-left text-xs">
+          <div className="flex justify-between gap-4">
+            <span className="text-neutral-500">
+              Coach
+            </span>
+
+            <strong className="text-right text-neutral-900">
+              {bus.name}
+            </strong>
+          </div>
+
+          <div className="flex justify-between gap-4">
+            <span className="text-neutral-500">
+              Pickup
+            </span>
+
+            <strong className="text-right text-neutral-900">
+              {bookingData.pickupPoint || "Not specified"}
+            </strong>
+          </div>
+
+          <div className="flex justify-between gap-4">
+            <span className="text-neutral-500">
+              Estimated Fare
+            </span>
+
+            <strong className="text-right text-brand-orange">
+              {pricingResult?.formattedTotalPrice || "₹0"}
+            </strong>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-6 w-full cursor-pointer rounded-xl bg-neutral-900 py-3.5 text-sm font-bold text-white hover:bg-neutral-800"
+        >
+          Close
+        </button>
+      </div>
     </div>
   );
 }

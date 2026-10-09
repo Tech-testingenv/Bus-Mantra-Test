@@ -3,23 +3,24 @@
 import { use, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import {
   ArrowLeft,
   ArrowRight,
   CalendarDays,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   MapPin,
   Phone,
-  CheckCircle2,
-  ShieldCheck,
+  Users,
+  X,
 } from "lucide-react";
 
-import { destinationsData } from "@/data/data";
-
-/* =========================================================
-   DESTINATION SLUG PAGE
-========================================================= */
+import {
+  destinationsData,
+  fleetTypesData,
+} from "@/data/data";
 
 export default function DestinationSlugPage({ params }) {
   const { slug } = use(params);
@@ -30,7 +31,7 @@ export default function DestinationSlugPage({ params }) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-wider text-brand-orange">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-brand-orange">
             Destination not found
           </p>
 
@@ -40,7 +41,7 @@ export default function DestinationSlugPage({ params }) {
 
           <Link
             href="/destinations"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-orange px-5 py-3 text-sm font-bold text-white"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-orange px-5 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to destinations
@@ -52,10 +53,6 @@ export default function DestinationSlugPage({ params }) {
 
   return (
     <main className="relative mx-auto w-full max-w-360 px-4 pb-12 pt-20 sm:px-6 sm:pb-16 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-24">
-      {/* =====================================================
-          BACK
-      ===================================================== */}
-
       <div className="mb-5">
         <Link
           href="/destinations"
@@ -66,38 +63,11 @@ export default function DestinationSlugPage({ params }) {
         </Link>
       </div>
 
-      {/* =====================================================
-          MAIN TWO COLUMN LAYOUT
-
-          IMPORTANT:
-          Booking form and all left-side content are inside
-          the SAME grid.
-
-          This allows sticky form to remain visible while
-          scrolling through popular places.
-      ===================================================== */}
-
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-9 xl:gap-10">
-        {/* ===================================================
-            LEFT CONTENT
-        =================================================== */}
-
         <div className="lg:col-span-7">
-          {/* =================================================
-              DESTINATION HEADER
-          ================================================= */}
-
           <DestinationHeader destination={destination} />
 
-          {/* =================================================
-              IMAGE CAROUSEL
-          ================================================= */}
-
           <DestinationGallery destination={destination} />
-
-          {/* =================================================
-              SMALL INFO
-          ================================================= */}
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -120,27 +90,12 @@ export default function DestinationSlugPage({ params }) {
             />
           </div>
 
-          {/* =================================================
-              POPULAR PLACES
-
-              This is INSIDE the left column.
-
-              Therefore the right booking form remains sticky
-              while these cards are being scrolled.
-          ================================================= */}
-
           <div className="mt-10 sm:mt-12 lg:mt-14">
             <PopularPlaces
               places={destination.popularPlaces || []}
             />
           </div>
         </div>
-
-        {/* ===================================================
-            RIGHT SIDE BOOKING FORM
-
-            STICKY UNTIL THE END OF THE MAIN GRID
-        =================================================== */}
 
         <div className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start">
           <DestinationBookingForm
@@ -151,10 +106,6 @@ export default function DestinationSlugPage({ params }) {
     </main>
   );
 }
-
-/* =========================================================
-   DESTINATION HEADER
-========================================================= */
 
 function DestinationHeader({ destination }) {
   return (
@@ -172,7 +123,6 @@ function DestinationHeader({ destination }) {
       {destination.route && (
         <div className="mt-2 flex items-center gap-2 text-sm font-medium text-neutral-500">
           <MapPin className="h-4 w-4 text-brand-orange" />
-
           {destination.route}
         </div>
       )}
@@ -185,10 +135,6 @@ function DestinationHeader({ destination }) {
     </div>
   );
 }
-
-/* =========================================================
-   DESTINATION GALLERY
-========================================================= */
 
 function DestinationGallery({ destination }) {
   const gallery = useMemo(() => {
@@ -227,7 +173,9 @@ function DestinationGallery({ destination }) {
   };
 
   const nextImage = () => {
-    if (gallery.length <= 1) return;
+    if (gallery.length <= 1) {
+      return;
+    }
 
     const next =
       activeImage === gallery.length - 1
@@ -238,7 +186,9 @@ function DestinationGallery({ destination }) {
   };
 
   const previousImage = () => {
-    if (gallery.length <= 1) return;
+    if (gallery.length <= 1) {
+      return;
+    }
 
     const previous =
       activeImage === 0
@@ -250,10 +200,6 @@ function DestinationGallery({ destination }) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-200/80 bg-[#f0f2f5] shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
-      {/* ===================================================
-          MAIN IMAGE
-      =================================================== */}
-
       <div className="relative aspect-[16/9] w-full overflow-hidden">
         {gallery.length > 0 ? (
           <Image
@@ -262,11 +208,7 @@ function DestinationGallery({ destination }) {
             fill
             priority
             quality={100}
-            sizes="
-              (max-width: 640px) 100vw,
-              (max-width: 1024px) 70vw,
-              58vw
-            "
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 58vw"
             className={`object-cover transition-all duration-300 ${
               changing
                 ? "scale-[1.015] opacity-60"
@@ -278,10 +220,6 @@ function DestinationGallery({ destination }) {
             Image unavailable
           </div>
         )}
-
-        {/* =================================================
-            CAROUSEL ARROWS
-        ================================================= */}
 
         {gallery.length > 1 && (
           <>
@@ -303,18 +241,12 @@ function DestinationGallery({ destination }) {
               <ChevronRight className="h-4 w-4" />
             </button>
 
-            {/* COUNTER */}
-
             <div className="absolute bottom-3 right-3 z-10 rounded-full bg-black/65 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm sm:bottom-4 sm:right-4">
               {activeImage + 1}/{gallery.length}
             </div>
           </>
         )}
       </div>
-
-      {/* ===================================================
-          THUMBNAILS
-      =================================================== */}
 
       {gallery.length > 1 && (
         <div className="flex gap-2 overflow-x-auto bg-white p-2.5 sm:p-3">
@@ -345,10 +277,6 @@ function DestinationGallery({ destination }) {
   );
 }
 
-/* =========================================================
-   QUICK INFO
-========================================================= */
-
 function QuickInfo({
   label,
   value,
@@ -374,10 +302,6 @@ function QuickInfo({
   );
 }
 
-/* =========================================================
-   BOOKING FORM
-========================================================= */
-
 function DestinationBookingForm({ destination }) {
   const [formData, setFormData] = useState({
     pickup: "Delhi NCR",
@@ -385,11 +309,14 @@ function DestinationBookingForm({ destination }) {
     departureTime: "07:00",
     returnDate: "",
     returnTime: "21:00",
+    passengers: "",
     leadPassenger: "",
     mobile: "",
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [showBusImages, setShowBusImages] = useState(false);
+  const [quoteRequested, setQuoteRequested] = useState(false);
 
   const estimatedKm =
     destination?.estimatedKm ?? 560;
@@ -409,7 +336,6 @@ function DestinationBookingForm({ destination }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     setSubmitted(true);
   };
 
@@ -419,11 +345,6 @@ function DestinationBookingForm({ destination }) {
         onSubmit={handleSubmit}
         className="w-full rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
       >
-        {/* =================================================
-            HEADER
-            NO ₹/KM BADGE
-        ================================================= */}
-
         <div className="border-b border-neutral-100 pb-4">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
             CUSTOM ROUTE & FARE
@@ -435,10 +356,6 @@ function DestinationBookingForm({ destination }) {
         </div>
 
         <div className="mt-5 space-y-3">
-          {/* =================================================
-              PICKUP
-          ================================================= */}
-
           <div className="rounded-xl bg-[#f1f2f4] px-4 py-3.5">
             <div className="flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5 text-brand-orange" />
@@ -463,15 +380,10 @@ function DestinationBookingForm({ destination }) {
             />
           </div>
 
-          {/* =================================================
-              DESTINATION
-          ================================================= */}
-
           <div>
             <div className="mb-1.5 flex items-center justify-between">
               <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
                 <MapPin className="h-3.5 w-3.5 text-brand-orange" />
-
                 DESTINATION(S)
               </label>
 
@@ -499,10 +411,6 @@ function DestinationBookingForm({ destination }) {
               <ChevronRight className="ml-auto h-4 w-4 shrink-0 rotate-90 text-neutral-400" />
             </div>
           </div>
-
-          {/* =================================================
-              DEPARTURE + RETURN
-          ================================================= */}
 
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             <DateTimeField
@@ -542,13 +450,31 @@ function DestinationBookingForm({ destination }) {
             />
           </div>
 
-          {/* =================================================
-              NO. OF PASSENGERS REMOVED
-          ================================================= */}
+          <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+            <div className="flex items-center gap-1.5">
+              <Users className="h-3.5 w-3.5 text-brand-orange" />
 
-          {/* =================================================
-              LEAD PASSENGER + MOBILE
-          ================================================= */}
+              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+                NO. OF PASSENGERS
+              </span>
+            </div>
+
+            <input
+              type="number"
+              min="1"
+              max="60"
+              value={formData.passengers}
+              onChange={(event) =>
+                updateField(
+                  "passengers",
+                  event.target.value
+                )
+              }
+              placeholder="e.g. 19"
+              className="mt-1 w-full bg-transparent text-xs font-bold text-neutral-800 outline-none placeholder:text-neutral-400"
+              required
+            />
+          </div>
 
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             <FormInput
@@ -583,10 +509,6 @@ function DestinationBookingForm({ destination }) {
             />
           </div>
 
-          {/* =================================================
-              ESTIMATED KM + TOTAL FARE
-          ================================================= */}
-
           <div className="grid grid-cols-1 gap-2.5 pt-1 sm:grid-cols-2">
             <div className="rounded-xl bg-[#f7f8f9] px-3.5 py-3.5">
               <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
@@ -620,10 +542,6 @@ function DestinationBookingForm({ destination }) {
             </div>
           </div>
 
-          {/* =================================================
-              ROUTE PATH
-          ================================================= */}
-
           <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3">
             <div className="flex items-start gap-2 text-[10px] leading-5 text-neutral-600">
               <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand-orange" />
@@ -640,52 +558,85 @@ function DestinationBookingForm({ destination }) {
             </div>
           </div>
 
-          {/* =================================================
-              BENEFITS
-          ================================================= */}
-
-          <div className="grid grid-cols-2 gap-x-5 gap-y-2 px-0.5 pt-1">
-            <Benefit
-              icon={<CheckCircle2 />}
-              text="Full Bus Charter"
-            />
-
-            <Benefit
-              icon={<CheckCircle2 />}
-              text="Verified Chauffeur"
-            />
-
-            <Benefit
-              icon={<CheckCircle2 />}
-              text="Fuel & GST Included"
-            />
-
-            <Benefit
-              icon={<ShieldCheck />}
-              text="24/7 Dispatch Control"
-            />
+          <div className="grid grid-cols-2 gap-x-5 gap-y-2 px-0.5 pt-1 sm:grid-cols-3">
+            <Benefit text="State Tax" />
+            <Benefit text="Toll Tax" />
+            <Benefit text="Parking" />
+            <Benefit text="Driver Allowance" />
+            <Benefit text="Fuel & GST Included" />
           </div>
 
-          {/* =================================================
-              CONFIRM
-          ================================================= */}
+          <div className="mt-1 grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              onClick={() => setShowBusImages(true)}
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-brand-orange/30 bg-white px-2 text-[10px] font-bold leading-tight text-brand-orange transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-50 hover:shadow-md sm:px-3 sm:text-xs"
+            >
+              View Bus Images
+            </button>
 
-          <button
-            type="submit"
-            className="group mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-brand-orange px-5 py-3.5 text-sm font-bold text-white shadow-[0_6px_14px_rgba(245,130,32,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_25px_rgba(245,130,32,0.25)] active:translate-y-0"
-          >
-            <span>
-              Confirm Booking Request
-            </span>
+            <button
+              type="submit"
+              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-brand-orange px-2 text-[10px] font-bold leading-tight text-white shadow-[0_6px_14px_rgba(245,130,32,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_25px_rgba(245,130,32,0.25)] active:translate-y-0 sm:px-3 sm:text-xs"
+            >
+              <span>Confirm Booking</span>
 
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+              <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1 sm:h-4 sm:w-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setQuoteRequested(true)}
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-neutral-300 bg-neutral-900 px-2 text-[10px] font-bold leading-tight text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 hover:shadow-md sm:px-3 sm:text-xs"
+            >
+              Request a Quote
+            </button>
+          </div>
         </div>
       </form>
 
-      {/* =====================================================
-          CONFIRMATION MODAL
-      ===================================================== */}
+      {showBusImages && (
+        <BusImagesModal
+          passengers={Number(formData.passengers) || 0}
+          onClose={() => setShowBusImages(false)}
+        />
+      )}
+
+      {quoteRequested && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-brand-orange">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+
+            <h3 className="mt-5 text-2xl font-black tracking-tight text-neutral-900">
+              Quote request ready
+            </h3>
+
+            <p className="mt-3 text-sm leading-6 text-neutral-500">
+              We have your request for{" "}
+              <span className="font-semibold text-neutral-800">
+                {formData.passengers || "your group"}
+              </span>{" "}
+              passengers travelling to{" "}
+              <span className="font-semibold text-neutral-800">
+                {destinationName}
+              </span>
+              . Our team can confirm the final quote and vehicle availability.
+            </p>
+
+            <button
+              type="button"
+              onClick={() =>
+                setQuoteRequested(false)
+              }
+              className="mt-6 w-full rounded-xl bg-brand-orange px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {submitted && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
@@ -703,8 +654,7 @@ function DestinationBookingForm({ destination }) {
               <span className="font-semibold text-neutral-800">
                 {destinationName}
               </span>
-              . Our team will contact you shortly to
-              confirm availability and booking details.
+              . Our team will contact you shortly to confirm availability and booking details.
             </p>
 
             <div className="mt-6 flex gap-3">
@@ -731,9 +681,221 @@ function DestinationBookingForm({ destination }) {
   );
 }
 
-/* =========================================================
-   DATE TIME FIELD
-========================================================= */
+function getFleetImages(bus) {
+  const images = [
+    ...(Array.isArray(bus?.gallery)
+      ? bus.gallery
+      : []),
+
+    ...(Array.isArray(bus?.images)
+      ? bus.images
+      : []),
+
+    ...(Array.isArray(bus?.imageGallery)
+      ? bus.imageGallery
+      : []),
+
+    ...(bus?.image
+      ? [bus.image]
+      : []),
+  ].filter(Boolean);
+
+  return [...new Set(images)];
+}
+
+function BusImagesModal({
+  passengers,
+  onClose,
+}) {
+  const matchingBuses = fleetTypesData.filter(
+    (bus) => {
+      const minSeats = Number(bus?.minSeats);
+      const maxSeats = Number(bus?.maxSeats);
+
+      if (
+        Number.isFinite(minSeats) &&
+        Number.isFinite(maxSeats)
+      ) {
+        return (
+          passengers >= minSeats &&
+          passengers <= maxSeats
+        );
+      }
+
+      return true;
+    }
+  );
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener(
+      "keydown",
+      handleEscape
+    );
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[110] flex h-screen w-screen items-center justify-center bg-black/60 px-3 py-4 backdrop-blur-sm sm:px-5"
+      onClick={onClose}
+    >
+      <div
+        className="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl bg-white shadow-[0_30px_90px_rgba(0,0,0,0.28)]"
+        onClick={(event) =>
+          event.stopPropagation()
+        }
+      >
+        <div className="shrink-0 border-b border-neutral-200 px-5 py-4 sm:px-7 sm:py-5">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+                AVAILABLE FOR YOUR GROUP
+              </p>
+
+              <h3 className="mt-1 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl">
+                Bus Images
+              </h3>
+
+              <p className="mt-1.5 text-xs text-neutral-500 sm:text-sm">
+                {passengers > 0
+                  ? `Showing all available images for suitable fleets for ${passengers} passengers.`
+                  : "Enter passengers to see suitable fleets."}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close bus images"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-all hover:bg-neutral-200 hover:text-neutral-900"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
+          {passengers < 1 ? (
+            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-neutral-50">
+              <div className="text-center">
+                <Users className="mx-auto h-8 w-8 text-brand-orange" />
+
+                <p className="mt-3 text-sm font-bold text-neutral-900">
+                  Enter the number of passengers first
+                </p>
+
+                <p className="mt-1 text-xs text-neutral-500">
+                  Enter your group size in the booking form.
+                </p>
+              </div>
+            </div>
+          ) : matchingBuses.length > 0 ? (
+            <div className="space-y-8">
+              {matchingBuses.map((bus) => {
+                const busImages =
+                  getFleetImages(bus);
+
+                const busSlug =
+                  bus?.slug || bus?.id;
+
+                if (!busImages.length) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={
+                      busSlug ||
+                      bus?.name
+                    }
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-lg font-black tracking-tight text-neutral-900 sm:text-xl">
+                        {bus?.name || "Fleet"}
+                      </h4>
+
+                      <span className="shrink-0 rounded-full bg-neutral-100 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-neutral-500">
+                        {busImages.length}{" "}
+                        {busImages.length === 1
+                          ? "Image"
+                          : "Images"}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {busImages.map(
+                        (image, imageIndex) => (
+                          <Link
+                            key={`${image}-${imageIndex}`}
+                            href={
+                              busSlug
+                                ? `/fleets/${busSlug}`
+                                : "/fleets"
+                            }
+                            onClick={onClose}
+                            className="group relative block overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
+                          >
+                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                              <Image
+                                src={image}
+                                alt={
+                                  bus?.name ||
+                                  "Bus"
+                                }
+                                fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                              />
+                            </div>
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-neutral-50">
+              <div className="text-center">
+                <p className="text-sm font-bold text-neutral-900">
+                  No matching bus image found
+                </p>
+
+                <p className="mt-1 text-xs text-neutral-500">
+                  Request a quote for a custom vehicle arrangement.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="shrink-0 border-t border-neutral-200 px-4 py-4 sm:px-6 sm:py-5">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-14 w-full items-center justify-center rounded-xl bg-neutral-900 text-sm font-bold text-white transition-all duration-200 hover:bg-neutral-800 sm:h-[60px] sm:text-base"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function DateTimeField({
   label,
@@ -757,7 +919,9 @@ function DateTimeField({
           type="date"
           value={date}
           onChange={(event) =>
-            onDateChange(event.target.value)
+            onDateChange(
+              event.target.value
+            )
           }
           className="min-w-0 flex-1 bg-transparent text-[11px] font-bold text-neutral-800 outline-none"
           required={label === "DEPARTURE"}
@@ -771,7 +935,9 @@ function DateTimeField({
           type="time"
           value={time}
           onChange={(event) =>
-            onTimeChange(event.target.value)
+            onTimeChange(
+              event.target.value
+            )
           }
           className="w-[74px] bg-transparent text-[11px] font-bold text-neutral-800 outline-none"
         />
@@ -779,10 +945,6 @@ function DateTimeField({
     </div>
   );
 }
-
-/* =========================================================
-   FORM INPUT
-========================================================= */
 
 function FormInput({
   label,
@@ -809,7 +971,9 @@ function FormInput({
         type={type}
         value={value}
         onChange={(event) =>
-          onChange(event.target.value)
+          onChange(
+            event.target.value
+          )
         }
         placeholder={placeholder}
         required={required}
@@ -819,25 +983,17 @@ function FormInput({
   );
 }
 
-/* =========================================================
-   BENEFIT
-========================================================= */
-
-function Benefit({ icon, text }) {
+function Benefit({ text }) {
   return (
-    <div className="flex items-center gap-1.5 text-[9px] font-medium text-neutral-500">
-      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-emerald-500 [&>svg]:h-3.5 [&>svg]:w-3.5">
-        {icon}
+    <div className="flex items-center gap-1.5 text-[9px] font-medium text-neutral-500 sm:text-[10px]">
+      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-emerald-500">
+        <CheckCircle2 className="h-3.5 w-3.5" />
       </span>
 
       <span>{text}</span>
     </div>
   );
 }
-
-/* =========================================================
-   USER ICON
-========================================================= */
 
 function UserIcon() {
   return (
@@ -849,14 +1005,15 @@ function UserIcon() {
       className="h-3.5 w-3.5"
     >
       <path d="M20 21a8 8 0 0 0-16 0" />
-      <circle cx="12" cy="7" r="4" />
+
+      <circle
+        cx="12"
+        cy="7"
+        r="4"
+      />
     </svg>
   );
 }
-
-/* =========================================================
-   POPULAR PLACES
-========================================================= */
 
 function PopularPlaces({ places }) {
   if (!places?.length) {
@@ -865,10 +1022,6 @@ function PopularPlaces({ places }) {
 
   return (
     <section className="w-full border-t border-neutral-200 pt-8 sm:pt-10">
-      {/* =================================================
-          SECTION HEADER
-      ================================================= */}
-
       <div className="mb-5 sm:mb-6">
         <span className="inline-flex rounded-full bg-neutral-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-600">
           EXPLORE THE DESTINATION
@@ -879,18 +1032,11 @@ function PopularPlaces({ places }) {
         </h2>
 
         <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500">
-          Discover some of the places your group can
-          explore during the journey.
+          Discover some of the places your group can explore during the journey.
         </p>
       </div>
 
-      {/* =================================================
-          CARDS
-
-          NARROWER + TALLER
-      ================================================= */}
-
-      <div className="w-full space-y-4">
+      <div className="w-full space-y-5 sm:space-y-6">
         {places.map((place, index) => (
           <PopularPlaceCard
             key={place.id || place.name}
@@ -903,30 +1049,32 @@ function PopularPlaces({ places }) {
   );
 }
 
-/* =========================================================
-   POPULAR PLACE CARD
-========================================================= */
-
-function PopularPlaceCard({ place, index }) {
+function PopularPlaceCard({
+  place,
+  index,
+}) {
   const cardRef = useRef(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const element = cardRef.current;
 
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.12,
         }
-      },
-      {
-        threshold: 0.12,
-      }
-    );
+      );
 
     observer.observe(element);
 
@@ -939,32 +1087,21 @@ function PopularPlaceCard({ place, index }) {
       style={{
         transitionDelay: `${index * 120}ms`,
       }}
-      className={`group w-[88%] overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-[0_3px_14px_rgba(0,0,0,0.035)] transition-all duration-700 sm:w-[78%] lg:w-[82%] xl:w-[78%] ${
+      className={`group w-full overflow-hidden rounded-[22px] border border-neutral-200/80 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${
         visible
           ? "translate-y-0 opacity-100"
           : "translate-y-8 opacity-0"
-      } hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_12px_28px_rgba(0,0,0,0.075)]`}
+      } hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
     >
-      {/* =================================================
-          TALLER / NARROWER CARD
-      ================================================= */}
-
-      <div className="grid grid-cols-[105px_1fr] sm:grid-cols-[125px_1fr]">
-        {/* =================================================
-            IMAGE
-        ================================================= */}
-
-        <div className="relative h-[135px] overflow-hidden bg-[#f0f2f5] sm:h-[150px]">
+      <div className="grid min-h-[270px] grid-cols-[165px_1fr] items-stretch sm:min-h-[285px] sm:grid-cols-[185px_1fr] lg:min-h-[300px] lg:grid-cols-[205px_1fr]">
+        <div className="relative min-h-[270px] overflow-hidden bg-[#f0f2f5] sm:min-h-[285px] lg:min-h-[300px]">
           {place.image ? (
             <Image
               src={place.image}
               alt={place.name}
               fill
               quality={100}
-              sizes="
-                (max-width: 640px) 105px,
-                125px
-              "
+              sizes="(max-width: 640px) 165px, (max-width: 1024px) 185px, 205px"
               className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
             />
           ) : (
@@ -974,24 +1111,46 @@ function PopularPlaceCard({ place, index }) {
           )}
         </div>
 
-        {/* =================================================
-            CONTENT
-        ================================================= */}
-
-        <div className="flex min-h-[135px] flex-col justify-center p-4 sm:min-h-[150px] sm:p-5">
-          <h3 className="text-sm font-black tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-brand-orange sm:text-base">
+        <div className="flex min-w-0 flex-col justify-center p-5 sm:p-6 lg:p-7">
+          <h3 className="text-base font-black tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-brand-orange sm:text-lg lg:text-xl">
             {place.name}
           </h3>
 
-          <p className="mt-2 line-clamp-4 text-[10px] leading-[1.65] text-neutral-500 sm:text-[11px]">
-            {place.description}
-          </p>
+          {place.description && (
+            <p className="mt-3 max-w-3xl text-[11px] leading-6 text-neutral-600 sm:text-[12px] sm:leading-7 lg:text-[13px]">
+              {place.description}
+            </p>
+          )}
 
-          <div className="mt-3 flex items-center gap-2 text-[9px] font-bold text-neutral-700 transition-colors duration-300 group-hover:text-brand-orange sm:text-[10px]">
+          {Array.isArray(
+            place.highlights
+          ) &&
+            place.highlights.length > 0 && (
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-2.5">
+                {place.highlights.map(
+                  (highlight) => (
+                    <li
+                      key={highlight}
+                      className="flex items-start gap-2 text-[9px] font-medium leading-5 text-neutral-600 sm:text-[10px]"
+                    >
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-orange-50 text-brand-orange">
+                        <CheckCircle2 className="h-2.5 w-2.5" />
+                      </span>
+
+                      <span>
+                        {highlight}
+                      </span>
+                    </li>
+                  )
+                )}
+              </ul>
+            )}
+
+          <div className="mt-5 flex items-center gap-2 text-[10px] font-bold text-neutral-700 transition-colors duration-300 group-hover:text-brand-orange sm:text-[11px]">
             Explore
 
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 group-hover:bg-orange-50">
-              <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 group-hover:bg-orange-50">
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
             </span>
           </div>
         </div>

@@ -20,11 +20,13 @@ import {
 import PageHero from "@/components/common/pageHero";
 import BookingForm from "@/components/hero/bookingForm";
 import ServiceCard from "@/components/services/serviceCard";
+import FAQSection from "@/components/common/faq";
 
 import {
   servicesPageHeroData,
   servicesPageSectionData,
   featuredServiceData,
+  servicesFaqData,
 } from "@/data/data";
 
 export const metadata = {
@@ -43,23 +45,14 @@ export default function ServicesPage() {
   return (
     <div className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-24 pb-12 sm:pb-16 lg:pb-20">
 
-      {/* ==================================================
-          HERO
-      ================================================== */}
-
       <PageHero data={servicesPageHeroData} />
 
-      {/* ==================================================
-          BOOKING FORM
-      ================================================== */}
-
-      <div className="mt-8 sm:mt-10 lg:mt-12 w-full">
+      <div
+        id="booking-form"
+        className="mt-8 w-full scroll-mt-24 sm:mt-10 lg:mt-12"
+      >
         <BookingForm />
       </div>
-
-      {/* ==================================================
-          SERVICES
-      ================================================== */}
 
       <section
         id="services"
@@ -82,6 +75,7 @@ export default function ServicesPage() {
               {servicesPageSectionData.description}
             </p>
           </div>
+
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
@@ -93,10 +87,6 @@ export default function ServicesPage() {
           ))}
         </div>
       </section>
-
-      {/* ==================================================
-          JOURNEY INTRO
-      ================================================== */}
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
@@ -131,6 +121,7 @@ export default function ServicesPage() {
                 className="w-4 h-4 text-brand-orange transition-transform duration-300 group-hover:translate-x-1"
               />
             </Link>
+
           </div>
 
           <div className="lg:col-span-7">
@@ -169,7 +160,9 @@ export default function ServicesPage() {
                   </h3>
 
                 </div>
+
               </div>
+
             </div>
 
             <div className="grid grid-cols-3 gap-3 sm:gap-4 mt-4">
@@ -193,13 +186,12 @@ export default function ServicesPage() {
               />
 
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ==================================================
-          VISUAL SERVICE SHOWCASE
-      ================================================== */}
+          </div>
+
+        </div>
+
+      </section>
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
@@ -211,7 +203,9 @@ export default function ServicesPage() {
 
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-neutral-900 tracking-tight leading-[1.1]">
             One service for every
-            <span className="text-brand-orange"> kind of journey.</span>
+            <span className="text-brand-orange">
+              {" "}kind of journey.
+            </span>
           </h2>
 
           <p className="text-base sm:text-lg text-neutral-500 leading-relaxed mt-3 max-w-2xl">
@@ -223,18 +217,14 @@ export default function ServicesPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
 
-          {/* Corporate */}
-
           <EditorialService
             className="lg:col-span-7"
             image="/images/services/corporate-india.jpg"
             title="Corporate Travel"
             description="Professional group transportation for meetings, conferences, teams and business events."
             icon={Briefcase}
-            href="/fleets"
+            href="/services/corporate-travel"
           />
-
-          {/* Events */}
 
           <EditorialService
             className="lg:col-span-5"
@@ -242,10 +232,8 @@ export default function ServicesPage() {
             title="Events & Weddings"
             description="Coordinated transportation for celebrations, weddings and large gatherings."
             icon={Calendar}
-            href="/fleets"
+            href="/services/events-weddings"
           />
-
-          {/* School */}
 
           <EditorialService
             className="lg:col-span-5"
@@ -253,10 +241,8 @@ export default function ServicesPage() {
             title="School Trips"
             description="Comfortable and organised transportation for educational journeys and excursions."
             icon={GraduationCap}
-            href="/fleets"
+            href="/services/school-trips"
           />
-
-          {/* Airport */}
 
           <EditorialService
             className="lg:col-span-7"
@@ -264,15 +250,12 @@ export default function ServicesPage() {
             title="Airport Transfers"
             description="Smooth group pickup and drop-off at airports across your journey."
             icon={Plane}
-            href="/fleets"
+            href="/services/airport-transfers"
           />
 
         </div>
-      </section>
 
-      {/* ==================================================
-          HOW IT WORKS
-      ================================================== */}
+      </section>
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
@@ -325,12 +308,10 @@ export default function ServicesPage() {
             />
 
           </div>
-        </div>
-      </section>
 
-      {/* ==================================================
-          FLEET CONNECTION
-      ================================================== */}
+        </div>
+
+      </section>
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
@@ -413,12 +394,10 @@ export default function ServicesPage() {
             </div>
 
           </div>
-        </div>
-      </section>
 
-      {/* ==================================================
-          FEATURED SERVICE
-      ================================================== */}
+        </div>
+
+      </section>
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
@@ -474,6 +453,7 @@ export default function ServicesPage() {
                           {point.description}
                         </p>
                       </div>
+
                     </div>
                   );
                 })}
@@ -547,102 +527,16 @@ export default function ServicesPage() {
             </div>
 
           </div>
+
         </div>
+
       </section>
 
-      {/* ==================================================
-          FINAL CTA
-      ================================================== */}
-
-      <section className="relative w-full py-14 sm:py-18 lg:py-24">
-
-        <div className="relative overflow-hidden rounded-3xl sm:rounded-[32px] bg-[#f0f2f5] border border-neutral-200/80">
-
-          <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-orange-100/50 blur-3xl" />
-
-          <div className="relative z-10 px-6 py-14 sm:px-10 sm:py-18 lg:px-16 lg:py-22 text-center">
-
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-neutral-200 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-5">
-              READY WHEN YOU ARE
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 tracking-tight leading-[1.08]">
-              Ready to move
-              <span className="text-brand-orange">
-                {" "}your group?
-              </span>
-            </h2>
-
-            <p className="text-sm sm:text-base text-neutral-500 leading-relaxed max-w-xl mx-auto mt-4">
-              Tell us where you're going and what your group needs.
-              We'll help you plan the journey.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8">
-
-              <Link
-                href="#booking-form"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  px-6
-                  py-3.5
-                  rounded-xl
-                  bg-neutral-900
-                  hover:bg-neutral-800
-                  text-white
-                  text-sm
-                  font-bold
-                  transition-all
-                  group
-                "
-              >
-                <span>Plan Your Journey</span>
-
-                <ArrowRight
-                  className="w-4 h-4 text-brand-orange transition-transform duration-300 group-hover:translate-x-1"
-                />
-              </Link>
-
-              <Link
-                href="/fleets"
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  px-6
-                  py-3.5
-                  rounded-xl
-                  bg-white
-                  border
-                  border-neutral-200
-                  hover:border-neutral-300
-                  text-neutral-900
-                  text-sm
-                  font-bold
-                  transition-all
-                "
-              >
-                Explore Fleet
-              </Link>
-
-            </div>
-
-          </div>
-        </div>
-      </section>
+      <FAQSection data={servicesFaqData} />
 
     </div>
   );
 }
-
-
-/* ============================================================
-   JOURNEY CARD
-============================================================ */
 
 function JourneyCard({
   icon: Icon,
@@ -693,11 +587,6 @@ function JourneyCard({
     </div>
   );
 }
-
-
-/* ============================================================
-   EDITORIAL SERVICE
-============================================================ */
 
 function EditorialService({
   image,
@@ -768,14 +657,10 @@ function EditorialService({
         </div>
 
       </div>
+
     </Link>
   );
 }
-
-
-/* ============================================================
-   PROCESS CARD
-============================================================ */
 
 function ProcessCard({
   icon: Icon,
@@ -827,11 +712,6 @@ function ProcessCard({
   );
 }
 
-
-/* ============================================================
-   MINI CAPABILITY
-============================================================ */
-
 function MiniCapability({
   icon: Icon,
   title,
@@ -875,11 +755,6 @@ function MiniCapability({
     </div>
   );
 }
-
-
-/* ============================================================
-   BUS ICON
-============================================================ */
 
 function BusIcon(props) {
   return (

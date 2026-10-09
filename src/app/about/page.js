@@ -13,17 +13,15 @@ import {
 } from "lucide-react";
 
 import PageHero from "@/components/common/pageHero";
-import { aboutData } from "@/data/data";
+import BookingForm from "@/components/hero/bookingForm";
+import { aboutData, aboutFaqData } from "@/data/data";
+import FAQSection from "@/components/common/faq";
 
 export const metadata = {
   title: "About Bus Mantra - Group Travel Made Simple",
   description:
     "Learn about Bus Mantra and our approach to comfortable, reliable and well-coordinated group transportation across India.",
 };
-
-/* =========================================================
-   ICON MAPS
-========================================================= */
 
 const STAT_ICONS = {
   bus: Bus,
@@ -44,16 +42,8 @@ const FEATURE_ICONS = {
   route: Route,
 };
 
-/* =========================================================
-   ABOUT PAGE
-========================================================= */
-
 export default function AboutPage() {
   const content = aboutData;
-
-  /* =======================================================
-     HERO DATA
-  ======================================================= */
 
   const heroData = {
     eyebrow: content.eyebrow,
@@ -72,15 +62,14 @@ export default function AboutPage() {
   return (
     <div className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-24 pb-12 sm:pb-16 lg:pb-20">
 
-      {/* =====================================================
-          HERO
-      ===================================================== */}
-
       <PageHero data={heroData} />
 
-      {/* =====================================================
-          ABOUT OVERVIEW
-      ===================================================== */}
+      <div
+        id="booking-form"
+        className="mt-8 w-full scroll-mt-24 sm:mt-10 lg:mt-12"
+      >
+        <BookingForm />
+      </div>
 
       <section className="relative w-full pt-10 sm:pt-12 lg:pt-16 pb-12 sm:pb-16 lg:pb-20">
 
@@ -111,10 +100,6 @@ export default function AboutPage() {
           </div>
 
         </div>
-
-        {/* =====================================================
-            STATS
-        ===================================================== */}
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
 
@@ -190,15 +175,9 @@ export default function AboutPage() {
 
       </section>
 
-      {/* =====================================================
-          OUR STORY
-      ===================================================== */}
-
       <section className="relative w-full py-12 sm:py-16 lg:py-20">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-10 xl:gap-12 items-center">
-
-          {/* IMAGE */}
 
           <div className="w-full">
 
@@ -232,8 +211,6 @@ export default function AboutPage() {
             </div>
 
           </div>
-
-          {/* CONTENT */}
 
           <div className="flex flex-col items-start text-left lg:px-2 xl:px-5">
 
@@ -311,10 +288,6 @@ export default function AboutPage() {
 
       </section>
 
-      {/* =====================================================
-          VALUES
-      ===================================================== */}
-
       <section className="relative w-full py-12 sm:py-16 lg:py-20">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-end mb-8 sm:mb-10 lg:mb-12">
@@ -345,8 +318,6 @@ export default function AboutPage() {
 
         </div>
 
-        {/* VALUE ROWS */}
-
         <div className="w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-neutral-200/70 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]">
 
           {content.values?.map((value, index) => {
@@ -375,8 +346,6 @@ export default function AboutPage() {
                 `}
               >
 
-                {/* ICON */}
-
                 <div
                   className="
                     flex h-11 w-11
@@ -396,19 +365,13 @@ export default function AboutPage() {
                   />
                 </div>
 
-                {/* TITLE */}
-
                 <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
                   {value.title}
                 </h3>
 
-                {/* DESCRIPTION */}
-
                 <p className="text-sm leading-6 text-neutral-500 lg:text-[15px]">
                   {value.description}
                 </p>
-
-                {/* ARROW */}
 
                 <ArrowUpRight
                   size={17}
@@ -431,15 +394,9 @@ export default function AboutPage() {
 
       </section>
 
-      {/* =====================================================
-          BUS MANTRA DIFFERENCE
-      ===================================================== */}
-
       <section className="relative w-full py-12 sm:py-16 lg:py-20">
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-10 xl:gap-12 items-center">
-
-          {/* CONTENT */}
 
           <div className="flex flex-col items-start text-left order-2 lg:order-1">
 
@@ -465,8 +422,6 @@ export default function AboutPage() {
               )}
 
             </div>
-
-            {/* FEATURES */}
 
             <div className="w-full mt-6 sm:mt-7 grid gap-2">
 
@@ -531,8 +486,6 @@ export default function AboutPage() {
 
           </div>
 
-          {/* IMAGE */}
-
           <div className="w-full order-1 lg:order-2">
 
             <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#f0f2f5] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-neutral-100/90 shadow-2xs">
@@ -570,10 +523,6 @@ export default function AboutPage() {
 
       </section>
 
-      {/* =====================================================
-          OCCASIONS
-      ===================================================== */}
-
       <section className="relative w-full py-12 sm:py-16 lg:py-20">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-end mb-8 sm:mb-10 lg:mb-12">
@@ -603,8 +552,6 @@ export default function AboutPage() {
 
         </div>
 
-        {/* OCCASION CARDS */}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-7">
 
           {content.occasions?.items?.map((item) => (
@@ -625,8 +572,6 @@ export default function AboutPage() {
               "
             >
 
-              {/* IMAGE */}
-
               <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f2f5]">
 
                 <Image
@@ -640,8 +585,6 @@ export default function AboutPage() {
                     group-hover:scale-[1.035]
                   "
                 />
-
-                {/* FLOATING ARROW */}
 
                 <div className="absolute right-4 top-4 sm:right-5 sm:top-5">
 
@@ -666,8 +609,6 @@ export default function AboutPage() {
 
               </div>
 
-              {/* TEXT */}
-
               <div className="p-5 sm:p-6 lg:p-7">
 
                 <h3 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
@@ -687,6 +628,8 @@ export default function AboutPage() {
         </div>
 
       </section>
+
+      <FAQSection data={aboutFaqData} />
 
     </div>
   );

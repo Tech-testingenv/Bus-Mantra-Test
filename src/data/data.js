@@ -745,7 +745,6 @@ export const destinationsSectionData = {
   destinations: popularDestinationsData,
 };
 export const destinationsData = {
-
   /* =======================================================
      JAIPUR
   ======================================================= */
@@ -760,37 +759,64 @@ export const destinationsData = {
     route: "Delhi → Jaipur",
 
     description:
-      "Explore Jaipur with comfortable group transportation for heritage tours, weekend getaways, sightseeing and memorable journeys.",
+      "Explore Jaipur with comfortable group transportation for heritage tours, weekend getaways, sightseeing and memorable journeys. Travel together in a dedicated coach while discovering the royal architecture, historic landmarks and vibrant culture of the Pink City.",
 
     gallery: [
-      "/images/destinations/jaipur.png",
-      "/images/destinations/jaipur-2.jpg",
-      "/images/destinations/jaipur-3.jpg",
+      "/images/destinations/amber-fort.jpg",
+      "/images/destinations/city-palace-jaipur.jpg",
+      "/images/destinations/hawa-mahal.jpg",
     ],
 
     popularPlaces: [
       {
         id: "amber-fort",
+
         name: "Amber Fort",
+
         image: "/images/destinations/amber-fort.jpg",
+
         description:
-          "Discover the grand Amber Fort, known for its impressive architecture, historic courtyards and beautiful views across the surrounding hills.",
+          "Discover the grand Amber Fort, one of Jaipur's most impressive heritage landmarks. Surrounded by the Aravalli Hills, the fort combines magnificent architecture, historic courtyards and beautiful views, making it an excellent sightseeing stop for groups exploring Jaipur.",
+        
+        highlights: [
+          "Explore grand courtyards, gateways and historic palace interiors.",
+          "Enjoy beautiful views of the surrounding Aravalli Hills.",
+          "Ideal for heritage tours and group sightseeing.",
+        ],
       },
 
       {
         id: "city-palace-jaipur",
+
         name: "City Palace",
+
         image: "/images/destinations/city-palace-jaipur.jpg",
+
         description:
-          "Explore Jaipur's historic City Palace with its elegant courtyards, royal architecture and fascinating heritage that makes it a popular group sightseeing stop.",
+          "Explore Jaipur's historic City Palace, a remarkable complex showcasing royal architecture, elegant courtyards and fascinating heritage. Located in the heart of the Pink City, the palace provides visitors with an opportunity to experience Jaipur's royal history while enjoying a convenient stop during a group sightseeing itinerary.",
+
+        highlights: [
+          "Discover royal courtyards, museums and traditional architecture.",
+          "Located conveniently in the heart of Jaipur.",
+          "A great stop for history and heritage-focused group tours.",
+        ],
       },
 
       {
         id: "hawa-mahal",
+
         name: "Hawa Mahal",
+
         image: "/images/destinations/hawa-mahal.jpg",
+
         description:
-          "Visit the iconic Hawa Mahal, one of Jaipur's most recognisable landmarks and a memorable stop for groups exploring the Pink City.",
+          "Visit the iconic Hawa Mahal, one of Jaipur's most recognisable landmarks and a defining symbol of the Pink City. Its distinctive facade, historic character and central location make it an easy and memorable attraction to include in a Jaipur group travel itinerary.",
+
+        highlights: [
+          "See Jaipur's iconic pink sandstone architecture.",
+          "Explore one of the city's most photographed landmarks.",
+          "Conveniently located near Jaipur's historic city centre.",
+        ],
       },
     ],
   },
@@ -810,37 +836,64 @@ export const destinationsData = {
     route: "Delhi → Manali",
 
     description:
-      "Travel comfortably to Manali for mountain escapes, group tours, weekend trips and memorable journeys through the Himalayas.",
+      "Travel comfortably to Manali for mountain escapes, group tours, weekend trips and memorable journeys through the Himalayas. A dedicated coach allows your group to travel together while enjoying scenic mountain roads, natural landscapes and the relaxed atmosphere of this popular hill destination.",
 
     gallery: [
-      "/images/destinations/mountain.png",
-      "/images/destinations/manali-2.jpg",
-      "/images/destinations/manali-3.jpg",
+      "/images/destinations/solang-valley.jpg",
+      "/images/destinations/hadimba-temple.jpg",
+      "/images/destinations/mall-road.jpg",
     ],
 
     popularPlaces: [
       {
         id: "solang-valley",
+
         name: "Solang Valley",
+
         image: "/images/destinations/solang-valley.jpg",
+
         description:
-          "Enjoy the mountain scenery of Solang Valley, a popular destination for groups looking for beautiful landscapes and outdoor experiences.",
+          "Enjoy the spectacular mountain scenery of Solang Valley, one of the most popular attractions around Manali. Surrounded by snow-covered peaks and green mountain landscapes, the valley offers groups a refreshing outdoor experience and an opportunity to enjoy the natural beauty of Himachal Pradesh.",
+
+        highlights: [
+          "Enjoy panoramic Himalayan mountain views.",
+          "Popular for outdoor activities and scenic experiences.",
+          "A great destination for group excursions from Manali.",
+        ],
       },
 
       {
         id: "hadimba-temple",
+
         name: "Hadimba Temple",
+
         image: "/images/destinations/hadimba-temple.jpg",
+
         description:
-          "Visit the historic Hadimba Temple surrounded by tall cedar trees, offering a peaceful and memorable sightseeing experience in Manali.",
+          "Visit the historic Hadimba Temple, located among tall cedar trees in a peaceful forest setting. The temple's distinctive wooden architecture and natural surroundings make it one of Manali's most memorable cultural attractions and an excellent stop during a group sightseeing tour.",
+
+        highlights: [
+          "Experience distinctive traditional wooden architecture.",
+          "Surrounded by peaceful cedar forests.",
+          "A popular cultural and sightseeing attraction in Manali.",
+        ],
       },
 
       {
         id: "mall-road-manali",
+
         name: "Mall Road",
-        image: "/images/destinations/mall-road-manali.jpg",
+
+        image: "/images/destinations/mall-road.jpg",
+
         description:
-          "Explore Mall Road for local shopping, restaurants and a relaxed evening experience while travelling through Manali with your group.",
+          "Explore Mall Road, one of the liveliest areas in Manali, with local shops, cafés, restaurants and places to experience the town's relaxed mountain atmosphere. It is particularly suitable for groups looking to spend a comfortable evening shopping, dining and exploring together.",
+
+        highlights: [
+          "Explore local shops, cafés and restaurants.",
+          "Enjoy a relaxed evening atmosphere in central Manali.",
+          "Convenient stop for group shopping and leisure.",
+        ],
       },
     ],
   },
@@ -860,7 +913,7 @@ export const destinationsData = {
     route: "Delhi → Agra",
 
     description:
-      "Discover Agra with comfortable group transportation for heritage tours, weekend travel and sightseeing around its famous landmarks.",
+      "Discover Agra with comfortable group transportation for heritage tours, weekend travel and sightseeing around its famous landmarks. Travel together in a dedicated coach while exploring the city's remarkable Mughal architecture and some of India's most recognised historical attractions.",
 
     gallery: [
       "/images/destinations/taj.png",
@@ -871,26 +924,53 @@ export const destinationsData = {
     popularPlaces: [
       {
         id: "taj-mahal",
+
         name: "Taj Mahal",
+
         image: "/images/destinations/taj-mahal.jpg",
+
         description:
-          "Visit the iconic Taj Mahal and experience one of India's most famous heritage landmarks, making it an ideal stop for group sightseeing.",
+          "Visit the iconic Taj Mahal and experience one of India's most famous heritage landmarks. Known for its magnificent white marble architecture and historic significance, the Taj Mahal is the centrepiece of most Agra itineraries and an unforgettable stop for groups travelling together.",
+
+        highlights: [
+          "Explore one of India's most iconic architectural landmarks.",
+          "Enjoy the beautiful gardens and surrounding complex.",
+          "A must-visit attraction for Agra group sightseeing.",
+        ],
       },
 
       {
         id: "agra-fort",
+
         name: "Agra Fort",
+
         image: "/images/destinations/agra-fort.jpg",
+
         description:
-          "Explore the historic Agra Fort with its impressive architecture, grand courtyards and fascinating connection to India's Mughal heritage.",
+          "Explore the historic Agra Fort, an impressive red sandstone complex closely connected with India's Mughal heritage. Its massive walls, grand courtyards and historic buildings offer groups an opportunity to discover the architectural and cultural history of Agra.",
+
+        highlights: [
+          "Discover impressive Mughal-era architecture.",
+          "Explore grand courtyards, gates and historic buildings.",
+          "Located close to the Taj Mahal for convenient sightseeing.",
+        ],
       },
 
       {
         id: "mehtab-bagh",
+
         name: "Mehtab Bagh",
+
         image: "/images/destinations/mehtab-bagh.jpg",
+
         description:
-          "Enjoy views of the Taj Mahal from Mehtab Bagh, a peaceful garden destination that works well as part of an Agra sightseeing itinerary.",
+          "Enjoy beautiful views of the Taj Mahal from Mehtab Bagh, a peaceful garden located across the Yamuna River. The garden provides a different perspective of the monument and works well as part of a relaxed Agra sightseeing itinerary for groups.",
+
+        highlights: [
+          "Enjoy a different viewpoint of the Taj Mahal.",
+          "Relax in a peaceful garden setting.",
+          "A good addition to a complete Agra sightseeing route.",
+        ],
       },
     ],
   },
@@ -910,7 +990,7 @@ export const destinationsData = {
     route: "Delhi → Haridwar",
 
     description:
-      "Travel comfortably to Haridwar for pilgrimage trips, spiritual journeys, sightseeing and organised group travel.",
+      "Travel comfortably to Haridwar for pilgrimage trips, spiritual journeys, sightseeing and organised group travel. A dedicated coach makes it easier for families, religious groups and larger parties to travel together while exploring the city's important spiritual landmarks.",
 
     gallery: [
       "/images/destinations/screen.png",
@@ -921,26 +1001,53 @@ export const destinationsData = {
     popularPlaces: [
       {
         id: "har-ki-pauri",
+
         name: "Har Ki Pauri",
+
         image: "/images/destinations/har-ki-pauri.jpg",
+
         description:
-          "Visit Har Ki Pauri, one of Haridwar's most important spiritual landmarks and a popular destination for group pilgrimage journeys.",
+          "Visit Har Ki Pauri, one of Haridwar's most important spiritual landmarks and a major gathering point along the Ganges. The riverside atmosphere and historic significance make it an essential stop for groups travelling to Haridwar for pilgrimage and cultural experiences.",
+
+        highlights: [
+          "Visit one of Haridwar's most important spiritual landmarks.",
+          "Experience the atmosphere of the Ganges riverside.",
+          "A central stop for pilgrimage and group sightseeing.",
+        ],
       },
 
       {
         id: "ganga-aarti",
+
         name: "Ganga Aarti",
+
         image: "/images/destinations/ganga-aarti.jpg",
+
         description:
-          "Experience the atmosphere of the Ganga Aarti and the spiritual traditions that make Haridwar an important destination for visitors from across India.",
+          "Experience the atmosphere of the Ganga Aarti and the spiritual traditions that make Haridwar an important destination for visitors from across India. The riverside ceremony creates a memorable experience for groups looking to connect with the cultural and religious character of the city.",
+
+        highlights: [
+          "Experience an important spiritual tradition of Haridwar.",
+          "Enjoy the evening atmosphere along the Ganges.",
+          "Well suited to pilgrimage and cultural group journeys.",
+        ],
       },
 
       {
         id: "mansa-devi",
+
         name: "Mansa Devi Temple",
+
         image: "/images/destinations/mansa-devi.jpg",
+
         description:
-          "Explore Mansa Devi Temple and enjoy views across Haridwar while experiencing one of the city's important pilgrimage destinations.",
+          "Explore Mansa Devi Temple, an important pilgrimage destination located on the Bilwa Parvat overlooking Haridwar. The temple provides visitors with a spiritual experience as well as views across parts of the city and surrounding landscape.",
+
+        highlights: [
+          "Visit an important pilgrimage destination in Haridwar.",
+          "Enjoy elevated views across the city.",
+          "Suitable for religious and family group itineraries.",
+        ],
       },
     ],
   },
@@ -960,7 +1067,7 @@ export const destinationsData = {
     route: "Delhi → Udaipur",
 
     description:
-      "Experience the charm of Udaipur with comfortable group transportation for sightseeing, tours and memorable journeys.",
+      "Experience the charm of Udaipur with comfortable group transportation for sightseeing, tours and memorable journeys. Known for its lakes, palaces and heritage architecture, Udaipur offers groups a beautiful combination of culture, history and scenic experiences.",
 
     gallery: [
       "/images/destinations/udaipur.png",
@@ -971,26 +1078,53 @@ export const destinationsData = {
     popularPlaces: [
       {
         id: "city-palace-udaipur",
+
         name: "City Palace",
+
         image: "/images/destinations/city-palace-udaipur.png",
+
         description:
-          "Explore the magnificent City Palace overlooking Lake Pichola, with grand courtyards, historic architecture and panoramic views.",
+          "Explore the magnificent City Palace overlooking Lake Pichola, one of Udaipur's most important heritage attractions. The palace complex features grand courtyards, historic architecture and panoramic views that make it a memorable experience for groups exploring the city.",
+
+        highlights: [
+          "Explore grand royal courtyards and historic architecture.",
+          "Enjoy panoramic views towards Lake Pichola.",
+          "One of Udaipur's most important heritage attractions.",
+        ],
       },
 
       {
         id: "lake-pichola",
+
         name: "Lake Pichola",
+
         image: "/images/destinations/lake-pichola.png",
+
         description:
-          "Enjoy the peaceful beauty of Lake Pichola, surrounded by palaces, ghats and hills, making it one of Udaipur's most memorable attractions.",
+          "Enjoy the peaceful beauty of Lake Pichola, surrounded by palaces, ghats, historic buildings and the Aravalli landscape. The lake forms an important part of Udaipur's identity and offers groups a scenic experience while exploring the city's famous heritage surroundings.",
+
+        highlights: [
+          "Enjoy beautiful views of Udaipur's historic waterfront.",
+          "See palaces and heritage buildings around the lake.",
+          "A memorable scenic stop for group tours.",
+        ],
       },
 
       {
         id: "monsoon-palace",
+
         name: "Sajjangarh Monsoon Palace",
+
         image: "/images/destinations/monsoon-palace.png",
+
         description:
-          "Located high above Udaipur, the Monsoon Palace offers beautiful views over the city, surrounding hills and lakes.",
+          "Located high above Udaipur, the Monsoon Palace offers beautiful views over the city, surrounding hills and lakes. Its elevated location makes it a popular sightseeing destination for groups looking to experience Udaipur's scenic landscape from above.",
+
+        highlights: [
+          "Enjoy panoramic views over Udaipur.",
+          "Experience the palace's scenic hilltop setting.",
+          "A great addition to a heritage and sightseeing itinerary.",
+        ],
       },
     ],
   },
@@ -1010,7 +1144,7 @@ export const destinationsData = {
     route: "Delhi → Goa",
 
     description:
-      "Plan a comfortable group journey to Goa with reliable coach transportation for beach trips, holidays and group getaways.",
+      "Plan a comfortable group journey to Goa with reliable coach transportation for beach trips, holidays and group getaways. Travel together between beaches, heritage attractions, local markets and popular sightseeing destinations while keeping your entire group organised throughout the journey.",
 
     gallery: [
       "/images/destinations/goa2.png",
@@ -1021,26 +1155,53 @@ export const destinationsData = {
     popularPlaces: [
       {
         id: "baga-beach",
+
         name: "Baga Beach",
+
         image: "/images/destinations/baga-beach.png",
+
         description:
-          "Baga Beach is one of Goa's popular coastal destinations, known for its lively atmosphere, beach activities, restaurants and relaxed seaside experiences.",
+          "Baga Beach is one of Goa's popular coastal destinations, known for its lively atmosphere, beach activities, restaurants and relaxed seaside experiences. It is a convenient choice for groups looking to spend time together by the coast while enjoying the energy of North Goa.",
+
+        highlights: [
+          "Enjoy Goa's lively coastal atmosphere.",
+          "Explore nearby restaurants, cafés and beach activities.",
+          "Popular choice for group holidays and getaways.",
+        ],
       },
 
       {
         id: "fort-aguada",
+
         name: "Fort Aguada",
+
         image: "/images/destinations/fort-aguada.png",
+
         description:
-          "Visit the historic Fort Aguada for beautiful coastal views and a glimpse into Goa's Portuguese heritage.",
+          "Visit the historic Fort Aguada for beautiful coastal views and a glimpse into Goa's Portuguese heritage. The fort's location overlooking the Arabian Sea makes it an excellent sightseeing stop for groups exploring the northern part of Goa.",
+
+        highlights: [
+          "Discover an important piece of Goa's coastal heritage.",
+          "Enjoy views of the Arabian Sea.",
+          "Easy to combine with other North Goa attractions.",
+        ],
       },
 
       {
         id: "calangute-beach",
+
         name: "Calangute Beach",
+
         image: "/images/destinations/calangute.png",
+
         description:
-          "Calangute offers a lively beach experience with plenty of space for groups to relax, explore local attractions and enjoy Goa's coastline.",
+          "Calangute offers a lively beach experience with plenty of space for groups to relax, explore local attractions and enjoy Goa's coastline. Its convenient location and range of nearby facilities make it a popular stop during group holidays.",
+
+        highlights: [
+          "Enjoy a popular beach destination in North Goa.",
+          "Explore nearby restaurants, shops and local attractions.",
+          "Suitable for relaxed group holidays and sightseeing.",
+        ],
       },
     ],
   },
@@ -1060,7 +1221,7 @@ export const servicesData = [
     icon: "briefcase",
     image: "/images/services/corporate-india.jpg",
     ctaLabel: "Explore Service",
-    href: "/fleets",
+    href: "/services/corporate-travel",
   },
 
   {
@@ -1073,7 +1234,7 @@ export const servicesData = [
     icon: "map",
     image: "/images/services/group-tours-india.jpg",
     ctaLabel: "Explore Service",
-    href: "/fleets",
+    href: "/services/group-tours",
   },
 
   {
@@ -1086,7 +1247,7 @@ export const servicesData = [
     icon: "calendar",
     image: "/images/services/events-india.jpg",
     ctaLabel: "Explore Service",
-    href: "/fleets",
+    href: "/services/events-weddings",
   },
 
   {
@@ -1099,7 +1260,7 @@ export const servicesData = [
     icon: "graduation-cap",
     image: "/images/services/school-trips-india.jpg",
     ctaLabel: "Explore Service",
-    href: "/fleets",
+    href: "/services/school-trips",
   },
 
   {
@@ -1112,7 +1273,7 @@ export const servicesData = [
     icon: "plane",
     image: "/images/services/airport-transfer-india.jpg",
     ctaLabel: "Explore Service",
-    href: "/fleets",
+    href: "/services/airport-transfers",
   },
 
   {
@@ -1125,7 +1286,7 @@ export const servicesData = [
     icon: "hotel",
     image: "/images/services/hotel-transfer-india.jpg",
     ctaLabel: "Explore Service",
-    href: "/fleets",
+    href: "/services/hotel-transfers",
   },
 ];
 
@@ -1209,6 +1370,374 @@ export const featuredServiceData = {
   imageAlt:
     "Bus Mantra luxury coach for full-bus group charter travel",
 };
+export const servicesSlugData = [
+  {
+    slug: "corporate-travel",
+    title: "Corporate Travel",
+    eyebrow: "CORPORATE TRAVEL",
+    description:
+      "Professional group transportation for meetings, conferences, employee movement, team travel and business events.",
+    image: "/images/services/corporate-india.jpg",
+    imageAlt:
+      "Corporate group transportation in India",
+
+    intro: {
+      eyebrow: "TRAVEL FOR BUSINESS",
+      heading: "Move your team with confidence.",
+      description:
+        "Keep your business group travelling together with comfortable, organised and dependable transportation.",
+    },
+
+    highlights: [
+      {
+        title: "Team Transportation",
+        description:
+          "Move employees and business teams together between offices, meetings, venues and destinations.",
+      },
+      {
+        title: "Business Events",
+        description:
+          "Coordinated transportation for conferences, seminars, exhibitions and corporate gatherings.",
+      },
+      {
+        title: "Flexible Group Travel",
+        description:
+          "Plan transportation around your team's schedule, pickup points and journey requirements.",
+      },
+    ],
+
+    suitableFor: [
+      "Corporate Teams",
+      "Business Events",
+      "Conferences",
+      "Employee Travel",
+    ],
+
+    benefits: [
+      {
+        title: "Comfortable Group Travel",
+        description:
+          "Keep your team together in a comfortable coach instead of coordinating multiple vehicles.",
+      },
+      {
+        title: "Easy Coordination",
+        description:
+          "Simplify employee movement with organised pickup, routing and destination coordination.",
+      },
+      {
+        title: "Right-Sized Coach",
+        description:
+          "Choose a coach that fits your group size and travel requirements.",
+      },
+    ],
+  },
+
+  {
+    slug: "group-tours",
+    title: "Group Tours",
+    eyebrow: "GROUP TOURS",
+    description:
+      "Comfortable coaches for sightseeing, weekend trips, multi-city journeys and organised group travel across India.",
+    image: "/images/services/group-tours-india.jpg",
+    imageAlt:
+      "Group tour transportation in India",
+
+    intro: {
+      eyebrow: "TRAVEL TOGETHER",
+      heading: "Make the journey part of the experience.",
+      description:
+        "Travel together comfortably while your group explores destinations, attractions and multiple cities.",
+    },
+
+    highlights: [
+      {
+        title: "Sightseeing Trips",
+        description:
+          "Comfortable transportation for groups visiting attractions, landmarks and popular destinations.",
+      },
+      {
+        title: "Multi-City Journeys",
+        description:
+          "Plan longer journeys with multiple destinations and coordinated group transportation.",
+      },
+      {
+        title: "Weekend Getaways",
+        description:
+          "Make short group trips easier with a dedicated coach for your complete journey.",
+      },
+    ],
+
+    suitableFor: [
+      "Tour Groups",
+      "Family Trips",
+      "Weekend Getaways",
+      "Multi-City Tours",
+    ],
+
+    benefits: [
+      {
+        title: "Everyone Travels Together",
+        description:
+          "Keep your group together in one comfortable coach throughout the journey.",
+      },
+      {
+        title: "Flexible Routes",
+        description:
+          "Plan custom routes based on your destinations, stops and travel requirements.",
+      },
+      {
+        title: "Comfortable Long-Distance Travel",
+        description:
+          "Choose from suitable coach options for longer group journeys.",
+      },
+    ],
+  },
+
+  {
+    slug: "events-weddings",
+    title: "Events & Weddings",
+    eyebrow: "EVENTS & WEDDINGS",
+    description:
+      "Coordinated transportation for weddings, celebrations, conferences, exhibitions and large gatherings.",
+    image: "/images/services/events-india.jpg",
+    imageAlt:
+      "Event and wedding group transportation in India",
+
+    intro: {
+      eyebrow: "EVENT TRANSPORTATION",
+      heading: "Keep every guest moving together.",
+      description:
+        "Make event transportation easier with coordinated group pickup, transfers and destination travel.",
+    },
+
+    highlights: [
+      {
+        title: "Wedding Transportation",
+        description:
+          "Organise comfortable transportation for guests travelling between hotels, venues and functions.",
+      },
+      {
+        title: "Event Transfers",
+        description:
+          "Coordinate transportation for conferences, exhibitions, celebrations and large gatherings.",
+      },
+      {
+        title: "Guest Movement",
+        description:
+          "Keep groups moving smoothly between multiple locations throughout the event.",
+      },
+    ],
+
+    suitableFor: [
+      "Weddings",
+      "Conferences",
+      "Exhibitions",
+      "Large Gatherings",
+    ],
+
+    benefits: [
+      {
+        title: "Coordinated Guest Travel",
+        description:
+          "Keep event guests travelling together with organised pickup and drop-off arrangements.",
+      },
+      {
+        title: "Multiple Pickup Points",
+        description:
+          "Plan transportation around hotels, venues and other required pickup locations.",
+      },
+      {
+        title: "Comfortable Event Travel",
+        description:
+          "Give your guests a convenient and comfortable way to move throughout the event.",
+      },
+    ],
+  },
+
+  {
+    slug: "school-trips",
+    title: "School Trips",
+    eyebrow: "SCHOOL TRIPS",
+    description:
+      "Safe and organised group transportation for school excursions, educational trips and student travel.",
+    image: "/images/services/school-trips-india.jpg",
+    imageAlt:
+      "School trip transportation in India",
+
+    intro: {
+      eyebrow: "EDUCATIONAL TRAVEL",
+      heading: "Make school journeys easier to organise.",
+      description:
+        "Provide students and groups with comfortable transportation for educational trips, excursions and tours.",
+    },
+
+    highlights: [
+      {
+        title: "Educational Excursions",
+        description:
+          "Comfortable group transportation for museums, educational centres, landmarks and field trips.",
+      },
+      {
+        title: "Student Group Travel",
+        description:
+          "Keep students and accompanying staff together throughout the journey.",
+      },
+      {
+        title: "Planned Group Routes",
+        description:
+          "Organise transportation around school schedules, destinations and planned stops.",
+      },
+    ],
+
+    suitableFor: [
+      "School Trips",
+      "Educational Tours",
+      "Student Groups",
+      "Excursions",
+    ],
+
+    benefits: [
+      {
+        title: "Organised Group Movement",
+        description:
+          "Keep students and staff together with a dedicated group transportation solution.",
+      },
+      {
+        title: "Comfortable Coaches",
+        description:
+          "Choose a suitable coach based on the size of your student group.",
+      },
+      {
+        title: "Simpler Trip Planning",
+        description:
+          "Coordinate pickup, destination and return travel through one transportation arrangement.",
+      },
+    ],
+  },
+
+  {
+    slug: "airport-transfers",
+    title: "Airport Pick Up & Transfer",
+    eyebrow: "AIRPORT TRANSFERS",
+    description:
+      "Convenient group airport pickup and drop-off with comfortable vehicles and coordinated travel.",
+    image: "/images/services/airport-transfer-india.jpg",
+    imageAlt:
+      "Airport group transfer in India",
+
+    intro: {
+      eyebrow: "AIRPORT GROUP TRANSFERS",
+      heading: "Start and finish your journey smoothly.",
+      description:
+        "Coordinate airport pickup and drop-off for your complete group without arranging multiple vehicles.",
+    },
+
+    highlights: [
+      {
+        title: "Airport Pick Up",
+        description:
+          "Arrange group transportation from the airport to your hotel, venue or destination.",
+      },
+      {
+        title: "Airport Drop Off",
+        description:
+          "Plan convenient group transportation from your location to the airport.",
+      },
+      {
+        title: "Group Coordination",
+        description:
+          "Keep your group travelling together with organised pickup and destination coordination.",
+      },
+    ],
+
+    suitableFor: [
+      "Corporate Groups",
+      "Tour Groups",
+      "Wedding Guests",
+      "Large Families",
+    ],
+
+    benefits: [
+      {
+        title: "One Group, One Journey",
+        description:
+          "Keep your group together instead of arranging multiple taxis or smaller vehicles.",
+      },
+      {
+        title: "Convenient Pickup",
+        description:
+          "Coordinate airport pickup and destination transfers around your group's requirements.",
+      },
+      {
+        title: "Comfortable Transfers",
+        description:
+          "Travel between airports, hotels and destinations in a suitable coach.",
+      },
+    ],
+  },
+
+  {
+    slug: "hotel-transfers",
+    title: "Hotel Pick Up & Transfer",
+    eyebrow: "HOTEL TRANSFERS",
+    description:
+      "Reliable hotel pickup and transfer services for groups travelling together between hotels, venues, airports and destinations.",
+    image: "/images/services/hotel-transfer-india.jpg",
+    imageAlt:
+      "Hotel group transfer in India",
+
+    intro: {
+      eyebrow: "HOTEL GROUP TRANSFERS",
+      heading: "Move your group smoothly between every stop.",
+      description:
+        "Make hotel pickups and transfers easier with comfortable group transportation coordinated around your journey.",
+    },
+
+    highlights: [
+      {
+        title: "Hotel Pick Up",
+        description:
+          "Arrange convenient group pickup directly from your hotel for your planned journey.",
+      },
+      {
+        title: "Hotel To Venue Transfers",
+        description:
+          "Move groups comfortably between hotels, event venues, meeting locations and other destinations.",
+      },
+      {
+        title: "Hotel To Airport Transfers",
+        description:
+          "Coordinate group transportation between hotels and airports for departures and arrivals.",
+      },
+    ],
+
+    suitableFor: [
+      "Hotel Guests",
+      "Tour Groups",
+      "Wedding Guests",
+      "Corporate Teams",
+    ],
+
+    benefits: [
+      {
+        title: "Convenient Pickup",
+        description:
+          "Coordinate group transportation directly from your hotel or accommodation.",
+      },
+      {
+        title: "Easy Destination Transfers",
+        description:
+          "Move your group between hotels, venues, airports and other destinations.",
+      },
+      {
+        title: "Everyone Travels Together",
+        description:
+          "Keep your group together in a comfortable coach throughout the transfer.",
+      },
+    ],
+  },
+];
+
 
 export const testimonialsData = [
   {
@@ -1313,6 +1842,170 @@ export const testimonialsSectionData = {
   },
 };
 
+export const homeFaqData = {
+  eyebrow: "FAQ",
+  heading: "Questions about group travel?",
+  description:
+    "Find answers to some of the most common questions about booking group transportation with Bus Mantra.",
+  faqs: [
+    {
+      id: "home-booking",
+      question: "How do I book a bus with Bus Mantra?",
+      answer:
+        "Choose your pickup point, destination, travel dates and passenger count, then submit your booking request through our booking form.",
+    },
+    {
+      id: "home-fleet",
+      question: "What types of buses are available?",
+      answer:
+        "Our fleet includes mini coaches, premium coaches and luxury coaches for different group sizes and travel requirements.",
+    },
+    {
+      id: "home-group-size",
+      question: "Can I book transportation for a large group?",
+      answer:
+        "Yes. We provide different coach options so groups of different sizes can travel together comfortably.",
+    },
+    {
+      id: "home-destinations",
+      question: "Which destinations can I travel to?",
+      answer:
+        "Bus Mantra supports group journeys across a wide range of destinations. You can provide your required route through the booking form.",
+    },
+  ],
+};
+
+export const fleetFaqData = {
+  eyebrow: "FLEET FAQ",
+  heading: "Choosing the right coach.",
+  description:
+    "Learn more about our coaches, capacities and options for different group sizes.",
+  faqs: [
+    {
+      id: "fleet-mini",
+      question: "What is the capacity of the Mini Coach?",
+      answer:
+        "The Mini Coach is designed for smaller groups and can accommodate up to 19 passengers.",
+    },
+    {
+      id: "fleet-premium",
+      question: "What is the capacity of the Premium Coach?",
+      answer:
+        "The Premium Coach is designed for medium-sized groups and can accommodate up to 45 passengers.",
+    },
+    {
+      id: "fleet-luxury",
+      question: "What is the capacity of the Luxury Coach?",
+      answer:
+        "The Luxury Coach is designed for larger groups and can accommodate up to 60 passengers.",
+    },
+    {
+      id: "fleet-selection",
+      question: "How do I know which coach is right for my group?",
+      answer:
+        "Enter your number of passengers in the booking form to view coaches that can accommodate your group size.",
+    },
+  ],
+};
+
+export const servicesFaqData = {
+  eyebrow: "SERVICES FAQ",
+  heading: "Everything about our services.",
+  description:
+    "Understand how Bus Mantra supports different types of group journeys.",
+  faqs: [
+    {
+      id: "services-corporate",
+      question: "Do you provide transportation for corporate events?",
+      answer:
+        "Yes. We provide group transportation for meetings, conferences, employee movement, team travel and corporate events.",
+    },
+    {
+      id: "services-tours",
+      question: "Can I book transportation for a group tour?",
+      answer:
+        "Yes. Our coaches are available for sightseeing, weekend trips, multi-city journeys and organised group tours.",
+    },
+    {
+      id: "services-events",
+      question: "Do you provide transportation for events and weddings?",
+      answer:
+        "Yes. We provide coordinated transportation for weddings, celebrations, conferences, exhibitions and other large gatherings.",
+    },
+    {
+      id: "services-transfers",
+      question: "Do you provide airport and hotel transfers?",
+      answer:
+        "Yes. We provide group airport pickup, drop-off and hotel transfer services.",
+    },
+  ],
+};
+
+export const destinationsFaqData = {
+  eyebrow: "DESTINATION FAQ",
+  heading: "Planning your group journey.",
+  description:
+    "A few things to know before travelling with your group.",
+  faqs: [
+    {
+      id: "destinations-routes",
+      question: "Can I book a bus for a destination not listed here?",
+      answer:
+        "Yes. You can submit a custom route through the booking form with your required pickup point and destination.",
+    },
+    {
+      id: "destinations-round-trip",
+      question: "Can I book a round trip?",
+      answer:
+        "Yes. You can provide both departure and return dates and times when planning your journey.",
+    },
+    {
+      id: "destinations-group",
+      question: "Can the entire group travel together?",
+      answer:
+        "Yes. Our coach options are designed to keep groups travelling together in one comfortable vehicle whenever the group size matches the selected coach capacity.",
+    },
+    {
+      id: "destinations-planning",
+      question: "Can I plan multiple stops during my journey?",
+      answer:
+        "Yes. Multi-city and custom group journeys can be planned according to your travel requirements.",
+    },
+  ],
+};
+
+export const aboutFaqData = {
+  eyebrow: "ABOUT BUS MANTRA",
+  heading: "Why travel with Bus Mantra?",
+  description:
+    "Learn more about our approach to comfortable, reliable and organised group transportation.",
+  faqs: [
+    {
+      id: "about-company",
+      question: "What is Bus Mantra?",
+      answer:
+        "Bus Mantra provides comfortable and reliable group transportation for corporate travel, tours, events, school trips and transfers.",
+    },
+    {
+      id: "about-reliability",
+      question: "What makes Bus Mantra different?",
+      answer:
+        "We focus on making group transportation simple, comfortable and easier to coordinate from pickup to destination.",
+    },
+    {
+      id: "about-support",
+      question: "Do you provide support during the journey?",
+      answer:
+        "Our group transportation service is designed around coordinated travel and dependable journey support.",
+    },
+    {
+      id: "about-groups",
+      question: "Who can use Bus Mantra?",
+      answer:
+        "Bus Mantra is suitable for corporate groups, families, tour groups, schools, event organisers and other groups travelling together.",
+    },
+  ],
+};
 
 export const footerData = {
   brand: {
