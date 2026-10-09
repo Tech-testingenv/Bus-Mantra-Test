@@ -291,6 +291,7 @@ function QuickInfo({
 function ServiceBookingForm({ service }) {
   const [formData, setFormData] = useState({
     pickup: "Delhi NCR",
+    destination: "",
     departureDate: "",
     departureTime: "07:00",
     returnDate: "",
@@ -374,24 +375,57 @@ function ServiceBookingForm({ service }) {
 
           <div>
             <div className="mb-1.5 flex items-center justify-between">
-              <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+              <label
+                htmlFor="serviceDestination"
+                className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400"
+              >
                 <MapPin className="h-3.5 w-3.5 text-brand-orange" />
-                SERVICE
+                DESTINATION(S)
               </label>
 
               <span className="text-[9px] text-neutral-400">
-                group journey
+                multi-city route
               </span>
             </div>
 
-            <div className="flex min-h-[53px] items-center gap-2 rounded-xl bg-[#f1f2f4] px-3.5">
-              <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm">
-                {service.title}
-              </span>
+            <div className="flex min-h-[53px] items-center gap-2 rounded-xl bg-[#f1f2f4] px-3.5 transition-all duration-200 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30">
+              {formData.destination ? (
+                <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm">
+                  {formData.destination}
 
-              <span className="truncate text-xs text-neutral-400">
-                Custom route available
-              </span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateField("destination", "")
+                    }
+                    aria-label="Remove destination"
+                    className="text-sm leading-none text-neutral-400 transition-colors hover:text-neutral-700"
+                  >
+                    ×
+                  </button>
+                </span>
+              ) : (
+                <input
+                  id="serviceDestination"
+                  type="text"
+                  value={formData.destination}
+                  onChange={(event) =>
+                    updateField(
+                      "destination",
+                      event.target.value
+                    )
+                  }
+                  placeholder="Enter destination"
+                  className="w-full bg-transparent text-xs font-semibold text-neutral-800 outline-none placeholder:text-neutral-400"
+                  required
+                />
+              )}
+
+              {formData.destination && (
+                <span className="truncate text-xs text-neutral-400">
+                  Add another city if needed
+                </span>
+              )}
             </div>
           </div>
 
@@ -531,7 +565,10 @@ function ServiceBookingForm({ service }) {
                 </span>{" "}
                 {formData.pickup ||
                   "Delhi NCR"}{" "}
-                → {service.title} →{" "}
+                →{" "}
+                {formData.destination ||
+                  "Your destination"}{" "}
+                →{" "}
                 {formData.pickup ||
                   "Delhi NCR"}{" "}
                 (Return)
