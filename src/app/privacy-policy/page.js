@@ -275,9 +275,8 @@ function Reveal({ children, delay = 0, className = "" }) {
     <div
       ref={ref}
       style={{ "--reveal-delay": `${delay}ms` }}
-      className={`privacy-reveal ${
-        visible ? "privacy-reveal-visible" : ""
-      } ${className}`}
+      className={`privacy-reveal ${visible ? "privacy-reveal-visible" : ""
+        } ${className}`}
     >
       {children}
     </div>
@@ -632,9 +631,8 @@ export default function PrivacyPolicyPage() {
 
           <ChevronRight
             size={18}
-            className={`shrink-0 text-[#19439B] ${
-              mobileMenuOpen ? "rotate-90" : "rotate-0"
-            }`}
+            className={`shrink-0 text-[#19439B] ${mobileMenuOpen ? "rotate-90" : "rotate-0"
+              }`}
           />
         </button>
 
@@ -653,11 +651,10 @@ export default function PrivacyPolicyPage() {
                   onClick={(event) =>
                     navigateToSection(event, section.id)
                   }
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm ${
-                    active
-                      ? "bg-[#EEF2F9] font-semibold text-[#19439B]"
-                      : "text-[#626C7B]"
-                  }`}
+                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm ${active
+                    ? "bg-[#EEF2F9] font-semibold text-[#19439B]"
+                    : "text-[#626C7B]"
+                    }`}
                 >
                   <span className="font-mono text-[10px] text-[#F47716]">
                     {section.number}
@@ -679,7 +676,7 @@ export default function PrivacyPolicyPage() {
       <div className="mx-auto grid max-w-[1440px] items-start gap-7 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[270px_minmax(0,1fr)] lg:gap-10 lg:px-14 lg:py-14">
         {/* Persistent desktop sidebar */}
         <aside className="hidden self-stretch lg:block">
-          <div className="sticky top-6">
+          <div className="sticky top-24">
             <div className="overflow-hidden rounded-2xl border border-[#E1E5EC] bg-white">
               <div className="border-b border-[#E7EAF0] px-5 py-5">
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#19439B]">
@@ -699,32 +696,29 @@ export default function PrivacyPolicyPage() {
                         navigateToSection(event, section.id)
                       }
                       aria-current={active ? "location" : undefined}
-                      className={`privacy-toc-link group relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-3 text-left transition-all duration-300 ease-out hover:translate-x-1 ${
-                        active
-                          ? "bg-[#EEF2F9]"
-                          : "bg-white hover:bg-[#F7F8FA]"
-                      }`}
+                      className={`privacy-toc-link group relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-3 text-left transition-all duration-300 ease-out hover:translate-x-1 ${active
+                        ? "bg-[#EEF2F9]"
+                        : "bg-white hover:bg-[#F7F8FA]"
+                        }`}
                     >
                       {active && (
                         <span className="absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-[#F47716]" />
                       )}
 
                       <span
-                        className={`w-5 shrink-0 font-mono text-[10px] ${
-                          active
-                            ? "text-[#19439B]"
-                            : "text-[#A0A8B5]"
-                        }`}
+                        className={`w-5 shrink-0 font-mono text-[10px] ${active
+                          ? "text-[#19439B]"
+                          : "text-[#A0A8B5]"
+                          }`}
                       >
                         {section.number}
                       </span>
 
                       <span
-                        className={`min-w-0 flex-1 text-xs ${
-                          active
-                            ? "font-semibold text-[#19439B]"
-                            : "font-medium text-[#626C7B]"
-                        }`}
+                        className={`min-w-0 flex-1 text-xs ${active
+                          ? "font-semibold text-[#19439B]"
+                          : "font-medium text-[#626C7B]"
+                          }`}
                       >
                         {section.title}
                       </span>
