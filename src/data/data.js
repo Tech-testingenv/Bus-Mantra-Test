@@ -463,11 +463,11 @@ export const fleetTypesData = [
     ratePerKm: 28,
     badge: "City & Regional",
     isPopular: false,
-    image: "/fleet/mini-coach.jpg",
+    image: "/fleet/Tempo/1.jpg",
     gallery: [
-      "/fleet/mini-coach.jpg",
-      "/fleet/fleet.png",
-      "/fleet/coach.png",
+      "/fleet/Tempo/2.jpg",
+      "/fleet/Tempo/3.jpg",
+      "/fleet/Tempo/4.jpg",
     ],
     description:
       "Agile maneuverability, ideal for medium corporate teams, wedding parties, family trips, and airport pickups.",
@@ -498,11 +498,11 @@ export const fleetTypesData = [
     ratePerKm: 42,
     badge: "Most Popular",
     isPopular: true,
-    image: "/fleet/premium-coach.jpg",
+    image: "/fleet/Premium/1.jpg",
     gallery: [
-      "/fleet/premium-coach.jpg",
-      "/fleet/coach.png",
-      "/fleet/fleet.png",
+      "/fleet/Premium/2.jpg",
+      "/fleet/Premium/3.jpg",
+      "/fleet/Premium/4.jpg",
     ],
     description:
       "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for smooth multi-hour intercity transit.",
@@ -533,11 +533,11 @@ export const fleetTypesData = [
     ratePerKm: 58,
     badge: "Long Distance",
     isPopular: false,
-    image: "/fleet/luxury-coach.jpg",
+    image: "/fleet/Luxury/1.jpg",
     gallery: [
-      "/fleet/luxury-coach.jpeg",
-      "/fleet/fleet.png",
-      "/fleet/coach.png",
+      "/fleet/Luxury/2.jpg",
+      "/fleet/Luxury/3.jpg",
+      "/fleet/Luxury/4.jpg",
     ],
     description:
       "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays for long tours.",
@@ -2013,7 +2013,7 @@ export const footerData = {
     tagline: "FULL BUS FLEET PLATFORM",
     description:
       "India's trusted platform for full-bus charters and group road travel. Reserving the entire vehicle for weddings, corporate offsites, school trips, and pilgrimage tours with verified professional chauffeurs.",
-    logo: "/logo.png",
+    logo: "/logo-bus-mantra.jpeg",
   },
   contact: {
     phone: "+91 9876543210",
@@ -2064,7 +2064,7 @@ export const footerData = {
       "Direct Bank Payouts",
     ],
     cta: "Register as a Vendor",
-    ctaHref: "#partner-register",
+    ctaHref: "/vendor",
     subtext: "Fast 2-minute registration",
   },
   copyright:

@@ -62,7 +62,7 @@ export default function Footer({ data = footerData }) {
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
               <Link href="/" className="inline-block shrink-0">
                 <Image
-                  src={data.brand.logo || "/logo.png"}
+                  src={data.brand.logo || "/logo-bus-mantra.jpeg"}
                   alt={data.brand.name}
                   width={155}
                   height={44}

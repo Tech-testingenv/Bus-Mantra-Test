@@ -1,39 +1,70 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8f9fa;
-  --foreground: #0c1621;
+  --background: #ffffff;
+  --foreground: #111111;
 
-  /* BUS MANTRA Brand Color System */
-  --brand-orange: #ec6103;
-  --brand-orange-hover: #d55602;
-  --brand-orange-light: #fff4ed;
-  --brand-dark: #0c1621;
+  /* BUS MANTRA BRAND COLORS */
+
+  /* Primary: Royal Blue */
+  --brand-blue: #19439b;
+  --brand-blue-dark: #123477;
+  --brand-blue-light: #eef3ff;
+
+  /* Secondary: Golden Yellow */
+  --brand-yellow: #ffc20e;
+  --brand-yellow-dark: #e5a900;
+  --brand-yellow-light: #fff8db;
+
+  /* Accent: Bus Orange */
+  --brand-orange: #f47716;
+  --brand-orange-hover: #dd650d;
+  --brand-orange-light: #fff1e7;
+
+  /* Neutral Colors */
+  --brand-dark: #111111;
   --brand-white: #ffffff;
-  --brand-gray: #6d737a;
-  --brand-gray-light: #f3f4f6;
+  --brand-gray: #737373;
+  --brand-gray-light: #f5f6f8;
   --brand-border: #e5e7eb;
-  --brand-border-orange: #ec6103;
+
+  /* Surface Colors */
   --brand-surface: #ffffff;
-  --brand-surface-subtle: #f8f9fa;
+  --brand-surface-subtle: #f5f6f8;
 }
 
 @theme inline {
+  /* Background and Foreground */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* BUS MANTRA Brand Theme Tokens */
+  /* Royal Blue */
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-dark: var(--brand-blue-dark);
+  --color-brand-blue-light: var(--brand-blue-light);
+
+  /* Golden Yellow */
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-yellow-dark: var(--brand-yellow-dark);
+  --color-brand-yellow-light: var(--brand-yellow-light);
+
+  /* Orange */
   --color-brand-orange: var(--brand-orange);
   --color-brand-orange-hover: var(--brand-orange-hover);
   --color-brand-orange-light: var(--brand-orange-light);
+
+  /* Neutral Colors */
   --color-brand-dark: var(--brand-dark);
   --color-brand-white: var(--brand-white);
   --color-brand-gray: var(--brand-gray);
   --color-brand-gray-light: var(--brand-gray-light);
   --color-brand-border: var(--brand-border);
-  --color-brand-border-orange: var(--brand-border-orange);
+
+  /* Surface Colors */
   --color-brand-surface: var(--brand-surface);
   --color-brand-surface-subtle: var(--brand-surface-subtle);
 }
@@ -43,4 +74,3 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-

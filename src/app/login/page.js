@@ -17,10 +17,14 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
 
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
+    phone: "",
     password: "",
+    confirmPassword: "",
     remember: false,
   });
 
@@ -36,7 +40,13 @@ export default function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Sign in form:", formData);
+    if (isRegister && formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    console.log(isRegister ? "Registration form:" : "Sign in form:", formData);
+    // Connect this handler to your authentication API when it is ready.
   };
 
   const handleBack = () => {
@@ -72,18 +82,21 @@ export default function LoginPage() {
 
               <div className="mt-10 max-w-md">
                 <p className="text-brand-orange text-xs font-bold tracking-[0.18em] uppercase">
-                  Welcome Back
+                  {isRegister ? "JOIN BUS MANTRA" : "Welcome Back"}
                 </p>
 
                 <h1 className="mt-2.5 text-4xl xl:text-[44px] font-black tracking-tight leading-[1.02]">
-                  Your journey
-                  <br />
-                  starts here.
+                  {isRegister ? (
+                    <>Create your account.<br />Start your journey.</>
+                  ) : (
+                    <>Your journey<br />starts here.</>
+                  )}
                 </h1>
 
                 <p className="mt-4 text-neutral-400 text-sm leading-6 max-w-sm">
-                  Sign in to manage your bookings, explore destinations,
-                  and keep your journeys with Bus Mantra organized.
+                  {isRegister
+                    ? "Create an account to explore services and keep your journeys organized."
+                    : "Sign in to manage your bookings, explore destinations, and keep your journeys with Bus Mantra organized."}
                 </p>
               </div>
             </div>
@@ -134,11 +147,13 @@ export default function LoginPage() {
                 </p>
 
                 <h2 className="mt-1 text-3xl sm:text-[34px] font-black tracking-tight text-neutral-900">
-                  Sign in
+                  {isRegister ? "Create account" : "Sign in"}
                 </h2>
 
                 <p className="mt-1.5 text-sm text-neutral-500">
-                  Welcome back. Please enter your details.
+                  {isRegister
+                    ? "Enter your details to create your account."
+                    : "Welcome back. Please enter your details."}
                 </p>
               </div>
 
@@ -146,6 +161,42 @@ export default function LoginPage() {
                 onSubmit={handleSubmit}
                 className="space-y-3.5"
               >
+                {isRegister && (
+                  <>
+                    <div>
+                      <label htmlFor="name" className="mb-1.5 block text-sm font-semibold text-neutral-800">
+                        Full name
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Enter your full name"
+                        autoComplete="name"
+                        required
+                        className="h-10.5 w-full rounded-xl border border-neutral-200 bg-white px-4 text-sm text-neutral-900 outline-none transition-all focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="mb-1.5 block text-sm font-semibold text-neutral-800">
+                        Phone number
+                      </label>
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="Enter your phone number"
+                        autoComplete="tel"
+                        required
+                        className="h-10.5 w-full rounded-xl border border-neutral-200 bg-white px-4 text-sm text-neutral-900 outline-none transition-all focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div>
                   <label
@@ -181,12 +232,14 @@ export default function LoginPage() {
                       Password
                     </label>
 
-                    <Link
-                      href="/forgot-password"
-                      className="text-xs font-semibold text-brand-orange hover:text-brand-orange-hover transition-colors"
-                    >
-                      Forgot password?
-                    </Link>
+                    {!isRegister && (
+                      <Link
+                        href="/forgot-password"
+                        className="text-xs font-semibold text-brand-orange hover:text-brand-orange-hover transition-colors"
+                      >
+                        Forgot password?
+                      </Link>
+                    )}
                   </div>
 
                   <div className="relative">
@@ -199,7 +252,7 @@ export default function LoginPage() {
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="Enter your password"
-                      autoComplete="current-password"
+                      autoComplete={isRegister ? "new-password" : "current-password"}
                       required
                       className="w-full h-10.5 pl-11 pr-11 rounded-xl border border-neutral-200 bg-white text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-all duration-150 focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
                     />
@@ -225,6 +278,29 @@ export default function LoginPage() {
                   </div>
                 </div>
 
+                {isRegister && (
+                  <div>
+                    <label htmlFor="confirmPassword" className="mb-1.5 block text-sm font-semibold text-neutral-800">
+                      Confirm password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-neutral-400" />
+                      <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        placeholder="Confirm your password"
+                        autoComplete="new-password"
+                        required
+                        className="h-10.5 w-full rounded-xl border border-neutral-200 bg-white pl-11 pr-4 text-sm text-neutral-900 outline-none transition-all focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {!isRegister && (
                 <div className="flex items-center">
                   <label className="flex items-center gap-2.5 cursor-pointer select-none">
                     <input
@@ -240,12 +316,13 @@ export default function LoginPage() {
                     </span>
                   </label>
                 </div>
+                )}
 
                 <button
                   type="submit"
                   className="w-full h-10.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 hover:shadow-md hover:shadow-orange-500/25 active:scale-[0.99] transition-all duration-200"
                 >
-                  <span>Sign In</span>
+                  <span>{isRegister ? "Create Account" : "Sign In"}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
@@ -254,7 +331,6 @@ export default function LoginPage() {
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-neutral-200" />
                 </div>
-
                 <div className="relative flex justify-center">
                   <span className="bg-white px-4 text-xs font-medium text-neutral-400">
                     OR
@@ -263,13 +339,17 @@ export default function LoginPage() {
               </div>
 
               <p className="text-center text-sm text-neutral-500">
-                Don't have an account?{" "}
-                <Link
-                  href="/register"
-                  className="font-semibold text-brand-orange hover:text-brand-orange-hover transition-colors"
+                {isRegister ? "Already have an account? " : "Don't have an account? "}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsRegister((current) => !current);
+                    setShowPassword(false);
+                  }}
+                  className="font-semibold text-brand-orange transition-colors hover:text-brand-orange-hover"
                 >
-                  Create an account
-                </Link>
+                  {isRegister ? "Sign in" : "Create an account"}
+                </button>
               </p>
             </div>
           </section>

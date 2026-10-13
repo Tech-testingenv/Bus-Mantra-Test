@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, User, ArrowRight } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const pathname = usePathname();
   const navRef = useRef(null);
 
@@ -23,181 +25,209 @@ export default function Navbar() {
     setIsOpen(false);
   }, []);
 
-  // Listen for scroll to apply subtle shadow
+  // Handle navbar scroll appearance
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
+
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // Close mobile drawer on Escape key press
+  // Close menu using Escape
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape" && isOpen) {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && isOpen) {
         closeMenu();
       }
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [isOpen, closeMenu]);
 
-  // Close drawer if resized to desktop width (>= 1024px)
+  // Close mobile menu when switching to desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024 && isOpen) {
         closeMenu();
       }
     };
+
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [isOpen, closeMenu]);
 
-  // Lock page scroll when mobile drawer is open
+  // Prevent background scrolling when mobile menu is open
   useEffect(() => {
-    if (isOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = originalStyle;
-      };
-    }
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
   }, [isOpen]);
 
-  // Helper to check if a navigation item is active
+  // Check active navigation item
   const isItemActive = (href) => {
     if (!pathname) return false;
+
     if (href === "/") {
       return pathname === "/";
     }
+
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  // Navigation link click handler
-  const handleNavClick = (e, item) => {
+  // Navigation click handler
+  const handleNavClick = (event, item) => {
     closeMenu();
 
-    // If clicking Home while already on Home, scroll smoothly to the top
     if (item.href === "/" && pathname === "/") {
-      if (e) e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
+      event.preventDefault();
 
-    // If it's an anchor/hash link (e.g. #booking-form) on the current page
-    if (item.href?.startsWith("#")) {
-      if (e) e.preventDefault();
-      const targetId = item.href.replace("#", "");
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        const navOffset = 76;
-        const targetPos =
-          targetEl.getBoundingClientRect().top + window.scrollY - navOffset;
-        window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
-      }
-      return;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
-
-    // For all standard routes (/fleets, /about, /services, /destinations),
-    // let Next.js <Link> handle SPA client-side routing naturally.
   };
 
-  // Scroll to booking form for "Book a Bus" CTA
-  const handleBookBus = (e) => {
+  // Book a Bus button
+  const handleBookBus = (event) => {
     if (pathname !== "/") {
       closeMenu();
       return;
     }
 
-    if (e) e.preventDefault();
+    event.preventDefault();
     closeMenu();
 
-    const bookingEl =
+    const bookingElement =
       document.getElementById("booking-form") ||
       document.querySelector("form");
 
-    if (bookingEl) {
-      const navOffset = 80;
-      const targetPos =
-        bookingEl.getBoundingClientRect().top + window.scrollY - navOffset;
-      window.scrollTo({
-        top: Math.max(0, targetPos),
-        behavior: "smooth",
-      });
-      const firstInput = bookingEl.querySelector("input, select, button");
-      if (firstInput) {
-        setTimeout(() => firstInput.focus(), 350);
-      }
+    if (!bookingElement) return;
+
+    const navOffset = 85;
+
+    const targetPosition =
+      bookingElement.getBoundingClientRect().top +
+      window.scrollY -
+      navOffset;
+
+    window.scrollTo({
+      top: Math.max(0, targetPosition),
+      behavior: "smooth",
+    });
+
+    const firstInput = bookingElement.querySelector(
+      "input, select, button"
+    );
+
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 350);
     }
   };
 
   return (
     <>
-      {/* ========================================================= */}
-      {/* MAIN NAVBAR (DESKTOP & MOBILE HEADER)                     */}
-      {/* ========================================================= */}
+      {/* ===================================================== */}
+      {/* MAIN NAVBAR                                           */}
+      {/* ===================================================== */}
+
       <header
-        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-200 ${scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] border-b border-neutral-100"
-          : "bg-white border-b border-neutral-100/90"
-          }`}
+        className={`fixed inset-x-0 top-0 z-40 w-full transition-all duration-200 ${
+          scrolled
+            ? "border-b border-neutral-100 bg-white/95 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md"
+            : "border-b border-neutral-100/90 bg-white"
+        }`}
       >
         <div
           ref={navRef}
-          className="w-full max-w-360 mx-auto px-5 sm:px-7 lg:px-10 h-18 sm:h-20 flex items-center justify-between relative"
+          className="relative mx-auto flex h-[76px] w-full max-w-[1440px] items-center justify-between px-4 sm:h-[84px] sm:px-7 lg:px-10"
         >
-          {/* ========================================================= */}
-          {/* LEFT: BRAND LOGO                                          */}
-          {/* ========================================================= */}
+          {/* ================================================= */}
+          {/* LEFT: BRAND LOGO                                  */}
+          {/* ================================================= */}
+
           <Link
             href="/"
-            onClick={(e) => {
+            onClick={(event) => {
               if (pathname === "/") {
-                e.preventDefault();
+                event.preventDefault();
                 closeMenu();
-                window.scrollTo({ top: 0, behavior: "smooth" });
+
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
               }
             }}
-            className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-lg select-none shrink-0"
-            aria-label="BUS MANTRA - Home"
+            className="group flex shrink-0 select-none items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+            aria-label="Bus Mantra Home"
           >
-            {/* Orange BM Rounded Badge */}
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-orange flex items-center justify-center text-white font-black text-sm sm:text-base tracking-tight shadow-xs transition-transform duration-200 group-hover:scale-105">
-              BM
+            {/* Larger desktop and mobile logo */}
+            <div className="relative h-[56px] w-[150px] shrink-0 sm:h-[66px] sm:w-[180px] lg:h-[70px] lg:w-[195px]">
+              <Image
+                src="/logo-bus-mantra.jpeg"
+                alt="Bus Mantra Logo"
+                width={390}
+                height={140}
+                priority
+                quality={100}
+                sizes="(max-width: 640px) 150px, (max-width: 1023px) 180px, 195px"
+                className="h-full w-full object-contain object-left transition-transform duration-200 group-hover:scale-[1.02]"
+              />
             </div>
-            {/* BUS MANTRA Brand Typography */}
-            <span className="text-[17px] sm:text-lg lg:text-[19px] font-black tracking-tight text-neutral-900 group-hover:text-black transition-colors">
-              BUS MANTRA
-            </span>
           </Link>
 
-          {/* ========================================================= */}
-          {/* CENTER: DESKTOP NAVIGATION (>= 1024px)                     */}
-          {/* ========================================================= */}
+          {/* ================================================= */}
+          {/* CENTER: DESKTOP NAVIGATION                        */}
+          {/* ================================================= */}
+
           <nav
-            className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2 gap-8 xl:gap-11"
+            className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex xl:gap-10"
             aria-label="Primary Navigation"
           >
             {NAV_ITEMS.map((item) => {
               const active = isItemActive(item.href);
+
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, item)}
+                  onClick={(event) => handleNavClick(event, item)}
                   aria-current={active ? "page" : undefined}
-                  className={`relative text-[15px] py-1.5 px-0.5 select-none transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange rounded-xs ${active
-                    ? "text-brand-orange font-semibold"
-                    : "text-neutral-700 font-medium hover:text-brand-orange"
-                    }`}
+                  className={`relative select-none rounded-sm px-0.5 py-1.5 text-[14px] transition-colors duration-150 xl:text-[15px] ${
+                    active
+                      ? "font-semibold text-brand-orange"
+                      : "font-medium text-neutral-700 hover:text-brand-orange"
+                  }`}
                 >
                   <span>{item.label}</span>
+
                   {active && (
                     <span
                       aria-hidden="true"
-                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] bg-brand-orange rounded-full"
+                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full bg-brand-orange"
                     />
                   )}
                 </Link>
@@ -205,134 +235,162 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* ========================================================= */}
-          {/* RIGHT: DESKTOP CTAS (>= 1024px)                           */}
-          {/* ========================================================= */}
-          <div className="hidden lg:flex items-center gap-2.5 xl:gap-3 shrink-0">
-            {/* Primary Orange Button: Book a Bus */}
+          {/* ================================================= */}
+          {/* RIGHT: DESKTOP BUTTONS                            */}
+          {/* ================================================= */}
+
+          <div className="hidden shrink-0 items-center gap-2.5 lg:flex xl:gap-3">
+            {/* Book a Bus */}
             <Link
               href="#booking-form"
               onClick={handleBookBus}
-              className="h-10.5 inline-flex items-center gap-2 px-5 sm:px-5.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[14.5px] transition-all duration-200 shadow-sm shadow-orange-500/20 hover:shadow-md hover:shadow-orange-500/30 active:scale-[0.98] select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-brand-orange px-4 text-sm font-semibold text-white shadow-sm shadow-orange-500/20 transition-all duration-200 hover:bg-brand-orange-hover hover:shadow-md active:scale-[0.98] xl:px-5"
             >
-              <span>Book a Bus</span>
+              Book a Bus
             </Link>
 
-            {/* Secondary Account / Sign In Button */}
+            {/* Sign In */}
             <Link
               href="/login"
-              className="h-10.5 px-3.5 rounded-xl border border-neutral-200/90 hover:border-neutral-300 bg-white hover:bg-neutral-50/80 text-neutral-700 hover:text-neutral-900 font-semibold text-sm inline-flex items-center gap-2 transition-all duration-150 select-none group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 shadow-2xs"
-              aria-label="Sign In to your account"
+              aria-label="Sign in to your account"
+              className="inline-flex h-11 items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3.5 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-900"
             >
-              <User className="w-3.5 h-3.5 stroke-[2.3]" />
+              <User className="h-4 w-4" />
               <span>Sign In</span>
             </Link>
           </div>
 
-          {/* ========================================================= */}
-          {/* RIGHT: MOBILE HAMBURGER BUTTON (< 1024px)                  */}
-          {/* ========================================================= */}
+          {/* ================================================= */}
+          {/* MOBILE MENU BUTTON                                */}
+          {/* ================================================= */}
+
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="lg:hidden w-10 h-10 rounded-xl text-neutral-800 hover:text-brand-orange hover:bg-neutral-100/70 flex items-center justify-center transition-all duration-150 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-neutral-800 transition-colors hover:bg-neutral-100 hover:text-brand-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange lg:hidden"
             aria-label="Open mobile navigation menu"
             aria-expanded={isOpen}
             aria-controls="mobile-nav-drawer"
           >
-            <Menu className="w-6 h-6 stroke-[2.3]" />
+            <Menu className="h-6 w-6" strokeWidth={2.3} />
           </button>
         </div>
       </header>
 
-      {/* ========================================================= */}
-      {/* MOBILE DRAWER — RIGHT TO LEFT SLIDE                       */}
-      {/* ========================================================= */}
-      {/* 1. Backdrop Overlay */}
+      {/* ===================================================== */}
+      {/* MOBILE DRAWER BACKDROP                               */}
+      {/* ===================================================== */}
+
       <div
-        className={`fixed inset-0 bg-black/45 backdrop-blur-[2px] z-50 lg:hidden transition-opacity duration-300 ease-out ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          }`}
+        className={`fixed inset-0 z-50 bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden ${
+          isOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
         onClick={closeMenu}
         aria-hidden="true"
       />
 
-      {/* 2. Full-Height Drawer */}
+      {/* ===================================================== */}
+      {/* MOBILE NAVIGATION DRAWER                             */}
+      {/* ===================================================== */}
+
       <aside
         id="mobile-nav-drawer"
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[320px] sm:max-w-90 h-full bg-white shadow-2xl flex flex-col justify-between lg:hidden transition-transform duration-350 ease-out transform ${isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed bottom-0 right-0 top-0 z-50 flex h-full w-full max-w-[340px] flex-col justify-between bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
         role="dialog"
         aria-modal="true"
-        aria-label="Mobile Navigation Drawer"
+        aria-label="Mobile Navigation"
+        aria-hidden={!isOpen}
+        inert={!isOpen}
       >
-        {/* Top: Drawer Header + Links */}
+        {/* Drawer header and links */}
         <div>
-          {/* Header: Logo & Close Button */}
-          <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
+          {/* Mobile drawer header */}
+          <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
             <Link
               href="/"
-              onClick={(e) => {
+              onClick={(event) => {
                 if (pathname === "/") {
-                  e.preventDefault();
+                  event.preventDefault();
                   closeMenu();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
                 } else {
                   closeMenu();
                 }
               }}
-              className="flex items-center gap-2.5 focus:outline-none select-none"
-              aria-label="BUS MANTRA - Home"
+              className="flex shrink-0 items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+              aria-label="Bus Mantra Home"
             >
-              <div className="w-9 h-9 rounded-xl bg-brand-orange flex items-center justify-center text-white font-black text-sm tracking-tight shadow-xs">
-                BM
+              {/* Same logo in the mobile drawer */}
+              <div className="relative h-[54px] w-[155px] shrink-0">
+                <Image
+                  src="/logo-bus-mantra.jpeg"
+                  alt="Bus Mantra Logo"
+                  width={310}
+                  height={110}
+                  priority
+                  quality={100}
+                  sizes="155px"
+                  className="h-full w-full object-contain object-left"
+                />
               </div>
-              <span className="text-base font-black tracking-tight text-neutral-900">
-                BUS MANTRA
-              </span>
             </Link>
 
             <button
               type="button"
               onClick={closeMenu}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
               aria-label="Close menu"
             >
-              <X className="w-5 h-5 stroke-[2.3]" />
+              <X className="h-5 w-5" strokeWidth={2.3} />
             </button>
           </div>
 
-          {/* Navigation Links */}
+          {/* Mobile navigation links */}
           <nav
-            className="px-6 py-6 flex flex-col space-y-1"
+            className="flex flex-col space-y-1 px-5 py-6"
             aria-label="Mobile Navigation Links"
           >
             {NAV_ITEMS.map((item) => {
               const active = isItemActive(item.href);
+
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, item)}
+                  onClick={(event) => handleNavClick(event, item)}
                   aria-current={active ? "page" : undefined}
-                  className={`py-3 px-3.5 rounded-xl text-[17px] transition-all flex items-center justify-between group ${active
-                    ? "bg-orange-50 text-brand-orange font-bold shadow-2xs"
-                    : "font-semibold text-neutral-800 hover:text-brand-orange hover:bg-orange-50/70"
-                    }`}
+                  className={`group flex items-center justify-between rounded-xl px-3.5 py-3.5 text-[16px] transition-colors ${
+                    active
+                      ? "bg-orange-50 font-bold text-brand-orange"
+                      : "font-semibold text-neutral-800 hover:bg-orange-50/70 hover:text-brand-orange"
+                  }`}
                 >
                   <span className="flex items-center gap-2.5">
                     {active && (
                       <span
                         aria-hidden="true"
-                        className="w-2 h-2 rounded-full bg-brand-orange shrink-0 animate-pulse"
+                        className="h-2 w-2 shrink-0 rounded-full bg-brand-orange"
                       />
                     )}
+
                     <span>{item.label}</span>
                   </span>
+
                   <span
-                    className={`transition-all text-sm font-medium ${active
-                      ? "text-brand-orange translate-x-0.5 font-bold"
-                      : "text-neutral-400 group-hover:text-brand-orange group-hover:translate-x-0.5"
-                      }`}
+                    className={`text-lg transition-transform group-hover:translate-x-0.5 ${
+                      active
+                        ? "font-semibold text-brand-orange"
+                        : "text-neutral-400 group-hover:text-brand-orange"
+                    }`}
+                    aria-hidden="true"
                   >
                     ›
                   </span>
@@ -340,36 +398,35 @@ export default function Navbar() {
               );
             })}
 
-            {/* Prominent Full-Width Orange Button */}
+            {/* Mobile Book a Bus button */}
             <div className="pt-5">
               <Link
                 href="#booking-form"
                 onClick={handleBookBus}
-                className="w-full py-3.5 px-6 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-base flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 active:scale-[0.99] transition-all select-none group"
+                className="flex w-full items-center justify-center rounded-xl bg-brand-orange px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-orange-hover active:scale-[0.99]"
               >
-                <span>Book a Bus</span>
+                Book a Bus
               </Link>
             </div>
           </nav>
         </div>
 
-        {/* Drawer Bottom Actions: Contact Us & Account */}
-        <div className="p-6 border-t border-neutral-100 flex flex-col gap-3 bg-neutral-50/60">
+        {/* Drawer bottom actions */}
+        <div className="flex flex-col gap-3 border-t border-neutral-100 bg-neutral-50/60 p-5">
           <Link
             href="/contact"
             onClick={closeMenu}
-            className="w-full py-3 px-4 rounded-xl border border-neutral-200 hover:border-brand-orange text-center text-neutral-700 hover:text-brand-orange font-medium text-sm transition-colors bg-white shadow-2xs"
+            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-medium text-neutral-700 transition-colors hover:border-brand-orange hover:text-brand-orange"
           >
             Contact Us
           </Link>
+
           <Link
             href="/login"
             onClick={closeMenu}
-            className="w-full py-3 px-4 rounded-xl bg-white border border-neutral-200 hover:border-neutral-300 text-center text-neutral-700 font-medium text-sm flex items-center justify-center gap-2.5 transition-colors shadow-2xs"
+            className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm font-medium text-neutral-700 transition-colors hover:border-neutral-300"
           >
-            <div className="w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center shadow-xs">
-              <User className="w-3 h-3 stroke-[2.5]" />
-            </div>
+            <User className="h-4 w-4" />
             <span>Sign In</span>
           </Link>
         </div>
