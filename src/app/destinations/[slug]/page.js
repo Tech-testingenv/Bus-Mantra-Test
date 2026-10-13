@@ -20,7 +20,9 @@ import {
 import {
   destinationsData,
   fleetTypesData,
+  destinationSlugFaqData
 } from "@/data/data";
+import FAQSection from "@/components/common/faq";
 
 export default function DestinationSlugPage({ params }) {
   const { slug } = use(params);
@@ -103,6 +105,8 @@ export default function DestinationSlugPage({ params }) {
           />
         </div>
       </div>
+      {/* Destination Slug FAQ Section */}
+      <FAQSection data={destinationSlugFaqData} />
     </main>
   );
 }

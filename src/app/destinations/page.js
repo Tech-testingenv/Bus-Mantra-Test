@@ -1,11 +1,10 @@
 import PageHero from "@/components/common/pageHero";
 import BookingForm from "@/components/hero/bookingForm";
 import PopularDestinations from "@/components/destinations/popularDestinations";
-import FAQSection from "@/components/common/faq";
 
 import {
   destinationsPageHeroData,
-  destinationsFaqData,
+
 } from "@/data/data";
 
 export const metadata = {
@@ -31,7 +30,6 @@ export default function DestinationsPage() {
         <PopularDestinations />
       </div>
 
-      <FAQSection data={destinationsFaqData} />
 
     </div>
   );

@@ -37,6 +37,8 @@ import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
 import { getBusBySlug } from "@/services/busSelectionService";
 import { calculateRouteDistance } from "@/services/distanceCalculationService";
 import { calculateCharterPrice } from "@/services/pricingService";
+import {fleetSlugFaqData} from "@/data/data";
+import FAQSection from "@/components/common/faq"
 
 import {
   resolveInitialBookingState,
@@ -549,6 +551,17 @@ export default function FleetDetailPage({ params }) {
           </div>
         </div>
       </main>
+
+
+      {/* Fleet Detail Page FAQs */}
+      <FAQSection data={fleetSlugFaqData} />
+
+      {showFleetModal && (
+        <FleetImagesModal
+          fleet={bus}
+          onClose={closeFleetModal}
+        />
+      )}
 
       {showFleetModal && (
         <FleetImagesModal

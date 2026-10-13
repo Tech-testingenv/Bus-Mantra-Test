@@ -463,11 +463,11 @@ export const fleetTypesData = [
     ratePerKm: 28,
     badge: "City & Regional",
     isPopular: false,
-    image: "/fleet/Tempo/1.jpg",
+    image: "/fleet/1.jpg",
     gallery: [
-      "/fleet/Tempo/2.jpg",
-      "/fleet/Tempo/3.jpg",
-      "/fleet/Tempo/4.jpg",
+      "/fleet/2.jpg",
+      "/fleet/3.jpg",
+      "/fleet/4.jpg",
     ],
     description:
       "Agile maneuverability, ideal for medium corporate teams, wedding parties, family trips, and airport pickups.",
@@ -498,11 +498,11 @@ export const fleetTypesData = [
     ratePerKm: 42,
     badge: "Most Popular",
     isPopular: true,
-    image: "/fleet/Premium/1.jpg",
+    image: "/fleet/9.jpg",
     gallery: [
-      "/fleet/Premium/2.jpg",
-      "/fleet/Premium/3.jpg",
-      "/fleet/Premium/4.jpg",
+      "/fleet/10.jpg",
+      "/fleet/11.jpg",
+      "/fleet/12.jpg",
     ],
     description:
       "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for smooth multi-hour intercity transit.",
@@ -533,11 +533,11 @@ export const fleetTypesData = [
     ratePerKm: 58,
     badge: "Long Distance",
     isPopular: false,
-    image: "/fleet/Luxury/1.jpg",
+    image: "/fleet/5.jpg",
     gallery: [
-      "/fleet/Luxury/2.jpg",
-      "/fleet/Luxury/3.jpg",
-      "/fleet/Luxury/4.jpg",
+      "/fleet/6.jpg",
+      "/fleet/7.jpg",
+      "/fleet/8.jpg",
     ],
     description:
       "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays for long tours.",
@@ -2003,6 +2003,160 @@ export const aboutFaqData = {
       question: "Who can use Bus Mantra?",
       answer:
         "Bus Mantra is suitable for corporate groups, families, tour groups, schools, event organisers and other groups travelling together.",
+    },
+  ],
+};
+
+// ============================================================
+// FLEET SLUG FAQ DATA
+// Separate from fleetFaqData used on the main Fleet page.
+// ============================================================
+
+export const fleetSlugFaqData = {
+  eyebrow: "COACH FAQ",
+  heading: "More about this coach.",
+  description:
+    "Find answers to common questions about choosing and booking this coach for your group.",
+  faqs: [
+    {
+      id: "fleet-slug-capacity",
+      question: "How many passengers can this coach accommodate?",
+      answer:
+        "Passenger capacity depends on the coach you select. Check the capacity details shown on this fleet page to choose the right option for your group.",
+    },
+    {
+      id: "fleet-slug-amenities",
+      question: "What amenities are available on this coach?",
+      answer:
+        "Amenities vary by coach type. Review the amenities and features listed on this page for the selected coach.",
+    },
+    {
+      id: "fleet-slug-luggage",
+      question: "Can the coach accommodate our group's luggage?",
+      answer:
+        "Luggage capacity depends on the coach type and the amount of luggage your group is carrying. Share your requirements when submitting your booking request.",
+    },
+    {
+      id: "fleet-slug-booking",
+      question: "How can I book this coach?",
+      answer:
+        "Submit your pickup point, destination, travel dates and passenger count through the booking form to request a coach for your journey.",
+    },
+  ],
+};
+
+
+// ============================================================
+// DESTINATION SLUG FAQ DATA
+// Separate from destinationsFaqData used on the main page.
+// ============================================================
+
+export const destinationSlugFaqData = {
+  eyebrow: "DESTINATION FAQ",
+  heading: "Planning this destination.",
+  description:
+    "Useful information to help you plan a group journey to this destination.",
+  faqs: [
+    {
+      id: "destination-slug-booking",
+      question: "Can I book a coach for this destination?",
+      answer:
+        "Yes. Submit your pickup point, destination, travel dates and passenger count through the booking form to request group transportation.",
+    },
+    {
+      id: "destination-slug-custom-route",
+      question: "Can I choose a different pickup location?",
+      answer:
+        "You can provide your preferred pickup point and destination when submitting your journey requirements.",
+    },
+    {
+      id: "destination-slug-return-trip",
+      question: "Can I arrange return transportation?",
+      answer:
+        "Yes. Include your return travel date and time in your booking requirements so your journey can be planned accordingly.",
+    },
+    {
+      id: "destination-slug-stops",
+      question: "Can our group visit multiple places during the trip?",
+      answer:
+        "You can share your planned stops and route requirements when requesting your journey so the itinerary can be discussed with the team.",
+    },
+  ],
+};
+
+
+// ============================================================
+// SERVICES SLUG FAQ DATA
+// Separate from servicesFaqData used on the main page.
+// ============================================================
+
+export const servicesSlugFaqData = {
+  eyebrow: "SERVICE FAQ",
+  heading: "A little more about this service.",
+  description:
+    "Answers to common questions about arranging group transportation for this service.",
+  faqs: [
+    {
+      id: "services-slug-booking",
+      question: "How do I arrange transportation for this service?",
+      answer:
+        "Submit your pickup location, destination, travel dates and group size through the booking form, along with any specific requirements for your journey.",
+    },
+    {
+      id: "services-slug-group-size",
+      question: "Can you accommodate different group sizes?",
+      answer:
+        "Different coach options are available for different group sizes. Choose a coach based on your passenger count and travel requirements.",
+    },
+    {
+      id: "services-slug-route",
+      question: "Can I request a customised route or schedule?",
+      answer:
+        "Yes. Include your preferred route, pickup points, destinations and schedule when submitting your transportation request.",
+    },
+    {
+      id: "services-slug-details",
+      question: "What information should I provide when requesting a booking?",
+      answer:
+        "Provide your group size, pickup and drop-off locations, travel dates, timings and any service-specific requirements to help plan your journey.",
+    },
+  ],
+};
+
+
+// ============================================================
+// CONTACT PAGE FAQ DATA
+// ============================================================
+
+export const contactFaqData = {
+  eyebrow: "CONTACT FAQ",
+  heading: "We're here to help.",
+  description:
+    "Find answers to common questions about contacting Bus Mantra and planning your group transportation.",
+  faqs: [
+    {
+      id: "contact-faq-booking",
+      question: "How can I enquire about a booking?",
+      answer:
+        "You can submit your journey details through the booking form, including your pickup point, destination, travel dates and passenger count.",
+    },
+    {
+      id: "contact-faq-quote",
+      question: "How can I request a quote?",
+      answer:
+        "Share your route, travel dates, timings and group size through the booking form so your transportation requirements can be reviewed.",
+    },
+    {
+      id: "contact-faq-custom",
+      question: "Can I discuss special travel requirements?",
+      answer:
+        "Yes. Include details such as multiple stops, return travel, event transfers or other group transportation needs in your enquiry.",
+    },
+    {
+      id: "contact-faq-support",
+      question: "Where can I find Bus Mantra's contact details?",
+      answer:
+        "You can find the available phone number and email address in the contact information displayed on the Contact page and website footer.",
     },
   ],
 };

@@ -2,8 +2,7 @@ import PageHero from "@/components/common/pageHero";
 import BookingForm from "@/components/hero/bookingForm";
 import FleetTypes from "@/components/fleet/fleetTypes";
 import FinalCtaSection from "@/components/cta/finalCtaSection";
-import { fleetFaqData, fleetPageHeroData, fleetPageSectionData } from "@/data/data";
-import FAQSection from "@/components/common/faq";
+import {fleetPageHeroData, fleetPageSectionData } from "@/data/data";
 
 
 export const metadata = {
@@ -30,7 +29,6 @@ export default function FleetsPage() {
         sectionData={fleetPageSectionData}
         className="pt-8 sm:pt-10 lg:pt-12 pb-12 sm:pb-16 lg:pb-20 my-0"
       />
-      <FAQSection data={fleetFaqData}/>
     </div>
   );
 }

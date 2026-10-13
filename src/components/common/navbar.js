@@ -110,43 +110,6 @@ export default function Navbar() {
     }
   };
 
-  // Book a Bus button
-  const handleBookBus = (event) => {
-    if (pathname !== "/") {
-      closeMenu();
-      return;
-    }
-
-    event.preventDefault();
-    closeMenu();
-
-    const bookingElement =
-      document.getElementById("booking-form") ||
-      document.querySelector("form");
-
-    if (!bookingElement) return;
-
-    const navOffset = 85;
-
-    const targetPosition =
-      bookingElement.getBoundingClientRect().top +
-      window.scrollY -
-      navOffset;
-
-    window.scrollTo({
-      top: Math.max(0, targetPosition),
-      behavior: "smooth",
-    });
-
-    const firstInput = bookingElement.querySelector(
-      "input, select, button"
-    );
-
-    if (firstInput) {
-      setTimeout(() => firstInput.focus(), 350);
-    }
-  };
-
   return (
     <>
       {/* ===================================================== */}
@@ -242,11 +205,10 @@ export default function Navbar() {
           <div className="hidden shrink-0 items-center gap-2.5 lg:flex xl:gap-3">
             {/* Book a Bus */}
             <Link
-              href="#booking-form"
-              onClick={handleBookBus}
+              href="/contact"
               className="inline-flex h-11 items-center justify-center rounded-xl bg-brand-orange px-4 text-sm font-semibold text-white shadow-sm shadow-orange-500/20 transition-all duration-200 hover:bg-brand-orange-hover hover:shadow-md active:scale-[0.98] xl:px-5"
             >
-              Book a Bus
+              Contact
             </Link>
 
             {/* Sign In */}
@@ -401,11 +363,10 @@ export default function Navbar() {
             {/* Mobile Book a Bus button */}
             <div className="pt-5">
               <Link
-                href="#booking-form"
-                onClick={handleBookBus}
+                href="/contact"
                 className="flex w-full items-center justify-center rounded-xl bg-brand-orange px-6 py-3.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-orange-hover active:scale-[0.99]"
               >
-                Book a Bus
+                Contact
               </Link>
             </div>
           </nav>

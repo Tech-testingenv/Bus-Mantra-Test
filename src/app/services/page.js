@@ -20,13 +20,12 @@ import {
 import PageHero from "@/components/common/pageHero";
 import BookingForm from "@/components/hero/bookingForm";
 import ServiceCard from "@/components/services/serviceCard";
-import FAQSection from "@/components/common/faq";
+
 
 import {
   servicesPageHeroData,
   servicesPageSectionData,
   featuredServiceData,
-  servicesFaqData,
 } from "@/data/data";
 
 export const metadata = {
@@ -532,7 +531,6 @@ export default function ServicesPage() {
 
       </section>
 
-      <FAQSection data={servicesFaqData} />
 
     </div>
   );

@@ -25,35 +25,38 @@ export default function PageHero({
     if (Array.isArray(lines) && lines.length >= 2) {
       return (
         <>
-          <span className="block text-neutral-900">{lines[0]}</span>
-          <span className="block text-brand-orange">{lines[1]}</span>
+          <span className="block text-[#142E60]">{lines[0]}</span>
+          <span className="block text-[#F47716]">{lines[1]}</span>
         </>
       );
     }
+
     if (typeof text !== "string") return text;
+
     if (text.includes("One fleet.")) {
       const parts = text.split("One fleet.");
       const rest = parts[1]?.trim() || "Every kind of journey.";
+
       return (
         <>
-          <span className="block text-neutral-900">One fleet.</span>
-          <span className="block text-brand-orange">{rest}</span>
+          <span className="block text-[#142E60]">One fleet.</span>
+          <span className="block text-[#F47716]">{rest}</span>
         </>
       );
     }
+
     return text;
   };
 
   return (
-    <section className={`relative w-full pt-1 sm:pt-2 pb-6 sm:pb-8 lg:pb-10 ${className}`}>
+    <section
+      className={`relative w-full pt-1 sm:pt-2 pb-6 sm:pb-8 lg:pb-10 ${className}`}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-10 xl:gap-12 items-center">
-        {/* ========================================================= */}
-        {/* LEFT COLUMN: Page Introduction (~50% width on desktop)    */}
-        {/* Mobile order: 1. Eyebrow, 2. Heading, 3. Description      */}
-        {/* ========================================================= */}
+        {/* LEFT COLUMN: Page Introduction */}
         <div className="flex flex-col items-start text-left">
           {eyebrow && (
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-4 sm:mb-4.5 select-none">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#F4F6F9] text-[11px] font-bold tracking-wider text-[#677284] uppercase mb-4 sm:mb-4.5 select-none border border-[#E1E5EC]">
               {eyebrow}
             </div>
           )}
@@ -62,27 +65,30 @@ export default function PageHero({
             {formatTitle(title, titleLines)}
           </h1>
 
-          <p className="text-base sm:text-lg text-neutral-600 leading-relaxed max-w-xl">
+          <p className="text-base sm:text-lg text-[#626C7B] leading-relaxed max-w-xl">
             {description}
           </p>
         </div>
 
-        {/* ========================================================= */}
-        {/* RIGHT COLUMN: Studio Coach Image (~50% width on desktop)  */}
-        {/* Mobile order: 4. Bus Image below content                  */}
-        {/* ========================================================= */}
-        <div className="flex items-center justify-center w-full">
-          <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#f0f2f5] p-3.5 sm:p-4 lg:p-5 xl:p-6 flex items-center justify-center border border-neutral-100/90 shadow-2xs">
-            <Image
-              src={image}
-              alt={imageAlt || title || "Bus Mantra luxury coach fleet"}
-              width={imageWidth}
-              height={imageHeight}
-              priority={priority}
-              className="w-full max-h-52.5 sm:max-h-57.5 lg:max-h-62.5 xl:max-h-67.5 object-contain select-none transition-transform duration-300 hover:scale-[1.02] rounded-xl sm:rounded-2xl"
-            />
-          </div>
-        </div>
+{/* RIGHT COLUMN: Studio Coach Image */}
+<div className="flex items-center justify-center w-full">
+  {/* Outer box */}
+  <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#F4F6F9] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#E1E5EC] shadow-2xs">
+
+    {/* Image wrapper */}
+    <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl xl:rounded-[24px]">
+      <Image
+        src={image}
+        alt={imageAlt || title || "Bus Mantra luxury coach fleet"}
+        width={imageWidth}
+        height={imageHeight}
+        priority={priority}
+        className="block w-full h-auto max-h-52.5 sm:max-h-57.5 lg:max-h-62.5 xl:max-h-67.5 object-cover rounded-2xl sm:rounded-3xl xl:rounded-[24px] select-none transition-transform duration-300 hover:scale-[1.02]"
+      />
+    </div>
+
+  </div>
+</div>
       </div>
     </section>
   );

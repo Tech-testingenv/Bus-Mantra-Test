@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -11,13 +12,17 @@ import {
   ArrowRight,
   ArrowLeft,
   BusFront,
+  UserRound,
+  Phone,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,334 +35,253 @@ export default function LoginPage() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    if (error) setError("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
 
     if (isRegister && formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
+      setError("Passwords do not match. Please try again.");
       return;
     }
 
-    console.log(isRegister ? "Registration form:" : "Sign in form:", formData);
-    // Connect this handler to your authentication API when it is ready.
+    // Connect this handler to your authentication API.
+    console.log(isRegister ? "Registration form:" : "Login form:", formData);
   };
 
-  const handleBack = () => {
-    router.back();
+  const toggleMode = () => {
+    setIsRegister((prev) => !prev);
+    setShowPassword(false);
+    setError("");
   };
+
+  const inputClass =
+    "h-10 w-full rounded-lg border border-[#E2E6ED] bg-white pl-10 pr-3 text-sm text-[#142E60] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#19439B] focus:ring-2 focus:ring-[#19439B]/10";
+  const labelClass = "mb-1 block text-xs font-semibold text-[#142E60]";
 
   return (
-    <main className="min-h-screen overflow-hidden bg-neutral-50 flex items-center justify-center px-4 py-3 sm:px-6 lg:px-8">
-      <div className="w-full max-w-5xl">
+    <main className="fixed inset-0 flex items-center justify-center overflow-hidden bg-[#F5F6F8] px-3 py-3 sm:px-5">
+      <div className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-[#19439B]/[0.06] blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-[#FFC20E]/10 blur-3xl" />
 
-        <div className="grid lg:grid-cols-[0.9fr_1.1fr] bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-[0_20px_60px_-30px_rgba(0,0,0,0.18)]">
-
-          <section className="hidden lg:flex relative bg-neutral-950 text-white p-7 xl:p-8 flex-col justify-between overflow-hidden">
-
-            <div className="absolute -top-28 -right-28 w-72 h-72 bg-brand-orange/20 rounded-full blur-3xl" />
-
-            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-brand-orange/10 rounded-full blur-3xl" />
+      <div className="relative flex h-full max-h-[760px] w-full max-w-5xl flex-col">
+        <div className="grid min-h-0 flex-1 overflow-hidden rounded-2xl border border-[#E7EAF0] bg-white shadow-[0_20px_60px_-25px_rgba(20,46,96,0.22)] lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Branding panel */}
+          <section className="relative hidden flex-col justify-between overflow-hidden bg-[#142E60] p-7 text-white lg:flex xl:p-9">
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-white/[0.08]" />
+            <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full border border-white/[0.08]" />
+            <div className="absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-[#19439B]/80 blur-2xl" />
+            <div className="absolute bottom-16 right-10 h-32 w-32 rounded-full bg-[#FFC20E]/10 blur-3xl" />
 
             <div className="relative z-10">
-
-              <Link
-                href="/"
-                className="inline-flex items-center gap-3 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-brand-orange flex items-center justify-center text-white font-black tracking-tight transition-transform duration-200 group-hover:scale-105">
-                  BM
-                </div>
-
-                <span className="text-lg font-black tracking-tight">
-                  BUS MANTRA
-                </span>
+              <Link href="/" aria-label="Bus Mantra home" className="inline-flex items-center">
+                <Image
+                  src="/logo-bus-mantra.jpeg"
+                  alt="Bus Mantra"
+                  width={190}
+                  height={64}
+                  priority
+                  className="h-16 w-auto max-w-[190px] rounded-md object-contain bg-white px-2 py-2"
+                />
               </Link>
 
-              <div className="mt-10 max-w-md">
-                <p className="text-brand-orange text-xs font-bold tracking-[0.18em] uppercase">
-                  {isRegister ? "JOIN BUS MANTRA" : "Welcome Back"}
-                </p>
+              <div className="mt-8 xl:mt-12">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-[#FFC20E]" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.16em]">
+                    {isRegister ? "Join our community" : "Your next journey awaits"}
+                  </span>
+                </div>
 
-                <h1 className="mt-2.5 text-4xl xl:text-[44px] font-black tracking-tight leading-[1.02]">
+                <h1 className="text-4xl font-black leading-[1.12] tracking-tight xl:text-[46px]">
                   {isRegister ? (
-                    <>Create your account.<br />Start your journey.</>
+                    <>Your journey.<br /><span className="text-[#FFC20E]">Your account.</span></>
                   ) : (
-                    <>Your journey<br />starts here.</>
+                    <>Every journey<br />starts with<br /><span className="text-[#FFC20E]">one step.</span></>
                   )}
                 </h1>
 
-                <p className="mt-4 text-neutral-400 text-sm leading-6 max-w-sm">
+                <p className="mt-5 max-w-sm text-sm leading-6 text-white/65">
                   {isRegister
-                    ? "Create an account to explore services and keep your journeys organized."
-                    : "Sign in to manage your bookings, explore destinations, and keep your journeys with Bus Mantra organized."}
+                    ? "Create your Bus Mantra account and make planning your next group journey simpler."
+                    : "Welcome back to Bus Mantra. Sign in to explore destinations, manage bookings, and plan your next trip."}
                 </p>
+
+                <div className="mt-7 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
+                      <BusFront className="h-4 w-4 text-[#FFC20E]" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold">Travel your way</p>
+                      <p className="mt-0.5 text-[10px] text-white/50">Explore buses for your journey</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
+                      <ShieldCheck className="h-4 w-4 text-[#FFC20E]" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold">Your account, your details</p>
+                      <p className="mt-0.5 text-[10px] text-white/50">Keep your travel details organized</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="relative z-10 flex items-center gap-3 text-neutral-400 text-xs">
-              <div className="w-8 h-8 rounded-lg border border-neutral-800 flex items-center justify-center">
-                <BusFront className="w-4 h-4 text-brand-orange" />
+            <div className="relative z-10 flex items-center justify-between border-t border-white/15 pt-4">
+              <p className="text-[10px] text-white/50">Travel better. Travel smarter.</p>
+              <div className="flex gap-1.5">
+                <span className="h-1.5 w-5 rounded-full bg-[#FFC20E]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
+                <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
               </div>
-
-              <span>Travel better. Travel smarter.</span>
             </div>
           </section>
 
-          <section className="p-5 sm:p-7 lg:p-8 xl:p-9">
-
-            <div className="max-w-md mx-auto">
-
+          {/* Login and registration panel */}
+          <section className="flex min-h-0 items-center justify-center overflow-y-auto px-5 py-3 sm:px-8 lg:overflow-hidden lg:px-8 xl:px-10">
+            <div className="w-full max-w-sm py-1">
               <button
                 type="button"
-                onClick={handleBack}
-                className="group inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors duration-200 mb-4"
+                onClick={() => router.back()}
+                className="group mb-3 inline-flex items-center gap-2 text-xs font-semibold text-[#737373] transition-colors hover:text-[#19439B]"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-neutral-200 bg-white transition-all duration-200 group-hover:border-brand-orange group-hover:bg-brand-orange group-hover:text-white">
-                  <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#E2E6ED] transition-colors group-hover:border-[#19439B] group-hover:bg-[#19439B] group-hover:text-white">
+                  <ArrowLeft className="h-3.5 w-3.5" />
                 </span>
-
-                <span>Back</span>
+                Back
               </button>
 
-              <div className="lg:hidden flex items-center justify-center mb-5">
-                <Link
-                  href="/"
-                  className="flex items-center gap-2.5"
-                >
-                  <div className="w-9 h-9 rounded-xl bg-brand-orange flex items-center justify-center text-white font-black text-sm">
-                    BM
-                  </div>
-
-                  <span className="text-lg font-black tracking-tight text-neutral-900">
-                    BUS MANTRA
-                  </span>
+              {/* Mobile logo */}
+              <div className="mb-3 flex justify-center lg:hidden">
+                <Link href="/" aria-label="Bus Mantra home" className="inline-flex items-center">
+                  <Image
+                    src="/logo-bus-mantra.jpeg"
+                    alt="Bus Mantra"
+                    width={170}
+                    height={56}
+                    priority
+                    className="h-10 w-auto max-w-[170px] object-contain"
+                  />
                 </Link>
               </div>
 
-              <div className="mb-5">
-                <p className="text-brand-orange text-xs font-bold tracking-wide">
-                  ACCOUNT
-                </p>
-
-                <h2 className="mt-1 text-3xl sm:text-[34px] font-black tracking-tight text-neutral-900">
-                  {isRegister ? "Create account" : "Sign in"}
+              <div className="mb-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="h-1 w-6 rounded-full bg-[#19439B]" />
+                  <span className="h-1 w-3 rounded-full bg-[#FFC20E]" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#19439B]">Your account</span>
+                </div>
+                <h2 className="text-3xl font-black tracking-tight text-[#142E60] sm:text-[34px]">
+                  {isRegister ? "Create account" : "Welcome back"}<span className="text-[#F47716]">.</span>
                 </h2>
-
-                <p className="mt-1.5 text-sm text-neutral-500">
-                  {isRegister
-                    ? "Enter your details to create your account."
-                    : "Welcome back. Please enter your details."}
+                <p className="mt-1 text-xs leading-5 text-[#737373]">
+                  {isRegister ? "Enter your details to get started." : "Sign in to continue your journey with Bus Mantra."}
                 </p>
               </div>
 
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-3.5"
-              >
+              <form onSubmit={handleSubmit} className="space-y-2.5">
                 {isRegister && (
-                  <>
+                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                     <div>
-                      <label htmlFor="name" className="mb-1.5 block text-sm font-semibold text-neutral-800">
-                        Full name
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Enter your full name"
-                        autoComplete="name"
-                        required
-                        className="h-10.5 w-full rounded-xl border border-neutral-200 bg-white px-4 text-sm text-neutral-900 outline-none transition-all focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
-                      />
+                      <label htmlFor="name" className={labelClass}>Full name</label>
+                      <div className="relative">
+                        <UserRound className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                        <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Full name" autoComplete="name" required className={inputClass} />
+                      </div>
                     </div>
                     <div>
-                      <label htmlFor="phone" className="mb-1.5 block text-sm font-semibold text-neutral-800">
-                        Phone number
-                      </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="Enter your phone number"
-                        autoComplete="tel"
-                        required
-                        className="h-10.5 w-full rounded-xl border border-neutral-200 bg-white px-4 text-sm text-neutral-900 outline-none transition-all focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
-                      />
+                      <label htmlFor="phone" className={labelClass}>Phone number</label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                        <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="Phone number" autoComplete="tel" required className={inputClass} />
+                      </div>
                     </div>
-                  </>
+                  </div>
                 )}
 
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-neutral-800 mb-1.5"
-                  >
-                    Email address
-                  </label>
-
+                  <label htmlFor="email" className={labelClass}>Email address</label>
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-neutral-400" />
-
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                      autoComplete="email"
-                      required
-                      className="w-full h-10.5 pl-11 pr-4 rounded-xl border border-neutral-200 bg-white text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-all duration-150 focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
-                    />
+                    <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                    <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter your email address" autoComplete="email" required className={inputClass} />
                   </div>
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label
-                      htmlFor="password"
-                      className="text-sm font-semibold text-neutral-800"
-                    >
-                      Password
-                    </label>
-
+                  <div className="mb-1.5 flex items-center justify-between gap-2">
+                    <label htmlFor="password" className="text-xs font-semibold text-[#142E60]">Password</label>
                     {!isRegister && (
-                      <Link
-                        href="/forgot-password"
-                        className="text-xs font-semibold text-brand-orange hover:text-brand-orange-hover transition-colors"
-                      >
-                        Forgot password?
-                      </Link>
+                      <Link href="/forgot-password" className="text-[11px] font-bold text-[#19439B] transition-colors hover:text-[#F47716]">Forgot password?</Link>
                     )}
                   </div>
-
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-neutral-400" />
-
-                    <input
-                      id="password"
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Enter your password"
-                      autoComplete={isRegister ? "new-password" : "current-password"}
-                      required
-                      className="w-full h-10.5 pl-11 pr-11 rounded-xl border border-neutral-200 bg-white text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-all duration-150 focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setShowPassword((prev) => !prev)
-                      }
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 transition-colors"
-                      aria-label={
-                        showPassword
-                          ? "Hide password"
-                          : "Show password"
-                      }
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-[18px] h-[18px]" />
-                      ) : (
-                        <Eye className="w-[18px] h-[18px]" />
-                      )}
+                    <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                    <input id="password" name="password" type={showPassword ? "text" : "password"} value={formData.password} onChange={handleChange} placeholder="Enter your password" autoComplete={isRegister ? "new-password" : "current-password"} required className={`${inputClass} pr-10`} />
+                    <button type="button" onClick={() => setShowPassword((prev) => !prev)} aria-label={showPassword ? "Hide password" : "Show password"} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] transition-colors hover:text-[#19439B]">
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
 
                 {isRegister && (
                   <div>
-                    <label htmlFor="confirmPassword" className="mb-1.5 block text-sm font-semibold text-neutral-800">
-                      Confirm password
-                    </label>
+                    <label htmlFor="confirmPassword" className={labelClass}>Confirm password</label>
                     <div className="relative">
-                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-neutral-400" />
-                      <input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type={showPassword ? "text" : "password"}
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        placeholder="Confirm your password"
-                        autoComplete="new-password"
-                        required
-                        className="h-10.5 w-full rounded-xl border border-neutral-200 bg-white pl-11 pr-4 text-sm text-neutral-900 outline-none transition-all focus:border-brand-orange focus:ring-3 focus:ring-orange-100"
-                      />
+                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
+                      <input id="confirmPassword" name="confirmPassword" type={showPassword ? "text" : "password"} value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm your password" autoComplete="new-password" required className={inputClass} />
                     </div>
                   </div>
                 )}
 
                 {!isRegister && (
-                <div className="flex items-center">
-                  <label className="flex items-center gap-2.5 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      checked={formData.remember}
-                      onChange={handleChange}
-                      className="w-4 h-4 rounded border-neutral-300 accent-brand-orange cursor-pointer"
-                    />
-
-                    <span className="text-sm text-neutral-600">
-                      Remember me
-                    </span>
+                  <label className="flex cursor-pointer items-center gap-2 pt-0.5">
+                    <input type="checkbox" name="remember" checked={formData.remember} onChange={handleChange} className="h-3.5 w-3.5 cursor-pointer accent-[#19439B]" />
+                    <span className="text-xs text-[#525252]">Remember me</span>
                   </label>
-                </div>
                 )}
 
-                <button
-                  type="submit"
-                  className="w-full h-10.5 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-sm shadow-orange-500/20 hover:shadow-md hover:shadow-orange-500/25 active:scale-[0.99] transition-all duration-200"
-                >
+                {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">{error}</p>}
+
+                <button type="submit" className="group flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#19439B] px-4 text-sm font-bold text-white shadow-md shadow-[#19439B]/15 transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#142E60] hover:shadow-lg active:translate-y-0">
                   <span>{isRegister ? "Create Account" : "Sign In"}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </form>
 
-              <div className="relative my-4.5">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-neutral-200" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-white px-4 text-xs font-medium text-neutral-400">
-                    OR
-                  </span>
-                </div>
+              <div className="my-3 flex items-center gap-3">
+                <div className="h-px flex-1 bg-[#E7EAF0]" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#9CA3AF]">OR</span>
+                <div className="h-px flex-1 bg-[#E7EAF0]" />
               </div>
 
-              <p className="text-center text-sm text-neutral-500">
-                {isRegister ? "Already have an account? " : "Don't have an account? "}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsRegister((current) => !current);
-                    setShowPassword(false);
-                  }}
-                  className="font-semibold text-brand-orange transition-colors hover:text-brand-orange-hover"
-                >
+              {/* Keep the full sign-in/register prompt visible */}
+              <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-center text-xs leading-5 text-[#737373]">
+                <span>{isRegister ? "Already have an account?" : "New to Bus Mantra?"}</span>
+                <button type="button" onClick={toggleMode} className="inline-flex min-h-6 items-center font-bold text-[#19439B] underline-offset-4 transition-colors hover:text-[#F47716] hover:underline">
                   {isRegister ? "Sign in" : "Create an account"}
                 </button>
-              </p>
+              </div>
+
+              <div className="mt-3 flex items-center justify-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#19439B]" />
+                <span className="text-center text-[10px] leading-4 text-[#9CA3AF]">Your journey with Bus Mantra starts here.</span>
+              </div>
             </div>
           </section>
         </div>
 
-        <p className="text-center text-xs text-neutral-400 mt-2.5">
-          © {new Date().getFullYear()} Bus Mantra. All rights reserved.
-        </p>
+        <footer className="flex shrink-0 items-center justify-center pt-2">
+          <p className="text-center text-[10px] text-[#9CA3AF]">© {new Date().getFullYear()} Bus Mantra. All rights reserved.</p>
+        </footer>
       </div>
     </main>
   );

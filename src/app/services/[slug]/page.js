@@ -24,7 +24,10 @@ import {
 import {
   servicesSlugData,
   fleetTypesData,
+  servicesSlugFaqData,
 } from "@/data/data";
+
+import FAQSection from "@/components/common/faq";
 
 export default function ServiceSlugPage({ params }) {
   const { slug } = use(params);
@@ -54,6 +57,7 @@ export default function ServiceSlugPage({ params }) {
           </Link>
         </div>
       </main>
+      
     );
   }
 
@@ -109,7 +113,10 @@ export default function ServiceSlugPage({ params }) {
           <ServiceBookingForm service={service} />
         </div>
       </div>
+      {/* Services Slug FAQ Section */}
+      <FAQSection data={servicesSlugFaqData} />
     </main>
+    
   );
 }
 
