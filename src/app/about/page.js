@@ -77,13 +77,13 @@ export default function AboutPage() {
 
           <div className="lg:col-span-7">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#EEF2F9] text-[11px] font-bold tracking-wider text-[#19439B] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
               BUS MANTRA AT A GLANCE
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#152544] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
               Group travel,
-              <span className="text-[#F47716]">
+              <span className="text-[#123999]">
                 {" "}made simpler.
               </span>
             </h2>
@@ -92,7 +92,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5">
 
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#677284] leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-[#111111] leading-relaxed max-w-xl">
               A better way to bring your entire group together on the same
               comfortable journey.
             </p>
@@ -113,10 +113,10 @@ export default function AboutPage() {
                 className="
                   group relative bg-white
                   rounded-2xl sm:rounded-3xl
-                  border border-[#E1E5EC]
+                  border border-[#123999]
                   p-5 sm:p-6 lg:p-7
                   shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-                  hover:border-[#C9D3E2]
+                  hover:border-[#123999]
                   hover:shadow-[0_14px_40px_-8px_rgba(0,0,0,0.08)]
                   transition-all duration-300
                 "
@@ -129,10 +129,10 @@ export default function AboutPage() {
                       flex h-10 w-10
                       items-center justify-center
                       rounded-full
-                      bg-[#EEF2F9]
-                      text-[#19439B]
+                      bg-[#FFFFFF]
+                      text-[#123999]
                       transition-all duration-300
-                      group-hover:bg-[#F47716]
+                      group-hover:bg-[#FFC003]
                       group-hover:text-white
                     "
                   >
@@ -145,11 +145,11 @@ export default function AboutPage() {
                   <ArrowUpRight
                     size={16}
                     className="
-                      text-[#A0A8B5]
+                      text-[#123999]
                       transition-all duration-300
                       group-hover:translate-x-1
                       group-hover:-translate-y-1
-                      group-hover:text-[#F47716]
+                      group-hover:text-[#123999]
                     "
                   />
 
@@ -157,11 +157,11 @@ export default function AboutPage() {
 
                 <div className="mt-7">
 
-                  <div className="text-4xl sm:text-5xl font-black leading-none tracking-tight text-[#152544]">
+                  <div className="text-4xl sm:text-5xl font-black leading-none tracking-tight text-[#111111]">
                     {item.value}
                   </div>
 
-                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#677284]">
+                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#111111]">
                     {item.label}
                   </div>
 
@@ -181,7 +181,7 @@ export default function AboutPage() {
 
           <div className="w-full">
 
-            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#F4F6F9] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#E1E5EC] shadow-2xs">
+            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#FFFFFF] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#123999] shadow-2xs">
 
               <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl sm:rounded-2xl">
 
@@ -201,7 +201,7 @@ export default function AboutPage() {
                     "
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-sm text-[#8791A0]">
+                  <div className="w-full h-full flex items-center justify-center text-sm text-[#111111]">
                     Image unavailable
                   </div>
                 )}
@@ -214,15 +214,15 @@ export default function AboutPage() {
 
           <div className="flex flex-col items-start text-left lg:px-2 xl:px-5">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#EEF2F9] text-[11px] font-bold tracking-wider text-[#19439B] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
               {content.story?.eyebrow}
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#152544] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
               {content.story?.heading}
             </h2>
 
-            <p className="text-base sm:text-lg text-[#677284] leading-relaxed mt-4 sm:mt-5 max-w-xl">
+            <p className="text-base sm:text-lg text-[#111111] leading-relaxed mt-4 sm:mt-5 max-w-xl">
               {content.story?.description}
             </p>
 
@@ -235,7 +235,7 @@ export default function AboutPage() {
                     group
                     flex items-center justify-between
                     gap-4
-                    border-b border-[#E1E5EC]
+                    border-b border-[#123999]
                     py-3.5 sm:py-4
                   "
                 >
@@ -247,10 +247,10 @@ export default function AboutPage() {
                         flex h-8 w-8 shrink-0
                         items-center justify-center
                         rounded-full
-                        bg-[#EEF2F9]
-                        text-[#F47716]
+                        bg-[#FFFFFF]
+                        text-[#123999]
                         transition-all duration-300
-                        group-hover:bg-[#F47716]
+                        group-hover:bg-[#FFC003]
                         group-hover:text-white
                       "
                     >
@@ -260,7 +260,7 @@ export default function AboutPage() {
                       />
                     </span>
 
-                    <span className="text-sm sm:text-[15px] font-medium text-[#263145]">
+                    <span className="text-sm sm:text-[15px] font-medium text-[#111111]">
                       {point}
                     </span>
 
@@ -270,10 +270,10 @@ export default function AboutPage() {
                     size={15}
                     className="
                       shrink-0
-                      text-[#A0A8B5]
+                      text-[#123999]
                       transition-all duration-300
                       group-hover:translate-x-1
-                      group-hover:text-[#F47716]
+                      group-hover:text-[#123999]
                     "
                   />
 
@@ -294,13 +294,13 @@ export default function AboutPage() {
 
           <div className="lg:col-span-7">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#EEF2F9] text-[11px] font-bold tracking-wider text-[#19439B] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
               WHAT MATTERS TO US
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#152544] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
               Travel is better when{" "}
-              <span className="text-[#F47716]">
+              <span className="text-[#123999]">
                 the details are right.
               </span>
             </h2>
@@ -309,7 +309,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5">
 
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#677284] leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-[#111111] leading-relaxed max-w-xl">
               We focus on the things that make group travel dependable,
               comfortable and easy to plan.
             </p>
@@ -318,7 +318,7 @@ export default function AboutPage() {
 
         </div>
 
-        <div className="w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-[#E1E5EC] shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]">
+        <div className="w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-[#123999] shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]">
 
           {content.values?.map((value, index) => {
 
@@ -340,9 +340,9 @@ export default function AboutPage() {
                   sm:px-7 sm:py-7
                   lg:px-8 lg:py-8
                   transition-colors duration-300
-                  hover:bg-[#F7F8FA]
+                  hover:bg-[#FFFFFF]
                   md:grid-cols-[52px_0.75fr_1.25fr_30px]
-                  ${!isLast ? "border-b border-[#E1E5EC]" : ""}
+                  ${!isLast ? "border-b border-[#123999]" : ""}
                 `}
               >
 
@@ -351,11 +351,11 @@ export default function AboutPage() {
                     flex h-11 w-11
                     items-center justify-center
                     rounded-full
-                    border border-[#E1E5EC]
-                    text-[#19439B]
+                    border border-[#123999]
+                    text-[#123999]
                     transition-all duration-300
-                    group-hover:border-[#F47716]
-                    group-hover:bg-[#F47716]
+                    group-hover:border-[#FFC003]
+                    group-hover:bg-[#FFC003]
                     group-hover:text-white
                   "
                 >
@@ -365,11 +365,11 @@ export default function AboutPage() {
                   />
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#152544] tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight">
                   {value.title}
                 </h3>
 
-                <p className="text-sm leading-6 text-[#677284] lg:text-[15px]">
+                <p className="text-sm leading-6 text-[#111111] lg:text-[15px]">
                   {value.description}
                 </p>
 
@@ -377,11 +377,11 @@ export default function AboutPage() {
                   size={17}
                   className="
                     hidden
-                    text-[#A0A8B5]
+                    text-[#123999]
                     transition-all duration-300
                     group-hover:-translate-y-1
                     group-hover:translate-x-1
-                    group-hover:text-[#F47716]
+                    group-hover:text-[#123999]
                     md:block
                   "
                 />
@@ -400,11 +400,11 @@ export default function AboutPage() {
 
           <div className="flex flex-col items-start text-left order-2 lg:order-1">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#EEF2F9] text-[11px] font-bold tracking-wider text-[#19439B] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
               {content.experience?.eyebrow}
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#152544] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
               {content.experience?.heading}
             </h2>
 
@@ -414,7 +414,7 @@ export default function AboutPage() {
                 (paragraph) => (
                   <p
                     key={paragraph}
-                    className="text-base sm:text-lg text-[#677284] leading-relaxed"
+                    className="text-base sm:text-lg text-[#111111] leading-relaxed"
                   >
                     {paragraph}
                   </p>
@@ -438,11 +438,11 @@ export default function AboutPage() {
                         group
                         flex items-center gap-4
                         rounded-xl sm:rounded-2xl
-                        border border-[#E1E5EC]
+                        border border-[#123999]
                         bg-white
                         px-4 py-3.5
                         transition-all duration-300
-                        hover:border-[#C9D3E2]
+                        hover:border-[#123999]
                         hover:shadow-[0_8px_25px_-10px_rgba(0,0,0,0.08)]
                       "
                     >
@@ -452,8 +452,8 @@ export default function AboutPage() {
                           flex h-9 w-9 shrink-0
                           items-center justify-center
                           rounded-full
-                          bg-[#EEF2F9]
-                          text-[#F47716]
+                          bg-[#FFFFFF]
+                          text-[#123999]
                         "
                       >
                         <Icon
@@ -462,7 +462,7 @@ export default function AboutPage() {
                         />
                       </span>
 
-                      <span className="text-sm font-semibold text-[#263145]">
+                      <span className="text-sm font-semibold text-[#111111]">
                         {feature.label}
                       </span>
 
@@ -470,10 +470,10 @@ export default function AboutPage() {
                         size={14}
                         className="
                           ml-auto
-                          text-[#A0A8B5]
+                          text-[#123999]
                           transition-transform duration-300
                           group-hover:translate-x-1
-                          group-hover:text-[#F47716]
+                          group-hover:text-[#123999]
                         "
                       />
 
@@ -488,7 +488,7 @@ export default function AboutPage() {
 
           <div className="w-full order-1 lg:order-2">
 
-            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#F4F6F9] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#E1E5EC] shadow-2xs">
+            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#FFFFFF] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#123999] shadow-2xs">
 
               <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl sm:rounded-2xl">
 
@@ -508,7 +508,7 @@ export default function AboutPage() {
                     "
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-sm text-[#8791A0]">
+                  <div className="w-full h-full flex items-center justify-center text-sm text-[#111111]">
                     Image unavailable
                   </div>
                 )}
@@ -530,12 +530,12 @@ export default function AboutPage() {
           <div className="lg:col-span-7">
 
             {content.occasions?.eyebrow && (
-              <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#EEF2F9] text-[11px] font-bold tracking-wider text-[#19439B] uppercase mb-4">
+              <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
                 {content.occasions.eyebrow}
               </div>
             )}
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#152544] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
               {content.occasions?.heading}
             </h2>
 
@@ -543,7 +543,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5">
 
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#677284] leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-[#111111] leading-relaxed max-w-xl">
               Different reasons to travel. One comfortable journey
               for everyone.
             </p>
@@ -563,16 +563,16 @@ export default function AboutPage() {
                 relative
                 overflow-hidden
                 rounded-2xl sm:rounded-3xl
-                border border-[#E1E5EC]
+                border border-[#123999]
                 bg-white
                 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-                hover:border-[#C9D3E2]
+                hover:border-[#123999]
                 hover:shadow-[0_14px_40px_-8px_rgba(0,0,0,0.08)]
                 transition-all duration-300
               "
             >
 
-              <div className="relative aspect-[16/9] overflow-hidden bg-[#F4F6F9]">
+              <div className="relative aspect-[16/9] overflow-hidden bg-[#FFFFFF]">
 
                 <Image
                   src={item.image}
@@ -594,11 +594,11 @@ export default function AboutPage() {
                       items-center justify-center
                       rounded-full
                       bg-white
-                      text-[#152544]
+                      text-[#111111]
                       shadow-sm
                       transition-all duration-300
                       group-hover:rotate-45
-                      group-hover:bg-[#F47716]
+                      group-hover:bg-[#FFC003]
                       group-hover:text-white
                     "
                   >
@@ -611,11 +611,11 @@ export default function AboutPage() {
 
               <div className="p-5 sm:p-6 lg:p-7">
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#152544] tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight">
                   {item.title}
                 </h3>
 
-                <p className="mt-2 text-sm sm:text-[15px] leading-6 text-[#677284] max-w-xl">
+                <p className="mt-2 text-sm sm:text-[15px] leading-6 text-[#111111] max-w-xl">
                   {item.description}
                 </p>
 

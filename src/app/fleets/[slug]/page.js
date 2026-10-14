@@ -133,21 +133,21 @@ export default function FleetDetailPage({ params }) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
         <div className="text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-brand-orange">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#123999]">
             FLEET NOT FOUND
           </span>
 
-          <h1 className="mt-2 text-3xl font-black text-neutral-900">
+          <h1 className="mt-2 text-3xl font-black text-black">
             We couldn't find this coach.
           </h1>
 
-          <p className="mt-2 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-black/60">
             The fleet you're looking for is not available.
           </p>
 
           <Link
             href="/fleets"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-orange px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-orange-hover"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#FFC003] px-5 py-3 text-sm font-bold text-black transition-colors hover:bg-[#123999]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Fleet
@@ -228,9 +228,9 @@ export default function FleetDetailPage({ params }) {
         <div className="mb-6 sm:mb-8">
           <Link
             href="/fleets"
-            className="group inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-brand-orange sm:text-sm"
+            className="group inline-flex items-center gap-2 text-xs font-bold text-black/70 transition-colors hover:text-[#123999] sm:text-sm"
           >
-            <ArrowLeft className="h-4 w-4 text-brand-orange transition-transform duration-200 group-hover:-translate-x-1" />
+            <ArrowLeft className="h-4 w-4 text-[#123999] transition-transform duration-200 group-hover:-translate-x-1" />
             Back to All Coaches
           </Link>
         </div>
@@ -239,29 +239,29 @@ export default function FleetDetailPage({ params }) {
           <div className="flex w-full flex-col gap-8 lg:col-span-7">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-neutral-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-neutral-600">
+                <span className="rounded-full bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-black/70">
                   {bus.badge || "CHARTER COACH"}
                 </span>
 
                 {bus.isPopular && (
-                  <span className="flex items-center gap-1 rounded-full border border-brand-orange/30 bg-orange-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-brand-orange">
-                    <Flame className="h-3 w-3 fill-brand-orange" />
+                  <span className="flex items-center gap-1 rounded-full border border-[#123999]/30 bg-[#FFC003]/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#123999]">
+                    <Flame className="h-3 w-3 fill-[#123999]" />
                     Most Popular
                   </span>
                 )}
               </div>
 
-              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-neutral-900 sm:text-4xl lg:text-[42px]">
+              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-black sm:text-4xl lg:text-[42px]">
                 {bus.name}
               </h1>
 
-              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-neutral-700">
-                <Users className="h-4 w-4 text-brand-orange" />
+              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-black/80">
+                <Users className="h-4 w-4 text-[#123999]" />
                 Capacity: {bus.capacity}
               </div>
 
               {bus.description && (
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-base">
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-black/70 sm:text-base">
                   {bus.description}
                 </p>
               )}
@@ -270,8 +270,8 @@ export default function FleetDetailPage({ params }) {
             <FleetHeroImage bus={bus} />
 
             {bus.features && (
-              <section className="rounded-2xl border border-neutral-200/80 bg-neutral-50 p-5 sm:rounded-3xl sm:p-6">
-                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-400">
+              <section className="rounded-2xl border border-[#123999]/20 bg-white p-5 sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-black/50">
                   VEHICLE SPECIFICATIONS
                 </h2>
 
@@ -300,8 +300,8 @@ export default function FleetDetailPage({ params }) {
             )}
 
             {bus.amenities?.length > 0 && (
-              <section className="rounded-2xl border border-neutral-200/80 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
-                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-400">
+              <section className="rounded-2xl border border-[#123999]/20 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-black/50">
                   INCLUDED COACH AMENITIES
                 </h2>
 
@@ -309,9 +309,9 @@ export default function FleetDetailPage({ params }) {
                   {bus.amenities.map((amenity, index) => (
                     <div
                       key={`${amenity}-${index}`}
-                      className="flex items-center gap-2.5 text-xs font-semibold text-neutral-700 sm:text-sm"
+                      className="flex items-center gap-2.5 text-xs font-semibold text-black/80 sm:text-sm"
                     >
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
                         <Check className="h-3 w-3 stroke-[2.6]" />
                       </span>
 
@@ -322,62 +322,70 @@ export default function FleetDetailPage({ params }) {
               </section>
             )}
 
-            <section className="rounded-2xl bg-neutral-900 p-6 text-white shadow-lg sm:rounded-3xl sm:p-7">
-              <span className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-brand-orange">
-                BUS MANTRA FLEET ASSURANCE
-              </span>
+            <section className="rounded-[36px] bg-[#123999] p-8 md:p-12">
+  <h2 className="text-2xl font-bold text-white md:text-3xl">
+    Premium Standards On Every Mile
+  </h2>
 
-              <h2 className="mb-5 text-lg font-black text-white sm:text-xl">
-                Premium Standards On Every Mile
-              </h2>
+  <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
+    <div>
+      <h3 className="text-lg font-bold text-[#FFC003]">
+        Verified Chauffeurs
+      </h3>
+      <p className="mt-1 leading-relaxed text-white/85">
+        Experienced commercial highway drivers with spotless safety records.
+      </p>
+    </div>
 
-              <div className="grid grid-cols-1 gap-4 text-xs text-neutral-300 sm:grid-cols-2">
-                <Assurance
-                  icon={ShieldCheck}
-                  title="Verified Chauffeurs"
-                  description="Experienced commercial highway drivers with spotless safety records."
-                />
+    <div>
+      <h3 className="text-lg font-bold text-[#FFC003]">
+        Deeply Sanitized
+      </h3>
+      <p className="mt-1 leading-relaxed text-white/85">
+        Every vehicle is sanitized and mechanically inspected before dispatch.
+      </p>
+    </div>
 
-                <Assurance
-                  icon={Sparkles}
-                  title="Deeply Sanitized"
-                  description="Every vehicle is sanitized and mechanically inspected before dispatch."
-                />
+    <div>
+      <h3 className="text-lg font-bold text-[#FFC003]">
+        24/7 Trip Support
+      </h3>
+      <p className="mt-1 leading-relaxed text-white/85">
+        Dedicated operations control room monitoring your schedule.
+      </p>
+    </div>
 
-                <Assurance
-                  icon={Clock}
-                  title="24/7 Trip Support"
-                  description="Dedicated operations control room monitoring your schedule."
-                />
-
-                <Assurance
-                  icon={BadgeCheck}
-                  title="Transparent Invoicing"
-                  description="Fuel, driver allowances and standard GST included."
-                />
-              </div>
-            </section>
+    <div>
+      <h3 className="text-lg font-bold text-[#FFC003]">
+        Transparent Invoicing
+      </h3>
+      <p className="mt-1 leading-relaxed text-white/85">
+        Fuel, driver allowances and standard GST included.
+      </p>
+    </div>
+  </div>
+</section>
           </div>
 
           <div className="w-full lg:sticky lg:top-24 lg:col-span-5 lg:self-start">
-            <div className="space-y-5 rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7">
-              <div className="border-b border-neutral-100 pb-4">
-                <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-brand-orange sm:text-[11px]">
+            <div className="space-y-5 rounded-2xl border border-[#123999]/20 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7">
+              <div className="border-b border-black/10 pb-4">
+                <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#123999] sm:text-[11px]">
                   CUSTOM ROUTE & FARE
                 </span>
 
-                <h2 className="text-xl font-black tracking-tight text-neutral-900 sm:text-2xl">
+                <h2 className="text-xl font-black tracking-tight text-black sm:text-2xl">
                   Reserve {bus.name}
                 </h2>
               </div>
 
               <div className="space-y-3.5">
-                <div className="rounded-xl bg-[#f4f5f7] px-4 py-3 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30">
+                <div className="rounded-xl border border-[#123999]/30 bg-white px-4 py-3 transition-colors focus-within:border-[#123999] focus-within:ring-2 focus-within:ring-[#123999]/30">
                   <label
                     htmlFor="detailPickupPoint"
-                    className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400"
+                    className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-black/50"
                   >
-                    <MapPin className="h-3.5 w-3.5 text-brand-orange" />
+                    <MapPin className="h-3.5 w-3.5 text-[#123999]" />
                     PICK-UP POINT
                   </label>
 
@@ -392,7 +400,7 @@ export default function FleetDetailPage({ params }) {
                       )
                     }
                     placeholder="Enter pickup point"
-                    className="w-full bg-transparent text-xs font-semibold text-neutral-800 placeholder:text-neutral-400 outline-none sm:text-sm"
+                    className="w-full bg-transparent text-xs font-semibold text-black placeholder:text-black/50 outline-none sm:text-sm"
                   />
                 </div>
 
@@ -468,40 +476,40 @@ export default function FleetDetailPage({ params }) {
                 </div>
               </div>
 
-              <div className="space-y-3.5 border-t border-neutral-100 pt-4">
+              <div className="space-y-3.5 border-t border-black/10 pt-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl border border-neutral-100 bg-[#f8f9fa] p-3.5">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                  <div className="rounded-xl border border-black/10 bg-white p-3.5">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-black/50">
                       EST. ROUND TRIP
                     </span>
 
                     <div className="mt-1">
-                      <span className="text-xl font-black text-neutral-900">
+                      <span className="text-xl font-black text-black">
                         ≈ {distanceResult?.totalKm || 0}
                       </span>
 
-                      <span className="ml-1 text-[11px] font-bold uppercase text-neutral-500">
+                      <span className="ml-1 text-[11px] font-bold uppercase text-black/60">
                         KM
                       </span>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-brand-orange/20 bg-orange-50/70 p-3.5">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-brand-orange">
+                  <div className="rounded-xl border border-[#123999]/20 bg-[#FFC003]/15 p-3.5">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-[#123999]">
                       TOTAL ESTIMATED FARE
                     </span>
 
-                    <div className="mt-1 text-xl font-black text-neutral-900">
+                    <div className="mt-1 text-xl font-black text-black">
                       {pricingResult?.formattedTotalPrice || "₹0"}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 rounded-xl bg-[#f4f5f7] p-3 text-[11px] font-medium leading-5 text-neutral-700">
-                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand-orange" />
+                <div className="flex items-start gap-2 rounded-xl bg-white p-3 text-[11px] font-medium leading-5 text-black/80">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#123999]" />
 
                   <span>
-                    <span className="font-bold text-neutral-800">
+                    <span className="font-bold text-black">
                       Trip Route:
                     </span>{" "}
                     {distanceResult?.routeSummaryText ||
@@ -522,7 +530,7 @@ export default function FleetDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={openFleetModal}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-3 text-xs font-bold text-neutral-800 transition-all hover:border-brand-orange/40 hover:bg-orange-50/50 hover:text-brand-orange active:scale-[0.98]"
+                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#123999]/20 bg-white px-3 py-3 text-xs font-bold text-black transition-all hover:border-[#123999]/40 hover:bg-[#FFC003]/20 hover:text-[#123999] active:scale-[0.98]"
                 >
                   <ImageIcon className="h-4 w-4" />
                   View Bus Images
@@ -531,7 +539,7 @@ export default function FleetDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={handleConfirmBooking}
-                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-brand-orange px-3 py-3 text-xs font-bold text-white shadow-md shadow-brand-orange/20 transition-all hover:bg-brand-orange-hover active:scale-[0.98]"
+                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#FFC003] px-3 py-3 text-xs font-bold text-black shadow-md shadow-[#123999]/15 transition-all hover:bg-[#123999] active:scale-[0.98]"
                 >
                   Confirm Booking
 
@@ -541,7 +549,7 @@ export default function FleetDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={() => setShowQuote(true)}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-neutral-900 px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#123999] px-3 py-3 text-xs font-bold text-white transition-all hover:bg-[#0D2B73] active:scale-[0.98]"
                 >
                   <PhoneCall className="h-4 w-4" />
                   Request a Quote
@@ -711,21 +719,21 @@ function FleetImagesModal({ fleet, onClose }) {
           event.stopPropagation();
         }}
       >
-        <div className="shrink-0 border-b border-neutral-200 px-5 py-4 sm:px-7 sm:py-5">
+        <div className="shrink-0 border-b border-[#123999]/20 px-5 py-4 sm:px-7 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
                 AVAILABLE FOR YOUR GROUP
               </p>
 
               <h3
                 id="fleet-images-title"
-                className="mt-1 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl"
+                className="mt-1 text-2xl font-black tracking-tight text-black sm:text-3xl"
               >
                 Bus Images
               </h3>
 
-              <p className="mt-1.5 text-xs text-neutral-500 sm:text-sm">
+              <p className="mt-1.5 text-xs text-black/60 sm:text-sm">
                 Explore the available images of your selected coach.
               </p>
             </div>
@@ -734,7 +742,7 @@ function FleetImagesModal({ fleet, onClose }) {
               type="button"
               onClick={onClose}
               aria-label="Close bus images"
-              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-all hover:bg-neutral-200 hover:text-neutral-900"
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-black/70 transition-all hover:bg-[#FFC003]/20 hover:text-black"
             >
               <X className="h-5 w-5" />
             </button>
@@ -747,7 +755,7 @@ function FleetImagesModal({ fleet, onClose }) {
               {images.map((image, index) => (
                 <div
                   key={`${image}-${index}`}
-                  className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
+                  className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[#123999]/20 bg-white"
                 >
                   <SafeFleetImage
                     src={image}
@@ -760,10 +768,10 @@ function FleetImagesModal({ fleet, onClose }) {
               ))}
             </div>
           ) : (
-            <div className="flex h-full min-h-[220px] items-center justify-center rounded-2xl bg-neutral-50">
+            <div className="flex h-full min-h-[220px] items-center justify-center rounded-2xl bg-white">
               <div className="text-center">
-                <ImageIcon className="mx-auto h-8 w-8 text-neutral-300" />
-                <p className="mt-3 text-sm font-bold text-neutral-900">
+                <ImageIcon className="mx-auto h-8 w-8 text-black/40" />
+                <p className="mt-3 text-sm font-bold text-black">
                   No bus images available
                 </p>
               </div>
@@ -771,11 +779,11 @@ function FleetImagesModal({ fleet, onClose }) {
           )}
         </div>
 
-        <div className="shrink-0 border-t border-neutral-200 px-5 py-4 sm:px-6">
+        <div className="shrink-0 border-t border-[#123999]/20 px-5 py-4 sm:px-6">
           <button
             type="button"
             onClick={onClose}
-            className="w-full cursor-pointer rounded-xl bg-neutral-900 px-5 py-3 text-sm font-bold text-white transition-all hover:bg-neutral-800"
+            className="w-full cursor-pointer rounded-xl bg-[#123999] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#0D2B73]"
           >
             Close
           </button>
@@ -789,7 +797,7 @@ function FleetHeroImage({ bus }) {
   const image = getFleetImages(bus)[0];
 
   return (
-    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
+    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-[#123999]/20 bg-white shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
       <SafeFleetImage
         src={image}
         alt={bus?.name || "Bus Mantra coach"}
@@ -803,12 +811,12 @@ function FleetHeroImage({ bus }) {
 
 function Specification({ label, value }) {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white p-3">
-      <span className="block text-[9px] font-bold uppercase tracking-wider text-neutral-400">
+    <div className="rounded-xl border border-[#123999]/20 bg-white p-3">
+      <span className="block text-[9px] font-bold uppercase tracking-wider text-black/50">
         {label}
       </span>
 
-      <span className="mt-1 block text-xs font-bold text-neutral-900">
+      <span className="mt-1 block text-xs font-bold text-black">
         {value || "Included"}
       </span>
     </div>
@@ -822,7 +830,7 @@ function Assurance({
 }) {
   return (
     <div className="flex items-start gap-2.5">
-      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-brand-orange" />
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#123999]" />
 
       <div>
         <strong className="mb-0.5 block font-bold text-white">
@@ -840,8 +848,8 @@ function MiniAssurance({
   title,
 }) {
   return (
-    <div className="flex items-center gap-2.5 text-xs font-semibold text-neutral-200">
-      <Icon className="h-4 w-4 text-brand-orange" />
+    <div className="flex items-center gap-2.5 text-xs font-semibold text-white/80">
+      <Icon className="h-4 w-4 text-[#123999]" />
       {title}
     </div>
   );
@@ -856,12 +864,12 @@ function FormField({
   onChange,
 }) {
   return (
-    <div className="rounded-xl bg-[#f4f5f7] px-4 py-3 focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30">
+    <div className="rounded-xl border border-[#123999]/30 bg-white px-4 py-3 transition-colors focus-within:border-[#123999] focus-within:ring-2 focus-within:ring-[#123999]/30">
       <label
         htmlFor={id}
-        className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400"
+        className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-black/50"
       >
-        <Icon className="h-3.5 w-3.5 text-brand-orange" />
+        <Icon className="h-3.5 w-3.5 text-[#123999]" />
         {label}
       </label>
 
@@ -871,7 +879,7 @@ function FormField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent text-xs font-semibold text-neutral-800 placeholder:text-neutral-400 outline-none sm:text-sm"
+        className="w-full bg-transparent text-xs font-semibold text-black placeholder:text-black/50 outline-none sm:text-sm"
       />
     </div>
   );
@@ -879,8 +887,8 @@ function FormField({
 
 function Benefit({ text }) {
   return (
-    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-neutral-600 sm:text-[11px]">
-      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
+    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-black/70 sm:text-[11px]">
+      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#123999]" />
       <span>{text}</span>
     </div>
   );
@@ -911,50 +919,50 @@ function QuoteModal({
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-5 top-5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+          className="absolute right-5 top-5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-black/70 hover:bg-[#FFC003]/20"
         >
           <X className="h-4 w-4" />
         </button>
 
-        <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
           REQUEST A QUOTE
         </span>
 
-        <h3 className="pr-10 text-2xl font-black text-neutral-900">
+        <h3 className="pr-10 text-2xl font-black text-black">
           Get a custom quote
         </h3>
 
-        <p className="mt-2 text-sm leading-6 text-neutral-500">
+        <p className="mt-2 text-sm leading-6 text-black/60">
           Our trip coordinator will review your
           route and contact you regarding the{" "}
           {bus.name}.
         </p>
 
         <div className="mt-6 space-y-3">
-          <div className="rounded-xl bg-[#f4f5f7] p-4">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+          <div className="rounded-xl bg-white p-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-black/50">
               CONTACT
             </span>
 
-            <p className="mt-1 text-sm font-bold text-neutral-900">
+            <p className="mt-1 text-sm font-bold text-black">
               {bookingData.fullName || "Your Name"}
             </p>
 
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-black/60">
               {bookingData.mobile || "Mobile number"}
             </p>
           </div>
 
-          <div className="rounded-xl bg-[#f4f5f7] p-4">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+          <div className="rounded-xl bg-white p-4">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-black/50">
               ROUTE
             </span>
 
-            <p className="mt-1 text-sm font-bold text-neutral-900">
+            <p className="mt-1 text-sm font-bold text-black">
               {bookingData.pickupPoint || "Pickup point"}
             </p>
 
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-black/60">
               {Array.isArray(bookingData.destination)
                 ? bookingData.destination.join(", ")
                 : bookingData.destination || "Destination"}
@@ -966,14 +974,14 @@ function QuoteModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 cursor-pointer rounded-xl bg-neutral-100 py-3 text-sm font-bold text-neutral-800 hover:bg-neutral-200"
+            className="flex-1 cursor-pointer rounded-xl bg-white py-3 text-sm font-bold text-black hover:bg-[#FFC003]/20"
           >
             Close
           </button>
 
           <a
             href="tel:+919876543210"
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-orange py-3 text-sm font-bold text-white hover:bg-brand-orange-hover"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#FFC003] py-3 text-sm font-bold text-black hover:bg-[#123999]"
           >
             <PhoneCall className="h-4 w-4" />
             Call Us
@@ -1001,50 +1009,50 @@ function BookingConfirmation({
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl sm:p-8">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
           <CheckCircle2 className="h-8 w-8" />
         </div>
 
-        <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-brand-orange">
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#123999]">
           RESERVATION REQUEST RECEIVED
         </span>
 
-        <h3 className="text-xl font-black text-neutral-900 sm:text-2xl">
+        <h3 className="text-xl font-black text-black sm:text-2xl">
           Your Bus Is Reserved!
         </h3>
 
-        <p className="mt-2 text-sm leading-6 text-neutral-600">
+        <p className="mt-2 text-sm leading-6 text-black/70">
           Our fleet operations team will contact
           you to confirm your journey.
         </p>
 
-        <div className="mt-5 space-y-2 rounded-xl bg-neutral-50 p-4 text-left text-xs">
+        <div className="mt-5 space-y-2 rounded-xl bg-white p-4 text-left text-xs">
           <div className="flex justify-between gap-4">
-            <span className="text-neutral-500">
+            <span className="text-black/60">
               Coach
             </span>
 
-            <strong className="text-right text-neutral-900">
+            <strong className="text-right text-black">
               {bus.name}
             </strong>
           </div>
 
           <div className="flex justify-between gap-4">
-            <span className="text-neutral-500">
+            <span className="text-black/60">
               Pickup
             </span>
 
-            <strong className="text-right text-neutral-900">
+            <strong className="text-right text-black">
               {bookingData.pickupPoint || "Not specified"}
             </strong>
           </div>
 
           <div className="flex justify-between gap-4">
-            <span className="text-neutral-500">
+            <span className="text-black/60">
               Estimated Fare
             </span>
 
-            <strong className="text-right text-brand-orange">
+            <strong className="text-right text-[#123999]">
               {pricingResult?.formattedTotalPrice || "₹0"}
             </strong>
           </div>
@@ -1053,7 +1061,7 @@ function BookingConfirmation({
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 w-full cursor-pointer rounded-xl bg-neutral-900 py-3.5 text-sm font-bold text-white hover:bg-neutral-800"
+          className="mt-6 w-full cursor-pointer rounded-xl bg-[#123999] py-3.5 text-sm font-bold text-white hover:bg-[#0D2B73]"
         >
           Close
         </button>

@@ -181,7 +181,7 @@ export default function LoginPage() {
                   <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#19439B]">Your account</span>
                 </div>
                 <h2 className="text-3xl font-black tracking-tight text-[#142E60] sm:text-[34px]">
-                  {isRegister ? "Create account" : "Welcome back"}<span className="text-[#F47716]">.</span>
+                  {isRegister ? "Create account" : "Welcome back"}
                 </h2>
                 <p className="mt-1 text-xs leading-5 text-[#737373]">
                   {isRegister ? "Enter your details to get started." : "Sign in to continue your journey with Bus Mantra."}

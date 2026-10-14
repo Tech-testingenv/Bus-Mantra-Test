@@ -50,12 +50,12 @@ export default function Footer({ data = footerData }) {
   };
 
   return (
-    <footer className="w-full bg-[#fbf9f6] border-t border-neutral-200/80 pt-12 sm:pt-16 pb-8 text-brand-dark">
+    <footer className="w-full bg-[#123999] border-t border-white/15 pt-12 sm:pt-16 pb-8 text-white">
       <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
         {/* ========================================================= */}
         {/* 1. TOP BRAND & CONTACT AREA                               */}
         {/* ========================================================= */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-8 sm:pb-10 border-b border-neutral-200/80">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-8 sm:pb-10 border-b border-white/20">
           {/* Brand Left Column */}
           <div className="max-w-xl">
             {/* Logo & Tagline */}
@@ -70,13 +70,13 @@ export default function Footer({ data = footerData }) {
                 />
               </Link>
               <div className="hidden sm:block w-px h-6 bg-neutral-300" />
-              <span className="text-[11px] font-bold text-brand-orange tracking-widest uppercase bg-orange-50 border border-brand-orange/20 px-2.5 py-0.5 rounded-md self-start sm:self-auto">
+              <span className="text-[11px] font-bold text-[#FFC003] tracking-widest uppercase bg-white/10 border border-white/20 px-2.5 py-0.5 rounded-md self-start sm:self-auto">
                 {data.brand.tagline}
               </span>
             </div>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm text-brand-gray leading-relaxed mb-5">
+            <p className="text-xs sm:text-sm text-white/75 leading-relaxed mb-5">
               {data.brand.description}
             </p>
 
@@ -89,7 +89,7 @@ export default function Footer({ data = footerData }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className="w-9 h-9 rounded-full bg-white border border-neutral-200/90 text-brand-dark hover:text-white hover:bg-brand-orange hover:border-brand-orange flex items-center justify-center transition-all duration-200 shadow-2xs"
+                  className="w-9 h-9 rounded-full bg-white/10 border border-white/20 text-white hover:text-[#123999] hover:bg-[#FFC003] hover:border-[#FFC003] flex items-center justify-center transition-all duration-200 shadow-2xs"
                 >
                   {renderSocialIcon(social.key)}
                 </a>
@@ -102,10 +102,10 @@ export default function Footer({ data = footerData }) {
             {/* Phone Pill */}
             <a
               href={data.contact.phoneHref}
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-neutral-200/90 hover:border-brand-orange hover:text-brand-orange text-brand-dark text-xs sm:text-sm font-semibold shadow-2xs hover:shadow-xs transition-all duration-200 group"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 hover:border-[#FFC003] hover:text-[#FFC003] text-white text-xs sm:text-sm font-semibold shadow-2xs hover:shadow-xs transition-all duration-200 group"
             >
-              <div className="w-7 h-7 rounded-full bg-orange-50 group-hover:bg-brand-orange flex items-center justify-center transition-colors">
-                <Phone className="w-3.5 h-3.5 text-brand-orange group-hover:text-white transition-colors" />
+              <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-[#FFC003] flex items-center justify-center transition-colors">
+                <Phone className="w-3.5 h-3.5 text-[#FFC003] group-hover:text-[#123999] transition-colors" />
               </div>
               <span>{data.contact.phone}</span>
             </a>
@@ -113,10 +113,10 @@ export default function Footer({ data = footerData }) {
             {/* Email Pill */}
             <a
               href={data.contact.emailHref}
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-neutral-200/90 hover:border-brand-orange hover:text-brand-orange text-brand-dark text-xs sm:text-sm font-semibold shadow-2xs hover:shadow-xs transition-all duration-200 group"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 hover:border-[#FFC003] hover:text-[#FFC003] text-white text-xs sm:text-sm font-semibold shadow-2xs hover:shadow-xs transition-all duration-200 group"
             >
-              <div className="w-7 h-7 rounded-full bg-orange-50 group-hover:bg-brand-orange flex items-center justify-center transition-colors">
-                <Mail className="w-3.5 h-3.5 text-brand-orange group-hover:text-white transition-colors" />
+              <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-[#FFC003] flex items-center justify-center transition-colors">
+                <Mail className="w-3.5 h-3.5 text-[#FFC003] group-hover:text-[#123999] transition-colors" />
               </div>
               <span>{data.contact.email}</span>
             </a>
@@ -131,7 +131,7 @@ export default function Footer({ data = footerData }) {
           <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
             {/* COLUMN 1: QUICK LINKS */}
             <div>
-              <h4 className="text-xs font-bold text-brand-dark uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
                 Quick Links
               </h4>
               <ul className="space-y-2.5 text-xs sm:text-sm">
@@ -139,7 +139,7 @@ export default function Footer({ data = footerData }) {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-brand-gray hover:text-brand-orange transition-colors inline-block"
+                      className="text-white/70 hover:text-[#FFC003] transition-colors inline-block"
                     >
                       {link.label}
                     </Link>
@@ -150,7 +150,7 @@ export default function Footer({ data = footerData }) {
 
             {/* COLUMN 2: BUS MANTRA FLEETS */}
             <div>
-              <h4 className="text-xs font-bold text-brand-dark uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
                 Our Fleet
               </h4>
               <ul className="space-y-2.5 text-xs sm:text-sm">
@@ -159,8 +159,8 @@ export default function Footer({ data = footerData }) {
                     <Link
                       href={fleet.href}
                       className={`inline-flex items-center gap-1 transition-colors ${fleet.isCta
-                        ? "text-brand-orange font-semibold hover:text-brand-orange-hover"
-                        : "text-brand-gray hover:text-brand-orange"
+                        ? "text-[#FFC003] font-semibold hover:text-white"
+                        : "text-white/70 hover:text-[#FFC003]"
                         }`}
                     >
                       <span>{fleet.label}</span>
@@ -172,7 +172,7 @@ export default function Footer({ data = footerData }) {
 
             {/* COLUMN 3: SERVICES */}
             <div>
-              <h4 className="text-xs font-bold text-brand-dark uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
                 Services
               </h4>
               <ul className="space-y-2.5 text-xs sm:text-sm">
@@ -181,8 +181,8 @@ export default function Footer({ data = footerData }) {
                     <Link
                       href={service.href}
                       className={`inline-flex items-center gap-1 transition-colors ${service.isCta
-                        ? "text-brand-orange font-semibold hover:text-brand-orange-hover"
-                        : "text-brand-gray hover:text-brand-orange"
+                        ? "text-[#FFC003] font-semibold hover:text-white"
+                        : "text-white/70 hover:text-[#FFC003]"
                         }`}
                     >
                       <span>{service.label}</span>
@@ -194,7 +194,7 @@ export default function Footer({ data = footerData }) {
 
             {/* COLUMN 4: DESTINATIONS */}
             <div>
-              <h4 className="text-xs font-bold text-brand-dark uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
                 Destinations
               </h4>
               <ul className="space-y-2.5 text-xs sm:text-sm">
@@ -203,8 +203,8 @@ export default function Footer({ data = footerData }) {
                     <Link
                       href={dest.href}
                       className={`inline-flex items-center gap-1 transition-colors ${dest.isCta
-                        ? "text-brand-orange font-semibold hover:text-brand-orange-hover"
-                        : "text-brand-gray hover:text-brand-orange"
+                        ? "text-[#FFC003] font-semibold hover:text-white"
+                        : "text-white/70 hover:text-[#FFC003]"
                         }`}
                     >
                       <span>{dest.label}</span>
@@ -217,32 +217,32 @@ export default function Footer({ data = footerData }) {
 
           {/* RIGHT SIDE: PARTNER WITH US CARD (4 cols on desktop) */}
           <div className="lg:col-span-4">
-            <div className="bg-[#fffdfa] border border-brand-orange/30 rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-xs hover:shadow-sm transition-shadow relative overflow-hidden">
+            <div className="bg-white/10 border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-xs hover:shadow-sm transition-shadow relative overflow-hidden">
               {/* Subtle Ambient Decorative Corner Glow */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/10 rounded-full blur-xl pointer-events-none" />
 
               {/* Eyebrow */}
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-orange uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#FFC003] uppercase tracking-wider mb-2">
                 <Building2 className="w-3.5 h-3.5 stroke-[2.2]" />
                 <span>{data.partner.eyebrow}</span>
               </div>
 
               {/* Title */}
-              <h3 className="text-lg sm:text-xl font-bold text-brand-dark mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
                 {data.partner.title}
               </h3>
 
               {/* Description */}
-              <p className="text-xs text-brand-gray leading-relaxed mb-4">
+              <p className="text-xs text-white/75 leading-relaxed mb-4">
                 {data.partner.description}
               </p>
 
               {/* Benefits Checklist */}
               <div className="space-y-2 mb-5">
                 {data.partner.benefits.map((benefit, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-medium text-brand-dark">
-                    <div className="w-4 h-4 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
-                      <Check className="w-2.5 h-2.5 text-brand-orange stroke-3" />
+                  <div key={i} className="flex items-center gap-2 text-xs font-medium text-white">
+                    <div className="w-4 h-4 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                      <Check className="w-2.5 h-2.5 text-[#FFC003] stroke-3" />
                     </div>
                     <span>{benefit}</span>
                   </div>
@@ -252,14 +252,14 @@ export default function Footer({ data = footerData }) {
               {/* CTA Button */}
               <Link
                 href={data.partner.ctaHref || "#partner"}
-                className="w-full py-2.5 px-4 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-all duration-200 group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#FFC003] hover:bg-white text-[#123999] text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-all duration-200 group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFC003]"
               >
                 <span>{data.partner.cta}</span>
                 <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover/partner:translate-x-1" />
               </Link>
 
               {/* Small Supporting Text */}
-              <p className="text-[11px] text-center text-brand-gray mt-2">
+              <p className="text-[11px] text-center text-white/65 mt-2">
                 {data.partner.subtext}
               </p>
             </div>
@@ -269,7 +269,7 @@ export default function Footer({ data = footerData }) {
         {/* ========================================================= */}
         {/* 3. BOTTOM COPYRIGHT & DEVELOPER BAR                       */}
         {/* ========================================================= */}
-        <div className="mt-10 sm:mt-14 pt-6 border-t border-neutral-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-brand-gray text-center sm:text-left">
+        <div className="mt-10 sm:mt-14 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/70 text-center sm:text-left">
           {/* Copyright */}
           <p>{data.copyright}</p>
 
@@ -280,7 +280,7 @@ export default function Footer({ data = footerData }) {
               href={data.developer.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-orange font-semibold hover:underline"
+              className="text-[#FFC003] font-semibold hover:underline"
             >
               {data.developer.name}
             </a>

@@ -33,17 +33,17 @@ export default function DestinationSlugPage({ params }) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-brand-orange">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#123999]">
             Destination not found
           </p>
 
-          <h1 className="mt-2 text-3xl font-black text-neutral-900">
+          <h1 className="mt-2 text-3xl font-black text-black">
             We couldn't find this destination.
           </h1>
 
           <Link
             href="/destinations"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-orange px-5 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#FFC003] px-5 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to destinations
@@ -58,7 +58,7 @@ export default function DestinationSlugPage({ params }) {
       <div className="mb-5">
         <Link
           href="/destinations"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 transition-colors duration-200 hover:text-brand-orange"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-black/60 transition-colors duration-200 hover:text-[#123999]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to destinations
@@ -115,24 +115,24 @@ function DestinationHeader({ destination }) {
   return (
     <div className="mb-5">
       {destination.badge && (
-        <span className="mb-3 inline-flex rounded-full bg-neutral-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-600">
+        <span className="mb-3 inline-flex rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-black/70">
           {destination.badge}
         </span>
       )}
 
-      <h1 className="text-3xl font-black leading-[1.05] tracking-tight text-neutral-900 sm:text-4xl lg:text-[42px] xl:text-[46px]">
+      <h1 className="text-3xl font-black leading-[1.05] tracking-tight text-black sm:text-4xl lg:text-[42px] xl:text-[46px]">
         {destination.name}
       </h1>
 
       {destination.route && (
-        <div className="mt-2 flex items-center gap-2 text-sm font-medium text-neutral-500">
-          <MapPin className="h-4 w-4 text-brand-orange" />
+        <div className="mt-2 flex items-center gap-2 text-sm font-medium text-black/60">
+          <MapPin className="h-4 w-4 text-[#123999]" />
           {destination.route}
         </div>
       )}
 
       {destination.description && (
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-base">
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-black/70 sm:text-base">
           {destination.description}
         </p>
       )}
@@ -203,7 +203,7 @@ function DestinationGallery({ destination }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-neutral-200/80 bg-[#f0f2f5] shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
+    <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
       <div className="relative aspect-[16/9] w-full overflow-hidden">
         {gallery.length > 0 ? (
           <Image
@@ -220,7 +220,7 @@ function DestinationGallery({ destination }) {
             }`}
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-neutral-400">
+          <div className="flex h-full items-center justify-center text-sm text-black/45">
             Image unavailable
           </div>
         )}
@@ -231,7 +231,7 @@ function DestinationGallery({ destination }) {
               type="button"
               onClick={previousImage}
               aria-label="Previous image"
-              className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-neutral-900 shadow-md transition-all duration-200 hover:scale-105 hover:bg-white sm:left-4 sm:h-10 sm:w-10"
+              className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-[#FFC003] sm:left-4 sm:h-10 sm:w-10"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -240,7 +240,7 @@ function DestinationGallery({ destination }) {
               type="button"
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-neutral-900 shadow-md transition-all duration-200 hover:scale-105 hover:bg-white sm:right-4 sm:h-10 sm:w-10"
+              className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-[#FFC003] sm:right-4 sm:h-10 sm:w-10"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -261,7 +261,7 @@ function DestinationGallery({ destination }) {
               onClick={() => changeImage(index)}
               className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${
                 activeImage === index
-                  ? "border-brand-orange"
+                  ? "border-[#123999]"
                   : "border-transparent opacity-65 hover:opacity-100"
               }`}
             >
@@ -289,17 +289,17 @@ function QuickInfo({
 }) {
   return (
     <div
-      className={`rounded-xl border border-neutral-200 bg-white px-3.5 py-3 ${className}`}
+      className={`rounded-xl border border-black/10 bg-white px-3.5 py-3 ${className}`}
     >
-      <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-neutral-400">
-        <span className="text-brand-orange">
+      <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-black/45">
+        <span className="text-[#123999]">
           {icon}
         </span>
 
         {label}
       </div>
 
-      <p className="mt-1 text-xs font-bold text-neutral-800">
+      <p className="mt-1 text-xs font-bold text-black">
         {value}
       </p>
     </div>
@@ -308,7 +308,7 @@ function QuickInfo({
 
 function DestinationBookingForm({ destination }) {
   const [formData, setFormData] = useState({
-    pickup: "Delhi NCR",
+    pickup: "",
     departureDate: "",
     departureTime: "07:00",
     returnDate: "",
@@ -347,24 +347,24 @@ function DestinationBookingForm({ destination }) {
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
+        className="w-full rounded-2xl border border-black/10 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
       >
-        <div className="border-b border-neutral-100 pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+        <div className="border-b border-black/10 pb-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
             CUSTOM ROUTE & FARE
           </p>
 
-          <h2 className="mt-1 text-[24px] font-black leading-tight tracking-tight text-neutral-900 sm:text-[25px]">
+          <h2 className="mt-1 text-[24px] font-black leading-tight tracking-tight text-black sm:text-[25px]">
             Reserve Mini Coach
           </h2>
         </div>
 
         <div className="mt-5 space-y-3">
-          <div className="rounded-xl bg-[#f1f2f4] px-4 py-3.5">
+          <div className="rounded-xl bg-white px-4 py-3.5">
             <div className="flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-brand-orange" />
+              <MapPin className="h-3.5 w-3.5 text-[#123999]" />
 
-              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
                 PICK-UP POINT
               </span>
             </div>
@@ -378,41 +378,41 @@ function DestinationBookingForm({ destination }) {
                   event.target.value
                 )
               }
-              className="mt-1 w-full bg-transparent text-xs font-bold text-neutral-800 outline-none"
-              placeholder="Delhi NCR"
+              className="mt-1 w-full bg-transparent text-xs font-bold text-black outline-none placeholder:text-black/50 placeholder:opacity-100"
+              placeholder="Enter pickup point"
               required
             />
           </div>
 
           <div>
             <div className="mb-1.5 flex items-center justify-between">
-              <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
-                <MapPin className="h-3.5 w-3.5 text-brand-orange" />
+              <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
+                <MapPin className="h-3.5 w-3.5 text-[#123999]" />
                 DESTINATION(S)
               </label>
 
-              <span className="text-[9px] text-neutral-400">
+              <span className="text-[9px] text-black/45">
                 multi-city route
               </span>
             </div>
 
-            <div className="flex min-h-[53px] items-center gap-2 rounded-xl bg-[#f1f2f4] px-3.5">
-              <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm">
+            <div className="flex min-h-[53px] items-center gap-2 rounded-xl bg-white px-3.5">
+              <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-black/10 bg-white px-3 py-1.5 text-xs font-semibold text-black/80 shadow-sm">
                 {destinationName}
 
                 <button
                   type="button"
-                  className="text-sm leading-none text-neutral-400 transition-colors hover:text-neutral-700"
+                  className="text-sm leading-none text-black/45 transition-colors hover:text-black/80"
                 >
                   ×
                 </button>
               </span>
 
-              <span className="truncate text-xs text-neutral-400">
+              <span className="truncate text-xs text-black/45">
                 + Add another city...
               </span>
 
-              <ChevronRight className="ml-auto h-4 w-4 shrink-0 rotate-90 text-neutral-400" />
+              <ChevronRight className="ml-auto h-4 w-4 shrink-0 rotate-90 text-black/45" />
             </div>
           </div>
 
@@ -454,11 +454,11 @@ function DestinationBookingForm({ destination }) {
             />
           </div>
 
-          <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+          <div className="rounded-xl bg-white px-3.5 py-3.5">
             <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5 text-brand-orange" />
+              <Users className="h-3.5 w-3.5 text-[#123999]" />
 
-              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
                 NO. OF PASSENGERS
               </span>
             </div>
@@ -475,7 +475,7 @@ function DestinationBookingForm({ destination }) {
                 )
               }
               placeholder="e.g. 19"
-              className="mt-1 w-full bg-transparent text-xs font-bold text-neutral-800 outline-none placeholder:text-neutral-400"
+              className="mt-1 w-full bg-transparent text-xs font-bold text-black outline-none placeholder:text-black/50 placeholder:opacity-100"
               required
             />
           </div>
@@ -514,29 +514,29 @@ function DestinationBookingForm({ destination }) {
           </div>
 
           <div className="grid grid-cols-1 gap-2.5 pt-1 sm:grid-cols-2">
-            <div className="rounded-xl bg-[#f7f8f9] px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+            <div className="rounded-xl bg-white px-3.5 py-3.5">
+              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
                 EST. ROUND TRIP
               </p>
 
               <div className="mt-1 flex items-baseline gap-1">
-                <span className="text-[22px] font-black leading-none text-neutral-900">
+                <span className="text-[22px] font-black leading-none text-black">
                   ≈ {estimatedKm}
                 </span>
 
-                <span className="text-[10px] font-bold text-neutral-500">
+                <span className="text-[10px] font-bold text-black/60">
                   KM
                 </span>
               </div>
             </div>
 
-            <div className="rounded-xl border border-brand-orange/30 bg-[#fffaf5] px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-brand-orange">
+            <div className="rounded-xl border border-[#123999]/30 bg-[#FFC003]/15 px-3.5 py-3.5">
+              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#123999]">
                 TOTAL ESTIMATED FARE
               </p>
 
               <div className="mt-1">
-                <span className="text-[22px] font-black leading-none text-neutral-900">
+                <span className="text-[22px] font-black leading-none text-black">
                   ₹
                   {Number(
                     estimatedFare
@@ -546,12 +546,12 @@ function DestinationBookingForm({ destination }) {
             </div>
           </div>
 
-          <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3">
-            <div className="flex items-start gap-2 text-[10px] leading-5 text-neutral-600">
-              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand-orange" />
+          <div className="rounded-xl bg-white px-3.5 py-3">
+            <div className="flex items-start gap-2 text-[10px] leading-5 text-black/70">
+              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#123999]" />
 
               <span>
-                <span className="font-bold text-neutral-800">
+                <span className="font-bold text-black">
                   Route Path:
                 </span>{" "}
                 {formData.pickup || "Delhi NCR"} →{" "}
@@ -574,14 +574,14 @@ function DestinationBookingForm({ destination }) {
             <button
               type="button"
               onClick={() => setShowBusImages(true)}
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-brand-orange/30 bg-white px-2 text-[10px] font-bold leading-tight text-brand-orange transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-50 hover:shadow-md sm:px-3 sm:text-xs"
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-[#123999]/30 bg-white px-2 text-[10px] font-bold leading-tight text-[#123999] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFC003] hover:shadow-md sm:px-3 sm:text-xs"
             >
               View Bus Images
             </button>
 
             <button
               type="submit"
-              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-brand-orange px-2 text-[10px] font-bold leading-tight text-white shadow-[0_6px_14px_rgba(245,130,32,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_25px_rgba(245,130,32,0.25)] active:translate-y-0 sm:px-3 sm:text-xs"
+              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-[#FFC003] px-2 text-[10px] font-bold leading-tight text-black shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#123999] hover:text-white hover:shadow-md active:translate-y-0 sm:px-3 sm:text-xs"
             >
               <span>Confirm Booking</span>
 
@@ -591,7 +591,7 @@ function DestinationBookingForm({ destination }) {
             <button
               type="button"
               onClick={() => setQuoteRequested(true)}
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-neutral-300 bg-neutral-900 px-2 text-[10px] font-bold leading-tight text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-neutral-800 hover:shadow-md sm:px-3 sm:text-xs"
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-black/20 bg-[#123999] px-2 text-[10px] font-bold leading-tight text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0D2B73] hover:shadow-md sm:px-3 sm:text-xs"
             >
               Request a Quote
             </button>
@@ -609,21 +609,21 @@ function DestinationBookingForm({ destination }) {
       {quoteRequested && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-brand-orange">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
               <CheckCircle2 className="h-6 w-6" />
             </div>
 
-            <h3 className="mt-5 text-2xl font-black tracking-tight text-neutral-900">
+            <h3 className="mt-5 text-2xl font-black tracking-tight text-black">
               Quote request ready
             </h3>
 
-            <p className="mt-3 text-sm leading-6 text-neutral-500">
+            <p className="mt-3 text-sm leading-6 text-black/60">
               We have your request for{" "}
-              <span className="font-semibold text-neutral-800">
+              <span className="font-semibold text-black">
                 {formData.passengers || "your group"}
               </span>{" "}
               passengers travelling to{" "}
-              <span className="font-semibold text-neutral-800">
+              <span className="font-semibold text-black">
                 {destinationName}
               </span>
               . Our team can confirm the final quote and vehicle availability.
@@ -634,7 +634,7 @@ function DestinationBookingForm({ destination }) {
               onClick={() =>
                 setQuoteRequested(false)
               }
-              className="mt-6 w-full rounded-xl bg-brand-orange px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+              className="mt-6 w-full rounded-xl bg-[#FFC003] px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
             >
               Close
             </button>
@@ -645,17 +645,17 @@ function DestinationBookingForm({ destination }) {
       {submitted && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-brand-orange">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
               <CheckCircle2 className="h-6 w-6" />
             </div>
 
-            <h3 className="mt-5 text-2xl font-black tracking-tight text-neutral-900">
+            <h3 className="mt-5 text-2xl font-black tracking-tight text-black">
               Request received
             </h3>
 
-            <p className="mt-3 text-sm leading-6 text-neutral-500">
+            <p className="mt-3 text-sm leading-6 text-black/60">
               Thanks for your booking request for{" "}
-              <span className="font-semibold text-neutral-800">
+              <span className="font-semibold text-black">
                 {destinationName}
               </span>
               . Our team will contact you shortly to confirm availability and booking details.
@@ -665,14 +665,14 @@ function DestinationBookingForm({ destination }) {
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
-                className="flex-1 rounded-xl border border-neutral-200 px-4 py-3 text-sm font-bold text-neutral-700 transition-colors hover:bg-neutral-50"
+                className="flex-1 rounded-xl border border-black/10 px-4 py-3 text-sm font-bold text-black/80 transition-colors hover:bg-[#FFC003]"
               >
                 Close
               </button>
 
               <a
                 href="tel:+919999999999"
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-orange px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#FFC003] px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
               >
                 <Phone className="h-4 w-4" />
                 Call Support
@@ -761,18 +761,18 @@ function BusImagesModal({
           event.stopPropagation()
         }
       >
-        <div className="shrink-0 border-b border-neutral-200 px-5 py-4 sm:px-7 sm:py-5">
+        <div className="shrink-0 border-b border-black/10 px-5 py-4 sm:px-7 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-orange">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
                 AVAILABLE FOR YOUR GROUP
               </p>
 
-              <h3 className="mt-1 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl">
+              <h3 className="mt-1 text-2xl font-black tracking-tight text-black sm:text-3xl">
                 Bus Images
               </h3>
 
-              <p className="mt-1.5 text-xs text-neutral-500 sm:text-sm">
+              <p className="mt-1.5 text-xs text-black/60 sm:text-sm">
                 {passengers > 0
                   ? `Showing all available images for suitable fleets for ${passengers} passengers.`
                   : "Enter passengers to see suitable fleets."}
@@ -783,7 +783,7 @@ function BusImagesModal({
               type="button"
               onClick={onClose}
               aria-label="Close bus images"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-all hover:bg-neutral-200 hover:text-neutral-900"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-black/70 transition-all hover:bg-[#FFC003] hover:text-black"
             >
               <X className="h-5 w-5" />
             </button>
@@ -792,15 +792,15 @@ function BusImagesModal({
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
           {passengers < 1 ? (
-            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-neutral-50">
+            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-white">
               <div className="text-center">
-                <Users className="mx-auto h-8 w-8 text-brand-orange" />
+                <Users className="mx-auto h-8 w-8 text-[#123999]" />
 
-                <p className="mt-3 text-sm font-bold text-neutral-900">
+                <p className="mt-3 text-sm font-bold text-black">
                   Enter the number of passengers first
                 </p>
 
-                <p className="mt-1 text-xs text-neutral-500">
+                <p className="mt-1 text-xs text-black/60">
                   Enter your group size in the booking form.
                 </p>
               </div>
@@ -827,11 +827,11 @@ function BusImagesModal({
                     className="space-y-3"
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <h4 className="text-lg font-black tracking-tight text-neutral-900 sm:text-xl">
+                      <h4 className="text-lg font-black tracking-tight text-black sm:text-xl">
                         {bus?.name || "Fleet"}
                       </h4>
 
-                      <span className="shrink-0 rounded-full bg-neutral-100 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-neutral-500">
+                      <span className="shrink-0 rounded-full bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-black/60">
                         {busImages.length}{" "}
                         {busImages.length === 1
                           ? "Image"
@@ -850,9 +850,9 @@ function BusImagesModal({
                                 : "/fleets"
                             }
                             onClick={onClose}
-                            className="group relative block overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
+                            className="group relative block overflow-hidden rounded-2xl border border-black/10 bg-white"
                           >
-                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
                               <Image
                                 src={image}
                                 alt={
@@ -873,13 +873,13 @@ function BusImagesModal({
               })}
             </div>
           ) : (
-            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-neutral-50">
+            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-white">
               <div className="text-center">
-                <p className="text-sm font-bold text-neutral-900">
+                <p className="text-sm font-bold text-black">
                   No matching bus image found
                 </p>
 
-                <p className="mt-1 text-xs text-neutral-500">
+                <p className="mt-1 text-xs text-black/60">
                   Request a quote for a custom vehicle arrangement.
                 </p>
               </div>
@@ -887,11 +887,11 @@ function BusImagesModal({
           )}
         </div>
 
-        <div className="shrink-0 border-t border-neutral-200 px-4 py-4 sm:px-6 sm:py-5">
+        <div className="shrink-0 border-t border-black/10 px-4 py-4 sm:px-6 sm:py-5">
           <button
             type="button"
             onClick={onClose}
-            className="flex h-14 w-full items-center justify-center rounded-xl bg-neutral-900 text-sm font-bold text-white transition-all duration-200 hover:bg-neutral-800 sm:h-[60px] sm:text-base"
+            className="flex h-14 w-full items-center justify-center rounded-xl bg-[#123999] text-sm font-bold text-white transition-all duration-200 hover:bg-[#0D2B73] sm:h-[60px] sm:text-base"
           >
             Close
           </button>
@@ -909,11 +909,11 @@ function DateTimeField({
   onTimeChange,
 }) {
   return (
-    <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+    <div className="rounded-xl bg-white px-3.5 py-3.5">
       <div className="flex items-center gap-1.5">
-        <CalendarDays className="h-3.5 w-3.5 text-brand-orange" />
+        <CalendarDays className="h-3.5 w-3.5 text-[#123999]" />
 
-        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
           {label}
         </span>
       </div>
@@ -927,11 +927,11 @@ function DateTimeField({
               event.target.value
             )
           }
-          className="min-w-0 flex-1 bg-transparent text-[11px] font-bold text-neutral-800 outline-none"
+          className="min-w-0 flex-1 bg-transparent text-[11px] font-bold text-black outline-none"
           required={label === "DEPARTURE"}
         />
 
-        <span className="text-[10px] text-neutral-400">
+        <span className="text-[10px] text-black/45">
           |
         </span>
 
@@ -943,7 +943,7 @@ function DateTimeField({
               event.target.value
             )
           }
-          className="w-[74px] bg-transparent text-[11px] font-bold text-neutral-800 outline-none"
+          className="w-[74px] bg-transparent text-[11px] font-bold text-black outline-none"
         />
       </div>
     </div>
@@ -960,13 +960,11 @@ function FormInput({
   required = false,
 }) {
   return (
-    <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+    <div className="rounded-xl border border-[#123999]/30 bg-white px-3.5 py-3.5 transition-colors focus-within:border-[#123999] focus-within:ring-1 focus-within:ring-[#123999]">
       <div className="flex items-center gap-1.5">
-        <span className="text-neutral-500">
-          {icon}
-        </span>
+        <span className="text-black/60">{icon}</span>
 
-        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/60">
           {label}
         </span>
       </div>
@@ -974,23 +972,18 @@ function FormInput({
       <input
         type={type}
         value={value}
-        onChange={(event) =>
-          onChange(
-            event.target.value
-          )
-        }
+        onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         required={required}
-        className="mt-1 w-full bg-transparent text-xs font-semibold text-neutral-800 outline-none placeholder:text-neutral-400"
+        className="mt-1 w-full bg-transparent text-sm font-semibold text-black placeholder:text-black/50 placeholder:opacity-100 outline-none"
       />
     </div>
   );
 }
-
 function Benefit({ text }) {
   return (
-    <div className="flex items-center gap-1.5 text-[9px] font-medium text-neutral-500 sm:text-[10px]">
-      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-emerald-500">
+    <div className="flex items-center gap-1.5 text-[9px] font-medium text-black/60 sm:text-[10px]">
+      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-[#123999]">
         <CheckCircle2 className="h-3.5 w-3.5" />
       </span>
 
@@ -1025,17 +1018,17 @@ function PopularPlaces({ places }) {
   }
 
   return (
-    <section className="w-full border-t border-neutral-200 pt-8 sm:pt-10">
+    <section className="w-full border-t border-black/10 pt-8 sm:pt-10">
       <div className="mb-5 sm:mb-6">
-        <span className="inline-flex rounded-full bg-neutral-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-600">
+        <span className="inline-flex rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-black/70">
           EXPLORE THE DESTINATION
         </span>
 
-        <h2 className="mt-3 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl">
+        <h2 className="mt-3 text-2xl font-black tracking-tight text-black sm:text-3xl">
           Popular places to visit
         </h2>
 
-        <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500">
+        <p className="mt-2 max-w-md text-sm leading-6 text-black/60">
           Discover some of the places your group can explore during the journey.
         </p>
       </div>
@@ -1091,14 +1084,14 @@ function PopularPlaceCard({
       style={{
         transitionDelay: `${index * 120}ms`,
       }}
-      className={`group w-full overflow-hidden rounded-[22px] border border-neutral-200/80 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${
+      className={`group w-full overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${
         visible
           ? "translate-y-0 opacity-100"
           : "translate-y-8 opacity-0"
-      } hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
+      } hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
     >
       <div className="grid min-h-[270px] grid-cols-[165px_1fr] items-stretch sm:min-h-[285px] sm:grid-cols-[185px_1fr] lg:min-h-[300px] lg:grid-cols-[205px_1fr]">
-        <div className="relative min-h-[270px] overflow-hidden bg-[#f0f2f5] sm:min-h-[285px] lg:min-h-[300px]">
+        <div className="relative min-h-[270px] overflow-hidden bg-white sm:min-h-[285px] lg:min-h-[300px]">
           {place.image ? (
             <Image
               src={place.image}
@@ -1109,19 +1102,19 @@ function PopularPlaceCard({
               className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-[10px] text-neutral-400">
+            <div className="flex h-full items-center justify-center text-[10px] text-black/45">
               Image unavailable
             </div>
           )}
         </div>
 
         <div className="flex min-w-0 flex-col justify-center p-5 sm:p-6 lg:p-7">
-          <h3 className="text-base font-black tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-brand-orange sm:text-lg lg:text-xl">
+          <h3 className="text-base font-black tracking-tight text-black transition-colors duration-300 group-hover:text-[#123999] sm:text-lg lg:text-xl">
             {place.name}
           </h3>
 
           {place.description && (
-            <p className="mt-3 max-w-3xl text-[11px] leading-6 text-neutral-600 sm:text-[12px] sm:leading-7 lg:text-[13px]">
+            <p className="mt-3 max-w-3xl text-[11px] leading-6 text-black/70 sm:text-[12px] sm:leading-7 lg:text-[13px]">
               {place.description}
             </p>
           )}
@@ -1135,9 +1128,9 @@ function PopularPlaceCard({
                   (highlight) => (
                     <li
                       key={highlight}
-                      className="flex items-start gap-2 text-[9px] font-medium leading-5 text-neutral-600 sm:text-[10px]"
+                      className="flex items-start gap-2 text-[9px] font-medium leading-5 text-black/70 sm:text-[10px]"
                     >
-                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-orange-50 text-brand-orange">
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
                         <CheckCircle2 className="h-2.5 w-2.5" />
                       </span>
 
@@ -1150,10 +1143,10 @@ function PopularPlaceCard({
               </ul>
             )}
 
-          <div className="mt-5 flex items-center gap-2 text-[10px] font-bold text-neutral-700 transition-colors duration-300 group-hover:text-brand-orange sm:text-[11px]">
+          <div className="mt-5 flex items-center gap-2 text-[10px] font-bold text-black/80 transition-colors duration-300 group-hover:text-[#123999] sm:text-[11px]">
             Explore
 
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-neutral-100 transition-all duration-300 group-hover:bg-orange-50">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-all duration-300 group-hover:bg-[#FFC003]">
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
             </span>
           </div>

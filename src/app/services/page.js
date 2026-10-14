@@ -60,17 +60,17 @@ export default function ServicesPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-7 lg:gap-12 items-end mb-8 sm:mb-10 lg:mb-12">
 
           <div className="lg:col-span-7">
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-black/5 text-[11px] font-bold tracking-wider text-black/75 uppercase mb-4">
               {servicesPageSectionData.eyebrow}
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-neutral-900 tracking-tight leading-[1.1]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.1]">
               {servicesPageSectionData.heading}
             </h2>
           </div>
 
           <div className="lg:col-span-5">
-            <p className="text-sm sm:text-base lg:text-[17px] text-neutral-500 leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-black/65 leading-relaxed max-w-xl">
               {servicesPageSectionData.description}
             </p>
           </div>
@@ -93,18 +93,18 @@ export default function ServicesPage() {
 
           <div className="lg:col-span-5">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-black/5 text-[11px] font-bold tracking-wider text-black/75 uppercase mb-4">
               THE BUS MANTRA APPROACH
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-neutral-900 tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-black tracking-tight leading-[1.08]">
               Built around
-              <span className="block text-brand-orange">
+              <span className="block text-[#123999]">
                 your journey.
               </span>
             </h2>
 
-            <p className="text-base sm:text-lg text-neutral-500 leading-relaxed mt-5 max-w-lg">
+            <p className="text-base sm:text-lg text-black/65 leading-relaxed mt-5 max-w-lg">
               Every group travels differently. We build the transportation
               experience around your destination, group size, schedule and
               the way you want the journey to feel.
@@ -112,12 +112,12 @@ export default function ServicesPage() {
 
             <Link
               href="/fleets"
-              className="inline-flex items-center gap-2 mt-7 text-sm font-bold text-neutral-900 hover:text-brand-orange transition-colors group"
+              className="inline-flex items-center gap-2 mt-7 text-sm font-bold text-black hover:text-[#123999] transition-colors group"
             >
               <span>Find the right coach</span>
 
               <ArrowRight
-                className="w-4 h-4 text-brand-orange transition-transform duration-300 group-hover:translate-x-1"
+                className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
               />
             </Link>
 
@@ -125,7 +125,7 @@ export default function ServicesPage() {
 
           <div className="lg:col-span-7">
 
-            <div className="relative rounded-3xl overflow-hidden bg-[#f0f2f5] border border-neutral-200/80">
+            <div className="relative rounded-3xl overflow-hidden bg-black/5 border border-black/10">
 
               <Image
                 src="/images/services/group-tours-india.jpg"
@@ -150,7 +150,7 @@ export default function ServicesPage() {
 
                 <div className="max-w-md">
 
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 text-[10px] font-bold tracking-wider uppercase text-neutral-700 mb-3">
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 text-[10px] font-bold tracking-wider uppercase text-black/80 mb-3">
                     Designed for Indian journeys
                   </span>
 
@@ -196,18 +196,18 @@ export default function ServicesPage() {
 
         <div className="mb-8 sm:mb-10 lg:mb-12">
 
-          <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-4">
+          <div className="inline-block px-3.5 py-1.5 rounded-full bg-black/5 text-[11px] font-bold tracking-wider text-black/75 uppercase mb-4">
             TRAVEL FOR EVERY OCCASION
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-neutral-900 tracking-tight leading-[1.1]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.1]">
             One service for every
-            <span className="text-brand-orange">
+            <span className="text-[#123999]">
               {" "}kind of journey.
             </span>
           </h2>
 
-          <p className="text-base sm:text-lg text-neutral-500 leading-relaxed mt-3 max-w-2xl">
+          <p className="text-base sm:text-lg text-black/65 leading-relaxed mt-3 max-w-2xl">
             Whether it is a business trip, destination wedding, school
             excursion or airport transfer, your group stays together.
           </p>
@@ -262,18 +262,18 @@ export default function ServicesPage() {
 
           <div className="lg:col-span-4">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-black/5 text-[11px] font-bold tracking-wider text-black/75 uppercase mb-4">
               HOW IT WORKS
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-neutral-900 tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-black tracking-tight leading-[1.08]">
               Group travel,
-              <span className="block text-brand-orange">
+              <span className="block text-[#123999]">
                 without the friction.
               </span>
             </h2>
 
-            <p className="text-sm sm:text-base text-neutral-500 leading-relaxed mt-5 max-w-md">
+            <p className="text-sm sm:text-base text-black/65 leading-relaxed mt-5 max-w-md">
               From the first conversation to the final drop-off, we keep
               your group journey organised and straightforward.
             </p>
@@ -318,30 +318,30 @@ export default function ServicesPage() {
 
           <div className="lg:col-span-5">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-black/5 text-[11px] font-bold tracking-wider text-black/75 uppercase mb-4">
               FROM SERVICE TO FLEET
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-neutral-900 tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               The right coach
-              <span className="block text-brand-orange">
+              <span className="block text-[#123999]">
                 changes the journey.
               </span>
             </h2>
 
-            <p className="text-base sm:text-lg text-neutral-500 leading-relaxed mt-5 max-w-lg">
+            <p className="text-base sm:text-lg text-black/65 leading-relaxed mt-5 max-w-lg">
               Match your group with a coach that fits the size, style and
               purpose of your journey.
             </p>
 
             <Link
               href="/fleets"
-              className="inline-flex items-center gap-2 mt-7 px-5 py-3 rounded-xl bg-neutral-900 text-white text-sm font-bold hover:bg-neutral-800 transition-all group"
+              className="inline-flex items-center gap-2 mt-7 px-5 py-3 rounded-xl bg-black text-white text-sm font-bold hover:bg-black/90 transition-all group"
             >
               <span>Explore Our Fleet</span>
 
               <ArrowRight
-                className="w-4 h-4 text-brand-orange transition-transform duration-300 group-hover:translate-x-1"
+                className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
               />
             </Link>
 
@@ -349,7 +349,7 @@ export default function ServicesPage() {
 
           <div className="lg:col-span-7">
 
-            <div className="relative rounded-3xl overflow-hidden bg-[#f0f2f5] border border-neutral-200/80 p-4 sm:p-5">
+            <div className="relative rounded-3xl overflow-hidden bg-black/5 border border-black/10 p-4 sm:p-5">
 
               <Image
                 src="/fleet/fleet.png"
@@ -400,21 +400,21 @@ export default function ServicesPage() {
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
-        <div className="rounded-3xl sm:rounded-[32px] bg-[#f8f9fa] border border-neutral-200/80 p-6 sm:p-10 lg:p-14 overflow-hidden">
+        <div className="rounded-3xl sm:rounded-[32px] bg-black/5 border border-black/10 p-6 sm:p-10 lg:p-14 overflow-hidden">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
 
             <div className="lg:col-span-7">
 
-              <span className="inline-block px-3 py-1 rounded-full bg-white border border-neutral-200/80 text-[11px] font-bold tracking-wider text-brand-orange uppercase mb-4">
+              <span className="inline-block px-3 py-1 rounded-full bg-white border border-black/10 text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
                 {featuredServiceData.eyebrow}
               </span>
 
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[42px] font-black text-neutral-900 tracking-tight leading-[1.1]">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[42px] font-black text-black tracking-tight leading-[1.1]">
                 {featuredServiceData.heading}
               </h2>
 
-              <p className="text-sm sm:text-base text-neutral-600 leading-relaxed max-w-xl mt-4 mb-7">
+              <p className="text-sm sm:text-base text-black/75 leading-relaxed max-w-xl mt-4 mb-7">
                 {featuredServiceData.description}
               </p>
 
@@ -436,19 +436,19 @@ export default function ServicesPage() {
                         rounded-2xl
                         bg-white
                         border
-                        border-neutral-200/70
+                        border-black/10
                       "
                     >
-                      <div className="w-8 h-8 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-xl bg-[#FFC003]/10 text-[#123999] flex items-center justify-center shrink-0">
                         <IconComponent className="w-4 h-4 stroke-[2]" />
                       </div>
 
                       <div>
-                        <h4 className="text-sm sm:text-base font-bold text-neutral-900">
+                        <h4 className="text-sm sm:text-base font-bold text-black">
                           {point.title}
                         </h4>
 
-                        <p className="text-xs sm:text-sm text-neutral-500 leading-relaxed mt-0.5">
+                        <p className="text-xs sm:text-sm text-black/65 leading-relaxed mt-0.5">
                           {point.description}
                         </p>
                       </div>
@@ -469,8 +469,8 @@ export default function ServicesPage() {
                   px-6
                   py-3.5
                   rounded-xl
-                  bg-neutral-900
-                  hover:bg-neutral-800
+                  bg-black
+                  hover:bg-black/90
                   text-white
                   text-xs
                   sm:text-sm
@@ -482,7 +482,7 @@ export default function ServicesPage() {
                 <span>Explore Fleet for Your Group</span>
 
                 <ArrowRight
-                  className="w-4 h-4 text-brand-orange transition-transform duration-300 group-hover:translate-x-1"
+                  className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
                 />
               </Link>
 
@@ -490,7 +490,7 @@ export default function ServicesPage() {
 
             <div className="lg:col-span-5">
 
-              <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-neutral-200/80 shadow-sm">
+              <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-black/10 shadow-sm">
 
                 <Image
                   src={featuredServiceData.image}
@@ -511,7 +511,7 @@ export default function ServicesPage() {
 
                   <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-black/75 text-white backdrop-blur-sm border border-white/10 text-xs font-semibold">
 
-                    <span className="w-2 h-2 rounded-full bg-brand-orange" />
+                    <span className="w-2 h-2 rounded-full bg-[#FFC003]" />
 
                     <span>
                       Dedicated Full-Bus Charters · Pan-India
@@ -548,11 +548,11 @@ function JourneyCard({
         bg-white
         rounded-2xl
         border
-        border-neutral-200/70
+        border-black/10
         p-4
         sm:p-5
         shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-        hover:border-neutral-300
+        hover:border-[#123999]/40
         hover:shadow-[0_10px_35px_-5px_rgba(0,0,0,0.07)]
         transition-all
         duration-300
@@ -563,23 +563,23 @@ function JourneyCard({
           w-9
           h-9
           rounded-xl
-          bg-[#f0f2f5]
+          bg-black/5
           flex
           items-center
           justify-center
           mb-3
-          group-hover:bg-orange-50
+          group-hover:bg-[#FFC003]/10
           transition-colors
         "
       >
-        <Icon className="w-4 h-4 text-brand-orange stroke-[1.8]" />
+        <Icon className="w-4 h-4 text-[#123999] stroke-[1.8]" />
       </div>
 
-      <h3 className="text-sm sm:text-base font-bold text-neutral-900">
+      <h3 className="text-sm sm:text-base font-bold text-black">
         {title}
       </h3>
 
-      <p className="text-[11px] sm:text-xs text-neutral-500 leading-relaxed mt-1.5">
+      <p className="text-[11px] sm:text-xs text-black/65 leading-relaxed mt-1.5">
         {text}
       </p>
     </div>
@@ -605,7 +605,7 @@ function EditorialService({
         lg:min-h-105
         rounded-3xl
         overflow-hidden
-        bg-neutral-200
+        bg-black/10
         ${className}
       `}
     >
@@ -630,7 +630,7 @@ function EditorialService({
 
       <div className="absolute top-5 left-5">
 
-        <div className="w-11 h-11 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center text-brand-orange shadow-lg">
+        <div className="w-11 h-11 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center text-[#123999] shadow-lg">
           <Icon className="w-5 h-5 stroke-[1.8]" />
         </div>
 
@@ -650,7 +650,7 @@ function EditorialService({
           <span>Explore service</span>
 
           <ArrowRight
-            className="w-4 h-4 text-brand-orange transition-transform duration-300 group-hover:translate-x-1"
+            className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
           />
         </div>
 
@@ -672,11 +672,11 @@ function ProcessCard({
         bg-white
         rounded-2xl
         border
-        border-neutral-200/70
+        border-black/10
         p-6
         sm:p-7
         shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-        hover:border-neutral-300
+        hover:border-[#123999]/40
         hover:shadow-[0_10px_35px_-5px_rgba(0,0,0,0.07)]
         transition-all
         duration-300
@@ -687,23 +687,23 @@ function ProcessCard({
           w-12
           h-12
           rounded-2xl
-          bg-[#f0f2f5]
+          bg-black/5
           flex
           items-center
           justify-center
           mb-6
-          group-hover:bg-orange-50
+          group-hover:bg-[#FFC003]/10
           transition-colors
         "
       >
-        <Icon className="w-5 h-5 text-brand-orange stroke-[1.8]" />
+        <Icon className="w-5 h-5 text-[#123999] stroke-[1.8]" />
       </div>
 
-      <h3 className="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">
+      <h3 className="text-lg sm:text-xl font-bold text-black tracking-tight">
         {title}
       </h3>
 
-      <p className="text-sm text-neutral-500 leading-relaxed mt-2.5">
+      <p className="text-sm text-black/65 leading-relaxed mt-2.5">
         {description}
       </p>
     </div>
@@ -722,10 +722,10 @@ function MiniCapability({
         rounded-xl
         sm:rounded-2xl
         border
-        border-neutral-200/70
+        border-black/10
         p-3
         sm:p-4
-        hover:border-brand-orange/30
+        hover:border-[#FFC003]/30
         hover:shadow-[0_8px_25px_-8px_rgba(0,0,0,0.08)]
         transition-all
         duration-300
@@ -737,7 +737,7 @@ function MiniCapability({
           h-4
           sm:w-5
           sm:h-5
-          text-brand-orange
+          text-[#123999]
           stroke-[1.8]
           mb-2.5
           sm:mb-3
@@ -747,7 +747,7 @@ function MiniCapability({
         "
       />
 
-      <span className="text-[11px] sm:text-sm font-bold text-neutral-900">
+      <span className="text-[11px] sm:text-sm font-bold text-black">
         {title}
       </span>
     </div>

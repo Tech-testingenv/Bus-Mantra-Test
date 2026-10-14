@@ -7,13 +7,13 @@
   /* BUS MANTRA BRAND COLORS */
 
   /* Primary: Royal Blue */
-  --brand-blue: #19439b;
-  --brand-blue-dark: #123477;
+  --brand-blue: #123999;
+  --brand-blue-dark: #0d2b73;
   --brand-blue-light: #eef3ff;
 
   /* Secondary: Golden Yellow */
-  --brand-yellow: #ffc20e;
-  --brand-yellow-dark: #e5a900;
+  --brand-yellow: #ffc003;
+  --brand-yellow-dark: #e0a900;
   --brand-yellow-light: #fff8db;
 
   /* Accent: Bus Orange */

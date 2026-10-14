@@ -1038,8 +1038,8 @@ export default function BookingForm({ data = heroData?.form }) {
                     }
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-150 mx-auto cursor-pointer ${
                       isSelected
-                        ? "bg-brand-orange text-white shadow-xs font-bold scale-105"
-                        : "text-neutral-700 hover:bg-orange-50 hover:text-brand-orange"
+                        ? "bg-[#FFC003] text-black shadow-xs font-bold scale-105"
+                        : "text-neutral-700 hover:bg-[#123999]/10 hover:text-brand-blue"
                     }`}
                   >
                     {day}
@@ -1061,7 +1061,7 @@ export default function BookingForm({ data = heroData?.form }) {
                 onClick={() =>
                   setPickerStep("time")
                 }
-                className="text-brand-orange hover:text-brand-orange-hover font-bold flex items-center gap-1 cursor-pointer"
+                className="text-brand-blue hover:text-[#0d2b73] font-bold flex items-center gap-1 cursor-pointer"
               >
                 <span>
                   Pick Time
@@ -1080,7 +1080,7 @@ export default function BookingForm({ data = heroData?.form }) {
                 onClick={() =>
                   setPickerStep("date")
                 }
-                className="inline-flex items-center gap-1 text-xs font-bold text-neutral-600 hover:text-brand-orange transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 text-xs font-bold text-neutral-600 hover:text-brand-blue transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
                 <span>
@@ -1107,7 +1107,7 @@ export default function BookingForm({ data = heroData?.form }) {
             {/* Time Preview */}
             <div className="bg-[#f4f5f7] rounded-xl p-2.5 mb-3 flex items-center justify-between border border-neutral-100">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-brand-orange shrink-0 stroke-[2.2]" />
+                <Clock className="w-4 h-4 text-brand-blue shrink-0 stroke-[2.2]" />
 
                 <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wide">
                   Time:
@@ -1134,7 +1134,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
                     customPeriod ===
                     "AM"
-                      ? "bg-brand-orange text-white shadow-xs"
+                      ? "bg-[#123999] text-white shadow-xs"
                       : "text-neutral-600 hover:text-neutral-900"
                   }`}
                 >
@@ -1151,7 +1151,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
                     customPeriod ===
                     "PM"
-                      ? "bg-brand-orange text-white shadow-xs"
+                      ? "bg-[#FFC003] text-black shadow-xs"
                       : "text-neutral-600 hover:text-neutral-900"
                   }`}
                 >
@@ -1184,8 +1184,8 @@ export default function BookingForm({ data = heroData?.form }) {
                         }
                         className={`h-7.5 rounded-lg text-xs font-bold flex items-center justify-center transition-all cursor-pointer ${
                           isSelected
-                            ? "bg-brand-orange text-white shadow-xs scale-105"
-                            : "bg-neutral-100 text-neutral-700 hover:bg-orange-50 hover:text-brand-orange"
+                            ? "bg-[#FFC003] text-black shadow-xs scale-105"
+                            : "bg-neutral-100 text-neutral-700 hover:bg-[#123999]/10 hover:text-brand-blue"
                         }`}
                       >
                         {h}
@@ -1216,7 +1216,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   className={`relative flex-1 bg-neutral-100 hover:bg-neutral-200/60 focus-within:bg-white focus-within:ring-2 ${
                     !isMinuteValid
                       ? "border border-red-500 focus-within:ring-red-200"
-                      : "border border-transparent focus-within:border-brand-orange focus-within:ring-brand-orange/30"
+                      : "border border-transparent focus-within:border-[#123999] focus-within:ring-[#123999]/30"
                   } rounded-xl px-3 py-2 transition-all`}
                 >
                   <input
@@ -1235,7 +1235,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     }
                     placeholder="00"
                     maxLength={2}
-                    className="w-full text-center text-base font-bold text-neutral-900 placeholder:text-[#c7a27e] focus:outline-none bg-transparent"
+                    className="w-full text-center text-base font-bold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
                   />
                 </div>
 
@@ -1284,7 +1284,7 @@ export default function BookingForm({ data = heroData?.form }) {
               className={`w-full py-2.5 px-4 rounded-xl text-neutral-900 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-xs ${
                 !isMinuteValid
                   ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-                  : "bg-brand-orange hover:bg-brand-orange-hover cursor-pointer active:scale-[0.98]"
+                  : "bg-[#FFC003] hover:bg-[#E6AD00] cursor-pointer active:scale-[0.98]"
               }`}
             >
               <span>
@@ -1325,7 +1325,7 @@ export default function BookingForm({ data = heroData?.form }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
           {/* Full Name */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="fullName"
               className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
@@ -1360,7 +1360,7 @@ export default function BookingForm({ data = heroData?.form }) {
           </div>
 
           {/* Mobile */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="mobile"
               className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
@@ -1395,7 +1395,7 @@ export default function BookingForm({ data = heroData?.form }) {
           </div>
 
           {/* Email */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="email"
               className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
@@ -1434,7 +1434,7 @@ export default function BookingForm({ data = heroData?.form }) {
             className={`bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 ${
               passengerError
                 ? "border-red-500 focus-within:ring-red-200"
-                : "border-transparent focus-within:border-brand-orange focus-within:ring-brand-orange/30"
+                : "border-transparent focus-within:border-[#123999] focus-within:ring-[#FFC003]/30"
             } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center`}
           >
             <label
@@ -1446,7 +1446,7 @@ export default function BookingForm({ data = heroData?.form }) {
             </label>
 
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-brand-orange shrink-0 stroke-[2.2]" />
+              <Users className="w-4 h-4 text-brand-blue shrink-0 stroke-[2.2]" />
 
               <input
                 id="passengers"
@@ -1489,7 +1489,7 @@ export default function BookingForm({ data = heroData?.form }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-stretch">
 
           {/* Pick-Up */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="pickupPoint"
               className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
@@ -1528,7 +1528,7 @@ export default function BookingForm({ data = heroData?.form }) {
           {/* Destination */}
           <div
             ref={destRef}
-            className="relative bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white border border-transparent focus-within:border-brand-orange focus-within:ring-2 focus-within:ring-brand-orange/30 rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer"
+            className="relative bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white border border-transparent focus-within:border-[#123999] focus-within:ring-2 focus-within:ring-[#FFC003]/30 rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer"
             onClick={() =>
               setIsDestOpen(
                 (prev) => !prev
@@ -1544,14 +1544,14 @@ export default function BookingForm({ data = heroData?.form }) {
               <ChevronDown
                 className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ${
                   isDestOpen
-                    ? "rotate-180 text-brand-orange"
+                    ? "rotate-180 text-brand-blue"
                     : ""
                 }`}
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-brand-orange shrink-0 stroke-[2.2]" />
+              <MapPin className="w-4 h-4 text-brand-blue shrink-0 stroke-[2.2]" />
 
               <input
                 type="text"
@@ -1650,7 +1650,7 @@ export default function BookingForm({ data = heroData?.form }) {
                           }}
                           className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
                             isSelected
-                              ? "bg-orange-50 text-brand-orange"
+                              ? "bg-[#123999]/10 text-brand-blue"
                               : "hover:bg-neutral-100 text-neutral-700"
                           }`}
                         >
@@ -1659,7 +1659,7 @@ export default function BookingForm({ data = heroData?.form }) {
                           </span>
 
                           {isSelected && (
-                            <Check className="w-3 h-3 text-brand-orange stroke-[2.5]" />
+                            <Check className="w-3 h-3 text-brand-blue stroke-[2.5]" />
                           )}
                         </button>
                       );
@@ -1681,7 +1681,7 @@ export default function BookingForm({ data = heroData?.form }) {
             className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${
               activePicker ===
               "departure"
-                ? "bg-white border-brand-orange ring-2 ring-brand-orange/30"
+                ? "bg-white border-[#FFC003] ring-2 ring-[#FFC003]/30"
                 : "border-transparent"
             } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
             role="button"
@@ -1722,7 +1722,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Date"
-                  className="text-neutral-400 hover:text-brand-orange transition-colors cursor-pointer p-0.5"
+                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
                 >
                   <Calendar className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1738,7 +1738,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Time"
-                  className="text-neutral-400 hover:text-brand-orange transition-colors cursor-pointer p-0.5"
+                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
                 >
                   <Clock className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1788,7 +1788,7 @@ export default function BookingForm({ data = heroData?.form }) {
             }
             className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${
               activePicker === "return"
-                ? "bg-white border-brand-orange ring-2 ring-brand-orange/30"
+                ? "bg-white border-[#FFC003] ring-2 ring-[#FFC003]/30"
                 : "border-transparent"
             } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
             role="button"
@@ -1829,7 +1829,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Date"
-                  className="text-neutral-400 hover:text-brand-orange transition-colors cursor-pointer p-0.5"
+                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
                 >
                   <Calendar className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1845,7 +1845,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Time"
-                  className="text-neutral-400 hover:text-brand-orange transition-colors cursor-pointer p-0.5"
+                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
                 >
                   <Clock className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1889,7 +1889,7 @@ export default function BookingForm({ data = heroData?.form }) {
           <div className="col-span-1 sm:col-span-2 lg:col-span-1 flex items-stretch">
             <button
               type="submit"
-              className="w-full h-full min-h-14 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 select-none group"
+              className="w-full h-full min-h-14 rounded-xl bg-[#ffc003] hover:bg-[#e0a900] text-[#111111] font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ffc003] focus-visible:ring-offset-2 select-none group"
               
             >
               <span>
@@ -1909,7 +1909,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
         <div className="mt-4 pt-4 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-brand-orange text-white text-[10px] font-bold uppercase tracking-wider select-none">
+            <span className="px-2 py-0.5 rounded bg-[#FFC003] text-black text-[10px] font-bold uppercase tracking-wider select-none">
               {routeSummary.badge ||
                 "FULL COACH"}
             </span>
@@ -1933,7 +1933,7 @@ export default function BookingForm({ data = heroData?.form }) {
           </div>
 
           <div className="flex items-center gap-2 text-neutral-300 text-xs sm:text-[13px] font-medium">
-            <span className="w-2 h-2 rounded-full bg-brand-orange shrink-0 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-[#FFC003] shrink-0 inline-block" />
 
             <span>
               {routeSummary.subtext ||
@@ -1950,11 +1950,11 @@ export default function BookingForm({ data = heroData?.form }) {
       {capacityNotice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-neutral-100 text-center animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-13 h-13 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center mx-auto mb-3.5 border border-brand-orange/30">
+            <div className="w-13 h-13 rounded-full bg-[#123999]/10 text-brand-blue flex items-center justify-center mx-auto mb-3.5 border border-[#FFC003]/30">
               <Users className="w-6 h-6 stroke-[2.2]" />
             </div>
 
-            <span className="text-[10px] font-bold tracking-wider text-brand-orange uppercase block mb-1">
+            <span className="text-[10px] font-bold tracking-wider text-brand-blue uppercase block mb-1">
               LARGE GROUP INQUIRY
             </span>
 
@@ -1979,7 +1979,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
               <a
                 href="tel:+919876543210"
-                className="flex-1 py-3 rounded-xl bg-brand-orange hover:bg-brand-orange-hover text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                className="flex-1 py-3 rounded-xl bg-[#FFC003] hover:bg-[#E6AD00] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
               >
                 <Phone className="w-4 h-4" />
                 <span>
