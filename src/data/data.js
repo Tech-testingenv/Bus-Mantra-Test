@@ -1,6 +1,6 @@
 export const heroData = {
   eyebrow: "FULL BUS BOOKING",
-  titleLines: ["Luxury Coach at ₹1/KM.", "Yes, You Read That Right."],
+  titleLines: ["Luxury Coach at ₹1/KM.", "Yes, You Read That Right !"],
   description:
     "Book an entire luxury coach for your group and travel together in comfort, without the hassle.",
   primaryButton: {
@@ -210,7 +210,7 @@ export const aboutData = {
 
   cta: {
     label: "Know More About Us",
-    href: "#booking-form",
+    href: "/about",
   },
 
   /* =========================================================
@@ -370,68 +370,52 @@ export const aboutData = {
   ========================================================= */
 
   occasions: {
-    eyebrow: "MADE FOR EVERY JOURNEY",
+  eyebrow: "MADE FOR EVERY JOURNEY",
 
-    heading: "Different journeys. One trusted ride.",
+  heading: "Different journeys. One trusted ride.",
 
-    items: [
-      {
-        number: "01",
+  items: [
+    {
+      number: "01",
+      title: "Weddings & Celebrations",
+      description:
+        "Keep your guests together and make transportation one less thing to coordinate.",
+      image: "/images/about/wedding-travel.png",
+      alt: "Indian wedding guests travelling together inside a decorated luxury coach",
+      href: "/services/events-weddings",
+    },
 
-        title: "Weddings & Celebrations",
+    {
+      number: "02",
+      title: "Corporate Travel",
+      description:
+        "Move teams, clients and colleagues together for meetings, events and business travel.",
+      image: "/images/about/corporate-travel.png",
+      alt: "Indian corporate professionals travelling together inside a premium coach",
+      href: "/services/corporate-travel",
+    },
 
-        description:
-          "Keep your guests together and make transportation one less thing to coordinate.",
+    {
+      number: "03",
+      title: "School & College Trips",
+      description:
+        "Organized transportation for educational trips, excursions and campus events.",
+      image: "/images/about/school-trip.png",
+      alt: "Indian students travelling together inside a luxury coach",
+      href: "/services/school-trips",
+    },
 
-        image: "/images/about/wedding-travel.png",
-
-        alt:
-          "Indian wedding guests travelling together inside a decorated luxury coach",
-      },
-
-      {
-        number: "02",
-
-        title: "Corporate Travel",
-
-        description:
-          "Move teams, clients and colleagues together for meetings, events and business travel.",
-
-        image: "/images/about/corporate-travel.png",
-
-        alt:
-          "Indian corporate professionals travelling together inside a premium coach",
-      },
-
-      {
-        number: "03",
-
-        title: "School & College Trips",
-
-        description:
-          "Organized transportation for educational trips, excursions and campus events.",
-
-        image: "/images/about/school-trip.png",
-
-        alt:
-          "Indian students travelling together inside a luxury coach",
-      },
-
-      {
-        number: "04",
-
-        title: "Family Tours",
-
-        description:
-          "Bring everyone together for comfortable local and multi-day family journeys.",
-
-        image: "/images/about/family-travel.png",
-
-        alt:
-          "Indian family travelling together inside a comfortable luxury coach",
-      },
-    ],
-  },
+    {
+      number: "04",
+      title: "Airport Pickup & Transfer",
+      description:
+        "Enjoy convenient group transportation to and from the airport with comfortable, reliable transfers.",
+      image: "/images/about/family-travel.png",
+      alt: "Passengers travelling together in a comfortable luxury coach for an airport transfer",
+      href: "/services/airport-transfers",
+    },
+  ],
+},
 
   /* =========================================================
      CLOSING CTA
@@ -461,7 +445,6 @@ export const fleetTypesData = [
     minSeats: 1,
     maxSeats: 19,
     ratePerKm: 28,
-    badge: "City & Regional",
     isPopular: false,
     image: "/fleet/1.jpg",
     gallery: [
@@ -496,7 +479,6 @@ export const fleetTypesData = [
     minSeats: 20,
     maxSeats: 45,
     ratePerKm: 42,
-    badge: "Most Popular",
     isPopular: true,
     image: "/fleet/9.jpg",
     gallery: [
@@ -531,7 +513,6 @@ export const fleetTypesData = [
     minSeats: 46,
     maxSeats: 60,
     ratePerKm: 58,
-    badge: "Long Distance",
     isPopular: false,
     image: "/fleet/5.jpg",
     gallery: [
@@ -2164,7 +2145,6 @@ export const contactFaqData = {
 export const footerData = {
   brand: {
     name: "BUS MANTRA",
-    tagline: "FULL BUS FLEET PLATFORM",
     description:
       "India's trusted platform for full-bus charters and group road travel. Reserving the entire vehicle for weddings, corporate offsites, school trips, and pilgrimage tours with verified professional chauffeurs.",
     logo: "/logo-bus-mantra.jpeg",

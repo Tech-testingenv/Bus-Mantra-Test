@@ -58,7 +58,7 @@ export default function HeroSection({ data = heroData }) {
   };
 
   const line1 = data.titleLines?.[0] || "Luxury Coach at ₹1/KM.";
-  const line2 = data.titleLines?.[1] || "Yes, You Read That Right.";
+  const line2 = data.titleLines?.[1] || "Yes, You Read That Right!";
 
   const renderLine1 = (text) => {
     if (typeof text === "string" && text.includes("₹1/KM.")) {

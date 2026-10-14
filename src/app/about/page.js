@@ -555,22 +555,22 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-7">
 
           {content.occasions?.items?.map((item) => (
-
-            <article
-              key={item.title}
-              className="
-                group
-                relative
-                overflow-hidden
-                rounded-2xl sm:rounded-3xl
-                border border-[#123999]
-                bg-white
-                shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-                hover:border-[#123999]
-                hover:shadow-[0_14px_40px_-8px_rgba(0,0,0,0.08)]
-                transition-all duration-300
-              "
-            >
+  <Link
+    key={item.title}
+    href={item.href}
+    className="
+      group
+      relative
+      block
+      overflow-hidden
+      rounded-2xl sm:rounded-3xl
+      border border-[#123999]
+      bg-white
+      shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
+      hover:shadow-[0_14px_40px_-8px_rgba(0,0,0,0.08)]
+      transition-all duration-300
+    "
+  >
 
               <div className="relative aspect-[16/9] overflow-hidden bg-[#FFFFFF]">
 
@@ -621,7 +621,7 @@ export default function AboutPage() {
 
               </div>
 
-            </article>
+            </Link>
 
           ))}
 

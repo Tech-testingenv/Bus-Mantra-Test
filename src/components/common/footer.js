@@ -60,19 +60,21 @@ export default function Footer({ data = footerData }) {
           <div className="max-w-xl">
             {/* Logo & Tagline */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
-              <Link href="/" className="inline-block shrink-0">
+              <Link
+              href="/"
+              className="inline-flex items-center justify-start bg-white px-3 py-3 rounded-xl "
+            >
                 <Image
-                  src={data.brand.logo || "/logo-bus-mantra.jpeg"}
-                  alt={data.brand.name}
-                  width={155}
-                  height={44}
-                  className="h-10 w-auto object-contain"
-                />
-              </Link>
-              <div className="hidden sm:block w-px h-6 bg-neutral-300" />
-              <span className="text-[11px] font-bold text-[#FFC003] tracking-widest uppercase bg-white/10 border border-white/20 px-2.5 py-0.5 rounded-md self-start sm:self-auto">
-                {data.brand.tagline}
-              </span>
+              src={data.brand.logo || "/logo-bus-mantra.jpeg"}
+              alt={data.brand.name}
+              width={260}
+              height={100}
+              priority
+              className="h-14 sm:h-16 lg:h-[72px] w-auto max-w-[280px] object-contain object-left"
+            />
+                          </Link>
+              
+             
             </div>
 
             {/* Description */}

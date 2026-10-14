@@ -89,12 +89,12 @@ export default function AboutSection({ data = aboutData }) {
 
           {/* CTA Button */}
           <Link
-            href={content?.cta?.href || "#booking-form"}
-            className="group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-brand-yellow px-7 py-3.5 text-sm font-bold text-[#111111] shadow-sm transition-all duration-300 hover:bg-brand-orange hover:text-white hover:shadow-md active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2 sm:text-base"
+            href={content?.cta?.href || "/about"}
+            className="group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-brand-yellow px-7 py-3.5 text-sm font-bold text-[#111111] shadow-sm transition-all duration-300 "
           >
             <span>{content?.cta?.label || "Know More About Us"}</span>
 
-            <ArrowRight className="h-4 w-4 text-[#111111] transition-all duration-300 group-hover:translate-x-1 group-hover:text-white" strokeWidth={2.2} />
+            <ArrowRight className="h-4 w-4 text-[#111111] transition-all duration-300 group-hover:translate-x-1 group-hover:text-black" strokeWidth={2.2} />
           </Link>
         </div>
 

@@ -208,7 +208,7 @@ export default function Navbar() {
               href="/contact"
               className="inline-flex h-11 items-center justify-center rounded-xl bg-[#FFC003] px-4 text-sm font-semibold text-black shadow-sm shadow-[#123999]/20 transition-all duration-200 hover:bg-[#e6ad00] hover:shadow-md active:scale-[0.98] xl:px-5"
             >
-              Contact
+              Contact Us
             </Link>
 
             {/* Sign In */}

@@ -28,7 +28,6 @@ export default function FleetCard({
     id: bus?.id || id || "coach",
     name: bus?.name || name || "Coach Bus",
     capacity: bus?.capacity || capacity || "15–25 Seats",
-    badge: bus?.badge || badge || "Charter",
     isPopular: bus?.isPopular ?? isPopular ?? false,
     image: bus?.image || image || "/fleet/mini-coach.jpg",
     description: bus?.description || description || "",
@@ -129,28 +128,7 @@ export default function FleetCard({
             {item.name}
           </h3>
 
-          <span
-            className={`
-              shrink-0
-              select-none
-              rounded-md
-              border
-              px-2.5
-              py-1
-              text-[10px]
-              font-bold
-              uppercase
-              tracking-wider
-              sm:text-[11px]
-              ${
-                item.isPopular
-                  ? "border-brand-yellow/60 bg-[#fff8db] text-[#8a6500]"
-                  : "border-brand-blue/10 bg-[#eef3ff] text-brand-blue"
-              }
-            `}
-          >
-            {item.badge}
-          </span>
+          
         </div>
 
         {/* Seat Capacity */}
@@ -173,19 +151,23 @@ export default function FleetCard({
           href={item.href}
           onClick={handleClick}
           className="
-            group/link
-            inline-flex
-            cursor-pointer
-            select-none
-            items-center
-            gap-2
-            text-sm
-            font-bold
-            text-brand-blue
-            transition-colors
-            duration-200
-            hover:text-brand-orange
-          "
+  group/link
+  inline-flex
+  cursor-pointer
+  select-none
+  items-center
+  gap-2
+  text-sm
+  font-bold
+  text-[#123999]
+  transition-colors
+  duration-200
+  hover:!text-[#0d2b73]
+  focus-visible:outline-none
+  focus-visible:ring-2
+  focus-visible:ring-[#123999]
+  focus-visible:ring-offset-2
+"
         >
           <span>{item.ctaText}</span>
 
@@ -193,7 +175,7 @@ export default function FleetCard({
             className="
               h-4
               w-4
-              text-brand-orange
+              text-brand-black
               transition-transform
               duration-200
               group-hover/link:translate-x-1
