@@ -37,7 +37,7 @@ import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
 import { getBusBySlug } from "@/services/busSelectionService";
 import { calculateRouteDistance } from "@/services/distanceCalculationService";
 import { calculateCharterPrice } from "@/services/pricingService";
-import {fleetSlugFaqData} from "@/data/data";
+import { fleetSlugFaqData } from "@/data/data";
 import FAQSection from "@/components/common/faq"
 
 import {
@@ -133,21 +133,21 @@ export default function FleetDetailPage({ params }) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
         <div className="text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#123999]">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary">
             FLEET NOT FOUND
           </span>
 
-          <h1 className="mt-2 text-3xl font-black text-black">
+          <h1 className="mt-2 text-3xl font-black text-text-primary">
             We couldn't find this coach.
           </h1>
 
-          <p className="mt-2 text-sm text-black/60">
+          <p className="mt-2 text-sm text-text-muted">
             The fleet you're looking for is not available.
           </p>
 
           <Link
             href="/fleets"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#FFC003] px-5 py-3 text-sm font-bold text-black transition-colors hover:bg-[#123999]"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Fleet
@@ -228,9 +228,9 @@ export default function FleetDetailPage({ params }) {
         <div className="mb-6 sm:mb-8">
           <Link
             href="/fleets"
-            className="group inline-flex items-center gap-2 text-xs font-bold text-black/70 transition-colors hover:text-[#123999] sm:text-sm"
+            className="group inline-flex items-center gap-2 text-xs font-bold text-text-muted transition-colors hover:text-primary sm:text-sm"
           >
-            <ArrowLeft className="h-4 w-4 text-[#123999] transition-transform duration-200 group-hover:-translate-x-1" />
+            <ArrowLeft className="h-4 w-4 text-primary transition-transform duration-200 group-hover:-translate-x-1" />
             Back to All Coaches
           </Link>
         </div>
@@ -239,29 +239,29 @@ export default function FleetDetailPage({ params }) {
           <div className="flex w-full flex-col gap-8 lg:col-span-7">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-black/70">
+                <span className="rounded-full bg-surface px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-text-secondary">
                   {bus.badge || "CHARTER COACH"}
                 </span>
 
                 {bus.isPopular && (
-                  <span className="flex items-center gap-1 rounded-full border border-[#123999]/30 bg-[#FFC003]/15 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#123999]">
-                    <Flame className="h-3 w-3 fill-[#123999]" />
+                  <span className="flex items-center gap-1 rounded-full border border-primary/30 bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
+                    <Flame className="h-3 w-3 fill-primary" />
                     Most Popular
                   </span>
                 )}
               </div>
 
-              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-black sm:text-4xl lg:text-[42px]">
+              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
                 {bus.name}
               </h1>
 
-              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-black/80">
-                <Users className="h-4 w-4 text-[#123999]" />
+              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
+                <Users className="h-4 w-4 text-primary" />
                 Capacity: {bus.capacity}
               </div>
 
               {bus.description && (
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-black/70 sm:text-base">
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-text-muted sm:text-base">
                   {bus.description}
                 </p>
               )}
@@ -270,8 +270,8 @@ export default function FleetDetailPage({ params }) {
             <FleetHeroImage bus={bus} />
 
             {bus.features && (
-              <section className="rounded-2xl border border-[#123999]/20 bg-white p-5 sm:rounded-3xl sm:p-6">
-                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-black/50">
+              <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
                   VEHICLE SPECIFICATIONS
                 </h2>
 
@@ -300,8 +300,8 @@ export default function FleetDetailPage({ params }) {
             )}
 
             {bus.amenities?.length > 0 && (
-              <section className="rounded-2xl border border-[#123999]/20 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
-                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-black/50">
+              <section className="rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
                   INCLUDED COACH AMENITIES
                 </h2>
 
@@ -309,9 +309,9 @@ export default function FleetDetailPage({ params }) {
                   {bus.amenities.map((amenity, index) => (
                     <div
                       key={`${amenity}-${index}`}
-                      className="flex items-center gap-2.5 text-xs font-semibold text-black/80 sm:text-sm"
+                      className="flex items-center gap-2.5 text-xs font-semibold text-text-secondary sm:text-sm"
                     >
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-subtle text-primary">
                         <Check className="h-3 w-3 stroke-[2.6]" />
                       </span>
 
@@ -322,70 +322,70 @@ export default function FleetDetailPage({ params }) {
               </section>
             )}
 
-            <section className="rounded-[36px] bg-[#123999] p-8 md:p-12">
-  <h2 className="text-2xl font-bold text-white md:text-3xl">
-    Premium Standards On Every Mile
-  </h2>
+            <section className="rounded-[36px] bg-surface-inverse p-8 md:p-12">
+              <h2 className="text-2xl font-bold text-white md:text-3xl">
+                Premium Standards On Every Mile
+              </h2>
 
-  <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
-    <div>
-      <h3 className="text-lg font-bold text-[#FFC003]">
-        Verified Chauffeurs
-      </h3>
-      <p className="mt-1 leading-relaxed text-white/85">
-        Experienced commercial highway drivers with spotless safety records.
-      </p>
-    </div>
+              <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
+                <div>
+                  <h3 className="text-lg font-bold text-primary">
+                    Verified Chauffeurs
+                  </h3>
+                  <p className="mt-1 leading-relaxed text-white/85">
+                    Experienced commercial highway drivers with spotless safety records.
+                  </p>
+                </div>
 
-    <div>
-      <h3 className="text-lg font-bold text-[#FFC003]">
-        Deeply Sanitized
-      </h3>
-      <p className="mt-1 leading-relaxed text-white/85">
-        Every vehicle is sanitized and mechanically inspected before dispatch.
-      </p>
-    </div>
+                <div>
+                  <h3 className="text-lg font-bold text-primary">
+                    Deeply Sanitized
+                  </h3>
+                  <p className="mt-1 leading-relaxed text-white/85">
+                    Every vehicle is sanitized and mechanically inspected before dispatch.
+                  </p>
+                </div>
 
-    <div>
-      <h3 className="text-lg font-bold text-[#FFC003]">
-        24/7 Trip Support
-      </h3>
-      <p className="mt-1 leading-relaxed text-white/85">
-        Dedicated operations control room monitoring your schedule.
-      </p>
-    </div>
+                <div>
+                  <h3 className="text-lg font-bold text-primary">
+                    24/7 Trip Support
+                  </h3>
+                  <p className="mt-1 leading-relaxed text-white/85">
+                    Dedicated operations control room monitoring your schedule.
+                  </p>
+                </div>
 
-    <div>
-      <h3 className="text-lg font-bold text-[#FFC003]">
-        Transparent Invoicing
-      </h3>
-      <p className="mt-1 leading-relaxed text-white/85">
-        Fuel, driver allowances and standard GST included.
-      </p>
-    </div>
-  </div>
-</section>
+                <div>
+                  <h3 className="text-lg font-bold text-primary">
+                    Transparent Invoicing
+                  </h3>
+                  <p className="mt-1 leading-relaxed text-white/85">
+                    Fuel, driver allowances and standard GST included.
+                  </p>
+                </div>
+              </div>
+            </section>
           </div>
 
           <div className="w-full lg:sticky lg:top-24 lg:col-span-5 lg:self-start">
-            <div className="space-y-5 rounded-2xl border border-[#123999]/20 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7">
-              <div className="border-b border-black/10 pb-4">
-                <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#123999] sm:text-[11px]">
+            <div className="space-y-5 rounded-2xl border border-border bg-surface p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7">
+              <div className="border-b border-border pb-4">
+                <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-primary sm:text-[11px]">
                   CUSTOM ROUTE & FARE
                 </span>
 
-                <h2 className="text-xl font-black tracking-tight text-black sm:text-2xl">
+                <h2 className="text-xl font-black tracking-tight text-text-primary sm:text-2xl">
                   Reserve {bus.name}
                 </h2>
               </div>
 
               <div className="space-y-3.5">
-                <div className="rounded-xl border border-[#123999]/30 bg-white px-4 py-3 transition-colors focus-within:border-[#123999] focus-within:ring-2 focus-within:ring-[#123999]/30">
+                <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30">
                   <label
                     htmlFor="detailPickupPoint"
-                    className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-black/50"
+                    className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-text-muted"
                   >
-                    <MapPin className="h-3.5 w-3.5 text-[#123999]" />
+                    <MapPin className="h-3.5 w-3.5 text-primary" />
                     PICK-UP POINT
                   </label>
 
@@ -400,7 +400,7 @@ export default function FleetDetailPage({ params }) {
                       )
                     }
                     placeholder="Enter pickup point"
-                    className="w-full bg-transparent text-xs font-semibold text-black placeholder:text-black/50 outline-none sm:text-sm"
+                    className="w-full bg-transparent text-xs font-semibold text-text-primary placeholder:text-text-muted outline-none sm:text-sm"
                   />
                 </div>
 
@@ -476,40 +476,40 @@ export default function FleetDetailPage({ params }) {
                 </div>
               </div>
 
-              <div className="space-y-3.5 border-t border-black/10 pt-4">
+              <div className="space-y-3.5 border-t border-border pt-4">
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl border border-black/10 bg-white p-3.5">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-black/50">
+                  <div className="rounded-xl border border-border bg-surface-secondary p-3.5">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-text-muted">
                       EST. ROUND TRIP
                     </span>
 
                     <div className="mt-1">
-                      <span className="text-xl font-black text-black">
+                      <span className="text-xl font-black text-text-primary">
                         ≈ {distanceResult?.totalKm || 0}
                       </span>
 
-                      <span className="ml-1 text-[11px] font-bold uppercase text-black/60">
+                      <span className="ml-1 text-[11px] font-bold uppercase text-text-muted">
                         KM
                       </span>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-[#123999]/20 bg-[#FFC003]/15 p-3.5">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-[#123999]">
+                  <div className="rounded-xl border border-primary/20 bg-primary-subtle p-3.5">
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-primary">
                       TOTAL ESTIMATED FARE
                     </span>
 
-                    <div className="mt-1 text-xl font-black text-black">
+                    <div className="mt-1 text-xl font-black text-text-primary">
                       {pricingResult?.formattedTotalPrice || "₹0"}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 rounded-xl bg-white p-3 text-[11px] font-medium leading-5 text-black/80">
-                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#123999]" />
+                <div className="flex items-start gap-2 rounded-xl bg-surface-secondary p-3 text-[11px] font-medium leading-5 text-text-secondary">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
 
                   <span>
-                    <span className="font-bold text-black">
+                    <span className="font-bold text-text-primary">
                       Trip Route:
                     </span>{" "}
                     {distanceResult?.routeSummaryText ||
@@ -530,7 +530,7 @@ export default function FleetDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={openFleetModal}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#123999]/20 bg-white px-3 py-3 text-xs font-bold text-black transition-all hover:border-[#123999]/40 hover:bg-[#FFC003]/20 hover:text-[#123999] active:scale-[0.98]"
+                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-xs font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
                 >
                   <ImageIcon className="h-4 w-4" />
                   View Bus Images
@@ -539,7 +539,7 @@ export default function FleetDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={handleConfirmBooking}
-                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#FFC003] px-3 py-3 text-xs font-bold text-black shadow-md shadow-[#123999]/15 transition-all hover:bg-[#123999] active:scale-[0.98]"
+                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
                 >
                   Confirm Booking
 
@@ -549,7 +549,7 @@ export default function FleetDetailPage({ params }) {
                 <button
                   type="button"
                   onClick={() => setShowQuote(true)}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#123999] px-3 py-3 text-xs font-bold text-white transition-all hover:bg-[#0D2B73] active:scale-[0.98]"
+                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
                 >
                   <PhoneCall className="h-4 w-4" />
                   Request a Quote
@@ -689,7 +689,7 @@ function FleetImagesModal({ fleet, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-black/60 px-3 py-3 backdrop-blur-sm sm:px-5 sm:py-5"
+      className="fixed inset-0 z-9999 flex h-dvh w-screen items-center justify-center overflow-hidden bg-black/60 px-3 py-3 backdrop-blur-sm sm:px-5 sm:py-5"
       style={{
         overscrollBehavior: "none",
         touchAction: "none",
@@ -719,21 +719,21 @@ function FleetImagesModal({ fleet, onClose }) {
           event.stopPropagation();
         }}
       >
-        <div className="shrink-0 border-b border-[#123999]/20 px-5 py-4 sm:px-7 sm:py-5">
+        <div className="shrink-0 border-b border-border px-5 py-4 sm:px-7 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
                 AVAILABLE FOR YOUR GROUP
               </p>
 
               <h3
                 id="fleet-images-title"
-                className="mt-1 text-2xl font-black tracking-tight text-black sm:text-3xl"
+                className="mt-1 text-2xl font-black tracking-tight text-text-primary sm:text-3xl"
               >
                 Bus Images
               </h3>
 
-              <p className="mt-1.5 text-xs text-black/60 sm:text-sm">
+              <p className="mt-1.5 text-xs text-text-muted sm:text-sm">
                 Explore the available images of your selected coach.
               </p>
             </div>
@@ -742,7 +742,7 @@ function FleetImagesModal({ fleet, onClose }) {
               type="button"
               onClick={onClose}
               aria-label="Close bus images"
-              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-black/70 transition-all hover:bg-[#FFC003]/20 hover:text-black"
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-surface text-text-secondary transition-all hover:bg-primary-subtle hover:text-primary"
             >
               <X className="h-5 w-5" />
             </button>
@@ -755,7 +755,7 @@ function FleetImagesModal({ fleet, onClose }) {
               {images.map((image, index) => (
                 <div
                   key={`${image}-${index}`}
-                  className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[#123999]/20 bg-white"
+                  className="relative aspect-16/10 w-full overflow-hidden rounded-2xl border border-border bg-surface"
                 >
                   <SafeFleetImage
                     src={image}
@@ -768,10 +768,10 @@ function FleetImagesModal({ fleet, onClose }) {
               ))}
             </div>
           ) : (
-            <div className="flex h-full min-h-[220px] items-center justify-center rounded-2xl bg-white">
+            <div className="flex h-full min-h-55 items-center justify-center rounded-2xl bg-surface">
               <div className="text-center">
-                <ImageIcon className="mx-auto h-8 w-8 text-black/40" />
-                <p className="mt-3 text-sm font-bold text-black">
+                <ImageIcon className="mx-auto h-8 w-8 text-text-muted" />
+                <p className="mt-3 text-sm font-bold text-text-primary">
                   No bus images available
                 </p>
               </div>
@@ -779,11 +779,11 @@ function FleetImagesModal({ fleet, onClose }) {
           )}
         </div>
 
-        <div className="shrink-0 border-t border-[#123999]/20 px-5 py-4 sm:px-6">
+        <div className="shrink-0 border-t border-border px-5 py-4 sm:px-6">
           <button
             type="button"
             onClick={onClose}
-            className="w-full cursor-pointer rounded-xl bg-[#123999] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#0D2B73]"
+            className="w-full cursor-pointer rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover"
           >
             Close
           </button>
@@ -797,7 +797,7 @@ function FleetHeroImage({ bus }) {
   const image = getFleetImages(bus)[0];
 
   return (
-    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-[#123999]/20 bg-white shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
       <SafeFleetImage
         src={image}
         alt={bus?.name || "Bus Mantra coach"}
@@ -811,12 +811,12 @@ function FleetHeroImage({ bus }) {
 
 function Specification({ label, value }) {
   return (
-    <div className="rounded-xl border border-[#123999]/20 bg-white p-3">
-      <span className="block text-[9px] font-bold uppercase tracking-wider text-black/50">
+    <div className="rounded-xl border border-border bg-surface-secondary p-3">
+      <span className="block text-[9px] font-bold uppercase tracking-wider text-text-muted">
         {label}
       </span>
 
-      <span className="mt-1 block text-xs font-bold text-black">
+      <span className="mt-1 block text-xs font-bold text-text-primary">
         {value || "Included"}
       </span>
     </div>
@@ -830,7 +830,7 @@ function Assurance({
 }) {
   return (
     <div className="flex items-start gap-2.5">
-      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[#123999]" />
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
 
       <div>
         <strong className="mb-0.5 block font-bold text-white">
@@ -849,7 +849,7 @@ function MiniAssurance({
 }) {
   return (
     <div className="flex items-center gap-2.5 text-xs font-semibold text-white/80">
-      <Icon className="h-4 w-4 text-[#123999]" />
+      <Icon className="h-4 w-4 text-primary" />
       {title}
     </div>
   );
@@ -864,12 +864,12 @@ function FormField({
   onChange,
 }) {
   return (
-    <div className="rounded-xl border border-[#123999]/30 bg-white px-4 py-3 transition-colors focus-within:border-[#123999] focus-within:ring-2 focus-within:ring-[#123999]/30">
+    <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30">
       <label
         htmlFor={id}
-        className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-black/50"
+        className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-text-muted"
       >
-        <Icon className="h-3.5 w-3.5 text-[#123999]" />
+        <Icon className="h-3.5 w-3.5 text-primary" />
         {label}
       </label>
 
@@ -879,7 +879,7 @@ function FormField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent text-xs font-semibold text-black placeholder:text-black/50 outline-none sm:text-sm"
+        className="w-full bg-transparent text-xs font-semibold text-text-primary placeholder:text-text-muted outline-none sm:text-sm"
       />
     </div>
   );
@@ -887,8 +887,8 @@ function FormField({
 
 function Benefit({ text }) {
   return (
-    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-black/70 sm:text-[11px]">
-      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#123999]" />
+    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-text-secondary sm:text-[11px]">
+      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
       <span>{text}</span>
     </div>
   );
@@ -909,60 +909,60 @@ function QuoteModal({
 
   return (
     <div
-      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-110 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl sm:rounded-3xl sm:p-8"
+        className="relative w-full max-w-md rounded-2xl bg-surface p-6 shadow-2xl sm:rounded-3xl sm:p-8 border border-border"
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-5 top-5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-black/70 hover:bg-[#FFC003]/20"
+          className="absolute right-5 top-5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-surface text-text-secondary hover:bg-primary-subtle hover:text-primary"
         >
           <X className="h-4 w-4" />
         </button>
 
-        <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
           REQUEST A QUOTE
         </span>
 
-        <h3 className="pr-10 text-2xl font-black text-black">
+        <h3 className="pr-10 text-2xl font-black text-text-primary">
           Get a custom quote
         </h3>
 
-        <p className="mt-2 text-sm leading-6 text-black/60">
+        <p className="mt-2 text-sm leading-6 text-text-muted">
           Our trip coordinator will review your
           route and contact you regarding the{" "}
           {bus.name}.
         </p>
 
         <div className="mt-6 space-y-3">
-          <div className="rounded-xl bg-white p-4">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-black/50">
+          <div className="rounded-xl bg-surface-secondary p-4 border border-border">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
               CONTACT
             </span>
 
-            <p className="mt-1 text-sm font-bold text-black">
+            <p className="mt-1 text-sm font-bold text-text-primary">
               {bookingData.fullName || "Your Name"}
             </p>
 
-            <p className="mt-1 text-xs text-black/60">
+            <p className="mt-1 text-xs text-text-muted">
               {bookingData.mobile || "Mobile number"}
             </p>
           </div>
 
-          <div className="rounded-xl bg-white p-4">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-black/50">
+          <div className="rounded-xl bg-surface-secondary p-4 border border-border">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
               ROUTE
             </span>
 
-            <p className="mt-1 text-sm font-bold text-black">
+            <p className="mt-1 text-sm font-bold text-text-primary">
               {bookingData.pickupPoint || "Pickup point"}
             </p>
 
-            <p className="mt-1 text-xs text-black/60">
+            <p className="mt-1 text-xs text-text-muted">
               {Array.isArray(bookingData.destination)
                 ? bookingData.destination.join(", ")
                 : bookingData.destination || "Destination"}
@@ -974,14 +974,14 @@ function QuoteModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 cursor-pointer rounded-xl bg-white py-3 text-sm font-bold text-black hover:bg-[#FFC003]/20"
+            className="flex-1 cursor-pointer rounded-xl bg-surface-muted py-3 text-sm font-bold text-text-primary hover:bg-surface-secondary"
           >
             Close
           </button>
 
           <a
             href="tel:+919876543210"
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#FFC003] py-3 text-sm font-bold text-black hover:bg-[#123999]"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-primary-foreground hover:bg-primary-hover"
           >
             <PhoneCall className="h-4 w-4" />
             Call Us
@@ -1007,52 +1007,52 @@ function BookingConfirmation({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl sm:p-8">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+    <div className="fixed inset-0 z-110 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-3xl bg-surface p-6 text-center shadow-2xl sm:p-8 border border-border">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary-subtle text-primary">
           <CheckCircle2 className="h-8 w-8" />
         </div>
 
-        <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-[#123999]">
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-primary">
           RESERVATION REQUEST RECEIVED
         </span>
 
-        <h3 className="text-xl font-black text-black sm:text-2xl">
+        <h3 className="text-xl font-black text-text-primary sm:text-2xl">
           Your Bus Is Reserved!
         </h3>
 
-        <p className="mt-2 text-sm leading-6 text-black/70">
+        <p className="mt-2 text-sm leading-6 text-text-muted">
           Our fleet operations team will contact
           you to confirm your journey.
         </p>
 
-        <div className="mt-5 space-y-2 rounded-xl bg-white p-4 text-left text-xs">
+        <div className="mt-5 space-y-2 rounded-xl bg-surface-secondary p-4 text-left text-xs border border-border">
           <div className="flex justify-between gap-4">
-            <span className="text-black/60">
+            <span className="text-text-muted">
               Coach
             </span>
 
-            <strong className="text-right text-black">
+            <strong className="text-right text-text-primary">
               {bus.name}
             </strong>
           </div>
 
           <div className="flex justify-between gap-4">
-            <span className="text-black/60">
+            <span className="text-text-muted">
               Pickup
             </span>
 
-            <strong className="text-right text-black">
+            <strong className="text-right text-text-primary">
               {bookingData.pickupPoint || "Not specified"}
             </strong>
           </div>
 
           <div className="flex justify-between gap-4">
-            <span className="text-black/60">
+            <span className="text-text-muted">
               Estimated Fare
             </span>
 
-            <strong className="text-right text-[#123999]">
+            <strong className="text-right text-primary">
               {pricingResult?.formattedTotalPrice || "₹0"}
             </strong>
           </div>
@@ -1061,7 +1061,7 @@ function BookingConfirmation({
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 w-full cursor-pointer rounded-xl bg-[#123999] py-3.5 text-sm font-bold text-white hover:bg-[#0D2B73]"
+          className="mt-6 w-full cursor-pointer rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground hover:bg-primary-hover"
         >
           Close
         </button>

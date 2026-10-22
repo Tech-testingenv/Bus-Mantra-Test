@@ -286,8 +286,8 @@ function Reveal({ children, delay = 0, className = "" }) {
 function SectionLabel({ children }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="h-[2px] w-7 rounded-full bg-[#F47716]" />
-      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#19439B]">
+      <span className="h-0.5 w-7 rounded-full bg-primary" />
+      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
         {children}
       </span>
     </div>
@@ -301,25 +301,25 @@ function PolicySection({ section, index }) {
     <Reveal delay={Math.min(index * 45, 180)}>
       <section
         id={section.id}
-        className="privacy-policy-card scroll-mt-28 overflow-hidden rounded-2xl border border-[#E2E6ED] bg-white"
+        className="privacy-policy-card scroll-mt-28 overflow-hidden rounded-2xl border border-border bg-surface"
       >
         <div className="grid md:grid-cols-[92px_minmax(0,1fr)]">
-          <div className="flex items-center justify-between border-b border-[#E8EBF0] bg-[#F7F8FA] px-5 py-4 md:flex-col md:items-start md:justify-start md:border-b-0 md:border-r md:px-6 md:py-7">
-            <span className="font-mono text-sm font-medium tracking-wide text-[#19439B]">
+          <div className="flex items-center justify-between border-b border-border bg-surface-secondary px-5 py-4 md:flex-col md:items-start md:justify-start md:border-b-0 md:border-r md:px-6 md:py-7">
+            <span className="font-mono text-sm font-medium tracking-wide text-primary">
               {section.number}
             </span>
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#DFE5F0] bg-white text-[#19439B]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-primary">
               <Icon size={19} strokeWidth={1.65} />
             </div>
           </div>
 
           <div className="min-w-0 p-5 sm:p-7 lg:p-9">
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#F47716]">
+            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary">
               {section.label}
             </p>
 
-            <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-[#1B2433] sm:text-2xl">
+            <h2 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-text-primary sm:text-2xl">
               {section.title}
             </h2>
 
@@ -327,7 +327,7 @@ function PolicySection({ section, index }) {
               {section.paragraphs.map((paragraph, paragraphIndex) => (
                 <p
                   key={paragraphIndex}
-                  className="max-w-3xl text-sm leading-7 text-[#626C7B] sm:leading-[1.95]"
+                  className="max-w-3xl text-sm leading-7 text-text-secondary sm:leading-[1.95]"
                 >
                   {paragraph}
                 </p>
@@ -335,17 +335,17 @@ function PolicySection({ section, index }) {
             </div>
 
             {section.bullets && (
-              <div className="mt-6 divide-y divide-[#E8EBF0] border-y border-[#E8EBF0]">
+              <div className="mt-6 divide-y divide-border border-y border-border">
                 {section.bullets.map((bullet) => (
                   <div
                     key={bullet.title}
                     className="grid gap-2 py-4 sm:grid-cols-[minmax(150px,0.65fr)_1.35fr] sm:gap-6"
                   >
-                    <h3 className="text-sm font-semibold leading-6 text-[#263145]">
+                    <h3 className="text-sm font-semibold leading-6 text-text-primary">
                       {bullet.title}
                     </h3>
 
-                    <p className="text-sm leading-7 text-[#6D7786]">
+                    <p className="text-sm leading-7 text-text-secondary">
                       {bullet.description}
                     </p>
                   </div>
@@ -354,8 +354,8 @@ function PolicySection({ section, index }) {
             )}
 
             {section.footer && (
-              <div className="mt-5 rounded-xl border border-[#F1DDA9] bg-[#FFF9EC] p-4">
-                <p className="text-sm leading-7 text-[#705C32]">
+              <div className="mt-5 rounded-xl border border-primary/20 bg-primary-subtle p-4">
+                <p className="text-sm leading-7 text-text-primary">
                   {section.footer}
                 </p>
               </div>
@@ -448,7 +448,7 @@ export default function PrivacyPolicyPage() {
   }
 
   return (
-    <main className="privacy-page min-h-screen overflow-clip bg-[#F4F6F9] text-[#202735]">
+    <main className="privacy-page min-h-screen overflow-clip bg-surface-secondary text-text-primary">
       <style jsx global>{`
         .privacy-reveal {
           opacity: 0;
@@ -469,7 +469,7 @@ export default function PrivacyPolicyPage() {
         }
 
         .privacy-policy-card {
-          box-shadow: 0 2px 5px rgb(20 37 65 / 2%);
+          box-shadow: 0 2px 5px rgb(0 0 0 / 3%);
           animation: policyCardEnter 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
@@ -513,13 +513,13 @@ export default function PrivacyPolicyPage() {
       `}</style>
 
       {/* Top navigation */}
-      <header className="relative z-30 border-b border-[#E1E5EC] bg-white">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 sm:px-8 lg:px-14">
+      <header className="relative z-30 border-b border-border bg-surface">
+        <div className="mx-auto flex max-w-360 items-center justify-between px-5 py-4 sm:px-8 lg:px-14">
           <Link
             href="/"
-            className="inline-flex items-center gap-3 text-sm font-semibold text-[#19439B]"
+            className="inline-flex items-center gap-3 text-sm font-semibold text-text-primary hover:text-primary transition-colors"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#19439B] text-white">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
               <ArrowLeft size={17} />
             </span>
 
@@ -527,8 +527,8 @@ export default function PrivacyPolicyPage() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <ShieldCheck size={16} className="text-[#F47716]" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#687386] sm:text-xs">
+            <ShieldCheck size={16} className="text-primary" />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-text-muted sm:text-xs">
               Privacy & Security
             </span>
           </div>
@@ -536,55 +536,55 @@ export default function PrivacyPolicyPage() {
       </header>
 
       {/* Page introduction */}
-      <section className="relative overflow-hidden border-b border-[#E1E5EC] bg-white">
-        <div className="pointer-events-none absolute right-[-70px] top-[-130px] h-[340px] w-[340px] rounded-full border border-[#19439B]/[0.07] sm:right-[3%] sm:top-[-190px] sm:h-[490px] sm:w-[490px]" />
+      <section className="relative overflow-hidden border-b border-border bg-surface">
+        <div className="pointer-events-none absolute -right-17.5 -top-32.5 h-85 w-85 rounded-full border border-primary/10 sm:right-[3%] sm:-top-47.5 sm:h-122.5 sm:w-122.5" />
 
-        <div className="pointer-events-none absolute right-[5%] top-[-70px] h-[260px] w-[260px] rounded-full border border-[#19439B]/[0.07] sm:right-[10%] sm:top-[-110px] sm:h-[330px] sm:w-[330px]" />
+        <div className="pointer-events-none absolute right-[5%] -top-17.5 h-65 w-65 rounded-full border border-primary/10 sm:right-[10%] sm:-top-27.5 sm:h-82.5 sm:w-82.5" />
 
-        <div className="relative mx-auto grid max-w-[1440px] gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1fr_300px] lg:items-end lg:px-14 lg:py-[76px]">
+        <div className="relative mx-auto grid max-w-360 gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1fr_300px] lg:items-end lg:px-14 lg:py-19">
           <Reveal>
             <SectionLabel>Information & transparency</SectionLabel>
 
-            <h1 className="mt-6 max-w-4xl text-[40px] font-semibold leading-[1.04] tracking-[-0.06em] text-[#152544] sm:text-5xl lg:text-[68px]">
+            <h1 className="mt-6 max-w-4xl text-[40px] font-semibold leading-[1.04] tracking-[-0.06em] text-text-primary sm:text-5xl lg:text-[68px]">
               Your privacy.
               <br />
-              <span className="text-[#19439B]">
+              <span className="text-primary">
                 Our responsibility.
               </span>
             </h1>
 
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#677284] sm:text-base sm:leading-8">
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-text-secondary sm:text-base sm:leading-8">
               Clear information about how personal information may be
               collected, used, and protected when you interact with
               Bus Mantra.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-[#7F8998]">
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-text-muted">
               <span className="inline-flex items-center gap-2">
-                <FileText size={15} className="text-[#19439B]" />
+                <FileText size={15} className="text-primary" />
                 Privacy policy
               </span>
 
-              <span className="h-1 w-1 rounded-full bg-[#F47716]" />
+              <span className="h-1 w-1 rounded-full bg-primary" />
 
               <span>Last updated: October 13, 2026</span>
             </div>
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="relative overflow-hidden rounded-2xl bg-[#142E60] p-6 text-white sm:p-7">
-              <div className="absolute right-[-24px] top-[-24px] h-28 w-28 rounded-full border border-white/10" />
-              <div className="absolute right-[-8px] top-[-8px] h-16 w-16 rounded-full border border-white/10" />
+            <div className="relative overflow-hidden rounded-2xl bg-surface-inverse p-6 text-text-inverse sm:p-7">
+              <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full border border-white/10" />
+              <div className="absolute -right-2 -top-2 h-16 w-16 rounded-full border border-white/10" />
 
-              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFC20E] text-[#142E60]">
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <LockKeyhole size={21} />
               </div>
 
-              <p className="relative mt-6 text-[10px] font-bold uppercase tracking-[0.18em] text-[#FFC20E]">
+              <p className="relative mt-6 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                 Your information
               </p>
 
-              <p className="relative mt-3 text-xl font-semibold leading-snug tracking-[-0.025em]">
+              <p className="relative mt-3 text-xl font-semibold leading-snug tracking-tight">
                 Transparency starts with understanding.
               </p>
 
@@ -593,19 +593,19 @@ export default function PrivacyPolicyPage() {
                   Explore the policy
                 </span>
 
-                <ArrowRight size={19} className="text-[#FFC20E]" />
+                <ArrowRight size={19} className="text-primary" />
               </div>
             </div>
           </Reveal>
         </div>
 
-        <div className="h-[3px] w-full bg-[#19439B]">
-          <div className="h-full w-[24%] rounded-r-full bg-[#FFC20E]" />
+        <div className="h-0.75 w-full bg-border">
+          <div className="h-full w-[24%] rounded-r-full bg-primary" />
         </div>
       </section>
 
       {/* Mobile section navigator */}
-      <div className="sticky top-0 z-40 border-b border-[#DDE3EC] bg-white/95 shadow-sm backdrop-blur-md lg:hidden">
+      <div className="sticky top-0 z-40 border-b border-border bg-surface/95 shadow-sm backdrop-blur-md lg:hidden">
         <button
           type="button"
           onClick={() => setMobileMenuOpen((open) => !open)}
@@ -614,16 +614,16 @@ export default function PrivacyPolicyPage() {
           className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
         >
           <span className="flex min-w-0 items-center gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EEF2F9] text-sm font-semibold text-[#19439B]">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-semibold text-primary">
               {sections[activeIndex].number}
             </span>
 
             <span className="min-w-0">
-              <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-[#8A93A1]">
+              <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-text-muted">
                 Currently viewing
               </span>
 
-              <span className="mt-1 block truncate text-sm font-semibold text-[#19439B]">
+              <span className="mt-1 block truncate text-sm font-semibold text-text-primary">
                 {sections[activeIndex].title}
               </span>
             </span>
@@ -631,7 +631,7 @@ export default function PrivacyPolicyPage() {
 
           <ChevronRight
             size={18}
-            className={`shrink-0 text-[#19439B] ${mobileMenuOpen ? "rotate-90" : "rotate-0"
+            className={`shrink-0 text-text-muted transition-transform ${mobileMenuOpen ? "rotate-90" : "rotate-0"
               }`}
           />
         </button>
@@ -639,7 +639,7 @@ export default function PrivacyPolicyPage() {
         {mobileMenuOpen && (
           <nav
             id="mobile-policy-navigation"
-            className="max-h-[55vh] overflow-y-auto border-t border-[#E6EAF0] bg-white p-3"
+            className="max-h-[55vh] overflow-y-auto border-t border-border bg-surface p-3"
           >
             {sections.map((section) => {
               const active = activeSection === section.id;
@@ -651,12 +651,12 @@ export default function PrivacyPolicyPage() {
                   onClick={(event) =>
                     navigateToSection(event, section.id)
                   }
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm ${active
-                    ? "bg-[#EEF2F9] font-semibold text-[#19439B]"
-                    : "text-[#626C7B]"
+                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors ${active
+                    ? "bg-primary/10 font-semibold text-primary"
+                    : "text-text-secondary hover:text-text-primary hover:bg-surface-secondary"
                     }`}
                 >
-                  <span className="font-mono text-[10px] text-[#F47716]">
+                  <span className="font-mono text-[10px] text-primary">
                     {section.number}
                   </span>
 
@@ -673,13 +673,13 @@ export default function PrivacyPolicyPage() {
       </div>
 
       {/* Main layout */}
-      <div className="mx-auto grid max-w-[1440px] items-start gap-7 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[270px_minmax(0,1fr)] lg:gap-10 lg:px-14 lg:py-14">
+      <div className="mx-auto grid max-w-360 items-start gap-7 px-5 py-8 sm:px-8 sm:py-12 lg:grid-cols-[270px_minmax(0,1fr)] lg:gap-10 lg:px-14 lg:py-14">
         {/* Persistent desktop sidebar */}
         <aside className="hidden self-stretch lg:block">
           <div className="sticky top-24">
-            <div className="overflow-hidden rounded-2xl border border-[#E1E5EC] bg-white">
-              <div className="border-b border-[#E7EAF0] px-5 py-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#19439B]">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface">
+              <div className="border-b border-border px-5 py-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-text-primary">
                   In this document
                 </p>
               </div>
@@ -697,18 +697,18 @@ export default function PrivacyPolicyPage() {
                       }
                       aria-current={active ? "location" : undefined}
                       className={`privacy-toc-link group relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-3 text-left transition-all duration-300 ease-out hover:translate-x-1 ${active
-                        ? "bg-[#EEF2F9]"
-                        : "bg-white hover:bg-[#F7F8FA]"
+                        ? "bg-primary/10"
+                        : "bg-surface hover:bg-surface-secondary"
                         }`}
                     >
                       {active && (
-                        <span className="absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-[#F47716]" />
+                        <span className="absolute bottom-2 left-0 top-2 w-0.75 rounded-r-full bg-primary" />
                       )}
 
                       <span
                         className={`w-5 shrink-0 font-mono text-[10px] ${active
-                          ? "text-[#19439B]"
-                          : "text-[#A0A8B5]"
+                          ? "text-primary"
+                          : "text-text-muted"
                           }`}
                       >
                         {section.number}
@@ -716,8 +716,8 @@ export default function PrivacyPolicyPage() {
 
                       <span
                         className={`min-w-0 flex-1 text-xs ${active
-                          ? "font-semibold text-[#19439B]"
-                          : "font-medium text-[#626C7B]"
+                          ? "font-semibold text-primary"
+                          : "font-medium text-text-secondary"
                           }`}
                       >
                         {section.title}
@@ -726,7 +726,7 @@ export default function PrivacyPolicyPage() {
                       {active && (
                         <ChevronRight
                           size={14}
-                          className="shrink-0 text-[#F47716]"
+                          className="shrink-0 text-primary"
                         />
                       )}
                     </a>
@@ -734,23 +734,23 @@ export default function PrivacyPolicyPage() {
                 })}
               </nav>
 
-              <div className="border-t border-[#E7EAF0] p-4">
-                <div className="rounded-xl bg-[#FFF8E9] p-4">
+              <div className="border-t border-border p-4">
+                <div className="rounded-xl bg-primary-subtle p-4">
                   <div className="flex items-center gap-2">
-                    <Scale size={16} className="text-[#19439B]" />
+                    <Scale size={16} className="text-primary" />
 
-                    <span className="text-xs font-semibold text-[#24334D]">
+                    <span className="text-xs font-semibold text-text-primary">
                       Need clarification?
                     </span>
                   </div>
 
-                  <p className="mt-2 text-xs leading-6 text-[#776A50]">
+                  <p className="mt-2 text-xs leading-6 text-text-secondary">
                     Contact us if you have questions about this policy.
                   </p>
 
                   <Link
                     href="/contact"
-                    className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-[#19439B]"
+                    className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-primary hover:underline"
                   >
                     Get in touch
                     <ArrowRight size={14} />
@@ -759,7 +759,7 @@ export default function PrivacyPolicyPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between px-2 text-[10px] text-[#8B94A2]">
+            <div className="mt-4 flex items-center justify-between px-2 text-[10px] text-text-muted">
               <span>READING PROGRESS</span>
 
               <span className="font-mono">
@@ -768,9 +768,9 @@ export default function PrivacyPolicyPage() {
               </span>
             </div>
 
-            <div className="mt-2 h-[3px] overflow-hidden rounded-full bg-[#E2E6ED]">
+            <div className="mt-2 h-0.75 overflow-hidden rounded-full bg-border">
               <div
-                className="h-full rounded-full bg-[#19439B]"
+                className="h-full rounded-full bg-primary transition-all duration-300"
                 style={{
                   width: `${((activeIndex + 1) / sections.length) * 100}%`,
                 }}
@@ -782,18 +782,18 @@ export default function PrivacyPolicyPage() {
         {/* Legal document */}
         <div className="min-w-0 space-y-5">
           <Reveal>
-            <div className="mb-7 flex items-center justify-between gap-4 border-b border-[#DDE2EA] pb-5">
+            <div className="mb-7 flex items-center justify-between gap-4 border-b border-border pb-5">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#F47716]">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                   The details
                 </p>
 
-                <h2 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-[#1C2B46] sm:text-2xl">
+                <h2 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-text-primary sm:text-2xl">
                   Privacy policy details
                 </h2>
               </div>
 
-              <span className="hidden h-11 w-11 items-center justify-center rounded-xl border border-[#E0E5ED] bg-white text-[#19439B] sm:flex">
+              <span className="hidden h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface text-primary sm:flex">
                 <FileText size={19} />
               </span>
             </div>
@@ -811,20 +811,20 @@ export default function PrivacyPolicyPage() {
           <Reveal delay={100}>
             <section
               id="contact"
-              className="relative mt-8 scroll-mt-28 overflow-hidden rounded-2xl bg-[#142E60] p-6 text-white sm:p-9 lg:p-11"
+              className="relative mt-8 scroll-mt-28 overflow-hidden rounded-2xl bg-surface-inverse p-6 text-text-inverse sm:p-9 lg:p-11"
             >
-              <div className="pointer-events-none absolute right-[-45px] top-[-65px] h-52 w-52 rounded-full border border-white/10" />
+              <div className="pointer-events-none absolute -right-11.25 -top-16.25 h-52 w-52 rounded-full border border-white/10" />
 
-              <div className="pointer-events-none absolute right-[-12px] top-[-30px] h-36 w-36 rounded-full border border-white/10" />
+              <div className="pointer-events-none absolute -right-3 -top-7.5 h-36 w-36 rounded-full border border-white/10" />
 
               <div className="relative grid gap-7 sm:grid-cols-[1fr_auto] sm:items-center">
                 <div>
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFC20E] text-[#142E60]">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                       <Mail size={19} />
                     </span>
 
-                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#FFC20E]">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                       We are here to help
                     </span>
                   </div>
@@ -841,7 +841,7 @@ export default function PrivacyPolicyPage() {
 
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-12 items-center justify-center gap-4 rounded-xl bg-[#FFC20E] px-5 text-sm font-semibold text-[#142E60]"
+                  className="inline-flex min-h-12 items-center justify-center gap-4 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover transition-colors"
                 >
                   Contact Us
                   <ArrowUpRight size={17} />
@@ -850,14 +850,14 @@ export default function PrivacyPolicyPage() {
             </section>
           </Reveal>
 
-          <div className="flex flex-col gap-3 border-t border-[#DDE2EA] py-7 text-xs text-[#8791A0] sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 border-t border-border py-7 text-xs text-text-muted sm:flex-row sm:items-center sm:justify-between">
             <p>
               Please check this page periodically for policy updates.
             </p>
 
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-semibold text-[#19439B]"
+              className="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
             >
               Back to Bus Mantra
               <ArrowRight size={14} />
@@ -867,23 +867,23 @@ export default function PrivacyPolicyPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-[#E1E5EC] bg-white">
-        <div className="mx-auto flex max-w-[1440px] flex-col gap-3 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-14">
-          <p className="text-xs text-[#8791A0]">
+      <footer className="border-t border-border bg-surface">
+        <div className="mx-auto flex max-w-360 flex-col gap-3 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-14">
+          <p className="text-xs text-text-muted">
             © {new Date().getFullYear()} Bus Mantra. All rights reserved.
           </p>
 
           <div className="flex items-center gap-5">
             <Link
               href="/privacy-policy"
-              className="text-xs font-semibold text-[#19439B]"
+              className="text-xs font-semibold text-primary"
             >
               Privacy Policy
             </Link>
 
             <Link
               href="/contact"
-              className="text-xs font-medium text-[#6F7988]"
+              className="text-xs font-medium text-text-secondary hover:text-text-primary transition-colors"
             >
               Contact
             </Link>

@@ -113,20 +113,20 @@ export default function BusMantraServices({
     >
       {/* SECTION HEADER */}
 
-      <div className="mb-10 grid grid-cols-1 items-end gap-4 sm:mb-14 sm:gap-6 lg:grid-cols-12 lg:gap-12">
+      <div className="mb-8 grid grid-cols-1 items-end gap-4 sm:mb-12 sm:gap-6 lg:grid-cols-12 lg:gap-8">
         <div className="flex flex-col items-start text-left lg:col-span-7">
-          <span className="mb-2.5 select-none text-[11px] font-bold uppercase tracking-[0.16em] text-brand-blue sm:mb-3 sm:text-xs">
+          <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-3 sm:text-xs">
             {sectionData?.eyebrow || "SERVICES"}
           </span>
 
-          <h2 className="text-3xl font-extrabold leading-[1.14] tracking-tight text-neutral-900 sm:text-4xl lg:text-[42px]">
+          <h2 className="text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
             {sectionData?.heading ||
               "Travel solutions for every group."}
           </h2>
         </div>
 
         <div className="flex flex-col justify-end text-left lg:col-span-5 lg:pb-1">
-          <p className="max-w-lg text-sm font-normal leading-relaxed text-neutral-500 sm:text-base">
+          <p className="max-w-lg text-sm font-normal leading-relaxed text-text-secondary sm:text-base">
             {sectionData?.description ||
               "From business travel to airport transfers, we make group transportation simple, comfortable and reliable."}
           </p>
@@ -160,63 +160,58 @@ export default function BusMantraServices({
                 overflow-hidden
                 rounded-[20px]
                 border
-                border-neutral-200
+                border-border
                 bg-white
                 p-7
-                shadow-[0_2px_10px_rgba(18,57,153,0.025)]
+                shadow-xs
                 transition-all
                 duration-300
                 hover:-translate-y-1
-                hover:border-brand-blue/30
-                hover:shadow-[0_12px_32px_rgba(18,57,153,0.09)]
+                hover:border-primary/40
+                hover:shadow-md
                 focus:outline-none
                 focus-visible:ring-2
-                focus-visible:ring-brand-blue
+                focus-visible:ring-focus-ring
                 sm:p-8
               "
             >
-              {/* Yellow top accent */}
-
-              <div className="absolute left-0 top-0 h-1 w-12 bg-brand-yellow transition-all duration-300 group-hover:w-full" />
+              {/* Top accent */}
+              <div className="absolute left-0 top-0 h-1 w-12 bg-primary transition-all duration-300 group-hover:w-full" />
 
               <div>
                 {/* Number and Icon */}
-
                 <div className="mb-6 flex items-center justify-between">
-                  <div className="inline-flex select-none items-center justify-center rounded-md border border-brand-blue/10 bg-[#eef3ff] px-2.5 py-1 text-xs font-bold tracking-wide text-brand-blue">
+                  <div className="inline-flex select-none items-center justify-center rounded-md border border-primary/20 bg-primary-subtle px-2.5 py-1 text-xs font-bold tracking-wide text-primary">
                     {item.number}
                   </div>
 
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-brand-blue/10 bg-[#eef3ff] text-brand-blue transition-all duration-300 group-hover:border-brand-blue group-hover:bg-brand-blue group-hover:text-white">
-                    <IconComponent className="h-5 w-5 stroke-[2]" />
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/20 bg-primary-subtle text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                    <IconComponent className="h-5 w-5 stroke-2" />
                   </div>
                 </div>
 
                 {/* Service Title */}
-
-                <h3 className="mb-2.5 text-xl font-bold tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-brand-blue">
+                <h3 className="mb-2.5 text-xl font-bold tracking-tight text-text-primary transition-colors duration-300 group-hover:text-primary">
                   {item.title}
                 </h3>
 
                 {/* Description */}
-
-                <p className="mb-8 text-sm font-normal leading-relaxed text-neutral-500">
+                <p className="mb-8 text-sm font-normal leading-relaxed text-text-secondary">
                   {item.description}
                 </p>
               </div>
 
               {/* Bottom Action */}
+              <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
+                <div className="flex items-center gap-2.5 text-xs font-medium text-text-secondary sm:text-[13px]">
+                  <IconComponent className="h-4 w-4 shrink-0 stroke-[1.8] text-primary" />
 
-              <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-4">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-neutral-600 sm:text-[13px]">
-                  <IconComponent className="h-4 w-4 shrink-0 stroke-[1.8] text-brand-blue" />
-
-                  <span className="transition-colors duration-300 group-hover:text-brand-blue">
+                  <span className="transition-colors duration-300 group-hover:text-primary">
                     {item.bottomLabel || "Explore Service"}
                   </span>
                 </div>
 
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-yellow text-brand-blue transition-all duration-300 group-hover:bg-brand-blue group-hover:text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-subtle text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </div>
               </div>
@@ -265,55 +260,50 @@ export default function BusMantraServices({
                   overflow-hidden
                   rounded-[20px]
                   border
-                  border-neutral-200
+                  border-border
                   bg-white
                   p-6
-                  shadow-[0_2px_10px_rgba(18,57,153,0.025)]
+                  shadow-xs
                   transition-all
                   duration-200
                   active:scale-[0.99]
                 "
               >
-                {/* Yellow top accent */}
-
-                <div className="absolute left-0 top-0 h-1 w-12 bg-brand-yellow" />
+                {/* Top accent */}
+                <div className="absolute left-0 top-0 h-1 w-12 bg-primary" />
 
                 <div>
                   {/* Number and Icon */}
-
                   <div className="mb-5 flex items-center justify-between">
-                    <div className="inline-flex select-none items-center justify-center rounded-md border border-brand-blue/10 bg-[#eef3ff] px-2.5 py-1 text-xs font-bold tracking-wide text-brand-blue">
+                    <div className="inline-flex select-none items-center justify-center rounded-md border border-primary/20 bg-primary-subtle px-2.5 py-1 text-xs font-bold tracking-wide text-primary">
                       {item.number}
                     </div>
 
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-brand-blue/10 bg-[#eef3ff] text-brand-blue">
-                      <IconComponent className="h-5 w-5 stroke-[2]" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/20 bg-primary-subtle text-primary">
+                      <IconComponent className="h-5 w-5 stroke-2" />
                     </div>
                   </div>
 
                   {/* Service Title */}
-
-                  <h3 className="mb-2 text-lg font-bold tracking-tight text-neutral-900">
+                  <h3 className="mb-2 text-lg font-bold tracking-tight text-text-primary">
                     {item.title}
                   </h3>
 
                   {/* Description */}
-
-                  <p className="mb-6 text-xs font-normal leading-relaxed text-neutral-500">
+                  <p className="mb-6 text-xs font-normal leading-relaxed text-text-secondary">
                     {item.description}
                   </p>
                 </div>
 
                 {/* Bottom Action */}
-
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-3.5">
-                  <div className="flex items-center gap-2 text-xs font-medium text-neutral-600">
-                    <IconComponent className="h-3.5 w-3.5 shrink-0 stroke-[1.8] text-brand-blue" />
+                <div className="mt-auto flex items-center justify-between border-t border-border pt-3.5">
+                  <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
+                    <IconComponent className="h-3.5 w-3.5 shrink-0 stroke-[1.8] text-primary" />
 
                     <span>{item.bottomLabel || "Explore Service"}</span>
                   </div>
 
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-yellow text-brand-blue transition-all duration-200 group-active:bg-brand-blue group-active:text-white">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-subtle text-primary transition-all duration-200 group-active:bg-primary group-active:text-primary-foreground">
                     <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                   </div>
                 </div>
@@ -337,8 +327,8 @@ export default function BusMantraServices({
               onClick={() => scrollToSlide(idx)}
               className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ${
                 activeSlide === idx
-                  ? "w-6 bg-brand-blue"
-                  : "w-1.5 bg-neutral-300 hover:bg-brand-yellow"
+                  ? "w-6 bg-primary"
+                  : "w-1.5 bg-neutral-300 hover:bg-primary-hover"
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

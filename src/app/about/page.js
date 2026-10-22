@@ -77,13 +77,13 @@ export default function AboutPage() {
 
           <div className="lg:col-span-7">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-white text-[11px] font-bold tracking-wider text-primary uppercase mb-4 border border-border">
               BUS MANTRA AT A GLANCE
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               Group travel,
-              <span className="text-[#123999]">
+              <span className="text-primary">
                 {" "}made simpler.
               </span>
             </h2>
@@ -92,7 +92,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5">
 
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#111111] leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-black/75 leading-relaxed max-w-xl">
               A better way to bring your entire group together on the same
               comfortable journey.
             </p>
@@ -113,10 +113,10 @@ export default function AboutPage() {
                 className="
                   group relative bg-white
                   rounded-2xl sm:rounded-3xl
-                  border border-[#123999]
+                  border border-border
                   p-5 sm:p-6 lg:p-7
                   shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-                  hover:border-[#123999]
+                  hover:border-primary/40
                   hover:shadow-[0_14px_40px_-8px_rgba(0,0,0,0.08)]
                   transition-all duration-300
                 "
@@ -129,11 +129,11 @@ export default function AboutPage() {
                       flex h-10 w-10
                       items-center justify-center
                       rounded-full
-                      bg-[#FFFFFF]
-                      text-[#123999]
+                      bg-surface-secondary
+                      text-primary
                       transition-all duration-300
-                      group-hover:bg-[#FFC003]
-                      group-hover:text-white
+                      group-hover:bg-primary
+                      group-hover:text-primary-foreground
                     "
                   >
                     <Icon
@@ -145,11 +145,11 @@ export default function AboutPage() {
                   <ArrowUpRight
                     size={16}
                     className="
-                      text-[#123999]
+                      text-primary
                       transition-all duration-300
                       group-hover:translate-x-1
                       group-hover:-translate-y-1
-                      group-hover:text-[#123999]
+                      group-hover:text-primary
                     "
                   />
 
@@ -157,11 +157,11 @@ export default function AboutPage() {
 
                 <div className="mt-7">
 
-                  <div className="text-4xl sm:text-5xl font-black leading-none tracking-tight text-[#111111]">
+                  <div className="text-4xl sm:text-5xl font-black leading-none tracking-tight text-black">
                     {item.value}
                   </div>
 
-                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#111111]">
+                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-black/60">
                     {item.label}
                   </div>
 
@@ -181,9 +181,9 @@ export default function AboutPage() {
 
           <div className="w-full">
 
-            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#FFFFFF] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#123999] shadow-2xs">
+            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-white p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-border shadow-2xs">
 
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl sm:rounded-2xl">
+              <div className="relative w-full aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl">
 
                 {content.storyImage?.src ? (
                   <Image
@@ -201,7 +201,7 @@ export default function AboutPage() {
                     "
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-sm text-[#111111]">
+                  <div className="w-full h-full flex items-center justify-center text-sm text-black/50">
                     Image unavailable
                   </div>
                 )}
@@ -214,15 +214,15 @@ export default function AboutPage() {
 
           <div className="flex flex-col items-start text-left lg:px-2 xl:px-5">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-white text-[11px] font-bold tracking-wider text-primary uppercase mb-4 border border-border">
               {content.story?.eyebrow}
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               {content.story?.heading}
             </h2>
 
-            <p className="text-base sm:text-lg text-[#111111] leading-relaxed mt-4 sm:mt-5 max-w-xl">
+            <p className="text-base sm:text-lg text-black/75 leading-relaxed mt-4 sm:mt-5 max-w-xl">
               {content.story?.description}
             </p>
 
@@ -235,7 +235,7 @@ export default function AboutPage() {
                     group
                     flex items-center justify-between
                     gap-4
-                    border-b border-[#123999]
+                    border-b border-border
                     py-3.5 sm:py-4
                   "
                 >
@@ -247,11 +247,11 @@ export default function AboutPage() {
                         flex h-8 w-8 shrink-0
                         items-center justify-center
                         rounded-full
-                        bg-[#FFFFFF]
-                        text-[#123999]
+                        bg-surface-secondary
+                        text-primary
                         transition-all duration-300
-                        group-hover:bg-[#FFC003]
-                        group-hover:text-white
+                        group-hover:bg-primary
+                        group-hover:text-primary-foreground
                       "
                     >
                       <Check
@@ -260,7 +260,7 @@ export default function AboutPage() {
                       />
                     </span>
 
-                    <span className="text-sm sm:text-[15px] font-medium text-[#111111]">
+                    <span className="text-sm sm:text-[15px] font-medium text-black">
                       {point}
                     </span>
 
@@ -270,10 +270,10 @@ export default function AboutPage() {
                     size={15}
                     className="
                       shrink-0
-                      text-[#123999]
+                      text-primary
                       transition-all duration-300
                       group-hover:translate-x-1
-                      group-hover:text-[#123999]
+                      group-hover:text-primary
                     "
                   />
 
@@ -294,13 +294,13 @@ export default function AboutPage() {
 
           <div className="lg:col-span-7">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-white text-[11px] font-bold tracking-wider text-primary uppercase mb-4 border border-border">
               WHAT MATTERS TO US
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               Travel is better when{" "}
-              <span className="text-[#123999]">
+              <span className="text-primary">
                 the details are right.
               </span>
             </h2>
@@ -309,7 +309,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5">
 
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#111111] leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-black/75 leading-relaxed max-w-xl">
               We focus on the things that make group travel dependable,
               comfortable and easy to plan.
             </p>
@@ -318,7 +318,7 @@ export default function AboutPage() {
 
         </div>
 
-        <div className="w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-[#123999] shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]">
+        <div className="w-full overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-border shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]">
 
           {content.values?.map((value, index) => {
 
@@ -340,9 +340,9 @@ export default function AboutPage() {
                   sm:px-7 sm:py-7
                   lg:px-8 lg:py-8
                   transition-colors duration-300
-                  hover:bg-[#FFFFFF]
+                  hover:bg-surface-secondary/50
                   md:grid-cols-[52px_0.75fr_1.25fr_30px]
-                  ${!isLast ? "border-b border-[#123999]" : ""}
+                  ${!isLast ? "border-b border-border" : ""}
                 `}
               >
 
@@ -351,12 +351,12 @@ export default function AboutPage() {
                     flex h-11 w-11
                     items-center justify-center
                     rounded-full
-                    border border-[#123999]
-                    text-[#123999]
+                    border border-border
+                    text-primary
                     transition-all duration-300
-                    group-hover:border-[#FFC003]
-                    group-hover:bg-[#FFC003]
-                    group-hover:text-white
+                    group-hover:border-primary
+                    group-hover:bg-primary
+                    group-hover:text-primary-foreground
                   "
                 >
                   <Icon
@@ -365,11 +365,11 @@ export default function AboutPage() {
                   />
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
                   {value.title}
                 </h3>
 
-                <p className="text-sm leading-6 text-[#111111] lg:text-[15px]">
+                <p className="text-sm leading-6 text-black/75 lg:text-[15px]">
                   {value.description}
                 </p>
 
@@ -377,11 +377,11 @@ export default function AboutPage() {
                   size={17}
                   className="
                     hidden
-                    text-[#123999]
+                    text-primary
                     transition-all duration-300
                     group-hover:-translate-y-1
                     group-hover:translate-x-1
-                    group-hover:text-[#123999]
+                    group-hover:text-primary
                     md:block
                   "
                 />
@@ -400,11 +400,11 @@ export default function AboutPage() {
 
           <div className="flex flex-col items-start text-left order-2 lg:order-1">
 
-            <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
+            <div className="inline-block px-3.5 py-1.5 rounded-full bg-white text-[11px] font-bold tracking-wider text-primary uppercase mb-4 border border-border">
               {content.experience?.eyebrow}
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               {content.experience?.heading}
             </h2>
 
@@ -414,7 +414,7 @@ export default function AboutPage() {
                 (paragraph) => (
                   <p
                     key={paragraph}
-                    className="text-base sm:text-lg text-[#111111] leading-relaxed"
+                    className="text-base sm:text-lg text-black/75 leading-relaxed"
                   >
                     {paragraph}
                   </p>
@@ -438,11 +438,11 @@ export default function AboutPage() {
                         group
                         flex items-center gap-4
                         rounded-xl sm:rounded-2xl
-                        border border-[#123999]
+                        border border-border
                         bg-white
                         px-4 py-3.5
                         transition-all duration-300
-                        hover:border-[#123999]
+                        hover:border-primary/40
                         hover:shadow-[0_8px_25px_-10px_rgba(0,0,0,0.08)]
                       "
                     >
@@ -452,8 +452,8 @@ export default function AboutPage() {
                           flex h-9 w-9 shrink-0
                           items-center justify-center
                           rounded-full
-                          bg-[#FFFFFF]
-                          text-[#123999]
+                          bg-surface-secondary
+                          text-primary
                         "
                       >
                         <Icon
@@ -462,7 +462,7 @@ export default function AboutPage() {
                         />
                       </span>
 
-                      <span className="text-sm font-semibold text-[#111111]">
+                      <span className="text-sm font-semibold text-black">
                         {feature.label}
                       </span>
 
@@ -470,10 +470,10 @@ export default function AboutPage() {
                         size={14}
                         className="
                           ml-auto
-                          text-[#123999]
+                          text-primary
                           transition-transform duration-300
                           group-hover:translate-x-1
-                          group-hover:text-[#123999]
+                          group-hover:text-primary
                         "
                       />
 
@@ -488,9 +488,9 @@ export default function AboutPage() {
 
           <div className="w-full order-1 lg:order-2">
 
-            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-[#FFFFFF] p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-[#123999] shadow-2xs">
+            <div className="w-full rounded-2xl sm:rounded-3xl xl:rounded-[28px] bg-white p-3.5 sm:p-4 lg:p-5 xl:p-6 border border-border shadow-2xs">
 
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl sm:rounded-2xl">
+              <div className="relative w-full aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl">
 
                 {content.experienceImage?.src ? (
                   <Image
@@ -508,7 +508,7 @@ export default function AboutPage() {
                     "
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-sm text-[#111111]">
+                  <div className="w-full h-full flex items-center justify-center text-sm text-black/50">
                     Image unavailable
                   </div>
                 )}
@@ -530,12 +530,12 @@ export default function AboutPage() {
           <div className="lg:col-span-7">
 
             {content.occasions?.eyebrow && (
-              <div className="inline-block px-3.5 py-1.5 rounded-full bg-[#FFFFFF] text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
+              <div className="inline-block px-3.5 py-1.5 rounded-full bg-white text-[11px] font-bold tracking-wider text-primary uppercase mb-4 border border-border">
                 {content.occasions.eyebrow}
               </div>
             )}
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#111111] tracking-tight leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               {content.occasions?.heading}
             </h2>
 
@@ -543,7 +543,7 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5">
 
-            <p className="text-sm sm:text-base lg:text-[17px] text-[#111111] leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base lg:text-[17px] text-black/75 leading-relaxed max-w-xl">
               Different reasons to travel. One comfortable journey
               for everyone.
             </p>
@@ -564,15 +564,16 @@ export default function AboutPage() {
       block
       overflow-hidden
       rounded-2xl sm:rounded-3xl
-      border border-[#123999]
+      border border-border
       bg-white
       shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
+      hover:border-primary/40
       hover:shadow-[0_14px_40px_-8px_rgba(0,0,0,0.08)]
       transition-all duration-300
     "
   >
 
-              <div className="relative aspect-[16/9] overflow-hidden bg-[#FFFFFF]">
+              <div className="relative aspect-video overflow-hidden bg-surface-secondary">
 
                 <Image
                   src={item.image}
@@ -594,12 +595,12 @@ export default function AboutPage() {
                       items-center justify-center
                       rounded-full
                       bg-white
-                      text-[#111111]
+                      text-black
                       shadow-sm
                       transition-all duration-300
                       group-hover:rotate-45
-                      group-hover:bg-[#FFC003]
-                      group-hover:text-white
+                      group-hover:bg-primary
+                      group-hover:text-primary-foreground
                     "
                   >
                     <ArrowUpRight size={16} />
@@ -611,11 +612,11 @@ export default function AboutPage() {
 
               <div className="p-5 sm:p-6 lg:p-7">
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
                   {item.title}
                 </h3>
 
-                <p className="mt-2 text-sm sm:text-[15px] leading-6 text-[#111111] max-w-xl">
+                <p className="mt-2 text-sm sm:text-[15px] leading-6 text-black/75 max-w-xl">
                   {item.description}
                 </p>
 

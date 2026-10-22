@@ -33,7 +33,7 @@ export default function DestinationSlugPage({ params }) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#123999]">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-primary">
             Destination not found
           </p>
 
@@ -43,7 +43,7 @@ export default function DestinationSlugPage({ params }) {
 
           <Link
             href="/destinations"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#FFC003] px-5 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover hover:shadow-lg"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to destinations
@@ -58,7 +58,7 @@ export default function DestinationSlugPage({ params }) {
       <div className="mb-5">
         <Link
           href="/destinations"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-black/60 transition-colors duration-200 hover:text-[#123999]"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-black/60 transition-colors duration-200 hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to destinations
@@ -126,7 +126,7 @@ function DestinationHeader({ destination }) {
 
       {destination.route && (
         <div className="mt-2 flex items-center gap-2 text-sm font-medium text-black/60">
-          <MapPin className="h-4 w-4 text-[#123999]" />
+          <MapPin className="h-4 w-4 text-primary" />
           {destination.route}
         </div>
       )}
@@ -204,7 +204,7 @@ function DestinationGallery({ destination }) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
-      <div className="relative aspect-[16/9] w-full overflow-hidden">
+      <div className="relative aspect-video w-full overflow-hidden">
         {gallery.length > 0 ? (
           <Image
             src={gallery[activeImage]}
@@ -231,7 +231,7 @@ function DestinationGallery({ destination }) {
               type="button"
               onClick={previousImage}
               aria-label="Previous image"
-              className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-[#FFC003] sm:left-4 sm:h-10 sm:w-10"
+              className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-primary hover:text-primary-foreground sm:left-4 sm:h-10 sm:w-10"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -240,7 +240,7 @@ function DestinationGallery({ destination }) {
               type="button"
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-[#FFC003] sm:right-4 sm:h-10 sm:w-10"
+              className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-primary hover:text-primary-foreground sm:right-4 sm:h-10 sm:w-10"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -261,7 +261,7 @@ function DestinationGallery({ destination }) {
               onClick={() => changeImage(index)}
               className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${
                 activeImage === index
-                  ? "border-[#123999]"
+                  ? "border-primary"
                   : "border-transparent opacity-65 hover:opacity-100"
               }`}
             >
@@ -292,7 +292,7 @@ function QuickInfo({
       className={`rounded-xl border border-black/10 bg-white px-3.5 py-3 ${className}`}
     >
       <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-black/45">
-        <span className="text-[#123999]">
+        <span className="text-primary">
           {icon}
         </span>
 
@@ -350,7 +350,7 @@ function DestinationBookingForm({ destination }) {
         className="w-full rounded-2xl border border-black/10 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
       >
         <div className="border-b border-black/10 pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
             CUSTOM ROUTE & FARE
           </p>
 
@@ -362,7 +362,7 @@ function DestinationBookingForm({ destination }) {
         <div className="mt-5 space-y-3">
           <div className="rounded-xl bg-white px-4 py-3.5">
             <div className="flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-[#123999]" />
+              <MapPin className="h-3.5 w-3.5 text-primary" />
 
               <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
                 PICK-UP POINT
@@ -387,7 +387,7 @@ function DestinationBookingForm({ destination }) {
           <div>
             <div className="mb-1.5 flex items-center justify-between">
               <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
-                <MapPin className="h-3.5 w-3.5 text-[#123999]" />
+                <MapPin className="h-3.5 w-3.5 text-primary" />
                 DESTINATION(S)
               </label>
 
@@ -396,7 +396,7 @@ function DestinationBookingForm({ destination }) {
               </span>
             </div>
 
-            <div className="flex min-h-[53px] items-center gap-2 rounded-xl bg-white px-3.5">
+            <div className="flex min-h-13.25 items-center gap-2 rounded-xl bg-white px-3.5">
               <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-black/10 bg-white px-3 py-1.5 text-xs font-semibold text-black/80 shadow-sm">
                 {destinationName}
 
@@ -456,7 +456,7 @@ function DestinationBookingForm({ destination }) {
 
           <div className="rounded-xl bg-white px-3.5 py-3.5">
             <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5 text-[#123999]" />
+              <Users className="h-3.5 w-3.5 text-primary" />
 
               <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
                 NO. OF PASSENGERS
@@ -530,8 +530,8 @@ function DestinationBookingForm({ destination }) {
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#123999]/30 bg-[#FFC003]/15 px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#123999]">
+            <div className="rounded-xl border border-primary/30 bg-primary-subtle px-3.5 py-3.5">
+              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-primary">
                 TOTAL ESTIMATED FARE
               </p>
 
@@ -548,7 +548,7 @@ function DestinationBookingForm({ destination }) {
 
           <div className="rounded-xl bg-white px-3.5 py-3">
             <div className="flex items-start gap-2 text-[10px] leading-5 text-black/70">
-              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#123999]" />
+              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
 
               <span>
                 <span className="font-bold text-black">
@@ -574,14 +574,14 @@ function DestinationBookingForm({ destination }) {
             <button
               type="button"
               onClick={() => setShowBusImages(true)}
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-[#123999]/30 bg-white px-2 text-[10px] font-bold leading-tight text-[#123999] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFC003] hover:shadow-md sm:px-3 sm:text-xs"
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-primary/30 bg-surface px-2 text-[10px] font-bold leading-tight text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-md sm:px-3 sm:text-xs"
             >
               View Bus Images
             </button>
 
             <button
               type="submit"
-              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-[#FFC003] px-2 text-[10px] font-bold leading-tight text-black shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#123999] hover:text-white hover:shadow-md active:translate-y-0 sm:px-3 sm:text-xs"
+              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-primary px-2 text-[10px] font-bold leading-tight text-primary-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-md active:translate-y-0 sm:px-3 sm:text-xs"
             >
               <span>Confirm Booking</span>
 
@@ -591,7 +591,7 @@ function DestinationBookingForm({ destination }) {
             <button
               type="button"
               onClick={() => setQuoteRequested(true)}
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-black/20 bg-[#123999] px-2 text-[10px] font-bold leading-tight text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0D2B73] hover:shadow-md sm:px-3 sm:text-xs"
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-border bg-surface-inverse px-2 text-[10px] font-bold leading-tight text-text-inverse transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:shadow-md sm:px-3 sm:text-xs"
             >
               Request a Quote
             </button>
@@ -607,9 +607,9 @@ function DestinationBookingForm({ destination }) {
       )}
 
       {quoteRequested && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-subtle text-primary">
               <CheckCircle2 className="h-6 w-6" />
             </div>
 
@@ -634,7 +634,7 @@ function DestinationBookingForm({ destination }) {
               onClick={() =>
                 setQuoteRequested(false)
               }
-              className="mt-6 w-full rounded-xl bg-[#FFC003] px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+              className="mt-6 w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover hover:shadow-lg"
             >
               Close
             </button>
@@ -643,9 +643,9 @@ function DestinationBookingForm({ destination }) {
       )}
 
       {submitted && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-subtle text-primary">
               <CheckCircle2 className="h-6 w-6" />
             </div>
 
@@ -665,14 +665,14 @@ function DestinationBookingForm({ destination }) {
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
-                className="flex-1 rounded-xl border border-black/10 px-4 py-3 text-sm font-bold text-black/80 transition-colors hover:bg-[#FFC003]"
+                className="flex-1 rounded-xl border border-black/10 px-4 py-3 text-sm font-bold text-black/80 transition-colors hover:bg-surface-secondary"
               >
                 Close
               </button>
 
               <a
                 href="tel:+919999999999"
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#FFC003] px-4 py-3 text-sm font-bold text-white transition-all hover:shadow-lg"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover hover:shadow-lg"
               >
                 <Phone className="h-4 w-4" />
                 Call Support
@@ -752,7 +752,7 @@ function BusImagesModal({
 
   return (
     <div
-      className="fixed inset-0 z-[110] flex h-screen w-screen items-center justify-center bg-black/60 px-3 py-4 backdrop-blur-sm sm:px-5"
+      className="fixed inset-0 z-110 flex h-screen w-screen items-center justify-center bg-black/60 px-3 py-4 backdrop-blur-sm sm:px-5"
       onClick={onClose}
     >
       <div
@@ -764,7 +764,7 @@ function BusImagesModal({
         <div className="shrink-0 border-b border-black/10 px-5 py-4 sm:px-7 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
                 AVAILABLE FOR YOUR GROUP
               </p>
 
@@ -783,7 +783,7 @@ function BusImagesModal({
               type="button"
               onClick={onClose}
               aria-label="Close bus images"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-black/70 transition-all hover:bg-[#FFC003] hover:text-black"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-black/70 transition-all hover:bg-primary-subtle hover:text-primary"
             >
               <X className="h-5 w-5" />
             </button>
@@ -792,9 +792,9 @@ function BusImagesModal({
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
           {passengers < 1 ? (
-            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-white">
+            <div className="flex min-h-60 items-center justify-center rounded-2xl bg-white">
               <div className="text-center">
-                <Users className="mx-auto h-8 w-8 text-[#123999]" />
+                <Users className="mx-auto h-8 w-8 text-primary" />
 
                 <p className="mt-3 text-sm font-bold text-black">
                   Enter the number of passengers first
@@ -831,7 +831,7 @@ function BusImagesModal({
                         {bus?.name || "Fleet"}
                       </h4>
 
-                      <span className="shrink-0 rounded-full bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-black/60">
+                      <span className="shrink-0 rounded-full bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-black/60">
                         {busImages.length}{" "}
                         {busImages.length === 1
                           ? "Image"
@@ -852,7 +852,7 @@ function BusImagesModal({
                             onClick={onClose}
                             className="group relative block overflow-hidden rounded-2xl border border-black/10 bg-white"
                           >
-                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+                            <div className="relative aspect-16/10 w-full overflow-hidden bg-white">
                               <Image
                                 src={image}
                                 alt={
@@ -873,7 +873,7 @@ function BusImagesModal({
               })}
             </div>
           ) : (
-            <div className="flex min-h-[240px] items-center justify-center rounded-2xl bg-white">
+            <div className="flex min-h-60 items-center justify-center rounded-2xl bg-white">
               <div className="text-center">
                 <p className="text-sm font-bold text-black">
                   No matching bus image found
@@ -891,7 +891,7 @@ function BusImagesModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-14 w-full items-center justify-center rounded-xl bg-[#123999] text-sm font-bold text-white transition-all duration-200 hover:bg-[#0D2B73] sm:h-[60px] sm:text-base"
+            className="flex h-14 w-full items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all duration-200 hover:bg-primary-hover sm:h-15 sm:text-base"
           >
             Close
           </button>
@@ -911,7 +911,7 @@ function DateTimeField({
   return (
     <div className="rounded-xl bg-white px-3.5 py-3.5">
       <div className="flex items-center gap-1.5">
-        <CalendarDays className="h-3.5 w-3.5 text-[#123999]" />
+        <CalendarDays className="h-3.5 w-3.5 text-primary" />
 
         <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
           {label}
@@ -943,7 +943,7 @@ function DateTimeField({
               event.target.value
             )
           }
-          className="w-[74px] bg-transparent text-[11px] font-bold text-black outline-none"
+          className="w-18.5 bg-transparent text-[11px] font-bold text-black outline-none"
         />
       </div>
     </div>
@@ -960,7 +960,7 @@ function FormInput({
   required = false,
 }) {
   return (
-    <div className="rounded-xl border border-[#123999]/30 bg-white px-3.5 py-3.5 transition-colors focus-within:border-[#123999] focus-within:ring-1 focus-within:ring-[#123999]">
+    <div className="rounded-xl border border-border bg-white px-3.5 py-3.5 transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-focus-ring">
       <div className="flex items-center gap-1.5">
         <span className="text-black/60">{icon}</span>
 
@@ -983,7 +983,7 @@ function FormInput({
 function Benefit({ text }) {
   return (
     <div className="flex items-center gap-1.5 text-[9px] font-medium text-black/60 sm:text-[10px]">
-      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-[#123999]">
+      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-primary">
         <CheckCircle2 className="h-3.5 w-3.5" />
       </span>
 
@@ -1090,8 +1090,8 @@ function PopularPlaceCard({
           : "translate-y-8 opacity-0"
       } hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
     >
-      <div className="grid min-h-[270px] grid-cols-[165px_1fr] items-stretch sm:min-h-[285px] sm:grid-cols-[185px_1fr] lg:min-h-[300px] lg:grid-cols-[205px_1fr]">
-        <div className="relative min-h-[270px] overflow-hidden bg-white sm:min-h-[285px] lg:min-h-[300px]">
+      <div className="grid min-h-67.5 grid-cols-[165px_1fr] items-stretch sm:min-h-71.25 sm:grid-cols-[185px_1fr] lg:min-h-75 lg:grid-cols-[205px_1fr]">
+        <div className="relative min-h-67.5 overflow-hidden bg-white sm:min-h-71.25 lg:min-h-75">
           {place.image ? (
             <Image
               src={place.image}
@@ -1109,7 +1109,7 @@ function PopularPlaceCard({
         </div>
 
         <div className="flex min-w-0 flex-col justify-center p-5 sm:p-6 lg:p-7">
-          <h3 className="text-base font-black tracking-tight text-black transition-colors duration-300 group-hover:text-[#123999] sm:text-lg lg:text-xl">
+          <h3 className="text-base font-black tracking-tight text-black transition-colors duration-300 group-hover:text-primary sm:text-lg lg:text-xl">
             {place.name}
           </h3>
 
@@ -1130,7 +1130,7 @@ function PopularPlaceCard({
                       key={highlight}
                       className="flex items-start gap-2 text-[9px] font-medium leading-5 text-black/70 sm:text-[10px]"
                     >
-                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+                      <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary-subtle text-primary">
                         <CheckCircle2 className="h-2.5 w-2.5" />
                       </span>
 
@@ -1143,10 +1143,10 @@ function PopularPlaceCard({
               </ul>
             )}
 
-          <div className="mt-5 flex items-center gap-2 text-[10px] font-bold text-black/80 transition-colors duration-300 group-hover:text-[#123999] sm:text-[11px]">
+          <div className="mt-5 flex items-center gap-2 text-[10px] font-bold text-black/80 transition-colors duration-300 group-hover:text-primary sm:text-[11px]">
             Explore
 
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-all duration-300 group-hover:bg-[#FFC003]">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
             </span>
           </div>

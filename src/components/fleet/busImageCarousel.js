@@ -28,7 +28,7 @@ export default function BusImageCarousel({
   return (
     <div className={`w-full flex flex-col gap-3.5 ${className}`}>
       {/* Main Large Display Image */}
-      <div className="relative w-full rounded-2xl sm:rounded-3xl bg-[#f0f2f5] p-4 sm:p-6 lg:p-8 flex items-center justify-center overflow-hidden border border-neutral-100/90 shadow-2xs group aspect-16/10 sm:aspect-video">
+      <div className="relative w-full rounded-2xl sm:rounded-3xl bg-surface-secondary p-4 sm:p-6 lg:p-8 flex items-center justify-center overflow-hidden border border-border shadow-2xs group aspect-16/10 sm:aspect-video">
         <Image
           src={imageList[currentIndex]}
           alt={`${busName} - Image ${currentIndex + 1}`}
@@ -74,9 +74,9 @@ export default function BusImageCarousel({
               key={idx}
               type="button"
               onClick={() => setCurrentIndex(idx)}
-              className={`relative h-16 sm:h-20 aspect-16/10 rounded-xl overflow-hidden bg-[#f0f2f5] p-1.5 transition-all cursor-pointer shrink-0 border-2 ${currentIndex === idx
-                  ? "border-brand-orange shadow-sm scale-102"
-                  : "border-transparent opacity-65 hover:opacity-100 hover:border-neutral-300"
+              className={`relative h-16 sm:h-20 aspect-16/10 rounded-xl overflow-hidden bg-surface-secondary p-1.5 transition-all cursor-pointer shrink-0 border-2 ${currentIndex === idx
+                  ? "border-primary shadow-sm scale-102"
+                  : "border-transparent opacity-65 hover:opacity-100 hover:border-border-strong"
                 }`}
               aria-label={`Select image ${idx + 1}`}
             >

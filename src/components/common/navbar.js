@@ -125,7 +125,7 @@ export default function Navbar() {
       >
         <div
           ref={navRef}
-          className="relative mx-auto flex h-[76px] w-full max-w-[1440px] items-center justify-between px-4 sm:h-[84px] sm:px-7 lg:px-10"
+          className="relative mx-auto flex h-19 w-full max-w-360 items-center justify-between px-4 sm:h-21 sm:px-7 lg:px-10"
         >
           {/* ================================================= */}
           {/* LEFT: BRAND LOGO                                  */}
@@ -144,11 +144,11 @@ export default function Navbar() {
                 });
               }
             }}
-            className="group flex shrink-0 select-none items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#123999]"
+            className="group flex shrink-0 select-none items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
             aria-label="Bus Mantra Home"
           >
             {/* Larger desktop and mobile logo */}
-            <div className="relative h-[56px] w-[150px] shrink-0 sm:h-[66px] sm:w-[180px] lg:h-[70px] lg:w-[195px]">
+            <div className="relative h-14 w-37.5 shrink-0 sm:h-16.5 sm:w-45 lg:h-17.5 lg:w-48.75">
               <Image
                 src="/logo-bus-mantra.jpeg"
                 alt="Bus Mantra Logo"
@@ -181,8 +181,8 @@ export default function Navbar() {
                   aria-current={active ? "page" : undefined}
                   className={`relative select-none rounded-sm px-0.5 py-1.5 text-[14px] transition-colors duration-150 xl:text-[15px] ${
                     active
-                      ? "font-semibold text-[#123999]"
-                      : "font-medium text-neutral-700 hover:text-[#123999]"
+                      ? "font-semibold text-primary"
+                      : "font-medium text-neutral-700 hover:text-primary"
                   }`}
                 >
                   <span>{item.label}</span>
@@ -190,7 +190,7 @@ export default function Navbar() {
                   {active && (
                     <span
                       aria-hidden="true"
-                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full bg-[#FFC003]"
+                      className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full bg-primary"
                     />
                   )}
                 </Link>
@@ -206,7 +206,7 @@ export default function Navbar() {
             {/* Book a Bus */}
             <Link
               href="/contact"
-              className="inline-flex h-11 items-center justify-center rounded-xl bg-[#FFC003] px-4 text-sm font-semibold text-black shadow-sm shadow-[#123999]/20 transition-all duration-200 hover:bg-[#e6ad00] hover:shadow-md active:scale-[0.98] xl:px-5"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition-all duration-200 hover:bg-primary-hover hover:shadow-md active:scale-[0.98] xl:px-5"
             >
               Contact Us
             </Link>
@@ -229,7 +229,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-neutral-800 transition-colors hover:bg-neutral-100 hover:text-[#123999] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#123999] lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-neutral-800 transition-colors hover:bg-neutral-100 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden"
             aria-label="Open mobile navigation menu"
             aria-expanded={isOpen}
             aria-controls="mobile-nav-drawer"
@@ -259,7 +259,7 @@ export default function Navbar() {
 
       <aside
         id="mobile-nav-drawer"
-        className={`fixed bottom-0 right-0 top-0 z-50 flex h-full w-full max-w-[340px] flex-col justify-between bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden ${
+        className={`fixed bottom-0 right-0 top-0 z-50 flex h-full w-full max-w-85 flex-col justify-between bg-white shadow-2xl transition-transform duration-300 ease-out lg:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         role="dialog"
@@ -287,11 +287,11 @@ export default function Navbar() {
                   closeMenu();
                 }
               }}
-              className="flex shrink-0 items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#123999]"
+              className="flex shrink-0 items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
               aria-label="Bus Mantra Home"
             >
               {/* Same logo in the mobile drawer */}
-              <div className="relative h-[54px] w-[155px] shrink-0">
+              <div className="relative h-13.5 w-38.75 shrink-0">
                 <Image
                   src="/logo-bus-mantra.jpeg"
                   alt="Bus Mantra Logo"
@@ -308,7 +308,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={closeMenu}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#123999]"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
               aria-label="Close menu"
             >
               <X className="h-5 w-5" strokeWidth={2.3} />
@@ -331,15 +331,15 @@ export default function Navbar() {
                   aria-current={active ? "page" : undefined}
                   className={`group flex items-center justify-between rounded-xl px-3.5 py-3.5 text-[16px] transition-colors ${
                     active
-                      ? "bg-[#123999]/10 font-bold text-[#123999]"
-                      : "font-semibold text-neutral-800 hover:bg-[#123999]/5 hover:text-[#123999]"
+                      ? "bg-primary-subtle font-bold text-primary"
+                      : "font-semibold text-neutral-800 hover:bg-primary-subtle/70 hover:text-primary"
                   }`}
                 >
                   <span className="flex items-center gap-2.5">
                     {active && (
                       <span
                         aria-hidden="true"
-                        className="h-2 w-2 shrink-0 rounded-full bg-[#FFC003]"
+                        className="h-2 w-2 shrink-0 rounded-full bg-primary"
                       />
                     )}
 
@@ -349,8 +349,8 @@ export default function Navbar() {
                   <span
                     className={`text-lg transition-transform group-hover:translate-x-0.5 ${
                       active
-                        ? "font-semibold text-[#123999]"
-                        : "text-neutral-400 group-hover:text-[#123999]"
+                        ? "font-semibold text-primary"
+                        : "text-neutral-400 group-hover:text-primary"
                     }`}
                     aria-hidden="true"
                   >
@@ -364,7 +364,7 @@ export default function Navbar() {
             <div className="pt-5">
               <Link
                 href="/contact"
-                className="flex w-full items-center justify-center rounded-xl bg-[#FFC003] px-6 py-3.5 text-base font-semibold text-black shadow-sm transition-colors hover:bg-[#e6ad00] active:scale-[0.99]"
+                className="flex w-full items-center justify-center rounded-xl bg-primary px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover active:scale-[0.99]"
               >
                 Contact
               </Link>
@@ -377,7 +377,7 @@ export default function Navbar() {
           <Link
             href="/contact"
             onClick={closeMenu}
-            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-medium text-neutral-700 transition-colors hover:border-[#123999] hover:text-[#123999]"
+            className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-medium text-neutral-700 transition-colors hover:border-primary hover:text-primary"
           >
             Contact Us
           </Link>

@@ -76,29 +76,29 @@ export default function DestinationMultiSelect({
 
   return (
     <div ref={containerRef} className={`relative flex flex-col ${className}`}>
-      <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1 flex items-center justify-between">
+      <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1 flex items-center justify-between">
         <span className="flex items-center gap-1.5">
-          <MapPin className="w-3.5 h-3.5 text-brand-orange" />
+          <MapPin className="w-3.5 h-3.5 text-primary" />
           <span>{label}</span>
         </span>
-        <span className="text-[10px] font-medium text-neutral-400 lowercase">
+        <span className="text-[10px] font-medium text-text-muted lowercase">
           multi-city route
         </span>
       </label>
 
       {/* Chips Container + Input Row */}
-      <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-brand-orange/30 border border-transparent focus-within:border-brand-orange rounded-xl p-2.5 sm:p-3 transition-all min-h-13 flex flex-wrap items-center gap-1.5 sm:gap-2">
+      <div className="bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 focus-within:ring-focus-ring/30 border border-transparent focus-within:border-primary rounded-xl p-2.5 sm:p-3 transition-all min-h-13 flex flex-wrap items-center gap-1.5 sm:gap-2">
         {/* Render Selected Destination Chips */}
         {selectedDestinations.map((dest, idx) => (
           <span
             key={idx}
-            className="inline-flex items-center gap-1.5 pl-2.5 pr-1.5 py-1 rounded-lg bg-white border border-neutral-200/90 shadow-2xs text-xs font-semibold text-neutral-800 transition-all select-none group"
+            className="inline-flex items-center gap-1.5 pl-2.5 pr-1.5 py-1 rounded-lg bg-surface border border-border shadow-2xs text-xs font-semibold text-text-primary transition-all select-none group"
           >
             <span>{dest}</span>
             <button
               type="button"
               onClick={() => handleRemoveDestination(idx)}
-              className="p-0.5 rounded-full hover:bg-neutral-100 text-neutral-400 hover:text-red-500 transition-colors cursor-pointer"
+              className="p-0.5 rounded-full hover:bg-surface-muted text-text-muted hover:text-error transition-colors cursor-pointer"
               aria-label={`Remove destination ${dest}`}
             >
               <X className="w-3 h-3 stroke-[2.5]" />
@@ -122,12 +122,12 @@ export default function DestinationMultiSelect({
                 ? "e.g. Jaipur, Agra..."
                 : "+ Add another city..."
             }
-            className="w-full text-xs sm:text-sm font-medium text-neutral-800 placeholder:text-neutral-400 focus:outline-none bg-transparent"
+            className="w-full text-xs sm:text-sm font-medium text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
           />
           <button
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}
-            className="p-1 text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer"
+            className="p-1 text-text-muted hover:text-text-primary transition-colors cursor-pointer"
             aria-label="Toggle destination suggestions"
           >
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
@@ -137,8 +137,8 @@ export default function DestinationMultiSelect({
 
       {/* Dropdown Suggestions Menu */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-white rounded-xl border border-neutral-200/90 shadow-xl p-2 max-h-56 overflow-y-auto">
-          <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-2 py-1">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-30 bg-surface rounded-xl border border-border shadow-xl p-2 max-h-56 overflow-y-auto">
+          <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider px-2 py-1">
             POPULAR DESTINATIONS
           </div>
 
@@ -148,20 +148,20 @@ export default function DestinationMultiSelect({
                 key={city}
                 type="button"
                 onClick={() => handleAddDestination(city)}
-                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-neutral-50 hover:bg-orange-50 text-neutral-700 hover:text-brand-orange border border-neutral-200/70 hover:border-brand-orange/30 transition-all flex items-center gap-1 cursor-pointer"
+                className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-surface-secondary hover:bg-primary-subtle text-text-secondary hover:text-primary border border-border hover:border-primary/30 transition-all flex items-center gap-1 cursor-pointer"
               >
-                <Plus className="w-3 h-3 text-brand-orange stroke-[2.5]" />
+                <Plus className="w-3 h-3 text-primary stroke-[2.5]" />
                 <span>{city}</span>
               </button>
             ))}
           </div>
 
           {inputValue.trim() && !availableSuggestions.includes(inputValue.trim()) && (
-            <div className="pt-2 border-t border-neutral-100 mt-2 px-1">
+            <div className="pt-2 border-t border-border mt-2 px-1">
               <button
                 type="button"
                 onClick={() => handleAddDestination(inputValue)}
-                className="w-full py-1.5 px-3 rounded-lg text-xs font-semibold bg-brand-orange text-white flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs hover:bg-brand-orange-hover"
+                className="w-full py-1.5 px-3 rounded-lg text-xs font-semibold bg-primary text-primary-foreground flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs hover:bg-primary-hover"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                 <span>Add &quot;{inputValue.trim()}&quot; as destination</span>

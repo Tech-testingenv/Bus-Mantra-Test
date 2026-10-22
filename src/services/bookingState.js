@@ -130,8 +130,8 @@ export function resolveInitialBookingState(searchParams) {
       (Array.isArray(fromSession?.destination)
         ? fromSession.destination
         : fromSession?.destination
-        ? [fromSession.destination]
-        : ["Jaipur"]),
+          ? [fromSession.destination]
+          : ["Jaipur"]),
     passengers:
       fromQuery?.passengers ||
       (fromSession?.passengers ? String(fromSession.passengers) : ""),

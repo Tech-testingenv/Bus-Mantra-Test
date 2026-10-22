@@ -58,16 +58,16 @@ export default function FleetTypes({
 
       <div className="mb-6 text-left sm:mb-8 lg:mb-10">
         {sectionData?.eyebrow && (
-          <div className="mb-3.5 inline-block select-none rounded-full border border-brand-blue/10 bg-[#eef3ff] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-brand-blue">
+          <div className="mb-3.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted">
             {sectionData.eyebrow}
           </div>
         )}
 
-        <h2 className="text-3xl font-black leading-[1.12] tracking-tight text-neutral-900 sm:text-4xl md:text-5xl">
+        <h2 className="text-3xl font-black leading-[1.12] tracking-tight text-text-primary sm:text-4xl md:text-5xl">
           {sectionData?.heading || "Choose your bus."}
         </h2>
 
-        <p className="mt-2 text-base font-normal leading-relaxed text-neutral-500 sm:text-lg">
+        <p className="mt-2 text-base font-normal leading-relaxed text-text-secondary sm:text-lg">
           {sectionData?.description ||
             "Comfortable coaches for every group size."}
         </p>
@@ -125,8 +125,8 @@ export default function FleetTypes({
               onClick={() => scrollToSlide(idx)}
               className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ${
                 activeSlide === idx
-                  ? "w-6 bg-brand-blue"
-                  : "w-1.5 bg-neutral-300 hover:bg-brand-yellow"
+                  ? "w-6 bg-primary"
+                  : "w-1.5 bg-neutral-300 hover:bg-primary-hover"
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

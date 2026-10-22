@@ -1038,8 +1038,8 @@ export default function BookingForm({ data = heroData?.form }) {
                     }
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-150 mx-auto cursor-pointer ${
                       isSelected
-                        ? "bg-[#FFC003] text-black shadow-xs font-bold scale-105"
-                        : "text-neutral-700 hover:bg-[#123999]/10 hover:text-brand-blue"
+                        ? "bg-primary text-primary-foreground shadow-xs font-bold scale-105"
+                        : "text-text-secondary hover:bg-primary-subtle hover:text-primary"
                     }`}
                   >
                     {day}
@@ -1048,10 +1048,10 @@ export default function BookingForm({ data = heroData?.form }) {
               })}
             </div>
 
-            <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between text-xs">
-              <span className="text-neutral-500 font-medium truncate">
+            <div className="mt-3 pt-2.5 border-t border-border flex items-center justify-between text-xs">
+              <span className="text-text-muted font-medium truncate">
                 Selected:{" "}
-                <strong className="text-neutral-800">
+                <strong className="text-text-primary">
                   {draftDate}
                 </strong>
               </span>
@@ -1061,7 +1061,7 @@ export default function BookingForm({ data = heroData?.form }) {
                 onClick={() =>
                   setPickerStep("time")
                 }
-                className="text-brand-blue hover:text-[#0d2b73] font-bold flex items-center gap-1 cursor-pointer"
+                className="text-primary hover:text-primary-hover font-bold flex items-center gap-1 cursor-pointer"
               >
                 <span>
                   Pick Time
@@ -1074,13 +1074,13 @@ export default function BookingForm({ data = heroData?.form }) {
         ) : (
           <div>
             {/* Time Picker Header */}
-            <div className="flex items-center justify-between pb-2.5 border-b border-neutral-100 mb-2.5">
+            <div className="flex items-center justify-between pb-2.5 border-b border-border mb-2.5">
               <button
                 type="button"
                 onClick={() =>
                   setPickerStep("date")
                 }
-                className="inline-flex items-center gap-1 text-xs font-bold text-neutral-600 hover:text-brand-blue transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 text-xs font-bold text-text-muted hover:text-primary transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
                 <span>
@@ -1088,7 +1088,7 @@ export default function BookingForm({ data = heroData?.form }) {
                 </span>
               </button>
 
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-neutral-100 text-neutral-700">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-surface-muted text-text-secondary">
                 {draftDate}
               </span>
 
@@ -1097,7 +1097,7 @@ export default function BookingForm({ data = heroData?.form }) {
                 onClick={() =>
                   setActivePicker(null)
                 }
-                className="w-6 h-6 rounded hover:bg-neutral-100 flex items-center justify-center text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer"
+                className="w-6 h-6 rounded hover:bg-surface-muted flex items-center justify-center text-text-muted hover:text-text-primary transition-colors cursor-pointer"
                 title="Close"
               >
                 <X className="w-3.5 h-3.5" />
@@ -1105,15 +1105,15 @@ export default function BookingForm({ data = heroData?.form }) {
             </div>
 
             {/* Time Preview */}
-            <div className="bg-[#f4f5f7] rounded-xl p-2.5 mb-3 flex items-center justify-between border border-neutral-100">
+            <div className="bg-surface-secondary rounded-xl p-2.5 mb-3 flex items-center justify-between border border-border">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-brand-blue shrink-0 stroke-[2.2]" />
+                <Clock className="w-4 h-4 text-primary shrink-0 stroke-[2.2]" />
 
-                <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wide">
+                <span className="text-xs font-semibold text-text-muted uppercase tracking-wide">
                   Time:
                 </span>
 
-                <span className="text-lg font-black text-neutral-900 tracking-wider">
+                <span className="text-lg font-black text-text-primary tracking-wider">
                   {customHour}:
                   {isMinuteValid
                     ? getNormalizedMinute()
@@ -1123,7 +1123,7 @@ export default function BookingForm({ data = heroData?.form }) {
               </div>
 
               {/* AM / PM */}
-              <div className="flex items-center p-0.5 rounded-lg bg-neutral-200/70">
+              <div className="flex items-center p-0.5 rounded-lg bg-surface-muted">
                 <button
                   type="button"
                   onClick={() =>
@@ -1134,8 +1134,8 @@ export default function BookingForm({ data = heroData?.form }) {
                   className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
                     customPeriod ===
                     "AM"
-                      ? "bg-[#123999] text-white shadow-xs"
-                      : "text-neutral-600 hover:text-neutral-900"
+                      ? "bg-primary text-primary-foreground shadow-xs"
+                      : "text-text-muted hover:text-text-primary"
                   }`}
                 >
                   AM
@@ -1151,8 +1151,8 @@ export default function BookingForm({ data = heroData?.form }) {
                   className={`px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
                     customPeriod ===
                     "PM"
-                      ? "bg-[#FFC003] text-black shadow-xs"
-                      : "text-neutral-600 hover:text-neutral-900"
+                      ? "bg-primary text-primary-foreground shadow-xs"
+                      : "text-text-muted hover:text-text-primary"
                   }`}
                 >
                   PM
@@ -1162,7 +1162,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
             {/* Hour */}
             <div className="mb-3">
-              <div className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider mb-1">
+              <div className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1">
                 HOUR
               </div>
 
@@ -1184,8 +1184,8 @@ export default function BookingForm({ data = heroData?.form }) {
                         }
                         className={`h-7.5 rounded-lg text-xs font-bold flex items-center justify-center transition-all cursor-pointer ${
                           isSelected
-                            ? "bg-[#FFC003] text-black shadow-xs scale-105"
-                            : "bg-neutral-100 text-neutral-700 hover:bg-[#123999]/10 hover:text-brand-blue"
+                            ? "bg-primary text-primary-foreground shadow-xs scale-105"
+                            : "bg-surface-muted text-text-secondary hover:bg-primary-subtle hover:text-primary"
                         }`}
                       >
                         {h}
@@ -1201,22 +1201,22 @@ export default function BookingForm({ data = heroData?.form }) {
               <div className="flex items-center justify-between mb-1">
                 <label
                   htmlFor="customMinuteInput"
-                  className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider cursor-pointer"
+                  className="text-[10px] font-bold text-text-muted uppercase tracking-wider cursor-pointer"
                 >
                   MINUTE
                 </label>
 
-                <span className="text-[10px] font-medium text-neutral-400">
+                <span className="text-[10px] font-medium text-text-muted">
                   00–59
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <div
-                  className={`relative flex-1 bg-neutral-100 hover:bg-neutral-200/60 focus-within:bg-white focus-within:ring-2 ${
+                  className={`relative flex-1 bg-surface-muted hover:bg-surface-secondary focus-within:bg-surface focus-within:ring-2 ${
                     !isMinuteValid
-                      ? "border border-red-500 focus-within:ring-red-200"
-                      : "border border-transparent focus-within:border-[#123999] focus-within:ring-[#123999]/30"
+                      ? "border border-error focus-within:ring-error/20"
+                      : "border border-transparent focus-within:border-primary focus-within:ring-focus-ring/30"
                   } rounded-xl px-3 py-2 transition-all`}
                 >
                   <input
@@ -1235,7 +1235,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     }
                     placeholder="00"
                     maxLength={2}
-                    className="w-full text-center text-base font-bold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                    className="w-full text-center text-base font-bold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
                   />
                 </div>
 
@@ -1245,7 +1245,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     onClick={
                       handleDecrementMinute
                     }
-                    className="w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer select-none active:scale-95"
+                    className="w-8 h-8 rounded-lg bg-surface-muted hover:bg-surface-secondary text-text-secondary flex items-center justify-center font-bold text-sm transition-colors cursor-pointer select-none active:scale-95"
                     title="Decrease 1 minute"
                   >
                     -
@@ -1256,7 +1256,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     onClick={
                       handleIncrementMinute
                     }
-                    className="w-8 h-8 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer select-none active:scale-95"
+                    className="w-8 h-8 rounded-lg bg-surface-muted hover:bg-surface-secondary text-text-secondary flex items-center justify-center font-bold text-sm transition-colors cursor-pointer select-none active:scale-95"
                     title="Increase 1 minute"
                   >
                     +
@@ -1265,7 +1265,7 @@ export default function BookingForm({ data = heroData?.form }) {
               </div>
 
               {!isMinuteValid && (
-                <p className="text-[11px] text-red-500 font-medium mt-1.5 flex items-center gap-1">
+                <p className="text-[11px] text-error font-medium mt-1.5 flex items-center gap-1">
                   <span>
                     Minutes must be between
                     00 and 59.
@@ -1281,10 +1281,10 @@ export default function BookingForm({ data = heroData?.form }) {
               onClick={
                 handleSaveSelection
               }
-              className={`w-full py-2.5 px-4 rounded-xl text-neutral-900 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-xs ${
+              className={`w-full py-2.5 px-4 rounded-xl font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-xs ${
                 !isMinuteValid
-                  ? "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-                  : "bg-[#FFC003] hover:bg-[#E6AD00] cursor-pointer active:scale-[0.98]"
+                  ? "bg-disabled text-disabled-text cursor-not-allowed"
+                  : "bg-primary hover:bg-primary-hover text-primary-foreground cursor-pointer active:scale-[0.98]"
               }`}
             >
               <span>
@@ -1319,23 +1319,21 @@ export default function BookingForm({ data = heroData?.form }) {
         className="space-y-3.5 sm:space-y-4"
       >
         {/* ========================================================= */}
-        {/* FIRST ROW */}
         {/* ========================================================= */}
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
           {/* Full Name */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 focus-within:ring-focus-ring/30 border border-transparent focus-within:border-primary rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="fullName"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.fullName ||
                 "FULL NAME"}
             </label>
 
             <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
+              <User className="w-4 h-4 text-text-muted shrink-0 stroke-[2.2]" />
 
               <input
                 id="fullName"
@@ -1354,23 +1352,23 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.fullName ||
                   "e.g. Rahul Sharma"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
               />
             </div>
           </div>
 
           {/* Mobile */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 focus-within:ring-focus-ring/30 border border-transparent focus-within:border-primary rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="mobile"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.mobile ||
                 "MOBILE NUMBER"}
             </label>
 
             <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
+              <Phone className="w-4 h-4 text-text-muted shrink-0 stroke-[2.2]" />
 
               <input
                 id="mobile"
@@ -1389,23 +1387,23 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.mobile ||
                   "+91 XXXXX XXXXX"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
               />
             </div>
           </div>
 
           {/* Email */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 focus-within:ring-focus-ring/30 border border-transparent focus-within:border-primary rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="email"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.email ||
                 "EMAIL ADDRESS"}
             </label>
 
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
+              <Mail className="w-4 h-4 text-text-muted shrink-0 stroke-[2.2]" />
 
               <input
                 id="email"
@@ -1424,29 +1422,29 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.email ||
                   "eg@example.com"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
               />
             </div>
           </div>
 
           {/* Passengers */}
           <div
-            className={`bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 ${
+            className={`bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 ${
               passengerError
-                ? "border-red-500 focus-within:ring-red-200"
-                : "border-transparent focus-within:border-[#123999] focus-within:ring-[#FFC003]/30"
+                ? "border-error focus-within:ring-error/20"
+                : "border-transparent focus-within:border-primary focus-within:ring-focus-ring/30"
             } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center`}
           >
             <label
               htmlFor="passengers"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.passengers ||
                 "NO. OF PASSENGERS"}
             </label>
 
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-brand-blue shrink-0 stroke-[2.2]" />
+              <Users className="w-4 h-4 text-primary shrink-0 stroke-[2.2]" />
 
               <input
                 id="passengers"
@@ -1470,12 +1468,12 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.passengers ||
                   "20"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
               />
             </div>
 
             {passengerError && (
-              <p className="text-[10px] text-red-500 font-semibold mt-1">
+              <p className="text-[10px] text-error font-semibold mt-1">
                 {passengerError}
               </p>
             )}
@@ -1489,10 +1487,10 @@ export default function BookingForm({ data = heroData?.form }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-stretch">
 
           {/* Pick-Up */}
-          <div className="bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#FFC003]/30 border border-transparent focus-within:border-[#123999] rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
+          <div className="bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 focus-within:ring-focus-ring/30 border border-transparent focus-within:border-primary rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
             <label
               htmlFor="pickupPoint"
-              className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+              className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.pickupPoint ||
                 "PICK-UP POINT"}
@@ -1520,7 +1518,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.pickupPoint ||
                   "e.g. Delhi NCR"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
               />
             </div>
           </div>
@@ -1528,7 +1526,7 @@ export default function BookingForm({ data = heroData?.form }) {
           {/* Destination */}
           <div
             ref={destRef}
-            className="relative bg-[#f4f5f7] hover:bg-[#eef0f3] focus-within:bg-white border border-transparent focus-within:border-[#123999] focus-within:ring-2 focus-within:ring-[#FFC003]/30 rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer"
+            className="relative bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface border border-transparent focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30 rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer"
             onClick={() =>
               setIsDestOpen(
                 (prev) => !prev
@@ -1536,22 +1534,22 @@ export default function BookingForm({ data = heroData?.form }) {
             }
           >
             <div className="flex items-center justify-between">
-              <label className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer">
+              <label className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer">
                 {labels.destination ||
                   "DESTINATION"}
               </label>
 
               <ChevronDown
-                className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-text-muted transition-transform duration-200 ${
                   isDestOpen
-                    ? "rotate-180 text-brand-blue"
+                    ? "rotate-180 text-primary"
                     : ""
                 }`}
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-brand-blue shrink-0 stroke-[2.2]" />
+              <MapPin className="w-4 h-4 text-primary shrink-0 stroke-[2.2]" />
 
               <input
                 type="text"
@@ -1578,20 +1576,20 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.destination ||
                   "e.g. Jaipur"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent"
               />
             </div>
 
             {/* Dropdown */}
             {isDestOpen && (
               <div
-                className="absolute top-[calc(100%+6px)] left-0 right-0 z-50 bg-white rounded-xl border border-neutral-200 shadow-xl p-2 space-y-1"
+                className="absolute top-[calc(100%+6px)] left-0 right-0 z-50 bg-surface rounded-xl border border-border shadow-xl p-2 space-y-1"
                 onClick={(e) =>
                   e.stopPropagation()
                 }
               >
-                <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-neutral-50 border border-neutral-200 mb-1">
-                  <Search className="w-3.5 h-3.5 text-neutral-400" />
+                <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-surface-secondary border border-border mb-1">
+                  <Search className="w-3.5 h-3.5 text-text-muted" />
 
                   <input
                     type="text"
@@ -1604,7 +1602,7 @@ export default function BookingForm({ data = heroData?.form }) {
                       )
                     }
                     placeholder="Search city..."
-                    className="w-full text-xs font-semibold text-neutral-900 bg-transparent focus:outline-none"
+                    className="w-full text-xs font-semibold text-text-primary bg-transparent focus:outline-none"
                     autoFocus
                   />
 
@@ -1616,9 +1614,9 @@ export default function BookingForm({ data = heroData?.form }) {
                           ""
                         )
                       }
-                      className="text-neutral-500 hover:text-neutral-700"
+                      className="text-text-muted hover:text-text-primary"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>
@@ -1650,8 +1648,8 @@ export default function BookingForm({ data = heroData?.form }) {
                           }}
                           className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors ${
                             isSelected
-                              ? "bg-[#123999]/10 text-brand-blue"
-                              : "hover:bg-neutral-100 text-neutral-700"
+                              ? "bg-primary-subtle text-primary"
+                              : "hover:bg-surface-secondary text-text-secondary"
                           }`}
                         >
                           <span>
@@ -1659,7 +1657,7 @@ export default function BookingForm({ data = heroData?.form }) {
                           </span>
 
                           {isSelected && (
-                            <Check className="w-3 h-3 text-brand-blue stroke-[2.5]" />
+                            <Check className="w-3 h-3 text-primary stroke-[2.5]" />
                           )}
                         </button>
                       );
@@ -1678,10 +1676,10 @@ export default function BookingForm({ data = heroData?.form }) {
                 "date"
               )
             }
-            className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${
+            className={`relative bg-surface-secondary hover:bg-surface-muted ${
               activePicker ===
               "departure"
-                ? "bg-white border-[#FFC003] ring-2 ring-[#FFC003]/30"
+                ? "bg-surface border-primary ring-2 ring-focus-ring/30"
                 : "border-transparent"
             } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
             role="button"
@@ -1704,7 +1702,7 @@ export default function BookingForm({ data = heroData?.form }) {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="departureDateTime"
-                className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+                className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
               >
                 {labels.departureDateTime ||
                   "DEPARTURE DATE & TIME"}
@@ -1722,7 +1720,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Date"
-                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
+                  className="text-text-muted hover:text-primary transition-colors cursor-pointer p-0.5"
                 >
                   <Calendar className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1738,7 +1736,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Time"
-                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
+                  className="text-text-muted hover:text-primary transition-colors cursor-pointer p-0.5"
                 >
                   <Clock className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1746,7 +1744,7 @@ export default function BookingForm({ data = heroData?.form }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
+              <Calendar className="w-4 h-4 text-text-muted shrink-0 stroke-[2.2]" />
 
               <input
                 id="departureDateTime"
@@ -1767,7 +1765,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.departureDateTime ||
                   "30-09-2026 | 07:00 AM"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent cursor-pointer select-none"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent cursor-pointer select-none"
               />
             </div>
 
@@ -1786,9 +1784,9 @@ export default function BookingForm({ data = heroData?.form }) {
                 "date"
               )
             }
-            className={`relative bg-[#f4f5f7] hover:bg-[#eef0f3] ${
+            className={`relative bg-surface-secondary hover:bg-surface-muted ${
               activePicker === "return"
-                ? "bg-white border-[#FFC003] ring-2 ring-[#FFC003]/30"
+                ? "bg-surface border-primary ring-2 ring-focus-ring/30"
                 : "border-transparent"
             } border rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center cursor-pointer select-none`}
             role="button"
@@ -1811,7 +1809,7 @@ export default function BookingForm({ data = heroData?.form }) {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="returnDateTime"
-                className="text-[10px] sm:text-[11px] font-bold text-neutral-700 uppercase tracking-wider select-none mb-1 cursor-pointer"
+                className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
               >
                 {labels.returnDateTime ||
                   "RETURN DATE & TIME"}
@@ -1829,7 +1827,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Date"
-                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
+                  className="text-text-muted hover:text-primary transition-colors cursor-pointer p-0.5"
                 >
                   <Calendar className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1845,7 +1843,7 @@ export default function BookingForm({ data = heroData?.form }) {
                     );
                   }}
                   title="Select Time"
-                  className="text-neutral-400 hover:text-brand-blue transition-colors cursor-pointer p-0.5"
+                  className="text-text-muted hover:text-primary transition-colors cursor-pointer p-0.5"
                 >
                   <Clock className="w-3.5 h-3.5 stroke-[2.2]" />
                 </button>
@@ -1853,7 +1851,7 @@ export default function BookingForm({ data = heroData?.form }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-neutral-500 shrink-0 stroke-[2.2]" />
+              <Calendar className="w-4 h-4 text-text-muted shrink-0 stroke-[2.2]" />
 
               <input
                 id="returnDateTime"
@@ -1874,7 +1872,7 @@ export default function BookingForm({ data = heroData?.form }) {
                   placeholders.returnDateTime ||
                   "02-10-2026 | 09:00 PM"
                 }
-                className="w-full text-xs sm:text-sm font-semibold text-neutral-900 placeholder:text-neutral-500 focus:outline-none bg-transparent cursor-pointer select-none"
+                className="w-full text-xs sm:text-sm font-semibold text-text-primary placeholder:text-text-muted focus:outline-none bg-transparent cursor-pointer select-none"
               />
             </div>
 
@@ -1889,7 +1887,7 @@ export default function BookingForm({ data = heroData?.form }) {
           <div className="col-span-1 sm:col-span-2 lg:col-span-1 flex items-stretch">
             <button
               type="submit"
-              className="w-full h-full min-h-14 rounded-xl bg-[#ffc003] hover:bg-[#e0a900] text-[#111111] font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ffc003] focus-visible:ring-offset-2 select-none group"
+              className="w-full h-full min-h-14 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 select-none group"
               
             >
               <span>
@@ -1909,7 +1907,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
         <div className="mt-4 pt-4 border-t border-white/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-[#FFC003] text-black text-[10px] font-bold uppercase tracking-wider select-none">
+            <span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider select-none">
               {routeSummary.badge ||
                 "FULL COACH"}
             </span>
@@ -1933,7 +1931,7 @@ export default function BookingForm({ data = heroData?.form }) {
           </div>
 
           <div className="flex items-center gap-2 text-neutral-300 text-xs sm:text-[13px] font-medium">
-            <span className="w-2 h-2 rounded-full bg-[#FFC003] shrink-0 inline-block" />
+            <span className="w-2 h-2 rounded-full bg-primary shrink-0 inline-block" />
 
             <span>
               {routeSummary.subtext ||
@@ -1949,20 +1947,20 @@ export default function BookingForm({ data = heroData?.form }) {
 
       {capacityNotice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-neutral-100 text-center animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-13 h-13 rounded-full bg-[#123999]/10 text-brand-blue flex items-center justify-center mx-auto mb-3.5 border border-[#FFC003]/30">
+          <div className="bg-surface rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-border text-center animate-in fade-in zoom-in-95 duration-200">
+            <div className="w-13 h-13 rounded-full bg-primary-subtle text-primary flex items-center justify-center mx-auto mb-3.5 border border-primary/30">
               <Users className="w-6 h-6 stroke-[2.2]" />
             </div>
 
-            <span className="text-[10px] font-bold tracking-wider text-brand-blue uppercase block mb-1">
+            <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-1">
               LARGE GROUP INQUIRY
             </span>
 
-            <h4 className="text-xl font-black text-neutral-900 mb-2">
+            <h4 className="text-xl font-black text-text-primary mb-2">
               Custom Fleet Required
             </h4>
 
-            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-6">
+            <p className="text-xs sm:text-sm text-text-muted leading-relaxed mb-6">
               {capacityNotice}
             </p>
 
@@ -1972,14 +1970,14 @@ export default function BookingForm({ data = heroData?.form }) {
                 onClick={() =>
                   setCapacityNotice(null)
                 }
-                className="flex-1 py-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs sm:text-sm font-bold transition-all cursor-pointer"
+                className="flex-1 py-3 rounded-xl bg-surface-muted hover:bg-surface-secondary text-text-primary text-xs sm:text-sm font-bold transition-all cursor-pointer"
               >
                 Modify Group
               </button>
 
               <a
                 href="tel:+919876543210"
-                className="flex-1 py-3 rounded-xl bg-[#FFC003] hover:bg-[#E6AD00] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                className="flex-1 py-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
               >
                 <Phone className="w-4 h-4" />
                 <span>

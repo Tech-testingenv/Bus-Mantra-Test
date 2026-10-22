@@ -60,15 +60,15 @@ export default function PopularDestinations({
 
       <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-12 sm:gap-6 md:flex-row md:items-end">
         <div className="flex max-w-2xl flex-col items-start text-left">
-          <span className="mb-2.5 select-none text-[11px] font-bold uppercase tracking-[0.16em] text-brand-blue sm:mb-3 sm:text-xs">
+          <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-3 sm:text-xs">
             {sectionData?.eyebrow || "DESTINATIONS"}
           </span>
 
-          <h2 className="text-3xl font-extrabold leading-[1.14] tracking-tight text-neutral-900 sm:text-4xl lg:text-[42px]">
+          <h2 className="text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
             {sectionData?.heading || "Where will your group go?"}
           </h2>
 
-          <p className="mt-2 text-sm font-normal leading-relaxed text-neutral-500 sm:mt-2.5 sm:text-base">
+          <p className="mt-2 text-sm font-normal leading-relaxed text-text-secondary sm:mt-2.5 sm:text-base">
             {sectionData?.description ||
               "Explore popular destinations for your next group journey."}
           </p>
@@ -78,7 +78,7 @@ export default function PopularDestinations({
         <div className="flex shrink-0 items-center md:pb-1">
           <Link
             href={sectionData?.headerCta?.href || "#booking-form"}
-            className="group/link inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-brand-blue transition-colors duration-200 hover:text-brand-orange sm:text-base"
+            className="group/link inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-text-primary transition-colors duration-200 hover:text-primary sm:text-base"
           >
             <span>
               {sectionData?.headerCta?.label ||
@@ -86,7 +86,7 @@ export default function PopularDestinations({
             </span>
 
             <ArrowRight
-              className="h-4 w-4 text-brand-orange transition-transform duration-200 group-hover/link:translate-x-1"
+              className="h-4 w-4 text-primary transition-transform duration-200 group-hover/link:translate-x-1"
               strokeWidth={2.2}
             />
           </Link>
@@ -158,17 +158,17 @@ export default function PopularDestinations({
                 overflow-hidden
                 rounded-[20px]
                 border
-                border-neutral-200
+                border-border
                 bg-white
-                shadow-[0_2px_8px_rgba(18,57,153,0.03)]
+                shadow-xs
                 transition-all
                 duration-300
                 hover:-translate-y-1
-                hover:border-brand-blue/30
-                hover:shadow-[0_12px_32px_rgba(18,57,153,0.09)]
+                hover:border-primary/40
+                hover:shadow-md
                 focus:outline-none
                 focus-visible:ring-2
-                focus-visible:ring-brand-blue
+                focus-visible:ring-focus-ring
                 sm:w-[320px]
                 lg:h-full
                 lg:w-full
@@ -181,7 +181,7 @@ export default function PopularDestinations({
                   IMAGE
               ================================================= */}
 
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[20px] bg-neutral-100">
+              <div className="relative aspect-16/10 w-full overflow-hidden rounded-t-[20px] bg-surface-muted">
                 {dest?.image ? (
                   <Image
                     src={dest.image}
@@ -202,16 +202,16 @@ export default function PopularDestinations({
                     "
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-sm text-neutral-400">
+                  <div className="flex h-full w-full items-center justify-center text-sm text-text-muted">
                     Image unavailable
                   </div>
                 )}
 
                 {/* Subtle image overlay */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent" />
 
-                {/* Yellow accent */}
-                <div className="absolute bottom-0 left-0 h-1 w-16 bg-brand-yellow transition-all duration-300 group-hover:w-24" />
+                {/* Accent line */}
+                <div className="absolute bottom-0 left-0 h-1 w-16 bg-primary transition-all duration-300 group-hover:w-24" />
               </div>
 
               {/* =================================================
@@ -221,9 +221,9 @@ export default function PopularDestinations({
               <div className="flex flex-1 flex-col justify-between bg-white p-5 sm:p-6 lg:p-7">
                 <div>
                   {/* Route */}
-                  <div className="mb-2.5 flex items-center gap-1.5 text-xs font-semibold text-brand-blue">
+                  <div className="mb-2.5 flex items-center gap-1.5 text-xs font-semibold text-text-muted">
                     <Navigation
-                      className="h-3.5 w-3.5 shrink-0 text-brand-orange"
+                      className="h-3.5 w-3.5 shrink-0 text-primary"
                       strokeWidth={2.2}
                     />
 
@@ -231,12 +231,12 @@ export default function PopularDestinations({
                   </div>
 
                   {/* Destination */}
-                  <h3 className="mb-1.5 text-xl font-bold tracking-tight text-neutral-900 transition-colors duration-300 group-hover:text-brand-blue sm:text-[22px]">
+                  <h3 className="mb-1.5 text-xl font-bold tracking-tight text-text-primary transition-colors duration-300 group-hover:text-primary sm:text-[22px]">
                     {dest.name}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-sm font-normal leading-relaxed text-neutral-500">
+                  <p className="text-sm font-normal leading-relaxed text-text-secondary">
                     {dest.description}
                   </p>
                 </div>
@@ -246,23 +246,21 @@ export default function PopularDestinations({
                 ================================================= */}
 
                 <div>
-                  <div className="my-4 border-t border-neutral-100" />
+                  <div className="my-4 border-t border-border" />
 
-                  <div className="flex items-center justify-between gap-3 text-sm font-semibold text-neutral-900">
-                    <span className="transition-colors duration-200 group-hover:text-brand-blue">
+                  <div className="flex items-center justify-between gap-3 text-sm font-semibold text-text-primary">
+                    <span className="transition-colors duration-200 group-hover:text-primary">
                       {ctaLabel}
                     </span>
 
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-yellow transition-all duration-300 group-hover:bg-brand-blue">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-subtle text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                       <ArrowRight
                         className="
                           h-4
                           w-4
-                          text-brand-blue
                           transition-all
                           duration-200
                           group-hover:translate-x-0.5
-                          group-hover:text-white
                         "
                         strokeWidth={2.2}
                       />
@@ -294,8 +292,8 @@ export default function PopularDestinations({
               duration-300
               ${
                 activeSlide === index
-                  ? "w-6 bg-brand-blue"
-                  : "w-1.5 bg-neutral-300 hover:bg-brand-yellow"
+                  ? "w-6 bg-primary"
+                  : "w-1.5 bg-neutral-300 hover:bg-primary-hover"
               }
             `}
           />

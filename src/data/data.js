@@ -1,6 +1,6 @@
 export const heroData = {
   eyebrow: "FULL BUS BOOKING",
-  titleLines: ["Luxury Coach at ₹1/KM.", "Yes, You Read That Right !"],
+  titleLines: ["Book your Luxury Coach @₹1/KM.", "Yes, You Read That Right!"],
   description:
     "Book an entire luxury coach for your group and travel together in comfort, without the hassle.",
   primaryButton: {
@@ -26,7 +26,7 @@ export const heroData = {
     },
   ],
   image: {
-    src: "/fleet/fleet.png",
+    src: "/about_bus.png",
     alt: "BUS MANTRA Modern Luxury Coach Bus",
     width: 1920,
     height: 1080,
@@ -93,7 +93,7 @@ export const heroData = {
         defaultValue: "Rahul Sharma",
         type: "text",
         icon: "user",
-        iconColor: "text-amber-600 bg-amber-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
       {
         id: "mobileNumber",
@@ -102,7 +102,7 @@ export const heroData = {
         defaultValue: "+91 98765 43210",
         type: "tel",
         icon: "phone",
-        iconColor: "text-emerald-600 bg-emerald-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
       {
         id: "email",
@@ -111,7 +111,7 @@ export const heroData = {
         defaultValue: "rahul@example.com",
         type: "email",
         icon: "mail",
-        iconColor: "text-blue-600 bg-blue-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
       {
         id: "packs",
@@ -120,7 +120,7 @@ export const heroData = {
         defaultValue: "20",
         type: "number",
         icon: "users",
-        iconColor: "text-purple-600 bg-purple-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
     ],
     row2: [
@@ -131,7 +131,7 @@ export const heroData = {
         defaultValue: "Delhi NCR",
         type: "text",
         icon: "mapPin",
-        iconColor: "text-emerald-600 bg-emerald-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
       {
         id: "destination",
@@ -141,7 +141,7 @@ export const heroData = {
         badge: "1 Stop",
         type: "searchable-dropdown",
         icon: "navigation",
-        iconColor: "text-purple-600 bg-purple-50",
+        iconColor: "text-primary bg-primary-subtle",
         options: [
           { value: "Jaipur", label: "Jaipur, Rajasthan", badge: "Pink City" },
           { value: "Agra", label: "Agra, Uttar Pradesh", badge: "Taj Mahal" },
@@ -169,7 +169,7 @@ export const heroData = {
         type: "dateTime",
         icon: "calendar",
         timeIcon: "clock",
-        iconColor: "text-brand-orange bg-orange-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
       {
         id: "returnDateTime",
@@ -181,7 +181,7 @@ export const heroData = {
         type: "dateTime",
         icon: "calendar",
         timeIcon: "clock",
-        iconColor: "text-brand-orange bg-orange-50",
+        iconColor: "text-primary bg-primary-subtle",
       },
     ],
   },
@@ -370,52 +370,52 @@ export const aboutData = {
   ========================================================= */
 
   occasions: {
-  eyebrow: "MADE FOR EVERY JOURNEY",
+    eyebrow: "MADE FOR EVERY JOURNEY",
 
-  heading: "Different journeys. One trusted ride.",
+    heading: "Different journeys. One trusted ride.",
 
-  items: [
-    {
-      number: "01",
-      title: "Weddings & Celebrations",
-      description:
-        "Keep your guests together and make transportation one less thing to coordinate.",
-      image: "/images/about/wedding-travel.png",
-      alt: "Indian wedding guests travelling together inside a decorated luxury coach",
-      href: "/services/events-weddings",
-    },
+    items: [
+      {
+        number: "01",
+        title: "Weddings & Celebrations",
+        description:
+          "Keep your guests together and make transportation one less thing to coordinate.",
+        image: "/images/about/wedding-travel.png",
+        alt: "Indian wedding guests travelling together inside a decorated luxury coach",
+        href: "/services/events-weddings",
+      },
 
-    {
-      number: "02",
-      title: "Corporate Travel",
-      description:
-        "Move teams, clients and colleagues together for meetings, events and business travel.",
-      image: "/images/about/corporate-travel.png",
-      alt: "Indian corporate professionals travelling together inside a premium coach",
-      href: "/services/corporate-travel",
-    },
+      {
+        number: "02",
+        title: "Corporate Travel",
+        description:
+          "Move teams, clients and colleagues together for meetings, events and business travel.",
+        image: "/images/about/corporate-travel.png",
+        alt: "Indian corporate professionals travelling together inside a premium coach",
+        href: "/services/corporate-travel",
+      },
 
-    {
-      number: "03",
-      title: "School & College Trips",
-      description:
-        "Organized transportation for educational trips, excursions and campus events.",
-      image: "/images/about/school-trip.png",
-      alt: "Indian students travelling together inside a luxury coach",
-      href: "/services/school-trips",
-    },
+      {
+        number: "03",
+        title: "School & College Trips",
+        description:
+          "Organized transportation for educational trips, excursions and campus events.",
+        image: "/images/about/school-trip.png",
+        alt: "Indian students travelling together inside a luxury coach",
+        href: "/services/school-trips",
+      },
 
-    {
-      number: "04",
-      title: "Airport Pickup & Transfer",
-      description:
-        "Enjoy convenient group transportation to and from the airport with comfortable, reliable transfers.",
-      image: "/images/about/family-travel.png",
-      alt: "Passengers travelling together in a comfortable luxury coach for an airport transfer",
-      href: "/services/airport-transfers",
-    },
-  ],
-},
+      {
+        number: "04",
+        title: "Airport Pickup & Transfer",
+        description:
+          "Enjoy convenient group transportation to and from the airport with comfortable, reliable transfers.",
+        image: "/images/about/family-travel.png",
+        alt: "Passengers travelling together in a comfortable luxury coach for an airport transfer",
+        href: "/services/airport-transfers",
+      },
+    ],
+  },
 
   /* =========================================================
      CLOSING CTA
@@ -554,7 +554,7 @@ export const fleetPageHeroData = {
   titleLines: ["One fleet.", "Every kind of journey."],
   description:
     "From compact coaches to premium luxury buses, our fleet is built to make group travel comfortable, reliable and easy — whatever the size of your journey.",
-  image: "/fleet/fleet.png",
+  image: "/about_bus.png",
   imageAlt: "Bus Mantra luxury coach fleet",
 };
 
@@ -710,7 +710,7 @@ export const destinationsPageHeroData = {
   ],
   description:
     "Discover popular destinations across India and make every group journey comfortable, convenient and memorable with Bus Mantra.",
-  image: "/fleet/fleet.png",
+  image: "/about_bus.png",
   imageAlt:
     "Bus Mantra coach ready for group travel across India",
 };
@@ -758,7 +758,7 @@ export const destinationsData = {
 
         description:
           "Discover the grand Amber Fort, one of Jaipur's most impressive heritage landmarks. Surrounded by the Aravalli Hills, the fort combines magnificent architecture, historic courtyards and beautiful views, making it an excellent sightseeing stop for groups exploring Jaipur.",
-        
+
         highlights: [
           "Explore grand courtyards, gateways and historic palace interiors.",
           "Enjoy beautiful views of the surrounding Aravalli Hills.",
@@ -1298,7 +1298,7 @@ export const servicesPageHeroData = {
   titleLines: ["Group travel,", "made simple."],
   description:
     "From corporate travel and school trips to airport transfers and group tours, Bus Mantra provides comfortable, reliable transportation for every kind of group journey.",
-  image: "/fleet/fleet.png",
+  image: "/about_bus.png",
   imageAlt: "Bus Mantra comfortable coach fleet for group travel",
 };
 
@@ -1346,7 +1346,7 @@ export const featuredServiceData = {
     },
   ],
 
-  image: "/fleet/fleet.png",
+  image: "/about_bus.png",
 
   imageAlt:
     "Bus Mantra luxury coach for full-bus group charter travel",

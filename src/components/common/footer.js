@@ -50,7 +50,7 @@ export default function Footer({ data = footerData }) {
   };
 
   return (
-    <footer className="w-full bg-[#123999] border-t border-white/15 pt-12 sm:pt-16 pb-8 text-white">
+    <footer className="w-full bg-primary border-t border-primary-hover pt-12 sm:pt-16 pb-8 text-primary-foreground">
       <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
         {/* ========================================================= */}
         {/* 1. TOP BRAND & CONTACT AREA                               */}
@@ -61,24 +61,22 @@ export default function Footer({ data = footerData }) {
             {/* Logo & Tagline */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
               <Link
-              href="/"
-              className="inline-flex items-center justify-start bg-white px-3 py-3 rounded-xl "
-            >
+                href="/"
+                className="inline-flex items-center justify-start bg-white px-3 py-2 rounded-xl border border-white/30 shadow-2xs"
+              >
                 <Image
-              src={data.brand.logo || "/logo-bus-mantra.jpeg"}
-              alt={data.brand.name}
-              width={260}
-              height={100}
-              priority
-              className="h-14 sm:h-16 lg:h-[72px] w-auto max-w-[280px] object-contain object-left"
-            />
-                          </Link>
-              
-             
+                  src={data.brand.logo || "/logo-bus-mantra.jpeg"}
+                  alt={data.brand.name}
+                  width={260}
+                  height={100}
+                  priority
+                  className="h-10 sm:h-12 w-auto max-w-50 object-contain object-left"
+                />
+              </Link>
             </div>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm text-white/75 leading-relaxed mb-5">
+            <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-5">
               {data.brand.description}
             </p>
 
@@ -91,7 +89,7 @@ export default function Footer({ data = footerData }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className="w-9 h-9 rounded-full bg-white/10 border border-white/20 text-white hover:text-[#123999] hover:bg-[#FFC003] hover:border-[#FFC003] flex items-center justify-center transition-all duration-200 shadow-2xs"
+                  className="w-9 h-9 rounded-full bg-white text-primary hover:bg-white/90 hover:scale-105 flex items-center justify-center transition-all duration-200 shadow-2xs"
                 >
                   {renderSocialIcon(social.key)}
                 </a>
@@ -104,10 +102,10 @@ export default function Footer({ data = footerData }) {
             {/* Phone Pill */}
             <a
               href={data.contact.phoneHref}
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 hover:border-[#FFC003] hover:text-[#FFC003] text-white text-xs sm:text-sm font-semibold shadow-2xs hover:shadow-xs transition-all duration-200 group"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-white/30 hover:shadow-md text-text-primary text-xs sm:text-sm font-semibold shadow-2xs transition-all duration-200 group"
             >
-              <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-[#FFC003] flex items-center justify-center transition-colors">
-                <Phone className="w-3.5 h-3.5 text-[#FFC003] group-hover:text-[#123999] transition-colors" />
+              <div className="w-7 h-7 rounded-full bg-primary-subtle group-hover:bg-primary flex items-center justify-center transition-colors">
+                <Phone className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" />
               </div>
               <span>{data.contact.phone}</span>
             </a>
@@ -115,10 +113,10 @@ export default function Footer({ data = footerData }) {
             {/* Email Pill */}
             <a
               href={data.contact.emailHref}
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 hover:border-[#FFC003] hover:text-[#FFC003] text-white text-xs sm:text-sm font-semibold shadow-2xs hover:shadow-xs transition-all duration-200 group"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-white/30 hover:shadow-md text-text-primary text-xs sm:text-sm font-semibold shadow-2xs transition-all duration-200 group"
             >
-              <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-[#FFC003] flex items-center justify-center transition-colors">
-                <Mail className="w-3.5 h-3.5 text-[#FFC003] group-hover:text-[#123999] transition-colors" />
+              <div className="w-7 h-7 rounded-full bg-primary-subtle group-hover:bg-primary flex items-center justify-center transition-colors">
+                <Mail className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" />
               </div>
               <span>{data.contact.email}</span>
             </a>
@@ -141,7 +139,7 @@ export default function Footer({ data = footerData }) {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/70 hover:text-[#FFC003] transition-colors inline-block"
+                      className="text-white/85 hover:text-white hover:underline transition-colors inline-block"
                     >
                       {link.label}
                     </Link>
@@ -161,8 +159,8 @@ export default function Footer({ data = footerData }) {
                     <Link
                       href={fleet.href}
                       className={`inline-flex items-center gap-1 transition-colors ${fleet.isCta
-                        ? "text-[#FFC003] font-semibold hover:text-white"
-                        : "text-white/70 hover:text-[#FFC003]"
+                        ? "text-white font-bold underline hover:text-white/80"
+                        : "text-white/85 hover:text-white hover:underline"
                         }`}
                     >
                       <span>{fleet.label}</span>
@@ -183,8 +181,8 @@ export default function Footer({ data = footerData }) {
                     <Link
                       href={service.href}
                       className={`inline-flex items-center gap-1 transition-colors ${service.isCta
-                        ? "text-[#FFC003] font-semibold hover:text-white"
-                        : "text-white/70 hover:text-[#FFC003]"
+                        ? "text-white font-bold underline hover:text-white/80"
+                        : "text-white/85 hover:text-white hover:underline"
                         }`}
                     >
                       <span>{service.label}</span>
@@ -205,8 +203,8 @@ export default function Footer({ data = footerData }) {
                     <Link
                       href={dest.href}
                       className={`inline-flex items-center gap-1 transition-colors ${dest.isCta
-                        ? "text-[#FFC003] font-semibold hover:text-white"
-                        : "text-white/70 hover:text-[#FFC003]"
+                        ? "text-white font-bold underline hover:text-white/80"
+                        : "text-white/85 hover:text-white hover:underline"
                         }`}
                     >
                       <span>{dest.label}</span>
@@ -219,32 +217,32 @@ export default function Footer({ data = footerData }) {
 
           {/* RIGHT SIDE: PARTNER WITH US CARD (4 cols on desktop) */}
           <div className="lg:col-span-4">
-            <div className="bg-white/10 border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-xs hover:shadow-sm transition-shadow relative overflow-hidden">
+            <div className="bg-white border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
               {/* Subtle Ambient Decorative Corner Glow */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-orange/10 rounded-full blur-xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-xl pointer-events-none" />
 
               {/* Eyebrow */}
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#FFC003] uppercase tracking-wider mb-2">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-primary uppercase tracking-wider mb-2">
                 <Building2 className="w-3.5 h-3.5 stroke-[2.2]" />
                 <span>{data.partner.eyebrow}</span>
               </div>
 
               {/* Title */}
-              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
+              <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-2">
                 {data.partner.title}
               </h3>
 
               {/* Description */}
-              <p className="text-xs text-white/75 leading-relaxed mb-4">
+              <p className="text-xs text-text-muted leading-relaxed mb-4">
                 {data.partner.description}
               </p>
 
               {/* Benefits Checklist */}
               <div className="space-y-2 mb-5">
                 {data.partner.benefits.map((benefit, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-medium text-white">
-                    <div className="w-4 h-4 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                      <Check className="w-2.5 h-2.5 text-[#FFC003] stroke-3" />
+                  <div key={i} className="flex items-center gap-2 text-xs font-medium text-text-primary">
+                    <div className="w-4 h-4 rounded-full bg-primary-subtle flex items-center justify-center shrink-0">
+                      <Check className="w-2.5 h-2.5 text-primary stroke-3" />
                     </div>
                     <span>{benefit}</span>
                   </div>
@@ -254,14 +252,14 @@ export default function Footer({ data = footerData }) {
               {/* CTA Button */}
               <Link
                 href={data.partner.ctaHref || "#partner"}
-                className="w-full py-2.5 px-4 rounded-xl bg-[#FFC003] hover:bg-white text-[#123999] text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-all duration-200 group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFC003]"
+                className="w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-all duration-200 group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
               >
                 <span>{data.partner.cta}</span>
                 <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover/partner:translate-x-1" />
               </Link>
 
               {/* Small Supporting Text */}
-              <p className="text-[11px] text-center text-white/65 mt-2">
+              <p className="text-[11px] text-center text-text-muted mt-2">
                 {data.partner.subtext}
               </p>
             </div>
@@ -271,7 +269,7 @@ export default function Footer({ data = footerData }) {
         {/* ========================================================= */}
         {/* 3. BOTTOM COPYRIGHT & DEVELOPER BAR                       */}
         {/* ========================================================= */}
-        <div className="mt-10 sm:mt-14 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/70 text-center sm:text-left">
+        <div className="mt-10 sm:mt-14 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/85 text-center sm:text-left">
           {/* Copyright */}
           <p>{data.copyright}</p>
 
@@ -282,7 +280,7 @@ export default function Footer({ data = footerData }) {
               href={data.developer.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#FFC003] font-semibold hover:underline"
+              className="text-white font-bold hover:underline"
             >
               {data.developer.name}
             </a>

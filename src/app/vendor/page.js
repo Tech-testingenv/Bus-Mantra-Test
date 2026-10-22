@@ -130,14 +130,14 @@ function SectionLabel({ children, light = false }) {
   return (
     <div className="flex items-center gap-3">
       <span
-        className={`h-[3px] w-8 rounded-full ${
-          light ? "bg-[#FFC20E]" : "bg-[#F47716]"
+        className={`h-0.75 w-8 rounded-full ${
+          light ? "bg-primary" : "bg-primary"
         }`}
       />
 
       <p
         className={`text-[11px] font-semibold uppercase tracking-[0.19em] ${
-          light ? "text-[#FFC20E]" : "text-[#19439B]"
+          light ? "text-primary" : "text-primary"
         }`}
       >
         {children}
@@ -151,7 +151,7 @@ export default function VendorPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const inputClass =
-    "mt-2 w-full rounded-xl border border-[#DFE3E9] bg-white px-4 py-3.5 text-sm text-[#202735] outline-none placeholder:text-[#A1A8B4] hover:border-[#F47716] focus:border-[#F47716] focus:ring-2 focus:ring-[#F47716]/15";
+    "mt-2 w-full rounded-xl border border-border bg-white px-4 py-3.5 text-sm text-text-primary outline-none placeholder:text-text-muted hover:border-primary focus:border-primary focus:ring-2 focus:ring-focus-ring/15";
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -176,7 +176,7 @@ export default function VendorPage() {
   }
 
   return (
-    <main className="vendor-page overflow-hidden bg-white text-[#171B24]">
+    <main className="vendor-page overflow-hidden bg-white text-text-primary">
       <style jsx global>{`
         @keyframes vendorFadeRise {
           from {
@@ -277,7 +277,7 @@ export default function VendorPage() {
           Icons, arrows and text do not move, rotate or change colour.
         */
         .vendor-benefit-card:hover {
-          background-color: #f8faff;
+          background-color: var(--color-surface-secondary);
         }
 
         /*
@@ -322,7 +322,7 @@ export default function VendorPage() {
       {/* WHY BUS MANTRA */}
       <section
         id="why-partner"
-        className="scroll-mt-24 border-b border-[#E6E9EF]"
+        className="scroll-mt-24 border-b border-border"
       >
         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
           <Reveal animation="rise">
@@ -332,22 +332,22 @@ export default function VendorPage() {
 
                 <h1 className="mt-6 max-w-lg text-3xl font-semibold leading-[1.13] tracking-[-0.045em] sm:text-4xl lg:text-[49px]">
                   What are the benefits of becoming a{" "}
-                  <span className="text-[#19439B]">
+                  <span className="text-primary">
                     vendor with us?
                   </span>
                 </h1>
 
-                <div className="vendor-line-draw mt-6 h-[3px] w-16 rounded-full bg-[#FFC20E]" />
+                <div className="vendor-line-draw mt-6 h-0.75 w-16 rounded-full bg-primary" />
               </div>
 
               <div className="flex flex-col justify-end lg:pb-1">
-                <p className="max-w-xl text-sm leading-7 text-[#626B79] sm:text-base sm:leading-8">
+                <p className="max-w-xl text-sm leading-7 text-text-secondary sm:text-base sm:leading-8">
                   Becoming a Bus Mantra vendor gives your transport business an opportunity to build new professional connections, explore business enquiries, and discuss partnership possibilities with our team.
                 </p>
 
                 <a
                   href="#vendor-registration"
-                  className="mt-6 inline-flex w-fit items-center gap-3 rounded-lg text-sm font-semibold text-[#19439B]"
+                  className="mt-6 inline-flex w-fit items-center gap-3 rounded-lg text-sm font-semibold text-primary"
                 >
                   Register as a vendor
                   <ArrowRight size={17} />
@@ -367,28 +367,28 @@ export default function VendorPage() {
                   delay={index * 80}
                   animation="rise"
                 >
-                  <article className="vendor-benefit-card group grid gap-4 rounded-2xl border border-[#DFE3E9] bg-white p-5 sm:grid-cols-[45px_1fr_1.15fr_30px] sm:items-center sm:gap-5 sm:px-6 sm:py-7">
-                    <span className="text-xs font-medium tracking-[0.1em] text-[#969EAB]">
+                  <article className="vendor-benefit-card group grid gap-4 rounded-2xl border border-border bg-white p-5 sm:grid-cols-[45px_1fr_1.15fr_30px] sm:items-center sm:gap-5 sm:px-6 sm:py-7">
+                    <span className="text-xs font-medium tracking-widest text-text-muted">
                       {benefit.number}
                     </span>
 
                     <div className="flex items-center gap-4">
-                      <span className="vendor-benefit-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF2F9] text-[#19439B]">
+                      <span className="vendor-benefit-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-subtle text-primary">
                         <Icon size={20} strokeWidth={1.7} />
                       </span>
 
-                      <h2 className="vendor-benefit-title text-base font-semibold text-[#202735] sm:text-lg">
+                      <h2 className="vendor-benefit-title text-base font-semibold text-text-primary sm:text-lg">
                         {benefit.title}
                       </h2>
                     </div>
 
-                    <p className="max-w-xl text-sm leading-7 text-[#707A89]">
+                    <p className="max-w-xl text-sm leading-7 text-text-secondary">
                       {benefit.description}
                     </p>
 
                     <ArrowUpRight
                       size={19}
-                      className="vendor-benefit-arrow hidden text-[#A0A8B5] sm:block"
+                      className="vendor-benefit-arrow hidden text-text-muted sm:block"
                     />
                   </article>
                 </Reveal>
@@ -413,10 +413,10 @@ export default function VendorPage() {
                   Tell us about your business.
                 </h2>
 
-                <div className="vendor-line-draw mt-6 h-[3px] w-16 rounded-full bg-[#FFC20E]" />
+                <div className="vendor-line-draw mt-6 h-0.75 w-16 rounded-full bg-primary" />
               </div>
 
-              <p className="max-w-xl text-sm leading-7 text-[#626B79] sm:text-base sm:leading-8">
+              <p className="max-w-xl text-sm leading-7 text-text-secondary sm:text-base sm:leading-8">
                 Complete the form below with your business and fleet
                 information. It provides a starting point for discussing
                 your requirements and a potential partnership.
@@ -426,17 +426,17 @@ export default function VendorPage() {
 
           <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]">
             {/* INFORMATION PANEL */}
-            <aside className="vendor-info-panel relative isolate overflow-hidden rounded-3xl bg-[#102B60] p-7 text-white sm:p-10 lg:p-12">
-              <div className="absolute left-0 top-0 h-[4px] w-full rounded-full bg-[#19439B]" />
+            <aside className="vendor-info-panel relative isolate overflow-hidden rounded-3xl bg-surface-inverse p-7 text-white sm:p-10 lg:p-12">
+              <div className="absolute left-0 top-0 h-1 w-full rounded-full bg-white/20" />
 
-              <div className="absolute left-0 top-0 h-[4px] w-[34%] rounded-full bg-[#FFC20E]" />
+              <div className="absolute left-0 top-0 h-1 w-[34%] rounded-full bg-primary" />
 
               <Reveal animation="rise">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FFC20E] text-[#102B60]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                   <Handshake size={24} strokeWidth={1.7} />
                 </div>
 
-                <p className="mt-9 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#FFC20E]">
+                <p className="mt-9 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
                   Before you begin
                 </p>
 
@@ -466,7 +466,7 @@ export default function VendorPage() {
                       >
                         <Check
                           size={17}
-                          className="mt-0.5 shrink-0 text-[#FFC20E]"
+                          className="mt-0.5 shrink-0 text-primary"
                         />
 
                         <span>{item}</span>
@@ -478,7 +478,7 @@ export default function VendorPage() {
                 <div className="mt-10 flex items-center gap-3 border-t border-white/20 pt-6">
                   <MapPin
                     size={18}
-                    className="shrink-0 text-[#FFC20E]"
+                    className="shrink-0 text-primary"
                   />
 
                   <p className="text-xs leading-5 text-white/65">
@@ -489,22 +489,22 @@ export default function VendorPage() {
             </aside>
 
             {/* FORM PANEL */}
-            <div className="vendor-form-panel min-w-0 rounded-3xl border border-[#DFE3E9] bg-white p-5 sm:p-8 lg:p-10 xl:p-12">
+            <div className="vendor-form-panel min-w-0 rounded-3xl border border-border bg-white p-5 sm:p-8 lg:p-10 xl:p-12">
               {submitted ? (
-                <div className="flex min-h-[450px] flex-col items-start justify-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EEF3FF] text-[#19439B]">
+                <div className="flex min-h-112.5 flex-col items-start justify-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-subtle text-primary">
                     <Check size={28} strokeWidth={2} />
                   </div>
 
-                  <p className="mt-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#19439B]">
+                  <p className="mt-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                     Demo completed
                   </p>
 
-                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#202735] sm:text-3xl">
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">
                     Form interaction complete
                   </h3>
 
-                  <p className="mt-4 max-w-md text-sm leading-7 text-[#697384]">
+                  <p className="mt-4 max-w-md text-sm leading-7 text-text-secondary">
                     This is a frontend demonstration. Your details have
                     not been sent or saved to a server. Connect the form
                     to your backend API to enable actual vendor
@@ -514,7 +514,7 @@ export default function VendorPage() {
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="mt-7 inline-flex min-h-12 items-center gap-4 rounded-xl bg-[#19439B] px-6 text-sm font-semibold text-white hover:bg-[#123477]"
+                    className="mt-7 inline-flex min-h-12 items-center gap-4 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
                   >
                     Return to form
                     <ArrowRight size={17} />
@@ -522,16 +522,16 @@ export default function VendorPage() {
                 </div>
               ) : (
                 <>
-                  <div className="border-b border-[#E2E6EC] pb-6">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#19439B]">
+                  <div className="border-b border-border pb-6">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
                       Partner enquiry
                     </p>
 
-                    <h3 className="mt-3 text-2xl font-semibold tracking-[-0.025em] text-[#202735]">
+                    <h3 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">
                       Business information
                     </h3>
 
-                    <p className="mt-2 text-sm leading-6 text-[#818A98]">
+                    <p className="mt-2 text-sm leading-6 text-text-muted">
                       Please complete all required fields.
                     </p>
                   </div>
@@ -544,9 +544,9 @@ export default function VendorPage() {
                       <div>
                         <label
                           htmlFor="fullName"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
-                          Full name <span className="text-[#F47716]">*</span>
+                          Full name <span className="text-primary">*</span>
                         </label>
 
                         <input
@@ -565,10 +565,10 @@ export default function VendorPage() {
                       <div>
                         <label
                           htmlFor="businessName"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Business name{" "}
-                          <span className="text-[#F47716]">*</span>
+                          <span className="text-primary">*</span>
                         </label>
 
                         <input
@@ -586,10 +586,10 @@ export default function VendorPage() {
                       <div>
                         <label
                           htmlFor="email"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Email address{" "}
-                          <span className="text-[#F47716]">*</span>
+                          <span className="text-primary">*</span>
                         </label>
 
                         <input
@@ -608,10 +608,10 @@ export default function VendorPage() {
                       <div>
                         <label
                           htmlFor="phone"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Phone number{" "}
-                          <span className="text-[#F47716]">*</span>
+                          <span className="text-primary">*</span>
                         </label>
 
                         <input
@@ -632,10 +632,10 @@ export default function VendorPage() {
                       <div>
                         <label
                           htmlFor="city"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Operating city{" "}
-                          <span className="text-[#F47716]">*</span>
+                          <span className="text-primary">*</span>
                         </label>
 
                         <input
@@ -654,10 +654,10 @@ export default function VendorPage() {
                       <div>
                         <label
                           htmlFor="vehicleType"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Vehicle category{" "}
-                          <span className="text-[#F47716]">*</span>
+                          <span className="text-primary">*</span>
                         </label>
 
                         <div className="relative">
@@ -668,7 +668,7 @@ export default function VendorPage() {
                             value={form.vehicleType}
                             onChange={handleChange}
                             className={`${inputClass} appearance-none pr-10 ${
-                              form.vehicleType ? "" : "text-[#9AA2AF]"
+                              form.vehicleType ? "" : "text-text-muted"
                             }`}
                           >
                             <option value="" disabled>
@@ -684,7 +684,7 @@ export default function VendorPage() {
 
                           <ChevronDown
                             size={16}
-                            className="pointer-events-none absolute right-3 top-6 text-[#737B88]"
+                            className="pointer-events-none absolute right-3 top-6 text-text-muted"
                           />
                         </div>
                       </div>
@@ -692,10 +692,10 @@ export default function VendorPage() {
                       <div className="sm:col-span-2">
                         <label
                           htmlFor="fleetSize"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Number of vehicles{" "}
-                          <span className="text-[#F47716]">*</span>
+                          <span className="text-primary">*</span>
                         </label>
 
                         <div className="relative">
@@ -706,7 +706,7 @@ export default function VendorPage() {
                             value={form.fleetSize}
                             onChange={handleChange}
                             className={`${inputClass} appearance-none pr-10 ${
-                              form.fleetSize ? "" : "text-[#9AA2AF]"
+                              form.fleetSize ? "" : "text-text-muted"
                             }`}
                           >
                             <option value="" disabled>
@@ -725,7 +725,7 @@ export default function VendorPage() {
 
                           <ChevronDown
                             size={16}
-                            className="pointer-events-none absolute right-3 top-6 text-[#737B88]"
+                            className="pointer-events-none absolute right-3 top-6 text-text-muted"
                           />
                         </div>
                       </div>
@@ -733,10 +733,10 @@ export default function VendorPage() {
                       <div className="sm:col-span-2">
                         <label
                           htmlFor="message"
-                          className="text-sm font-medium text-[#374151]"
+                          className="text-sm font-medium text-text-primary"
                         >
                           Additional information{" "}
-                          <span className="font-normal text-[#9AA2AF]">
+                          <span className="font-normal text-text-muted">
                             (Optional)
                           </span>
                         </label>
@@ -754,16 +754,16 @@ export default function VendorPage() {
                       </div>
                     </div>
 
-                    <div className="mt-8 border-t border-[#E2E6EC] pt-6">
+                    <div className="mt-8 border-t border-border pt-6">
                       <button
                         type="submit"
-                        className="inline-flex min-h-[52px] w-full items-center justify-center gap-5 rounded-xl bg-[#F47716] px-6 text-sm font-semibold text-white hover:bg-[#D9650E] sm:w-auto"
+                        className="inline-flex min-h-13 w-full items-center justify-center gap-5 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-primary-hover sm:w-auto"
                       >
                         Submit details
                         <ArrowRight size={17} />
                       </button>
 
-                      <p className="mt-4 text-xs leading-5 text-[#89919E]">
+                      <p className="mt-4 text-xs leading-5 text-text-muted">
                         Frontend demonstration only. No information is
                         transmitted or stored.
                       </p>

@@ -24,27 +24,26 @@ export default function AboutSection({ data = aboutData }) {
         {/* LEFT COLUMN: CONTENT, STATS & CTA */}
         <div className="flex flex-col items-start text-left lg:col-span-5">
           {/* Eyebrow */}
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-blue/10 bg-[#eef3ff] px-3.5 py-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-orange" />
-            <span className="text-xs font-bold uppercase tracking-[0.14em] text-brand-blue">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-subtle px-3.5 py-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary">
               {content?.eyebrow || "About Bus Mantra"}
             </span>
           </div>
 
           {/* Main Heading */}
-          <h2 className="mb-4 text-3xl font-extrabold leading-[1.14] tracking-tight text-[#111111] sm:mb-5 sm:text-4xl lg:text-[42px]">
+          <h2 className="mb-4 text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:mb-5 sm:text-4xl lg:text-[42px]">
             <span className="block">
               {content?.heading?.line1 || "Your Journey."}
             </span>
 
-            <span className="block text-brand-blue">
+            <span className="block text-primary">
               {content?.heading?.line2 || "Our Responsibility."}
             </span>
           </h2>
 
-
           {/* Paragraphs */}
-          <div className="mb-6 max-w-xl space-y-3.5 text-sm font-normal leading-relaxed text-[#626c7b] sm:mb-8 sm:space-y-4 sm:text-base">
+          <div className="mb-6 max-w-xl space-y-3.5 text-sm font-normal leading-relaxed text-text-secondary sm:mb-8 sm:space-y-4 sm:text-base">
             {content?.paragraphs?.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
@@ -52,7 +51,7 @@ export default function AboutSection({ data = aboutData }) {
 
           {/* Highlights / Stats */}
           {highlights.length > 0 && (
-            <div className="mb-6 flex w-full items-center gap-3 border-y border-[#e5e7eb] py-4 sm:mb-8 sm:gap-6 sm:py-5">
+            <div className="mb-6 flex w-full items-center gap-3 border-y border-border py-4 sm:mb-8 sm:gap-6 sm:py-5">
               {highlights.map((item, idx) => {
                 const IconComponent = ICON_MAP[item.icon] || Bus;
 
@@ -63,23 +62,23 @@ export default function AboutSection({ data = aboutData }) {
                   >
                     <div className="flex min-w-0 flex-col items-start">
                       <div className="mb-1 flex items-center gap-1.5 sm:gap-2">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#fff8db] sm:h-8 sm:w-8">
-                          <IconComponent className="h-4 w-4 text-brand-orange sm:h-[18px] sm:w-[18px]" strokeWidth={2.2} />
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary-subtle sm:h-8 sm:w-8">
+                          <IconComponent className="h-4 w-4 text-primary sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
                         </span>
 
-                        <span className="text-xl font-bold tracking-tight text-[#111111] sm:text-2xl lg:text-[26px]">
+                        <span className="text-xl font-bold tracking-tight text-text-primary sm:text-2xl lg:text-[26px]">
                           {item.value}
                         </span>
                       </div>
 
-                      <span className="truncate text-xs font-medium text-[#737373] sm:text-sm">
+                      <span className="truncate text-xs font-medium text-text-muted sm:text-sm">
                         {item.label}
                       </span>
                     </div>
 
                     {/* Divider */}
                     {idx < highlights.length - 1 && (
-                      <div className="ml-auto h-8 w-px shrink-0 bg-[#e5e7eb] sm:h-9" />
+                      <div className="ml-auto h-8 w-px shrink-0 bg-border sm:h-9" />
                     )}
                   </div>
                 );
@@ -90,18 +89,18 @@ export default function AboutSection({ data = aboutData }) {
           {/* CTA Button */}
           <Link
             href={content?.cta?.href || "/about"}
-            className="group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-brand-yellow px-7 py-3.5 text-sm font-bold text-[#111111] shadow-sm transition-all duration-300 "
+            className="group inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-primary hover:bg-primary-hover px-7 py-3.5 text-sm font-bold text-primary-foreground shadow-sm hover:shadow-md transition-all duration-300 active:scale-[0.98]"
           >
             <span>{content?.cta?.label || "Know More About Us"}</span>
 
-            <ArrowRight className="h-4 w-4 text-[#111111] transition-all duration-300 group-hover:translate-x-1 group-hover:text-black" strokeWidth={2.2} />
+            <ArrowRight className="h-4 w-4 text-primary-foreground transition-all duration-300 group-hover:translate-x-1" strokeWidth={2.2} />
           </Link>
         </div>
 
         {/* RIGHT COLUMN: BUS PHOTOGRAPH */}
         <div className="mt-8 w-full lg:col-span-6 lg:mt-0">
-          <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-[20px] border border-[#e5e7eb] bg-[#eef3ff] shadow-[0_8px_30px_rgba(18,57,153,0.06)] sm:aspect-[16/11] sm:rounded-3xl lg:aspect-[4/3]">
-            
+          <div className="group relative aspect-4/3 w-full overflow-hidden rounded-[20px] border border-border bg-surface-muted shadow-xs sm:aspect-16/11 sm:rounded-3xl lg:aspect-4/3">
+
             <Image
               src={content?.image?.src || "/about-bus.png"}
               alt={
@@ -115,10 +114,10 @@ export default function AboutSection({ data = aboutData }) {
             />
 
             {/* Bottom image overlay label */}
-            <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/65 via-black/20 to-transparent px-5 pb-5 pt-16 sm:px-7 sm:pb-7">
+            <div className="absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-black/65 via-black/20 to-transparent px-5 pb-5 pt-16 sm:px-7 sm:pb-7">
               <div className="flex items-center gap-2">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-yellow text-[#111111]">
-                  <Bus className="h-[18px] w-[18px]" strokeWidth={2} />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <Bus className="h-4.5 w-4.5" strokeWidth={2} />
                 </span>
 
                 <div>

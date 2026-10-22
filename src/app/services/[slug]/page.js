@@ -40,7 +40,7 @@ export default function ServiceSlugPage({ params }) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#123999]">
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-primary">
             Service not found
           </p>
 
@@ -50,7 +50,7 @@ export default function ServiceSlugPage({ params }) {
 
           <Link
             href="/services"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#FFC003] px-5 py-3 text-sm font-bold text-black transition-all hover:shadow-lg"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover hover:shadow-lg"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to services
@@ -66,7 +66,7 @@ export default function ServiceSlugPage({ params }) {
       <div className="mb-5">
         <Link
           href="/services"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 transition-colors duration-200 hover:text-[#FFC003]"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500 transition-colors duration-200 hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to services
@@ -192,8 +192,8 @@ function ServiceGallery({ service }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-neutral-200/80 bg-[#f0f2f5] shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
-      <div className="relative aspect-[16/9] w-full overflow-hidden">
+    <div className="overflow-hidden rounded-2xl border border-neutral-200/80 bg-surface-secondary shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
+      <div className="relative aspect-video w-full overflow-hidden">
         {gallery.length > 0 ? (
           <Image
             src={gallery[activeImage]}
@@ -249,7 +249,7 @@ function ServiceGallery({ service }) {
               onClick={() => setActiveImage(index)}
               className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:h-16 sm:w-24 ${
                 activeImage === index
-                  ? "border-[#123999]"
+                  ? "border-primary"
                   : "border-transparent opacity-65 hover:opacity-100"
               }`}
             >
@@ -281,7 +281,7 @@ function QuickInfo({
       className={`rounded-xl border border-neutral-200 bg-white px-3.5 py-3 ${className}`}
     >
       <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-neutral-400">
-        <span className="text-[#123999]">
+        <span className="text-primary">
           {icon}
         </span>
 
@@ -342,7 +342,7 @@ function ServiceBookingForm({ service }) {
         className="w-full rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
       >
         <div className="border-b border-neutral-100 pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
             CUSTOM ROUTE & FARE
           </p>
 
@@ -356,9 +356,9 @@ function ServiceBookingForm({ service }) {
         </div>
 
         <div className="mt-5 space-y-3">
-          <div className="rounded-xl bg-[#f1f2f4] px-4 py-3.5">
+          <div className="rounded-xl bg-surface-secondary px-4 py-3.5">
             <div className="flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-[#123999]" />
+              <MapPin className="h-3.5 w-3.5 text-primary" />
 
               <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
                 PICK-UP POINT
@@ -386,7 +386,7 @@ function ServiceBookingForm({ service }) {
                 htmlFor="serviceDestination"
                 className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400"
               >
-                <MapPin className="h-3.5 w-3.5 text-[#123999]" />
+                <MapPin className="h-3.5 w-3.5 text-primary" />
                 DESTINATION(S)
               </label>
 
@@ -395,7 +395,7 @@ function ServiceBookingForm({ service }) {
               </span>
             </div>
 
-            <div className="flex min-h-[53px] items-center gap-2 rounded-xl bg-[#f1f2f4] px-3.5 transition-all duration-200 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#123999]/30">
+            <div className="flex min-h-13.25 items-center gap-2 rounded-xl bg-surface-secondary px-3.5 transition-all duration-200 focus-within:bg-white focus-within:ring-2 focus-within:ring-focus-ring">
               {formData.destination ? (
                 <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm">
                   {formData.destination}
@@ -474,9 +474,9 @@ function ServiceBookingForm({ service }) {
             />
           </div>
 
-          <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+          <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
             <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5 text-[#123999]" />
+              <Users className="h-3.5 w-3.5 text-primary" />
 
               <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
                 NO. OF PASSENGERS
@@ -530,7 +530,7 @@ function ServiceBookingForm({ service }) {
           </div>
 
           <div className="grid grid-cols-1 gap-2.5 pt-1 sm:grid-cols-2">
-            <div className="rounded-xl bg-[#f7f8f9] px-3.5 py-3.5">
+            <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
               <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
                 EST. ROUND TRIP
               </p>
@@ -546,8 +546,8 @@ function ServiceBookingForm({ service }) {
               </div>
             </div>
 
-            <div className="rounded-xl border border-[#123999]/30 bg-[#fffaf5] px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-[#123999]">
+            <div className="rounded-xl border border-primary/30 bg-primary-subtle px-3.5 py-3.5">
+              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-primary">
                 TOTAL ESTIMATED FARE
               </p>
 
@@ -562,9 +562,9 @@ function ServiceBookingForm({ service }) {
             </div>
           </div>
 
-          <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3">
+          <div className="rounded-xl bg-surface-secondary px-3.5 py-3">
             <div className="flex items-start gap-2 text-[10px] leading-5 text-neutral-600">
-              <Route className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#123999]" />
+              <Route className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
 
               <span>
                 <span className="font-bold text-neutral-800">
@@ -597,7 +597,7 @@ function ServiceBookingForm({ service }) {
               onClick={() =>
                 setShowBusImages(true)
               }
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl border border-[#123999]/30 bg-white px-2 text-[10px] font-bold leading-tight text-[#123999] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFC003]/15 hover:shadow-md sm:px-3 sm:text-xs"
+              className="flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl border border-primary/30 bg-white px-2 text-[10px] font-bold leading-tight text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-md sm:px-3 sm:text-xs"
             >
               <BusFront className="h-3.5 w-3.5 shrink-0" />
 
@@ -608,7 +608,7 @@ function ServiceBookingForm({ service }) {
 
             <button
               type="submit"
-              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-[#FFC003] px-2 text-[10px] font-bold leading-tight text-black transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg sm:px-3 sm:text-xs"
+              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-primary px-2 text-[10px] font-bold leading-tight text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg sm:px-3 sm:text-xs"
             >
               <span>
                 Confirm Booking
@@ -914,7 +914,7 @@ function BusImagesModal({
 
   const modal = (
     <div
-      className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-black/60 px-3 py-3 backdrop-blur-sm sm:px-5 sm:py-5"
+      className="fixed inset-0 z-9999 flex h-dvh w-screen items-center justify-center overflow-hidden bg-black/60 px-3 py-3 backdrop-blur-sm sm:px-5 sm:py-5"
       style={{
         overscrollBehavior:
           "none",
@@ -950,7 +950,7 @@ function BusImagesModal({
         <div className="shrink-0 border-b border-neutral-200 px-5 py-4 sm:px-7 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#123999]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
                 AVAILABLE FOR YOUR GROUP
               </p>
 
@@ -981,9 +981,9 @@ function BusImagesModal({
 
         <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
           {passengers < 1 ? (
-            <div className="flex min-h-[260px] items-center justify-center rounded-2xl bg-neutral-50">
+            <div className="flex min-h-65 items-center justify-center rounded-2xl bg-neutral-50">
               <div className="text-center">
-                <BusFront className="mx-auto h-9 w-9 text-[#123999]" />
+                <BusFront className="mx-auto h-9 w-9 text-primary" />
 
                 <p className="mt-3 text-sm font-bold text-neutral-900">
                   Enter the number of passengers first
@@ -1000,7 +1000,7 @@ function BusImagesModal({
                 (image, index) => (
                   <div
                     key={`${image}-${index}`}
-                    className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
+                    className="relative aspect-16/10 w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
                   >
                     <Image
                       src={image}
@@ -1020,7 +1020,7 @@ function BusImagesModal({
               )}
             </div>
           ) : (
-            <div className="flex min-h-[260px] items-center justify-center rounded-2xl bg-neutral-50">
+            <div className="flex min-h-65 items-center justify-center rounded-2xl bg-neutral-50">
               <div className="text-center">
                 <BusFront className="mx-auto h-9 w-9 text-neutral-300" />
 
@@ -1061,9 +1061,9 @@ function QuoteModal({
   onClose,
 }) {
   return (
-    <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-9998 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-subtle text-primary">
           <CheckCircle2 className="h-6 w-6" />
         </div>
 
@@ -1087,7 +1087,7 @@ function QuoteModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 w-full rounded-xl bg-[#FFC003] px-4 py-3 text-sm font-bold text-black transition-all hover:shadow-lg"
+          className="mt-6 w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover hover:shadow-lg"
         >
           Close
         </button>
@@ -1101,9 +1101,9 @@ function ConfirmationModal({
   onClose,
 }) {
   return (
-    <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-9998 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFC003]/20 text-[#123999]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-subtle text-primary">
           <CheckCircle2 className="h-6 w-6" />
         </div>
 
@@ -1130,7 +1130,7 @@ function ConfirmationModal({
 
           <a
             href="tel:+919999999999"
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#FFC003] px-4 py-3 text-sm font-bold text-black transition-all hover:shadow-lg"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-all hover:bg-primary-hover hover:shadow-lg"
           >
             <Phone className="h-4 w-4" />
             Call Support
@@ -1149,9 +1149,9 @@ function DateTimeField({
   onTimeChange,
 }) {
   return (
-    <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+    <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
       <div className="flex items-center gap-1.5">
-        <CalendarDays className="h-3.5 w-3.5 text-[#123999]" />
+        <CalendarDays className="h-3.5 w-3.5 text-primary" />
 
         <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
           {label}
@@ -1186,7 +1186,7 @@ function DateTimeField({
               event.target.value
             )
           }
-          className="w-[74px] bg-transparent text-[11px] font-bold text-black outline-none"
+          className="w-18.5 bg-transparent text-[11px] font-bold text-black outline-none"
         />
       </div>
     </div>
@@ -1202,7 +1202,7 @@ function FormInput({
   required = false,
 }) {
   return (
-    <div className="rounded-xl bg-[#f1f2f4] px-3.5 py-3.5">
+    <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
       <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
         {label}
       </span>
@@ -1226,7 +1226,7 @@ function FormInput({
 function Benefit({ text }) {
   return (
     <div className="flex items-center gap-1.5 text-[9px] font-medium text-neutral-500 sm:text-[10px]">
-      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#123999]" />
+      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
 
       <span>{text}</span>
     </div>
@@ -1264,10 +1264,10 @@ function ServiceHighlights({
                 item.title ||
                 index
               }
-              className="rounded-2xl border border-neutral-200/80 bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#123999]/30 hover:shadow-[0_10px_28px_rgba(0,0,0,0.055)] sm:p-5"
+              className="rounded-2xl border border-neutral-200/80 bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_10px_28px_rgba(0,0,0,0.055)] sm:p-5"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFC003]/20 text-[#123999]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-subtle text-primary">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
 
@@ -1315,7 +1315,7 @@ function SuitableFor({
               key={`${item}-${index}`}
               className="flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-white px-3.5 py-3"
             >
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-[#123999]" />
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
 
               <span className="text-xs font-bold text-neutral-700">
                 {item}
@@ -1358,7 +1358,7 @@ function ServiceBenefits({
               className="rounded-2xl border border-neutral-200/80 bg-white p-4 sm:p-5"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FFC003]/20 text-[#123999]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-subtle text-primary">
                   <ShieldCheck className="h-4 w-4" />
                 </div>
 

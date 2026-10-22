@@ -103,21 +103,21 @@ export default function FinalCtaSection({
     >
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main CTA Card */}
-        <div className="relative flex flex-col items-start justify-center overflow-hidden rounded-[28px] border border-[#D8DFEA] bg-[#E9EDF4] px-6 py-12 text-left shadow-[0_12px_35px_rgba(17,35,70,0.06)] sm:rounded-4xl sm:px-12 sm:py-16 md:py-18 lg:rounded-[36px] lg:px-16 lg:py-20">
+        <div className="relative flex flex-col items-start justify-center overflow-hidden rounded-[28px] border border-border bg-surface-secondary px-6 py-12 text-left shadow-[0_12px_35px_rgba(0,0,0,0.04)] sm:rounded-4xl sm:px-12 sm:py-16 md:py-18 lg:rounded-[36px] lg:px-16 lg:py-20">
           {/* Decorative Background */}
           <div
             className="pointer-events-none absolute inset-0 select-none overflow-hidden"
             aria-hidden="true"
           >
-            {/* Subtle Blue Glow */}
-            <div className="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-[#123999]/[0.07] blur-3xl sm:h-105 sm:w-105" />
+            {/* Subtle Primary Glow */}
+            <div className="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-primary/6 blur-3xl sm:h-105 sm:w-105" />
 
-            {/* Subtle Yellow Glow */}
-            <div className="absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-[#ffc003]/[0.12] blur-3xl" />
+            {/* Subtle Glow */}
+            <div className="absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-primary-subtle blur-3xl" />
 
             {/* Concentric Travel Rings */}
             <svg
-              className="absolute -right-16 -top-20 h-80 w-80 text-[#123999] opacity-[0.08] sm:h-120 sm:w-120"
+              className="absolute -right-16 -top-20 h-80 w-80 text-primary opacity-[0.08] sm:h-120 sm:w-120"
               viewBox="0 0 600 600"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@ export default function FinalCtaSection({
 
             {/* Travel Route Lines */}
             <svg
-              className="absolute -bottom-20 -left-20 h-72 w-72 text-[#ffc003] opacity-[0.24] sm:h-105 sm:w-105"
+              className="absolute -bottom-20 -left-20 h-72 w-72 text-primary opacity-[0.24] sm:h-105 sm:w-105"
               viewBox="0 0 600 600"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -188,18 +188,18 @@ export default function FinalCtaSection({
 
           {/* Eyebrow */}
           {currentEyebrow && (
-            <span className="relative z-10 mb-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-[#123999] sm:mb-4.5 sm:text-xs">
+            <span className="relative z-10 mb-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-primary sm:mb-4.5 sm:text-xs">
               {currentEyebrow}
             </span>
           )}
 
           {/* Heading */}
-          <h2 className="relative z-10 mb-3.5 max-w-4xl text-3xl font-black leading-[1.14] tracking-tight text-[#111111] sm:mb-4.5 sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px]">
+          <h2 className="relative z-10 mb-3.5 max-w-4xl text-3xl font-black leading-[1.14] tracking-tight text-text-primary sm:mb-4.5 sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px]">
             {renderHeading()}
           </h2>
 
           {/* Description */}
-          <p className="relative z-10 mb-7 max-w-xl text-sm font-normal leading-relaxed text-[#626C7B] sm:mb-9 sm:text-base md:text-[17px]">
+          <p className="relative z-10 mb-7 max-w-xl text-sm font-normal leading-relaxed text-text-secondary sm:mb-9 sm:text-base md:text-[17px]">
             {currentDescription}
           </p>
 
@@ -208,17 +208,17 @@ export default function FinalCtaSection({
             <Link
               href={currentButton.href || "#booking-form"}
               onClick={handleCtaClick}
-              className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#ffc003] px-6 py-3 text-sm font-bold text-[#123999] transition-all duration-200 hover:bg-[#e0a900] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ffc003] focus-visible:ring-offset-2 focus-visible:ring-offset-[#E9EDF4] sm:px-7 sm:py-3.5 sm:text-base"
+              className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:bg-primary-hover active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-secondary sm:px-7 sm:py-3.5 sm:text-base"
             >
               <span>{currentButton.label || "Book a Bus"}</span>
 
-              <ArrowRight className="h-4 w-4 stroke-[2.2] text-[#123999] transition-transform duration-200 group-hover:translate-x-1" />
+              <ArrowRight className="h-4 w-4 stroke-[2.2] text-primary-foreground transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Bottom Yellow Accent */}
+          {/* Bottom Accent */}
           <div
-            className="pointer-events-none absolute bottom-0 left-6 h-1 w-20 rounded-t-full bg-[#ffc003] sm:left-12 lg:left-16"
+            className="pointer-events-none absolute bottom-0 left-6 h-1 w-20 rounded-t-full bg-primary sm:left-12 lg:left-16"
             aria-hidden="true"
           />
         </div>

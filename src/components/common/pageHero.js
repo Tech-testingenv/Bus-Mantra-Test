@@ -21,11 +21,11 @@ export default function PageHero({
     if (Array.isArray(lines) && lines.length >= 2) {
       return (
         <>
-          <span className="block text-[#123999]">
+          <span className="block text-primary">
             {lines[0]}
           </span>
 
-          <span className="block text-[#111111]">
+          <span className="block text-text-primary">
             {lines[1]}
           </span>
         </>
@@ -40,11 +40,11 @@ export default function PageHero({
 
       return (
         <>
-          <span className="block text-[#123999]">
+          <span className="block text-primary">
             One fleet.
           </span>
 
-          <span className="block text-[#111111]">
+          <span className="block text-text-primary">
             {rest}
           </span>
         </>
@@ -65,27 +65,27 @@ export default function PageHero({
 
           {/* Eyebrow */}
           {eyebrow && (
-            <div className="mb-4 inline-block select-none rounded-full border border-[#123999] bg-white px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-[#123999] sm:mb-4">
+            <div className="mb-4 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-4">
               {eyebrow}
             </div>
           )}
 
           {/* Heading */}
-          <h1 className="mb-4 text-3xl font-black leading-[1.12] tracking-tight text-[#111111] sm:mb-4 sm:text-4xl lg:text-[38px] lg:leading-[1.1] xl:text-[44px] 2xl:text-[48px]">
+          <h1 className="mb-4 text-3xl font-black leading-[1.12] tracking-tight text-text-primary sm:mb-4 sm:text-4xl lg:text-[38px] lg:leading-[1.1] xl:text-[44px] 2xl:text-[48px]">
             {formatTitle(title, titleLines)}
           </h1>
 
           {/* Description */}
-          <p className="max-w-xl text-base leading-relaxed text-black sm:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-text-secondary sm:text-lg">
             {description}
           </p>
         </div>
 
         {/* RIGHT COLUMN: Coach Image */}
         <div className="flex w-full items-center justify-center">
-          <div className="w-full rounded-2xl border border-[#123999] bg-white p-3.5 sm:rounded-3xl sm:p-4 lg:p-5 xl:rounded-[28px] xl:p-6">
+          <div className="w-full rounded-2xl border border-border bg-surface-muted p-3.5 sm:rounded-3xl sm:p-4 lg:p-5 xl:rounded-[28px] xl:p-6 shadow-xs">
 
-            <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl xl:rounded-[24px]">
+            <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl xl:rounded-3xl">
               <Image
                 src={image}
                 alt={
@@ -96,10 +96,9 @@ export default function PageHero({
                 width={imageWidth}
                 height={imageHeight}
                 priority={priority}
-                className="block h-auto max-h-52.5 w-full select-none rounded-2xl object-cover transition-transform duration-300 hover:scale-[1.02] sm:max-h-57.5 sm:rounded-3xl lg:max-h-62.5 xl:max-h-67.5 xl:rounded-[24px]"
+                className="block h-auto max-h-52.5 w-full select-none rounded-2xl object-cover transition-transform duration-300 hover:scale-[1.02] sm:max-h-57.5 sm:rounded-3xl lg:max-h-62.5 xl:max-h-67.5 xl:rounded-3xl"
               />
             </div>
-
           </div>
         </div>
 

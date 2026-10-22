@@ -67,7 +67,7 @@ export default function HeroSection({ data = heroData }) {
       return (
         <>
           {parts[0]}
-          <span className="text-black font-black">₹1/KM.</span>
+          <span className="text-text-primary font-black">₹1/KM.</span>
           {parts[1]}
         </>
       );
@@ -85,24 +85,23 @@ export default function HeroSection({ data = heroData }) {
         {/* Left Column */}
         <div className="lg:col-span-6 flex flex-col items-start text-left">
           {/* Eyebrow */}
-          <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase mb-5 select-none">
+          <div className="inline-block px-3.5 py-1.5 rounded-full bg-surface-secondary text-[11px] font-bold tracking-wider text-text-secondary uppercase mb-5 select-none">
             {data.eyebrow}
           </div>
 
           {/* Headline */}
           <h1 className="text-3xl sm:text-4xl lg:text-[34px] xl:text-[40px] 2xl:text-[44px] font-black leading-[1.12] tracking-tight mb-5">
-            <span className="block text-neutral-900 font-extrabold">
+            <span className="block text-text-primary font-extrabold">
               {renderLine1(line1)}
             </span>
 
-            {/* Orange text changed to royal blue */}
-            <span className="block text-[#123999] font-black">
+            <span className="block text-primary font-black">
               {line2}
             </span>
           </h1>
 
           {/* Description */}
-          <p className="text-base xl:text-lg text-neutral-600 leading-relaxed mb-7 max-w-lg">
+          <p className="text-base xl:text-lg text-text-secondary leading-relaxed mb-7 max-w-lg">
             {data.description}
           </p>
 
@@ -111,18 +110,17 @@ export default function HeroSection({ data = heroData }) {
             <Link
               href={data.primaryButton?.href || "#booking-form"}
               onClick={scrollToBooking}
-              className="px-6 py-3.5 rounded-xl bg-[#123999] hover:bg-[#0d2b73] text-white font-semibold text-sm xl:text-base inline-flex items-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-[0.98] group"
+              className="px-6 py-3.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground font-semibold text-sm xl:text-base inline-flex items-center gap-2 shadow-xs hover:shadow-md transition-all active:scale-[0.98] group"
             >
               <span>
                 {data.primaryButton?.label || "Book a Bus"}
               </span>
             </Link>
 
-            {/* Orange text and border changed to royal blue */}
             <Link
               href={data.secondaryButton?.href || "#fleets"}
               onClick={scrollToFleet}
-              className="text-[#123999] border border-[#123999]/50 hover:border-[#0d2b73] hover:text-[#0d2b73] px-6 py-3.5 rounded-xl font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group"
+              className="text-primary border border-primary/50 hover:border-primary-hover hover:text-primary-hover px-6 py-3.5 rounded-xl font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group"
             >
               <span>
                 {data.secondaryButton?.label || "Explore Fleet"}
@@ -134,11 +132,11 @@ export default function HeroSection({ data = heroData }) {
           <div className="flex items-center gap-10 xl:gap-14">
             {stats.map((stat, idx) => (
               <div key={idx}>
-                <div className="text-2xl xl:text-3xl font-extrabold text-neutral-900 tracking-tight">
+                <div className="text-2xl xl:text-3xl font-extrabold text-text-primary tracking-tight">
                   {stat.value}
                 </div>
 
-                <div className="text-xs xl:text-sm font-medium text-neutral-500 mt-1">
+                <div className="text-xs xl:text-sm font-medium text-text-muted mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -148,9 +146,9 @@ export default function HeroSection({ data = heroData }) {
 
         {/* Right Column: Bus Image */}
         <div className="lg:col-span-6 flex items-center justify-center">
-          <div className="w-full rounded-3xl xl:rounded-[36px] bg-[#f0f2f5] p-6 sm:p-8 xl:p-10 flex items-center justify-center border border-neutral-100 shadow-xs">
+          <div className="w-full rounded-3xl xl:rounded-[36px] bg-surface-muted p-6 sm:p-8 xl:p-10 flex items-center justify-center border border-border shadow-xs">
             <Image
-              src={data.image?.src || "/fleet/fleet.png"}
+              src={data.image?.src || "/hero.png"}
               alt={data.image?.alt || "BUS MANTRA Modern Luxury Coach Bus"}
               width={data.image?.width || 1920}
               height={data.image?.height || 1080}
@@ -164,24 +162,23 @@ export default function HeroSection({ data = heroData }) {
       {/* MOBILE COMPOSITION */}
       <div className="flex flex-col lg:hidden items-start text-left space-y-4 sm:space-y-5">
         {/* Eyebrow */}
-        <div className="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 text-[11px] font-bold tracking-wider text-neutral-600 uppercase select-none">
+        <div className="inline-block px-3.5 py-1.5 rounded-full bg-surface-secondary text-[11px] font-bold tracking-wider text-text-secondary uppercase select-none">
           {data.eyebrow}
         </div>
 
         {/* Headline */}
         <h1 className="text-[26px] sm:text-3xl md:text-4xl font-black leading-[1.14] tracking-tight">
-          <span className="block text-neutral-900 font-extrabold">
+          <span className="block text-text-primary font-extrabold">
             {renderLine1(line1)}
           </span>
 
-          {/* Orange text changed to royal blue */}
-          <span className="block text-[#123999] font-black">
+          <span className="block text-primary font-black">
             {line2}
           </span>
         </h1>
 
         {/* Description */}
-        <p className="text-base text-neutral-600 leading-relaxed max-w-lg">
+        <p className="text-base text-text-secondary leading-relaxed max-w-lg">
           {data.description}
         </p>
 
@@ -190,18 +187,17 @@ export default function HeroSection({ data = heroData }) {
           <Link
             href={data.primaryButton?.href || "#booking-form"}
             onClick={scrollToBooking}
-            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#123999] hover:bg-[#0d2b73] text-white font-semibold text-base inline-flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.98]"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground font-semibold text-base inline-flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.98]"
           >
             <span>
               {data.primaryButton?.label || "Book a Bus"}
             </span>
           </Link>
 
-          {/* Orange text and border changed to royal blue */}
           <Link
             href={data.secondaryButton?.href || "#fleets"}
             onClick={scrollToFleet}
-            className="text-[#123999] border border-[#123999]/50 hover:border-[#0d2b73] hover:text-[#0d2b73] w-full py-3.5 rounded-xl font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group"
+            className="text-primary border border-primary/50 hover:border-primary-hover hover:text-primary-hover w-full py-3.5 rounded-xl font-semibold text-sm xl:text-base inline-flex items-center gap-1.5 transition-colors group"
           >
             <span className="w-full text-center">
               {data.secondaryButton?.label || "Explore Fleet"}
@@ -210,9 +206,9 @@ export default function HeroSection({ data = heroData }) {
         </div>
 
         {/* Bus Image */}
-        <div className="w-full rounded-2xl sm:rounded-3xl bg-[#f0f2f5] p-5 sm:p-6 my-2 flex items-center justify-center border border-neutral-100 shadow-xs">
+        <div className="w-full rounded-2xl sm:rounded-3xl bg-surface-muted p-5 sm:p-6 my-2 flex items-center justify-center border border-border shadow-xs">
           <Image
-            src={data.image?.src || "/fleet/fleet.png"}
+            src={data.image?.src || "/hero.png"}
             alt={data.image?.alt || "BUS MANTRA Modern Luxury Coach Bus"}
             width={data.image?.width || 1920}
             height={data.image?.height || 1080}
@@ -222,14 +218,14 @@ export default function HeroSection({ data = heroData }) {
         </div>
 
         {/* Trust Statistics */}
-        <div className="grid grid-cols-3 gap-3 w-full pt-3 pb-2 border-t border-neutral-100/70 sm:border-0">
+        <div className="grid grid-cols-3 gap-3 w-full pt-3 pb-2 border-t border-border sm:border-0">
           {stats.map((stat, idx) => (
             <div key={idx}>
-              <div className="text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold text-text-primary tracking-tight">
                 {stat.value}
               </div>
 
-              <div className="text-[11px] sm:text-xs font-medium text-neutral-500 mt-0.5">
+              <div className="text-[11px] sm:text-xs font-medium text-text-muted mt-0.5">
                 {stat.label}
               </div>
             </div>

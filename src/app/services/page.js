@@ -99,7 +99,7 @@ export default function ServicesPage() {
 
             <h2 className="text-3xl sm:text-4xl lg:text-[46px] font-black text-black tracking-tight leading-[1.08]">
               Built around
-              <span className="block text-[#123999]">
+              <span className="block text-primary">
                 your journey.
               </span>
             </h2>
@@ -112,12 +112,12 @@ export default function ServicesPage() {
 
             <Link
               href="/fleets"
-              className="inline-flex items-center gap-2 mt-7 text-sm font-bold text-black hover:text-[#123999] transition-colors group"
+              className="inline-flex items-center gap-2 mt-7 text-sm font-bold text-black hover:text-primary transition-colors group"
             >
               <span>Find the right coach</span>
 
               <ArrowRight
-                className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
+                className="w-4 h-4 text-primary transition-transform duration-300 group-hover:translate-x-1"
               />
             </Link>
 
@@ -144,7 +144,7 @@ export default function ServicesPage() {
                 "
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/5 to-transparent" />
 
               <div className="absolute bottom-5 left-5 right-5 sm:left-7 sm:bottom-7 sm:right-7">
 
@@ -202,7 +202,7 @@ export default function ServicesPage() {
 
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.1]">
             One service for every
-            <span className="text-[#123999]">
+            <span className="text-primary">
               {" "}kind of journey.
             </span>
           </h2>
@@ -268,7 +268,7 @@ export default function ServicesPage() {
 
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-black tracking-tight leading-[1.08]">
               Group travel,
-              <span className="block text-[#123999]">
+              <span className="block text-primary">
                 without the friction.
               </span>
             </h2>
@@ -324,7 +324,7 @@ export default function ServicesPage() {
 
             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-black tracking-tight leading-[1.08]">
               The right coach
-              <span className="block text-[#123999]">
+              <span className="block text-primary">
                 changes the journey.
               </span>
             </h2>
@@ -341,7 +341,7 @@ export default function ServicesPage() {
               <span>Explore Our Fleet</span>
 
               <ArrowRight
-                className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
+                className="w-4 h-4 text-primary transition-transform duration-300 group-hover:translate-x-1"
               />
             </Link>
 
@@ -400,13 +400,13 @@ export default function ServicesPage() {
 
       <section className="relative w-full py-14 sm:py-18 lg:py-24">
 
-        <div className="rounded-3xl sm:rounded-[32px] bg-black/5 border border-black/10 p-6 sm:p-10 lg:p-14 overflow-hidden">
+        <div className="rounded-3xl sm:rounded-4xl bg-black/5 border border-black/10 p-6 sm:p-10 lg:p-14 overflow-hidden">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
 
             <div className="lg:col-span-7">
 
-              <span className="inline-block px-3 py-1 rounded-full bg-white border border-black/10 text-[11px] font-bold tracking-wider text-[#123999] uppercase mb-4">
+              <span className="inline-block px-3 py-1 rounded-full bg-white border border-black/10 text-[11px] font-bold tracking-wider text-primary uppercase mb-4">
                 {featuredServiceData.eyebrow}
               </span>
 
@@ -439,8 +439,8 @@ export default function ServicesPage() {
                         border-black/10
                       "
                     >
-                      <div className="w-8 h-8 rounded-xl bg-[#FFC003]/10 text-[#123999] flex items-center justify-center shrink-0">
-                        <IconComponent className="w-4 h-4 stroke-[2]" />
+                      <div className="w-8 h-8 rounded-xl bg-primary-subtle text-primary flex items-center justify-center shrink-0">
+                        <IconComponent className="w-4 h-4 stroke-2" />
                       </div>
 
                       <div>
@@ -482,7 +482,7 @@ export default function ServicesPage() {
                 <span>Explore Fleet for Your Group</span>
 
                 <ArrowRight
-                  className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
+                  className="w-4 h-4 text-primary transition-transform duration-300 group-hover:translate-x-1"
                 />
               </Link>
 
@@ -490,7 +490,7 @@ export default function ServicesPage() {
 
             <div className="lg:col-span-5">
 
-              <div className="relative aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-black/10 shadow-sm">
+              <div className="relative aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-black/10 shadow-sm">
 
                 <Image
                   src={featuredServiceData.image}
@@ -511,7 +511,7 @@ export default function ServicesPage() {
 
                   <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-black/75 text-white backdrop-blur-sm border border-white/10 text-xs font-semibold">
 
-                    <span className="w-2 h-2 rounded-full bg-[#FFC003]" />
+                    <span className="w-2 h-2 rounded-full bg-primary" />
 
                     <span>
                       Dedicated Full-Bus Charters · Pan-India
@@ -552,7 +552,7 @@ function JourneyCard({
         p-4
         sm:p-5
         shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-        hover:border-[#123999]/40
+        hover:border-primary/40
         hover:shadow-[0_10px_35px_-5px_rgba(0,0,0,0.07)]
         transition-all
         duration-300
@@ -568,11 +568,11 @@ function JourneyCard({
           items-center
           justify-center
           mb-3
-          group-hover:bg-[#FFC003]/10
+          group-hover:bg-primary-subtle
           transition-colors
         "
       >
-        <Icon className="w-4 h-4 text-[#123999] stroke-[1.8]" />
+        <Icon className="w-4 h-4 text-primary stroke-[1.8]" />
       </div>
 
       <h3 className="text-sm sm:text-base font-bold text-black">
@@ -626,11 +626,11 @@ function EditorialService({
         "
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
 
       <div className="absolute top-5 left-5">
 
-        <div className="w-11 h-11 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center text-[#123999] shadow-lg">
+        <div className="w-11 h-11 rounded-xl bg-white/95 backdrop-blur-sm flex items-center justify-center text-primary shadow-lg">
           <Icon className="w-5 h-5 stroke-[1.8]" />
         </div>
 
@@ -650,7 +650,7 @@ function EditorialService({
           <span>Explore service</span>
 
           <ArrowRight
-            className="w-4 h-4 text-[#123999] transition-transform duration-300 group-hover:translate-x-1"
+            className="w-4 h-4 text-primary transition-transform duration-300 group-hover:translate-x-1"
           />
         </div>
 
@@ -676,7 +676,7 @@ function ProcessCard({
         p-6
         sm:p-7
         shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)]
-        hover:border-[#123999]/40
+        hover:border-primary/40
         hover:shadow-[0_10px_35px_-5px_rgba(0,0,0,0.07)]
         transition-all
         duration-300
@@ -692,11 +692,11 @@ function ProcessCard({
           items-center
           justify-center
           mb-6
-          group-hover:bg-[#FFC003]/10
+          group-hover:bg-primary-subtle
           transition-colors
         "
       >
-        <Icon className="w-5 h-5 text-[#123999] stroke-[1.8]" />
+        <Icon className="w-5 h-5 text-primary stroke-[1.8]" />
       </div>
 
       <h3 className="text-lg sm:text-xl font-bold text-black tracking-tight">
@@ -725,7 +725,7 @@ function MiniCapability({
         border-black/10
         p-3
         sm:p-4
-        hover:border-[#FFC003]/30
+        hover:border-primary/40
         hover:shadow-[0_8px_25px_-8px_rgba(0,0,0,0.08)]
         transition-all
         duration-300
@@ -737,7 +737,7 @@ function MiniCapability({
           h-4
           sm:w-5
           sm:h-5
-          text-[#123999]
+          text-primary
           stroke-[1.8]
           mb-2.5
           sm:mb-3
