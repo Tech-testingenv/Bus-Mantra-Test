@@ -1,6 +1,7 @@
 export const heroData = {
   eyebrow: "FULL BUS BOOKING",
-  titleLines: ["Book your Luxury Coach @₹1/KM.", "Yes, You Read That Right!", "T&C Applied"],
+  titleLines: ["Book your Luxury Coach @₹1/KM.", "Yes, You Read That Right!", "/bus_mantra_t&c_logo.png"],
+  tcLogo: "/bus_mantra_t&c.png",
   description:
     "Book an entire luxury coach for your group and travel together in comfort, without the hassle.",
   primaryButton: {
@@ -26,27 +27,73 @@ export const heroData = {
     },
   ],
   image: {
-    src: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
-    alt: "BUS MANTRA Modern Luxury Coach Bus",
+    src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
+    alt: "Tata Luxury Coach",
     width: 1920,
     height: 1080,
   },
   heroSliderImages: [
     {
-      src: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
-      alt: "BUS MANTRA Modern Luxury Coach Bus",
+      src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
+      alt: "Tata Luxury Coach [45/49]",
+      titleLine1: "",
+      description:
+        "Move your entire group seamlessly with high-capacity Tata commercial luxury coaches, transparent per-km billing, and zero hidden costs.",
+    },
+    {
+      src: "/fleet/bus_mantra_bharatbenz.png",
+      alt: "BharatBenz Executive Luxury Coach [20/45]",
+      titleLine1: "",
+      description:
+        "Experience Daimler-engineered ride comfort, whisper-quiet acoustics, and premium executive recliner seating.",
     },
     {
       src: "/fleet/40_seater_volvo_with_washroom_1.png",
-      alt: "BUS MANTRA Mini Coach Fleet",
+      alt: "40/45 Luxury Volvo Coach with & without Washroom",
+      titleLine1: "40/45 Luxury Volvo Coach with & without Washroom",
+      description:
+        "Flagship multi-axle luxury touring with air suspension, onboard sanitized washroom, and business-class plush seating.",
     },
     {
-      src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
-      alt: "BUS MANTRA Luxury Coach Bus",
+      src: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+      alt: "Maharaja Tempo Traveler [12/16/20/26]",
+      titleLine1: "Maharaja Tempo Traveler [12/16/20/26]",
+      description:
+        "Dedicated Maharaja Tempo Travelers equipped with pushback seats, individual AC vents, and experienced chauffeurs.",
     },
     {
-      src: "/about2_bus.png",
-      alt: "BUS MANTRA Premium Coach Bus",
+      src: "/fleet/bus_mantra_luxury_force_urbania.png",
+      alt: "Luxury Force Urbania [12/16]",
+      titleLine1: "Luxury Force Urbania [12/16]",
+      description:
+        "Next-generation European-styled luxury van offering world-class ride dynamics, panoramic windows, and plush seating.",
+    },
+  ],
+  sliderTexts: [
+    {
+      titleLine2: "100% Free Cancellation, Always!",
+      description:
+        "Book your group journey with confidence and enjoy hassle-free booking with flexible cancellation.",
+    },
+    {
+      titleLine2: "Luxury Travel, Made Easy for Everyone!",
+      description:
+        "Book an entire luxury coach for your group and travel together in comfort, without the hassle.",
+    },
+    {
+      titleLine2: "Your Group, One Dedicated Coach!",
+      description:
+        "Travel together comfortably with spacious coaches for corporate trips, weddings, family outings, and group tours.",
+    },
+    {
+      titleLine2: "Transparent Pricing, No Surprises!",
+      description:
+        "Plan your journey with clear fare estimates, dedicated vehicles, and reliable booking support from Bus Mantra.",
+    },
+    {
+      titleLine2: "Sanitized & Verified Coaches, Always!",
+      description:
+        "Travel with peace of mind with 24/7 route tracking, verified professional chauffeurs, and sanitized bus interiors.",
     },
   ],
   form: {
@@ -2208,6 +2255,7 @@ export const footerData = {
   ],
   quickLinks: [
     { label: "About Us", href: "/about" },
+    { label: "Testimonials", href: "/testimonials" },
     { label: "Blogs", href: "/blogs" },
     { label: "Terms and Conditions", href: "/terms-conditions" },
     { label: "Privacy Policy", href: "/privacy-policy" },
@@ -2439,3 +2487,15 @@ export const offerFaqData = {
     },
   ],
 };
+
+// Re-export dedicated testimonials page data
+export {
+  testimonialsHeroData,
+  trustMetrics,
+  mediaAndOrgRemarks,
+  videoTestimonials,
+  customerReviews,
+  appreciationLetters,
+  testimonialFaqs,
+} from "./testimonialsData";
+

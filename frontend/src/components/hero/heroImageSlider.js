@@ -26,23 +26,54 @@ const DEFAULT_SLIDES = [
 export default function HeroImageSlider({
   slides = DEFAULT_SLIDES,
   autoplayInterval = 4500,
+  currentIndex: controlledIndex,
+  onIndexChange,
+  isPaused: controlledPaused,
+  onPauseChange,
 }) {
   const slideList =
     Array.isArray(slides) && slides.length > 0 ? slides : DEFAULT_SLIDES;
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const touchStartXRef = useRef(null);
+  const [internalIndex, setInternalIndex] = useState(0);
+  const [internalPaused, setInternalPaused] = useState(false);
 
+  const isControlled = controlledIndex !== undefined;
+  const currentIndex = isControlled ? controlledIndex : internalIndex;
+  const isPaused =
+    controlledPaused !== undefined ? controlledPaused : internalPaused;
+
+  const touchStartXRef = useRef(null);
   const totalSlides = slideList.length;
 
+  const updateIndex = useCallback(
+    (newIndex) => {
+      if (isControlled) {
+        onIndexChange?.(newIndex);
+      } else {
+        setInternalIndex(newIndex);
+      }
+    },
+    [isControlled, onIndexChange]
+  );
+
+  const updatePaused = useCallback(
+    (paused) => {
+      if (onPauseChange) {
+        onPauseChange(paused);
+      } else {
+        setInternalPaused(paused);
+      }
+    },
+    [onPauseChange]
+  );
+
   const handlePrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-  }, [totalSlides]);
+    updateIndex(currentIndex === 0 ? totalSlides - 1 : currentIndex - 1);
+  }, [currentIndex, totalSlides, updateIndex]);
 
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
-  }, [totalSlides]);
+    updateIndex(currentIndex === totalSlides - 1 ? 0 : currentIndex + 1);
+  }, [currentIndex, totalSlides, updateIndex]);
 
   // Autoplay with pause on hover
   useEffect(() => {
@@ -74,8 +105,8 @@ export default function HeroImageSlider({
   return (
     <div
       className="relative w-full aspect-16/10 overflow-hidden rounded-2xl select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onMouseEnter={() => updatePaused(true)}
+      onMouseLeave={() => updatePaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       role="region"
@@ -151,7 +182,7 @@ export default function HeroImageSlider({
               aria-label={`Go to slide ${idx + 1}`}
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentIndex(idx);
+                updateIndex(idx);
               }}
               className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer drop-shadow-sm focus:outline-none ${idx === currentIndex
                 ? "w-5 sm:w-6 bg-primary"

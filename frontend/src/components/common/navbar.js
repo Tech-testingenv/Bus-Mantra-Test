@@ -9,6 +9,7 @@ import TopContactBar from "@/components/common/topContactBar";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
+  { label: "Testimonials", href: "/testimonials" },
   { label: "About", href: "/about" },
   { label: "Bus Mantra Fleet", href: "/fleets" },
   { label: "Services", href: "/services" },
@@ -126,9 +127,9 @@ export default function Navbar() {
 
         {/* Main Navbar */}
         <div
-          className={`w-full transition-colors duration-200 ${scrolled
-              ? "border-b border-neutral-100 bg-white/95 backdrop-blur-md"
-              : "border-b border-neutral-100/90 bg-white"
+          className={` transition-colors duration-200 ${scrolled
+            ? "border-b border-neutral-100 bg-white/95 backdrop-blur-md"
+            : "border-b border-neutral-100/90 bg-white"
             }`}
         >
           <div
@@ -175,7 +176,7 @@ export default function Navbar() {
             {/* ================================================= */}
 
             <nav
-              className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 lg:flex xl:gap-10"
+              className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 lg:flex xl:gap-8"
               aria-label="Primary Navigation"
             >
               {NAV_ITEMS.map((item) => {
@@ -188,8 +189,8 @@ export default function Navbar() {
                     onClick={(event) => handleNavClick(event, item)}
                     aria-current={active ? "page" : undefined}
                     className={`relative select-none rounded-sm px-0.5 py-1.5 text-[14px] transition-colors duration-150 xl:text-[15px] ${active
-                        ? "font-semibold text-primary"
-                        : "font-medium text-neutral-700 hover:text-primary"
+                      ? "font-semibold text-primary"
+                      : "font-medium text-neutral-700 hover:text-primary"
                       }`}
                   >
                     <span>{item.label}</span>
@@ -253,8 +254,8 @@ export default function Navbar() {
 
       <div
         className={`fixed inset-0 z-50 bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden ${isOpen
-            ? "pointer-events-auto opacity-100"
-            : "pointer-events-none opacity-0"
+          ? "pointer-events-auto opacity-100"
+          : "pointer-events-none opacity-0"
           }`}
         onClick={closeMenu}
         aria-hidden="true"
@@ -299,7 +300,7 @@ export default function Navbar() {
               {/* Same logo in the mobile drawer */}
               <div className="relative h-13.5 w-38.75 shrink-0">
                 <Image
-                  src="/logo-bus-mantra.jpeg"
+                  src="/logo-bus-mantra.png"
                   alt="Bus Mantra Logo"
                   width={310}
                   height={110}
@@ -336,8 +337,8 @@ export default function Navbar() {
                   onClick={(event) => handleNavClick(event, item)}
                   aria-current={active ? "page" : undefined}
                   className={`group flex items-center justify-between rounded-xl px-3.5 py-3.5 text-[16px] transition-colors ${active
-                      ? "bg-primary-subtle font-bold text-primary"
-                      : "font-semibold text-neutral-800 hover:bg-primary-subtle/70 hover:text-primary"
+                    ? "bg-primary-subtle font-bold text-primary"
+                    : "font-semibold text-neutral-800 hover:bg-primary-subtle/70 hover:text-primary"
                     }`}
                 >
                   <span className="flex items-center gap-2.5">
@@ -353,8 +354,8 @@ export default function Navbar() {
 
                   <span
                     className={`text-lg transition-transform group-hover:translate-x-0.5 ${active
-                        ? "font-semibold text-primary"
-                        : "text-neutral-400 group-hover:text-primary"
+                      ? "font-semibold text-primary"
+                      : "text-neutral-400 group-hover:text-primary"
                       }`}
                     aria-hidden="true"
                   >
