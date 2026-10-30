@@ -2166,7 +2166,7 @@ export const footerData = {
     name: "BUS MANTRA",
     description:
       "India's trusted platform for full-bus charters and group road travel. Reserving the entire vehicle for weddings, corporate offsites, school trips, and pilgrimage tours with verified professional chauffeurs.",
-    logo: "/logo-bus-mantra.jpeg",
+    logo: "/logo-bus-mantra.png",
   },
   contact: {
     phone: "+91 9876543210",
