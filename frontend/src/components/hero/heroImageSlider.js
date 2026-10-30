@@ -6,20 +6,20 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const DEFAULT_SLIDES = [
   {
-    src: "/about_bus.png",
+    src: "/bus_mantra_about_bus.png",
     alt: "BUS MANTRA Modern Luxury Coach Bus",
   },
   {
-    src: "/fleet/1.jpg",
-    alt: "BUS MANTRA Mini Coach Fleet",
+    src: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+    alt: "BUS MANTRA Maharaja Tempo Traveller",
   },
   {
-    src: "/fleet/5.jpg",
-    alt: "BUS MANTRA Luxury Coach Bus",
+    src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
+    alt: "BUS MANTRA Tata Luxury Coach Bus",
   },
   {
-    src: "/fleet/9.jpg",
-    alt: "BUS MANTRA Premium Coach Bus",
+    src: "/fleet/40_seater_volvo_with_washroom_1.png",
+    alt: "BUS MANTRA Volvo Luxury Coach Bus",
   },
 ];
 

@@ -23,6 +23,7 @@ import {
   CheckCircle2,
   ChevronDown,
   Clock,
+  FileText,
   Flame,
   ImageIcon,
   Mail,
@@ -60,13 +61,13 @@ import {
   saveBookingSession,
 } from "@/services/bookingState";
 
-const DEFAULT_FLEET_IMAGE = "/fleet/fleet.png";
+const DEFAULT_FLEET_IMAGE = "/fleet/12_seater_maharaja_tempo_traveller_1.png";
 
 const IMAGE_FIELDS = ["image", "imageUrl", "imagePath", "photo", "thumbnail"];
 
 const FALLBACK_FLEET_IMAGES = [
-  "/fleet/fleet.png",
-  "/fleet/coach.png",
+  "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+  "/fleet/45-49_seater_tata_luxury_coach_1.png",
 ];
 
 function getFleetImages(fleet) {
@@ -173,70 +174,101 @@ export default function FleetDetailPage({ params }) {
     );
   }
 
-  const supportsVehicleTypeSelection = Boolean(
-    bus?.supportsVehicleTypeSelection ||
-    bus?.slug === "mini-coach" ||
-    bus?.id === "mini-coach"
-  );
-
   const vehicleTypeOptions = useMemo(
-    () =>
-      bus?.vehicleTypes || [
-        {
-          id: "mini-coach",
-          name: "Mini Coach",
-          capacity: "15–19 Seats",
-          minSeats: 1,
-          maxSeats: 19,
-          ratePerKm: 28,
-        },
-        {
-          id: "tempo-traveler",
-          name: "Tempo Traveler",
-          capacity: "9–16 Seats",
-          minSeats: 1,
-          maxSeats: 16,
-          ratePerKm: 24,
-          isRatePendingConfirmation: true,
-        },
-      ],
+    () => (Array.isArray(bus?.vehicleTypes) ? bus.vehicleTypes : []),
     [bus]
   );
 
+  const supportsVehicleTypeSelection = vehicleTypeOptions.length > 0;
+
   const [selectedVehicleTypeKey, setSelectedVehicleTypeKey] = useState(() => {
-    if (supportsVehicleTypeSelection) {
-      const initialType = bookingData?.vehicleType;
-      if (initialType && vehicleTypeOptions.some((o) => o.id === initialType)) {
-        return initialType;
-      }
-      return "mini-coach";
+    const fromQuery = searchParams?.get("vehicle") || searchParams?.get("vehicleType");
+    if (fromQuery && vehicleTypeOptions.some((o) => o.id === fromQuery || o.slug === fromQuery)) {
+      const match = vehicleTypeOptions.find((o) => o.id === fromQuery || o.slug === fromQuery);
+      return match.id;
     }
-    return "";
+    const sessionVehicle = bookingData?.vehicleType;
+    if (sessionVehicle && vehicleTypeOptions.some((o) => o.id === sessionVehicle)) {
+      return sessionVehicle;
+    }
+    if (bus?.defaultVariantId && vehicleTypeOptions.some((o) => o.id === bus.defaultVariantId)) {
+      return bus.defaultVariantId;
+    }
+    const pCount = parseInt(bookingData?.passengers, 10);
+    if (!isNaN(pCount) && pCount > 0) {
+      const fitting = vehicleTypeOptions.filter((v) => (v.maxSeats || v.seats) >= pCount);
+      if (fitting.length > 0) {
+        fitting.sort((a, b) => (a.maxSeats || a.seats) - (b.maxSeats || b.seats));
+        return fitting[0].id;
+      }
+    }
+    return vehicleTypeOptions[0]?.id || "";
   });
 
   const activeVehicleType = useMemo(() => {
-    if (!supportsVehicleTypeSelection) return null;
+    if (vehicleTypeOptions.length === 0) return null;
     return (
       vehicleTypeOptions.find((opt) => opt.id === selectedVehicleTypeKey) ||
       vehicleTypeOptions[0]
     );
-  }, [supportsVehicleTypeSelection, vehicleTypeOptions, selectedVehicleTypeKey]);
+  }, [vehicleTypeOptions, selectedVehicleTypeKey]);
+
+  // Merged effective bus object for the active variant
+  const effectiveBus = useMemo(() => {
+    if (!activeVehicleType) return bus;
+    return {
+      ...bus,
+      ...activeVehicleType,
+      id: activeVehicleType.id,
+      name: activeVehicleType.name,
+      capacity: activeVehicleType.capacity || `${activeVehicleType.seats} Passengers`,
+      seatLayout: activeVehicleType.seatLayout,
+      description: activeVehicleType.description || bus.description,
+      image: activeVehicleType.image || bus.image,
+      imageUrl: activeVehicleType.image || bus.imageUrl,
+      gallery:
+        activeVehicleType.gallery?.length > 0
+          ? activeVehicleType.gallery
+          : bus.gallery || [activeVehicleType.image || bus.image],
+      images:
+        activeVehicleType.gallery?.length > 0
+          ? activeVehicleType.gallery
+          : bus.images || [activeVehicleType.image || bus.image],
+      ratePerKm: activeVehicleType.ratePerKm || bus.ratePerKm,
+      features: {
+        luggage: activeVehicleType.specs?.luggage || bus.features?.luggage || "Standard boot space",
+        climate: activeVehicleType.specs?.climate || bus.features?.climate || "Individual AC vents",
+        seats: `${activeVehicleType.seatLayout} Reclining Seats`,
+        entertainment: activeVehicleType.specs?.audioVisual || bus.features?.entertainment || "Audio System",
+        charging: activeVehicleType.specs?.charging || "USB Ports at each seat",
+        washroom: activeVehicleType.specs?.washroom || bus.features?.washroom || "Not Available",
+      },
+      amenities:
+        activeVehicleType.amenities?.length > 0
+          ? activeVehicleType.amenities
+          : bus.amenities,
+      inclusions:
+        activeVehicleType.inclusions?.length > 0
+          ? activeVehicleType.inclusions
+          : bus.inclusions,
+    };
+  }, [bus, activeVehicleType]);
 
   const passengerCount = parseInt(bookingData.passengers, 10);
   const capacityWarning = useMemo(() => {
     if (
-      !supportsVehicleTypeSelection ||
       !activeVehicleType ||
       isNaN(passengerCount) ||
       passengerCount <= 0
     ) {
       return "";
     }
-    if (passengerCount > activeVehicleType.maxSeats) {
-      return `${activeVehicleType.name} accommodates up to ${activeVehicleType.maxSeats} passengers. Your group has ${passengerCount} passengers.`;
+    const max = activeVehicleType.maxSeats || activeVehicleType.seats;
+    if (passengerCount > max) {
+      return `${activeVehicleType.name} accommodates up to ${max} passengers. Your group has ${passengerCount} passengers.`;
     }
     return "";
-  }, [supportsVehicleTypeSelection, activeVehicleType, passengerCount]);
+  }, [activeVehicleType, passengerCount]);
 
   const updateRouteCalculation = useCallback(
     async (pickup, destinations, vehicleOverride) => {
@@ -249,7 +281,7 @@ export default function FleetDetailPage({ params }) {
         const activeVehicle =
           vehicleOverride !== undefined ? vehicleOverride : activeVehicleType;
 
-        const effectiveBus = activeVehicle
+        const busForCalc = activeVehicle
           ? {
             ...bus,
             ...activeVehicle,
@@ -261,7 +293,7 @@ export default function FleetDetailPage({ params }) {
 
         const pricing = calculateCharterPrice({
           totalDistanceKm: dist.totalKm,
-          bus: effectiveBus,
+          bus: busForCalc,
         });
 
         startTransition(() => {
@@ -294,21 +326,93 @@ export default function FleetDetailPage({ params }) {
       vehicleTypeOptions.find((o) => o.id === newKey) ||
       vehicleTypeOptions[0];
 
+    const newPassengers = String(selectedOpt?.seats || selectedOpt?.maxSeats || bookingData.passengers);
+
     setBookingData((previous) => {
       const updated = {
         ...previous,
         vehicleType: newKey,
         vehicleTypeName: selectedOpt.name,
         ratePerKm: selectedOpt.ratePerKm,
+        passengers: newPassengers,
       };
       saveBookingSession(updated);
       return updated;
     });
 
+    if (typeof window !== "undefined") {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("vehicle", newKey);
+        url.searchParams.set("passengers", newPassengers);
+        window.history.replaceState(null, "", url.toString());
+      } catch {
+        // Safe fallback
+      }
+    }
+
     updateRouteCalculation(
       bookingData.pickupPoint,
       bookingData.destination,
       selectedOpt
+    );
+  };
+
+  const handlePassengerCountChange = (newVal) => {
+    const pCount = parseInt(newVal, 10);
+
+    let matchedVariant = null;
+    if (!isNaN(pCount) && pCount > 0 && vehicleTypeOptions.length > 0) {
+      const fitting = vehicleTypeOptions.filter(
+        (v) => (v.maxSeats || v.seats) >= pCount
+      );
+      if (fitting.length > 0) {
+        fitting.sort((a, b) => (a.maxSeats || a.seats) - (b.maxSeats || b.seats));
+        matchedVariant = fitting[0];
+      } else {
+        matchedVariant = vehicleTypeOptions[vehicleTypeOptions.length - 1];
+      }
+    }
+
+    if (matchedVariant && matchedVariant.id !== selectedVehicleTypeKey) {
+      setSelectedVehicleTypeKey(matchedVariant.id);
+    }
+
+    const currentVariant = matchedVariant || activeVehicleType;
+
+    setBookingData((previous) => {
+      const updated = {
+        ...previous,
+        passengers: newVal,
+        ...(currentVariant
+          ? {
+              vehicleType: currentVariant.id,
+              vehicleTypeName: currentVariant.name,
+              ratePerKm: currentVariant.ratePerKm,
+            }
+          : {}),
+      };
+      saveBookingSession(updated);
+      return updated;
+    });
+
+    if (typeof window !== "undefined") {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("passengers", newVal);
+        if (currentVariant) {
+          url.searchParams.set("vehicle", currentVariant.id);
+        }
+        window.history.replaceState(null, "", url.toString());
+      } catch {
+        // Safe fallback
+      }
+    }
+
+    updateRouteCalculation(
+      bookingData.pickupPoint,
+      bookingData.destination,
+      currentVariant
     );
   };
 
@@ -381,8 +485,12 @@ export default function FleetDetailPage({ params }) {
           <div className="flex w-full flex-col gap-8 lg:col-span-7">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-surface px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-text-secondary">
-                  {bus.badge || "CHARTER COACH"}
+                <span className="rounded-full bg-surface px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-text-secondary border border-border">
+                  {bus.name}
+                </span>
+
+                <span className="rounded-full bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary border border-primary/20">
+                  {effectiveBus.seatLayout} Layout
                 </span>
 
                 {bus.isPopular && (
@@ -393,62 +501,103 @@ export default function FleetDetailPage({ params }) {
                 )}
               </div>
 
-              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
-                {bus.name}
+              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-4xl lg:text-[40px]">
+                {effectiveBus.name}
               </h1>
 
-              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
-                <Users className="h-4 w-4 text-primary" />
-                Capacity: {activeVehicleType?.capacity || bus.capacity}
+              <div className="mt-3 flex flex-wrap items-center gap-4 text-sm font-semibold text-text-secondary">
+                <span className="inline-flex items-center gap-1.5">
+                  <Users className="h-4 w-4 text-primary" />
+                  Capacity: <strong className="text-text-primary">{effectiveBus.capacity}</strong>
+                </span>
+                <span className="text-text-muted">•</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Bus className="h-4 w-4 text-primary" />
+                  Seating: <strong className="text-text-primary">{effectiveBus.seatLayout} Push-back</strong>
+                </span>
               </div>
 
-              {bus.description && (
+              {effectiveBus.description && (
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-text-muted sm:text-base">
-                  {bus.description}
+                  {effectiveBus.description}
                 </p>
               )}
             </div>
 
-            <FleetHeroImage bus={bus} />
+            <FleetHeroImage bus={effectiveBus} />
 
-            {bus.features && (
-              <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6">
-                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
-                  VEHICLE SPECIFICATIONS
-                </h2>
+            {effectiveBus.features && (
+              <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
+                    VEHICLE SPECIFICATIONS
+                  </h2>
 
-                <div className="grid grid-cols-2 gap-3">
+                  <Link
+                    href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
+                  >
+                    <FileText className="h-3.5 w-3.5" />
+                    Full Specs
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   <Specification
-                    label="Luggage Bay"
-                    value={bus.features.luggage}
+                    label="Seating Capacity"
+                    value={effectiveBus.capacity}
+                  />
+
+                  <Specification
+                    label="Seat Configuration"
+                    value={`${effectiveBus.seatLayout} Recliner`}
+                  />
+
+                  <Specification
+                    label="Luggage Space"
+                    value={effectiveBus.features.luggage}
                   />
 
                   <Specification
                     label="Climate Control"
-                    value={bus.features.climate}
-                  />
-
-                  <Specification
-                    label="Seating Layout"
-                    value={bus.features.seats}
+                    value={effectiveBus.features.climate}
                   />
 
                   <Specification
                     label="Audio & Visual"
-                    value={bus.features.entertainment}
+                    value={effectiveBus.features.entertainment}
                   />
+
+                  <Specification
+                    label="Onboard Washroom"
+                    value={effectiveBus.features.washroom || "Not Available"}
+                  />
+                </div>
+
+                <div className="mt-4 pt-3.5 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                  <span className="text-xs text-text-muted">
+                    Looking for full engine, cabin dimensions, and mechanical specs?
+                  </span>
+                  <Link
+                    href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-surface-secondary px-3 py-1.5 text-xs font-bold text-text-primary hover:text-primary transition-colors border border-border"
+                  >
+                    View Specifications Page
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
               </section>
             )}
 
-            {bus.amenities?.length > 0 && (
+            {effectiveBus.amenities?.length > 0 && (
               <section className="rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
                 <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
-                  INCLUDED COACH AMENITIES
+                  CABIN FEATURES & AMENITIES
                 </h2>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {bus.amenities.map((amenity, index) => (
+                  {effectiveBus.amenities.map((amenity, index) => (
                     <div
                       key={`${amenity}-${index}`}
                       className="flex items-center gap-2.5 text-xs font-semibold text-text-secondary sm:text-sm"
@@ -458,6 +607,29 @@ export default function FleetDetailPage({ params }) {
                       </span>
 
                       {amenity}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {effectiveBus.inclusions?.length > 0 && (
+              <section className="rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
+                  BOOKING INCLUSIONS
+                </h2>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {effectiveBus.inclusions.map((inclusion, index) => (
+                    <div
+                      key={`${inclusion}-${index}`}
+                      className="flex items-center gap-2.5 text-xs font-semibold text-text-secondary sm:text-sm"
+                    >
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 className="h-3.5 w-3.5 stroke-[2.4]" />
+                      </span>
+
+                      {inclusion}
                     </div>
                   ))}
                 </div>
@@ -517,13 +689,26 @@ export default function FleetDetailPage({ params }) {
                 </span>
 
                 <h2 className="text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                  Reserve {activeVehicleType?.name || bus.name}
+                  Reserve {effectiveBus.name}
                 </h2>
               </div>
 
               <div className="space-y-3.5">
-                {/* SELECT VEHICLE TYPE DROPDOWN (ONLY FOR MINI COACH / TEMPO TRAVELER) */}
-                {supportsVehicleTypeSelection && (
+                {/* 1. NO. OF PASSENGERS */}
+                <BookingFormField
+                  id="detailPassengers"
+                  icon={Users}
+                  label="NO. OF PASSENGERS"
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={bookingData.passengers || ""}
+                  placeholder="e.g. 20"
+                  onChange={handlePassengerCountChange}
+                />
+
+                {/* 2. SELECT VEHICLE DROPDOWN (Filtered to this fleet category) */}
+                {vehicleTypeOptions.length > 0 && (
                   <div className="space-y-1">
                     <div className="rounded-xl border border-border bg-surface-secondary px-4 py-2.5 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30">
                       <label
@@ -532,8 +717,13 @@ export default function FleetDetailPage({ params }) {
                       >
                         <span className="flex items-center gap-1.5">
                           <Bus className="h-3.5 w-3.5 text-primary shrink-0" />
-                          <span>SELECT VEHICLE TYPE</span>
+                          <span>SELECT VEHICLE</span>
                         </span>
+                        {activeVehicleType?.capacity && (
+                          <span className="text-[10px] font-bold text-primary">
+                            {activeVehicleType.capacity}
+                          </span>
+                        )}
                       </label>
 
                       <div className="relative">
@@ -549,7 +739,7 @@ export default function FleetDetailPage({ params }) {
                               value={opt.id}
                               className="bg-surface text-text-primary py-1"
                             >
-                              {opt.name}
+                              {opt.name} ({opt.capacity || `${opt.seats} Seats`})
                             </option>
                           ))}
                         </select>
@@ -557,6 +747,12 @@ export default function FleetDetailPage({ params }) {
                         <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted" />
                       </div>
                     </div>
+
+                    {capacityWarning && (
+                      <p className="px-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                        {capacityWarning}
+                      </p>
+                    )}
                   </div>
                 )}
                 <BookingFormField
@@ -711,54 +907,64 @@ export default function FleetDetailPage({ params }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-                <button
-                  type="button"
-                  onClick={openFleetModal}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-xs font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
-                >
-                  <ImageIcon className="h-4 w-4" />
-                  View Bus Images
-                </button>
+              <div className="space-y-2.5">
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
+                    className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-xs font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                  >
+                    <FileText className="h-4 w-4 text-primary shrink-0" />
+                    <span>Specifications</span>
+                  </Link>
 
-                <button
-                  type="button"
-                  onClick={handleConfirmBooking}
-                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
-                >
-                  Confirm Booking
+                  <button
+                    type="button"
+                    onClick={openFleetModal}
+                    className="flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-xs font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                  >
+                    <ImageIcon className="h-4 w-4 text-primary shrink-0" />
+                    <span>Bus Images ({getFleetImages(effectiveBus).length})</span>
+                  </button>
+                </div>
 
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </button>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={handleConfirmBooking}
+                    className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
+                  >
+                    <span>Confirm Booking</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={() => setShowQuote(true)}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
-                >
-                  <PhoneCall className="h-4 w-4" />
-                  Request a Quote
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowQuote(true)}
+                    className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                  >
+                    <PhoneCall className="h-4 w-4" />
+                    <span>Request a Quote</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-
       {/* Fleet Detail Page FAQs */}
       <FAQSection data={fleetSlugFaqData} />
 
       {showFleetModal && (
         <FleetImagesModal
-          fleet={bus}
+          fleet={effectiveBus}
           onClose={closeFleetModal}
         />
       )}
 
       {showQuote && (
         <QuoteModal
-          bus={activeVehicleType ? { ...bus, name: activeVehicleType.name } : bus}
+          bus={effectiveBus}
           bookingData={bookingData}
           onClose={() => setShowQuote(false)}
         />
@@ -766,7 +972,7 @@ export default function FleetDetailPage({ params }) {
 
       {isBooked && (
         <BookingConfirmation
-          bus={activeVehicleType ? { ...bus, name: activeVehicleType.name } : bus}
+          bus={effectiveBus}
           bookingData={bookingData}
           pricingResult={pricingResult}
           onClose={() => setIsBooked(false)}
@@ -972,17 +1178,59 @@ function FleetImagesModal({ fleet, onClose }) {
 }
 
 function FleetHeroImage({ bus }) {
-  const image = getFleetImages(bus)[0];
+  const images = getFleetImages(bus);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [bus?.id, bus?.name]);
+
+  const activeSrc = images[activeIndex] || images[0] || DEFAULT_FLEET_IMAGE;
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
-      <SafeFleetImage
-        src={image}
-        alt={bus?.name || "Bus Mantra coach"}
-        sizes="(max-width: 1024px) 100vw, 58vw"
-        priority
-        className="object-cover"
-      />
+    <div className="space-y-3">
+      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
+        <SafeFleetImage
+          key={activeSrc}
+          src={activeSrc}
+          alt={bus?.name || "Bus Mantra coach"}
+          sizes="(max-width: 1024px) 100vw, 58vw"
+          priority
+          className="object-cover transition-opacity duration-300"
+        />
+        {images.length > 1 && (
+          <div className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-sm">
+            <ImageIcon className="h-3.5 w-3.5 text-primary" />
+            <span>
+              {activeIndex + 1} / {images.length}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+          {images.map((img, idx) => (
+            <button
+              key={`${img}-${idx}`}
+              type="button"
+              onClick={() => setActiveIndex(idx)}
+              className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border transition-all cursor-pointer ${
+                activeIndex === idx
+                  ? "border-primary ring-2 ring-primary/40 scale-102"
+                  : "border-border opacity-70 hover:opacity-100"
+              }`}
+            >
+              <SafeFleetImage
+                src={img}
+                alt={`${bus?.name || "Coach"} thumbnail ${idx + 1}`}
+                sizes="96px"
+                className="object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

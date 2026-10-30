@@ -15,7 +15,11 @@ export default function BusImageCarousel({
   const imageList =
     Array.isArray(images) && images.length > 0
       ? images
-      : ["/fleet/mini-coach.jpg", "/fleet/fleet.png", "/fleet/coach.png"];
+      : [
+          "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+          "/fleet/45-49_seater_tata_luxury_coach_1.png",
+          "/fleet/40_seater_volvo_with_washroom_1.png",
+        ];
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? imageList.length - 1 : prev - 1));

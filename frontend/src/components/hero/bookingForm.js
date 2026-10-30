@@ -684,6 +684,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
     const {
       bus,
+      variant,
       error,
       exceedsCapacity,
     } = getBusForPassengers(
@@ -738,7 +739,13 @@ export default function BookingForm({ data = heroData?.form }) {
       selectedBusId: bus.id,
 
       selectedBusName:
-        bus.name,
+        variant?.name || bus.name,
+
+      vehicleType:
+        variant?.id || formValues.vehicleType || "",
+
+      vehicle:
+        variant?.id || formValues.vehicleType || "",
 
       hasDeterminedPassengers:
         true,

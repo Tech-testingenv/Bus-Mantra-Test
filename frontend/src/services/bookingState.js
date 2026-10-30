@@ -136,7 +136,7 @@ export function resolveInitialBookingState(searchParams) {
   const fromSession = getBookingSession();
 
   const vehicleType =
-    fromQuery?.vehicleType || fromSession?.vehicleType || "mini-coach";
+    fromQuery?.vehicleType || fromSession?.vehicleType || null;
 
   const merged = {
     pickupPoint: fromQuery?.pickupPoint || fromSession?.pickupPoint || "Delhi NCR",
@@ -166,7 +166,7 @@ export function resolveInitialBookingState(searchParams) {
     vehicleTypeName:
       fromQuery?.vehicleTypeName ||
       fromSession?.vehicleTypeName ||
-      (vehicleType === "tempo-traveler" ? "Tempo Traveler" : "Mini Coach"),
+      null,
     hasDeterminedPassengers: Boolean(
       (fromQuery?.passengers && parseInt(fromQuery.passengers, 10) > 0) ||
       (fromSession?.passengers && parseInt(fromSession.passengers, 10) > 0)

@@ -352,7 +352,7 @@ export default function ServicesPage() {
             <div className="relative rounded-3xl overflow-hidden bg-black/5 border border-black/10 p-4 sm:p-5">
 
               <Image
-                src="/fleet/fleet.png"
+                src="/bus_mantra_about_bus.png"
                 alt="Bus Mantra luxury coach fleet"
                 width={1400}
                 height={800}

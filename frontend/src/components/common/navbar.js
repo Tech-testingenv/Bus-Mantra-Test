@@ -22,8 +22,19 @@ export default function Navbar() {
 
   const pathname = usePathname();
   const navRef = useRef(null);
+  const menuButtonRef = useRef(null);
 
   const closeMenu = useCallback(() => {
+    if (typeof document !== "undefined" && document.activeElement) {
+      const drawer = document.getElementById("mobile-nav-drawer");
+      if (drawer && drawer.contains(document.activeElement)) {
+        if (menuButtonRef.current) {
+          menuButtonRef.current.focus();
+        } else {
+          document.activeElement.blur();
+        }
+      }
+    }
     setIsOpen(false);
   }, []);
 
@@ -235,6 +246,7 @@ export default function Navbar() {
             {/* ================================================= */}
 
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setIsOpen(true)}
               className="flex h-10 w-10 items-center justify-center rounded-xl text-neutral-800 transition-colors hover:bg-neutral-100 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring lg:hidden"
@@ -272,7 +284,6 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile Navigation"
-        aria-hidden={!isOpen}
         inert={!isOpen}
       >
         {/* Drawer header and links */}

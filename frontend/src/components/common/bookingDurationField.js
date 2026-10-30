@@ -63,7 +63,7 @@ export default function BookingDurationField({
           id="trip-duration-field"
           type="text"
           readOnly
-          tabIndex={-1}
+          tabIndex={1}
           aria-readonly="true"
           value={duration.text}
           placeholder={duration.placeholder || "Select travel dates"}

@@ -155,15 +155,16 @@ export function combineDateTime(dateInput, timeInput) {
  * Uses Date.UTC to guarantee no timezone or daylight saving errors.
  *
  * Rules:
- * - diff === 0 -> "Same Day Trip"
- * - diff === 1 -> "1 Day / 1 Night"
- * - diff > 1   -> `${diff} Days / ${diff} Nights`
+ * - nights = diffDays (between departure date and return date)
+ * - days = nights + 1 (calendar days spent on the journey)
+ * - Format: "${nights} night(s)/${days} day(s)" (e.g. "2 nights/3 days", "1 night/2 days")
+ * - diff === 0 -> "0 nights/1 day" (same day trip)
  * - diff < 0   -> "Invalid date range"
  * - missing    -> "" (placeholder: "Select travel dates")
  *
  * @param {string} departureInput
  * @param {string} returnInput
- * @returns {{ text: string, diffDays: number | null, isSameDay: boolean, isInvalid: boolean, isMissing: boolean }}
+ * @returns {{ text: string, nights: number | null, days: number | null, diffDays: number | null, isSameDay: boolean, isInvalid: boolean, isMissing: boolean, placeholder: string }}
  */
 export function calculateTripDuration(departureInput, returnInput) {
   const dep = parseDateComponents(departureInput);
@@ -172,6 +173,8 @@ export function calculateTripDuration(departureInput, returnInput) {
   if (!dep || !ret) {
     return {
       text: "",
+      nights: null,
+      days: null,
       diffDays: null,
       isSameDay: false,
       isInvalid: false,
@@ -190,6 +193,8 @@ export function calculateTripDuration(departureInput, returnInput) {
   if (diffDays < 0) {
     return {
       text: "Invalid date range",
+      nights: null,
+      days: null,
       diffDays,
       isSameDay: false,
       isInvalid: true,
@@ -198,32 +203,20 @@ export function calculateTripDuration(departureInput, returnInput) {
     };
   }
 
-  if (diffDays === 0) {
-    return {
-      text: "Same Day Trip",
-      diffDays: 0,
-      isSameDay: true,
-      isInvalid: false,
-      isMissing: false,
-      placeholder: "Select travel dates",
-    };
-  }
+  const nights = diffDays;
+  const days = nights + 1;
 
-  if (diffDays === 1) {
-    return {
-      text: "1 Day / 1 Night",
-      diffDays: 1,
-      isSameDay: false,
-      isInvalid: false,
-      isMissing: false,
-      placeholder: "Select travel dates",
-    };
-  }
+  const nightLabel = nights === 1 ? "night" : "nights";
+  const dayLabel = days === 1 ? "day" : "days";
+
+  const text = `${nights} ${nightLabel}/${days} ${dayLabel}`;
 
   return {
-    text: `${diffDays} Days / ${diffDays} Nights`,
+    text,
+    nights,
+    days,
     diffDays,
-    isSameDay: false,
+    isSameDay: diffDays === 0,
     isInvalid: false,
     isMissing: false,
     placeholder: "Select travel dates",

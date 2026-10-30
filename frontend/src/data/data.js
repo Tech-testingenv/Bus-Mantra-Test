@@ -501,128 +501,25 @@ export const aboutData = {
   },
 };
 
-export const fleetTypesData = [
-  {
-    id: "mini-coach",
-    slug: "mini-coach",
-    name: "Mini Coach / Tempo Traveler",
-    supportsVehicleTypeSelection: true,
-    capacity: "15–19 Seats",
-    minSeats: 1,
-    maxSeats: 19,
-    ratePerKm: 28,
-    vehicleTypes: [
-      {
-        id: "mini-coach",
-        name: "Mini Coach",
-        capacity: "15–19 Seats",
-        minSeats: 1,
-        maxSeats: 19,
-        ratePerKm: 28,
-        description:
-          "Agile maneuverability, ideal for medium corporate teams, wedding parties, family trips, and airport pickups.",
-      },
-      {
-        id: "tempo-traveler",
-        name: "Tempo Traveler",
-        capacity: "9–16 Seats",
-        minSeats: 1,
-        maxSeats: 16,
-        ratePerKm: 24,
-        isRatePendingConfirmation: true,
-        description:
-          "Comfortable, nimble multi-seater van, ideal for smaller family groups, airport transfers, and narrow city routes.",
-      },
-    ],
-    isPopular: false,
-    image: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
-    gallery: [
-      "/fleet/12_seater_maharaja_tempo_traveller_2.png",
-    ],
-    description:
-      "Agile maneuverability, ideal for medium corporate teams, wedding parties, family trips, and airport pickups.",
-    amenities: [
-      "AC & Climate Control",
-      "Push-back Reclining Seats",
-      "Dedicated Luggage Space",
-      "Music System & PA Mic",
-      "USB Charging at Every Seat",
-      "First Aid Kit & Fire Safety",
-    ],
-    features: {
-      luggage: "15–20 Standard Bags",
-      entertainment: "Stereo Audio & Mic",
-      climate: "Dual Powerful AC Vents",
-      seats: "Plush Recliners (2+2 Layout)",
-    },
-    ctaText: "View Details",
-    href: "/fleets/mini-coach",
-  },
-  {
-    id: "premium-coach",
-    slug: "premium-coach",
-    name: "Premium Coach",
-    capacity: "20–45 Seats",
-    minSeats: 20,
-    maxSeats: 45,
-    ratePerKm: 42,
-    isPopular: true,
-    image: "/fleet/45-49_seater_tata_luxury_coach_1.png",
-    gallery: [
-      "/fleet/45-49_seater_tata_luxury_coach_2.png",
-    ],
-    description:
-      "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for smooth multi-hour intercity transit.",
-    amenities: [
-      "Ergonomic Reclining Seats",
-      "Fast Onboard Wi-Fi",
-      "USB Charging at Every Seat",
-      "Individual AC Vents",
-      "Spacious Underfloor Luggage Bay",
-      "Chilled Mineral Water Dispenser",
-    ],
-    features: {
-      luggage: "40–45 Large Suitcases",
-      entertainment: "HD Screen & Sound System",
-      climate: "Individual Overhead AC",
-      seats: "Executive Recliner (2+2 Layout)",
-    },
-    ctaText: "View Details",
-    href: "/fleets/premium-coach",
-  },
-  {
-    id: "luxury-coach",
-    slug: "luxury-coach",
-    name: "Luxury Coach",
-    capacity: "46–60 Seats",
-    minSeats: 46,
-    maxSeats: 60,
-    ratePerKm: 58,
-    isPopular: false,
-    image: "/fleet/40_seater_volvo_with_washroom_1.png",
-    gallery: [
-      "/fleet/40_seater_volvo_with_washroom_2.png",
-    ],
-    description:
-      "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays for long tours.",
-    amenities: [
-      "Executive Luxury Plush Seats",
-      "Expansive Undercarriage Bays",
-      "Dual LED Entertainment Screens",
-      "Air Suspension Ride for Smooth Transit",
-      "Onboard Clean Washroom",
-      "Surround Audio System & Wireless Mic",
-    ],
-    features: {
-      luggage: "60+ Large Suitcases",
-      entertainment: "Dual Full-HD Displays",
-      climate: "Multi-Zone Climate Control",
-      seats: "Ultra Luxury Ergonomic (2+2)",
-    },
-    ctaText: "View Details",
-    href: "/fleets/luxury-coach",
-  },
-];
+import {
+  FLEET_CATEGORIES,
+  FLEET_VEHICLE_VARIANTS,
+  getAllVehicleVariants,
+  getVehicleVariantById,
+  getCategoryBySlug,
+  getCategoryForVariant,
+} from "./fleetData";
+
+export const fleetTypesData = FLEET_CATEGORIES;
+export {
+  FLEET_CATEGORIES,
+  FLEET_VEHICLE_VARIANTS,
+  getAllVehicleVariants,
+  getVehicleVariantById,
+  getCategoryBySlug,
+  getCategoryForVariant,
+};
+
 
 export const fleetSectionData = {
   eyebrow: "OUR FLEET",
@@ -637,7 +534,7 @@ export const fleetPageHeroData = {
   titleLines: ["One fleet.", "Every kind of journey."],
   description:
     "From compact coaches to premium luxury buses, our fleet is built to make group travel comfortable, reliable and easy — whatever the size of your journey.",
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
   imageAlt: "Bus Mantra luxury coach fleet",
 };
 
@@ -793,7 +690,7 @@ export const destinationsPageHeroData = {
   ],
   description:
     "Discover popular destinations across India and make every group journey comfortable, convenient and memorable with Bus Mantra.",
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
   imageAlt:
     "Bus Mantra coach ready for group travel across India",
 };
@@ -1276,81 +1173,112 @@ export const destinationsData = {
 
 export const servicesData = [
   {
-    id: "corporate",
+    id: "inbound-trips",
     number: "01",
-    title: "Corporate",
+    title: "Inbound Trips",
     description:
-      "Reliable group transportation for meetings, conferences, team travel, employee movement and corporate events.",
-    bottomLabel: "Professional group transport",
-    icon: "briefcase",
-    image: "/images/services/corporate-india.jpg",
-    ctaLabel: "Explore Service",
-    href: "/services/corporate-travel",
-  },
-
-  {
-    id: "group-tours",
-    number: "02",
-    title: "Group Tours",
-    description:
-      "Comfortable coaches for sightseeing, multi-city journeys, weekend trips and organised group travel.",
-    bottomLabel: "Travel together with ease",
-    icon: "map",
-    image: "/images/services/group-tours-india.jpg",
-    ctaLabel: "Explore Service",
+      "Curated pan-India charter transport for international tourists, travel agencies, and inbound delegation tours exploring India's heritage.",
+    bottomLabel: "International & inbound group travel",
+    icon: "globe",
+    image: "/images/services/inbound-trips.jpg",
+    ctaLabel: "Explore Inbound Trips",
     href: "/services/group-tours",
   },
-
   {
-    id: "events",
-    number: "03",
-    title: "Events",
+    id: "corporate-trips",
+    number: "02",
+    title: "Corporate Trips",
     description:
-      "Seamless transportation for weddings, celebrations, conferences, exhibitions and large gatherings.",
-    bottomLabel: "Coordinated event transport",
-    icon: "calendar",
-    image: "/images/services/events-india.jpg",
-    ctaLabel: "Explore Service",
-    href: "/services/events-weddings",
+      "Reliable executive transportation for meetings, offsites, employee commutes, and corporate group movements in premium modern coaches.",
+    bottomLabel: "Executive group transportation",
+    icon: "briefcase",
+    image: "/images/services/corporate-trips.jpg",
+    ctaLabel: "Explore Corporate Trips",
+    href: "/services/corporate-travel",
   },
-
   {
-    id: "school-trips",
-    number: "04",
-    title: "School Trips",
+    id: "mice-conference-trips",
+    number: "03",
+    title: "MICE / Conference Trips",
     description:
-      "Safe and organised group transportation for school excursions, educational trips and student travel.",
-    bottomLabel: "Comfortable group travel",
+      "Seamless logistics and dedicated coach transfers for conferences, exhibitions, trade delegations, and large-scale MICE events.",
+    bottomLabel: "Conferences, summits & expositions",
+    icon: "users",
+    image: "/images/services/mice-conference-trips.jpg",
+    ctaLabel: "Explore MICE Trips",
+    href: "/services/corporate-travel",
+  },
+  {
+    id: "school-college-trips",
+    number: "04",
+    title: "School / College Trips",
+    description:
+      "Safe, vetted, and comfortable coaches for educational excursions, industrial visits, college study tours, and sports competitions.",
+    bottomLabel: "Safe & vetted student travel",
     icon: "graduation-cap",
-    image: "/images/services/school-trips-india.jpg",
-    ctaLabel: "Explore Service",
+    image: "/images/services/school-college-trips.png",
+    ctaLabel: "Explore Student Trips",
     href: "/services/school-trips",
   },
-
   {
-    id: "airport-transfer",
+    id: "destination-wedding",
     number: "05",
-    title: "Airport Pick Up & Transfer",
+    title: "Destination Wedding",
     description:
-      "Convenient group airport transfers with comfortable vehicles and coordinated pickup and drop-off.",
-    bottomLabel: "Easy airport transfers",
+      "Luxury guest transport and coordinated convoy services for grand Indian weddings, sangeet functions, and royal destination ceremonies.",
+    bottomLabel: "Grand wedding & guest transfers",
+    icon: "heart",
+    image: "/images/services/destination-wedding.png",
+    ctaLabel: "Explore Wedding Travel",
+    href: "/services/events-weddings",
+  },
+  {
+    id: "airport-railway-transfers",
+    number: "06",
+    title: "Airport / Railway Station Pick-Up & Drop-Off",
+    description:
+      "Punctual airport and railway station pickups with coordinated luggage handling and seamless transfers to hotels or venues.",
+    bottomLabel: "Punctual station & airport pickups",
     icon: "plane",
-    image: "/images/services/airport-transfer-india.jpg",
-    ctaLabel: "Explore Service",
+    image: "/images/services/airport-railway-transfers.jpg",
+    ctaLabel: "Explore Transit Transfers",
     href: "/services/airport-transfers",
   },
-
   {
-    id: "hotel-transfer",
-    number: "06",
-    title: "Hotel Pick Up & Transfer",
+    id: "leisure-trips",
+    number: "07",
+    title: "Leisure Trips",
     description:
-      "Reliable hotel transfers for groups travelling together, with convenient pickup and destination coordination.",
-    bottomLabel: "Door-to-door convenience",
-    icon: "hotel",
-    image: "/images/services/hotel-transfer-india.jpg",
-    ctaLabel: "Explore Service",
-    href: "/services/hotel-transfers",
+      "Spacious luxury coaches for family reunions, holiday tours, weekend getaways, and scenic expeditions across scenic destinations.",
+    bottomLabel: "Scenic group holidays & getaways",
+    icon: "palmtree",
+    image: "/images/services/leisure-trips.png",
+    ctaLabel: "Explore Leisure Trips",
+    href: "/services/group-tours",
+  },
+  {
+    id: "meditation-trips",
+    number: "08",
+    title: "Meditation Trips",
+    description:
+      "Tranquil travel arrangements for spiritual retreats, yoga workshops, ashram visits, and silent meditation camps in peaceful nature.",
+    bottomLabel: "Serene spiritual & yoga retreats",
+    icon: "flower",
+    image: "/images/services/meditation-trips.jpg",
+    ctaLabel: "Explore Meditation Trips",
+    href: "/services/group-tours",
+  },
+  {
+    id: "cycling-trips",
+    number: "09",
+    title: "Cycling Trips",
+    description:
+      "Specialised expedition transit with custom bicycle racking, luggage logistics, and escort coach support for cycling groups and clubs.",
+    bottomLabel: "Escort support & cycling expeditions",
+    icon: "bike",
+    image: "/images/services/cycling-trips.jpg",
+    ctaLabel: "Explore Cycling Trips",
+    href: "/services/group-tours",
   },
 ];
 
@@ -1381,7 +1309,7 @@ export const servicesPageHeroData = {
   titleLines: ["Group travel,", "made simple."],
   description:
     "From corporate travel and school trips to airport transfers and group tours, Bus Mantra provides comfortable, reliable transportation for every kind of group journey.",
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
   imageAlt: "Bus Mantra comfortable coach fleet for group travel",
 };
 
@@ -1429,7 +1357,7 @@ export const featuredServiceData = {
     },
   ],
 
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
 
   imageAlt:
     "Bus Mantra luxury coach for full-bus group charter travel",
@@ -2294,7 +2222,7 @@ export const footerData = {
     subtext: "Fast 2-minute registration",
   },
   copyright:
-    "© 2026 Bus Mantra Pvt Ltd. All rights reserved.",
+    "© 2026 Bus Mantra All rights reserved.",
   developer: {
     prefix: "Developed by",
     name: "Kanak Drishti Infotech Pvt. Ltd.",

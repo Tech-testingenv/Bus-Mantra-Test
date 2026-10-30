@@ -1,5 +1,6 @@
 "use client";
 
+import { Info } from "lucide-react";
 import { formatCurrency } from "@/services/pricingService";
 
 /**
@@ -8,6 +9,7 @@ import { formatCurrency } from "@/services/pricingService";
  * 1. Fare Excluding GST
  * 2. GST (5% standard transport GST)
  * 3. Total Fare Including GST (prominently highlighted)
+ * 4. Parking Notice: "Airport & Station Parking Charges Apply As Per Actuals"
  *
  * @param {Object} props
  * @param {number|string} props.basePrice - Pre-GST base fare amount or formatted string
@@ -15,6 +17,7 @@ import { formatCurrency } from "@/services/pricingService";
  * @param {number|string} props.totalFare - Total fare amount or formatted string
  * @param {string} [props.gstRatePercent="5%"] - GST percentage label
  * @param {string} [props.title="FARE SUMMARY"] - Header label
+ * @param {boolean} [props.showParkingNotice=true] - Display informational parking notice
  * @param {"default" | "light" | "compact"} [props.variant="default"]
  * @param {string} [props.className=""]
  */
@@ -24,6 +27,7 @@ export default function FareSummary({
   totalFare = 0,
   gstRatePercent = "5%",
   title = "FARE SUMMARY",
+  showParkingNotice = true,
   variant = "default",
   className = "",
 }) {
@@ -84,6 +88,14 @@ export default function FareSummary({
           Including all applicable taxes.
         </span>
       </div>
+
+      {/* Informational Notice: Airport & Station Parking Charges */}
+      {showParkingNotice && (
+        <div className="mt-2.5 pt-2 border-t border-primary/15 flex items-start gap-1.5 text-[11px] font-semibold text-primary/95 sm:text-xs">
+          <Info className="h-3.5 w-3.5 shrink-0 text-primary mt-0.5" />
+          <span>Airport &amp; Station Parking Charges Apply As Per Actuals</span>
+        </div>
+      )}
     </div>
   );
 }

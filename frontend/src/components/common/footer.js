@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, ArrowRight, Check, Building2 } from "lucide-react";
+import { ArrowRight, Building2 } from "lucide-react";
 import { footerData } from "@/data/data";
 
 export default function Footer({ data = footerData }) {
@@ -50,38 +50,36 @@ export default function Footer({ data = footerData }) {
   };
 
   return (
-    <footer className="w-full bg-primary border-t border-primary-hover pt-12 sm:pt-16 pb-8 text-primary-foreground">
+    <footer className="w-full bg-primary border-t border-primary-hover pt-8 sm:pt-10 pb-6 sm:pb-7 text-primary-foreground">
       <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
         {/* ========================================================= */}
-        {/* 1. TOP BRAND & CONTACT AREA                               */}
+        {/* MAIN FOOTER: BRAND, NAVIGATION & PARTNER CARD             */}
         {/* ========================================================= */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-8 sm:pb-10 border-b border-white/20">
-          {/* Brand Left Column */}
-          <div className="max-w-xl">
-            {/* Logo & Tagline */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
-              <Link
-                href="/"
-                className="inline-flex items-center justify-start bg-white px-3 py-2 rounded-xl border border-white/30 shadow-2xs"
-              >
-                <Image
-                  src={data.brand.logo || "/logo-bus-mantra.png"}
-                  alt={data.brand.name}
-                  width={260}
-                  height={100}
-                  priority
-                  className="h-10 sm:h-12 w-auto max-w-50 object-contain object-left"
-                />
-              </Link>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-8 items-start">
+          {/* BRAND COLUMN (3 cols on desktop) */}
+          <div className="lg:col-span-3 flex flex-col items-start">
+            {/* Logo Badge */}
+            <Link
+              href="/"
+              className="inline-flex items-center justify-start bg-white px-3 py-1.5 rounded-xl border border-white/30 shadow-2xs mb-3"
+            >
+              <Image
+                src={data.brand.logo || "/logo-bus-mantra.png"}
+                alt={data.brand.name}
+                width={240}
+                height={90}
+                priority
+                className="h-8 sm:h-8.5 w-auto max-w-40 object-contain object-left"
+              />
+            </Link>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-5">
+            <p className="text-xs text-white/85 leading-relaxed mb-4 max-w-xs">
               {data.brand.description}
             </p>
 
             {/* Social Media Links */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 mt-auto">
               {data.socialLinks.map((social) => (
                 <a
                   key={social.key}
@@ -89,7 +87,7 @@ export default function Footer({ data = footerData }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className="w-9 h-9 rounded-full bg-white text-primary hover:bg-white/90 hover:scale-105 flex items-center justify-center transition-all duration-200 shadow-2xs"
+                  className="w-7.5 h-7.5 rounded-full bg-white text-primary hover:bg-white/90 hover:scale-105 flex items-center justify-center transition-all duration-200 shadow-2xs"
                 >
                   {renderSocialIcon(social.key)}
                 </a>
@@ -97,44 +95,14 @@ export default function Footer({ data = footerData }) {
             </div>
           </div>
 
-          {/* Contact Right Column: Rounded Pills */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:self-start lg:mt-2">
-            {/* Phone Pill */}
-            <a
-              href={data.contact.phoneHref}
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-white/30 hover:shadow-md text-text-primary text-xs sm:text-sm font-semibold shadow-2xs transition-all duration-200 group"
-            >
-              <div className="w-7 h-7 rounded-full bg-primary-subtle group-hover:bg-primary flex items-center justify-center transition-colors">
-                <Phone className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" />
-              </div>
-              <span>{data.contact.phone}</span>
-            </a>
-
-            {/* Email Pill */}
-            <a
-              href={data.contact.emailHref}
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-white/30 hover:shadow-md text-text-primary text-xs sm:text-sm font-semibold shadow-2xs transition-all duration-200 group"
-            >
-              <div className="w-7 h-7 rounded-full bg-primary-subtle group-hover:bg-primary flex items-center justify-center transition-colors">
-                <Mail className="w-3.5 h-3.5 text-primary group-hover:text-white transition-colors" />
-              </div>
-              <span>{data.contact.email}</span>
-            </a>
-          </div>
-        </div>
-
-        {/* ========================================================= */}
-        {/* 2. MAIN FOOTER NAVIGATION & PARTNER CARD                  */}
-        {/* ========================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pt-10 sm:pt-12">
-          {/* NAVIGATION COLUMNS (8 cols on desktop) */}
-          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
+          {/* NAVIGATION COLUMNS (6 cols on desktop with proportional sub-columns) */}
+          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-[1fr_1.35fr_1.35fr_1fr] gap-6 sm:gap-4 xl:gap-6">
             {/* COLUMN 1: QUICK LINKS */}
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
                 Quick Links
               </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm">
+              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
                 {data.quickLinks.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -150,10 +118,10 @@ export default function Footer({ data = footerData }) {
 
             {/* COLUMN 2: BUS MANTRA FLEETS */}
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
                 Our Fleet
               </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm">
+              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
                 {data.fleets.map((fleet) => (
                   <li key={fleet.label}>
                     <Link
@@ -172,10 +140,10 @@ export default function Footer({ data = footerData }) {
 
             {/* COLUMN 3: SERVICES */}
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
                 Services
               </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm">
+              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
                 {data.services.map((service) => (
                   <li key={service.label}>
                     <Link
@@ -194,10 +162,10 @@ export default function Footer({ data = footerData }) {
 
             {/* COLUMN 4: DESTINATIONS */}
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
                 Destinations
               </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm">
+              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
                 {data.destinations.map((dest) => (
                   <li key={dest.label}>
                     <Link
@@ -215,32 +183,35 @@ export default function Footer({ data = footerData }) {
             </div>
           </div>
 
-          {/* RIGHT SIDE: PARTNER WITH US CARD (4 cols on desktop) */}
-          <div className="lg:col-span-4 flex flex-col justify-center">
-            <div className="bg-white border border-white/40 rounded-2xl sm:rounded-3xl p-6 sm:p-7 shadow-lg shadow-black/10 hover:shadow-xl transition-all duration-300 relative overflow-hidden group/card hover:-translate-y-0.5">
-              {/* Subtle Ambient Decorative Corner Glow */}
-              <div className="absolute -top-10 -right-10 w-36 h-36 bg-linear-to-br from-primary/20 via-primary/5 to-transparent rounded-full blur-2xl pointer-events-none group-hover/card:scale-110 transition-transform duration-500" />
-              <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-primary/5 rounded-full blur-xl pointer-events-none" />
-
-              <div className="relative z-10 flex flex-col gap-4">
+          {/* RIGHT SIDE: PARTNER WITH US CARD (3 cols on desktop, compact & elegant) */}
+          <div className="lg:col-span-3 flex flex-col items-start lg:items-end">
+            <div className="w-full max-w-67.5 bg-white border border-white/40 rounded-2xl p-4 sm:p-4.5 shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden group/card">
+              <div className="relative z-10 flex flex-col gap-2.5">
                 {/* Heading with Icon */}
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-primary-subtle border border-primary/20 flex items-center justify-center text-primary shrink-0 shadow-2xs group-hover/card:scale-105 transition-transform duration-300">
-                    <Building2 className="w-5 h-5 stroke-[2.2]" />
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-primary-subtle border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                    <Building2 className="w-4 h-4 stroke-[2.2]" />
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                  <h3 className="text-sm sm:text-[15px] font-bold text-text-primary tracking-tight">
                     {data.partner.title || "Become A Vendor"}
                   </h3>
                 </div>
 
+                {/* Subtext */}
+                {data.partner.subtext && (
+                  <p className="text-[11px] sm:text-xs text-text-secondary leading-snug">
+                    {data.partner.subtext}
+                  </p>
+                )}
+
                 {/* CTA Button */}
                 <Link
                   href={data.partner.ctaHref || "/vendor"}
-                  className="w-full py-3.5 px-5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm shadow-primary/25 hover:shadow-md hover:shadow-primary/35 transition-all duration-200 active:scale-[0.98] group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+                  className="w-full py-2.5 px-3.5 mt-0.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs transition-all duration-200 active:scale-[0.98] group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
                 >
                   <span>{data.partner.cta || "Register as a Vendor"}</span>
-                  <ArrowRight className="w-4 h-4 stroke-[2.5] transition-transform duration-200 group-hover/partner:translate-x-1" />
+                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover/partner:translate-x-0.5" />
                 </Link>
               </div>
             </div>
@@ -248,20 +219,20 @@ export default function Footer({ data = footerData }) {
         </div>
 
         {/* ========================================================= */}
-        {/* 3. BOTTOM COPYRIGHT & DEVELOPER BAR                       */}
+        {/* BOTTOM COPYRIGHT & DEVELOPER BAR                          */}
         {/* ========================================================= */}
-        <div className="mt-10 sm:mt-14 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/85 text-center sm:text-left">
+        <div className="mt-8 sm:mt-10 pt-5 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/80 text-center sm:text-left">
           {/* Copyright */}
           <p>{data.copyright}</p>
 
           {/* Developer Credit */}
-          <p>
-            <span>{data.developer.prefix} </span>
+          <p className="flex items-center justify-center sm:justify-start gap-1">
+            <span>{data.developer.prefix}</span>
             <a
               href={data.developer.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white font-bold hover:underline"
+              className="text-white font-semibold hover:underline transition-colors"
             >
               {data.developer.name}
             </a>
