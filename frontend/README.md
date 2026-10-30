@@ -38,3 +38,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Navbar Testimonials Page Link add
 - Testimonial Page Created.
 - Home Page Structure Rearranged.
+
+# Commit (30/10/2026)
+- Service Section, and Page
+- Fleet Page
