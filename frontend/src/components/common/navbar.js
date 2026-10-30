@@ -9,7 +9,7 @@ import TopContactBar from "@/components/common/topContactBar";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Testimonials", href: "/testimonials" },
+  { label: "Reviews", href: "/testimonials" },
   { label: "About", href: "/about" },
   { label: "Bus Mantra Fleet", href: "/fleets" },
   { label: "Services", href: "/services" },
