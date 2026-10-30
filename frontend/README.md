@@ -41,4 +41,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # Commit (30/10/2026)
 - Service Section, and Page
-- Fleet Page
+- Fleet Index, and Details Page
+- Footer
+- Offer Page
