@@ -60,7 +60,7 @@ export default function PopularDestinations({
 
       <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-12 sm:gap-6 md:flex-row md:items-end">
         <div className="flex max-w-2xl flex-col items-start text-left">
-          <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-3 sm:text-xs">
+          <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white sm:mb-3 sm:text-xs">
             {sectionData?.eyebrow || "DESTINATIONS"}
           </span>
 
@@ -290,10 +290,9 @@ export default function PopularDestinations({
               rounded-full
               transition-all
               duration-300
-              ${
-                activeSlide === index
-                  ? "w-6 bg-primary"
-                  : "w-1.5 bg-neutral-300 hover:bg-primary-hover"
+              ${activeSlide === index
+                ? "w-6 bg-primary"
+                : "w-1.5 bg-neutral-300 hover:bg-primary-hover"
               }
             `}
           />

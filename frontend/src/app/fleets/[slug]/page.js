@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useTransition,
 } from "react";
@@ -22,6 +23,8 @@ import {
   Check,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   FileText,
   Flame,
@@ -386,10 +389,10 @@ export default function FleetDetailPage({ params }) {
         passengers: newVal,
         ...(currentVariant
           ? {
-              vehicleType: currentVariant.id,
-              vehicleTypeName: currentVariant.name,
-              ratePerKm: currentVariant.ratePerKm,
-            }
+            vehicleType: currentVariant.id,
+            vehicleTypeName: currentVariant.name,
+            ratePerKm: currentVariant.ratePerKm,
+          }
           : {}),
       };
       saveBookingSession(updated);
@@ -532,15 +535,6 @@ export default function FleetDetailPage({ params }) {
                   <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
                     VEHICLE SPECIFICATIONS
                   </h2>
-
-                  <Link
-                    href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
-                  >
-                    <FileText className="h-3.5 w-3.5" />
-                    Full Specs
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -911,7 +905,7 @@ export default function FleetDetailPage({ params }) {
                 <div className="grid grid-cols-2 gap-2">
                   <Link
                     href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
-                    className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-xs font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                    className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-md font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
                   >
                     <FileText className="h-4 w-4 text-primary shrink-0" />
                     <span>Specifications</span>
@@ -920,7 +914,7 @@ export default function FleetDetailPage({ params }) {
                   <button
                     type="button"
                     onClick={openFleetModal}
-                    className="flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-xs font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                    className="flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-md font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
                   >
                     <ImageIcon className="h-4 w-4 text-primary shrink-0" />
                     <span>Bus Images ({getFleetImages(effectiveBus).length})</span>
@@ -931,7 +925,7 @@ export default function FleetDetailPage({ params }) {
                   <button
                     type="button"
                     onClick={handleConfirmBooking}
-                    className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
+                    className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
                   >
                     <span>Confirm Booking</span>
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -940,10 +934,10 @@ export default function FleetDetailPage({ params }) {
                   <button
                     type="button"
                     onClick={() => setShowQuote(true)}
-                    className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                    className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
                   >
                     <PhoneCall className="h-4 w-4" />
-                    <span>Request a Quote</span>
+                    <span>Custom Request</span>
                   </button>
                 </div>
               </div>
@@ -1178,33 +1172,115 @@ function FleetImagesModal({ fleet, onClose }) {
 }
 
 function FleetHeroImage({ bus }) {
-  const images = getFleetImages(bus);
+  const images = useMemo(() => getFleetImages(bus), [bus]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartXRef = useRef(null);
+
+  const busKey = bus?.id || bus?.slug || bus?.name;
+  const [prevBusKey, setPrevBusKey] = useState(busKey);
+  if (busKey !== prevBusKey) {
+    setPrevBusKey(busKey);
+    setActiveIndex(0);
+  }
 
   useEffect(() => {
-    setActiveIndex(0);
-  }, [bus?.id, bus?.name]);
+    if (images.length <= 1 || isPaused) return;
 
-  const activeSrc = images[activeIndex] || images[0] || DEFAULT_FLEET_IMAGE;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [images.length, isPaused]);
+
+  const handlePrev = useCallback(
+    (e) => {
+      e?.stopPropagation?.();
+      setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    },
+    [images.length]
+  );
+
+  const handleNext = useCallback(
+    (e) => {
+      e?.stopPropagation?.();
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    },
+    [images.length]
+  );
+
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
+    if (deltaX > 40) {
+      handlePrev();
+    } else if (deltaX < -40) {
+      handleNext();
+    }
+    touchStartXRef.current = null;
+  };
 
   return (
-    <div className="space-y-3">
-      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
-        <SafeFleetImage
-          key={activeSrc}
-          src={activeSrc}
-          alt={bus?.name || "Bus Mantra coach"}
-          sizes="(max-width: 1024px) 100vw, 58vw"
-          priority
-          className="object-cover transition-opacity duration-300"
-        />
-        {images.length > 1 && (
-          <div className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-sm">
-            <ImageIcon className="h-3.5 w-3.5 text-primary" />
-            <span>
-              {activeIndex + 1} / {images.length}
-            </span>
+    <div
+      className="space-y-3"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div
+        className="group relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {images.map((img, idx) => (
+          <div
+            key={`${img}-${idx}`}
+            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+              activeIndex === idx
+                ? "opacity-100 z-10"
+                : "opacity-0 z-0 pointer-events-none"
+            }`}
+          >
+            <SafeFleetImage
+              src={img}
+              alt={`${bus?.name || "Bus Mantra coach"} - View ${idx + 1}`}
+              sizes="(max-width: 1024px) 100vw, 58vw"
+              priority={idx === 0}
+              className="object-cover"
+            />
           </div>
+        ))}
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous coach image"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
+            >
+              <ChevronLeft className="h-5 w-5 stroke-[2.2]" />
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next coach image"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
+            >
+              <ChevronRight className="h-5 w-5 stroke-[2.2]" />
+            </button>
+
+            <div className="absolute bottom-3 right-3 z-20 rounded-full bg-black/60 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-sm pointer-events-none select-none">
+              <ImageIcon className="h-3.5 w-3.5 text-primary" />
+              <span>
+                {activeIndex + 1} / {images.length}
+              </span>
+            </div>
+          </>
         )}
       </div>
 
@@ -1215,6 +1291,9 @@ function FleetHeroImage({ bus }) {
               key={`${img}-${idx}`}
               type="button"
               onClick={() => setActiveIndex(idx)}
+              onMouseEnter={() => setActiveIndex(idx)}
+              onFocus={() => setActiveIndex(idx)}
+              aria-label={`View ${bus?.name || "Coach"} thumbnail ${idx + 1}`}
               className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border transition-all cursor-pointer ${
                 activeIndex === idx
                   ? "border-primary ring-2 ring-primary/40 scale-102"

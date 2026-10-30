@@ -225,11 +225,10 @@ function DestinationGallery({ destination }) {
             priority
             quality={100}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 58vw"
-            className={`object-cover transition-all duration-300 ${
-              changing
-                ? "scale-[1.015] opacity-60"
-                : "scale-100 opacity-100"
-            }`}
+            className={`object-cover transition-all duration-300 ${changing
+              ? "scale-[1.015] opacity-60"
+              : "scale-100 opacity-100"
+              }`}
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-black/45">
@@ -271,11 +270,10 @@ function DestinationGallery({ destination }) {
               key={`${image}-${index}`}
               type="button"
               onClick={() => changeImage(index)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${
-                activeImage === index
-                  ? "border-primary"
-                  : "border-transparent opacity-65 hover:opacity-100"
-              }`}
+              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${activeImage === index
+                ? "border-primary"
+                : "border-transparent opacity-65 hover:opacity-100"
+                }`}
             >
               <Image
                 src={image}
@@ -561,11 +559,11 @@ function DestinationBookingForm({ destination }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           <button
             type="button"
             onClick={() => setShowBusImages(true)}
-            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-xs font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-md font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
           >
             <ImageIcon className="h-4 w-4" />
             View Bus Images
@@ -573,7 +571,7 @@ function DestinationBookingForm({ destination }) {
 
           <button
             type="submit"
-            className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
+            className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
           >
             Confirm Booking
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -582,10 +580,10 @@ function DestinationBookingForm({ destination }) {
           <button
             type="button"
             onClick={() => setQuoteRequested(true)}
-            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
           >
             <PhoneCall className="h-4 w-4" />
-            Request a Quote
+            Custom Request
           </button>
         </div>
       </form>
@@ -973,11 +971,10 @@ function PopularPlaceCard({
       style={{
         transitionDelay: `${index * 120}ms`,
       }}
-      className={`group w-full overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${
-        visible
-          ? "translate-y-0 opacity-100"
-          : "translate-y-8 opacity-0"
-      } hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
+      className={`group w-full overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${visible
+        ? "translate-y-0 opacity-100"
+        : "translate-y-8 opacity-0"
+        } hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
     >
       <div className="grid min-h-67.5 grid-cols-[165px_1fr] items-stretch sm:min-h-71.25 sm:grid-cols-[185px_1fr] lg:min-h-75 lg:grid-cols-[205px_1fr]">
         <div className="relative min-h-67.5 overflow-hidden bg-white sm:min-h-71.25 lg:min-h-75">

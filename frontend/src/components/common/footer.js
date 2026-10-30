@@ -50,191 +50,174 @@ export default function Footer({ data = footerData }) {
   };
 
   return (
-    <footer className="w-full bg-primary border-t border-primary-hover pt-8 sm:pt-10 pb-6 sm:pb-7 text-primary-foreground">
-      <div className="max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative w-full bg-neutral-950 text-neutral-200 border-t border-neutral-850 pt-7 sm:pt-8 pb-5 sm:pb-6 overflow-hidden">
+      {/* Top Brand Accent Line */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary via-amber-500 to-primary opacity-80" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* ========================================================= */}
-        {/* MAIN FOOTER: BRAND, NAVIGATION & PARTNER CARD             */}
+        {/* 1. COMPACT HEADER BAR: LOGO, TAGLINE & HIGHLIGHTED CTA   */}
         {/* ========================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-8 items-start">
-          {/* BRAND COLUMN (3 cols on desktop) */}
-          <div className="lg:col-span-3 flex flex-col items-start">
-            {/* Logo Badge */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-neutral-800/80">
+          {/* Brand: Logo + Tagline */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             <Link
               href="/"
-              className="inline-flex items-center justify-start bg-white px-3 py-1.5 rounded-xl border border-white/30 shadow-2xs mb-3"
+              className="inline-flex items-center justify-start bg-white px-3 py-1.5 rounded-xl border border-white/20 shadow-xs transition-transform hover:scale-[1.02] shrink-0"
             >
               <Image
-                src={data.brand.logo || "/logo-bus-mantra.png"}
-                alt={data.brand.name}
-                width={240}
-                height={90}
+                src={data.brand?.logo || "/logo-bus-mantra.png"}
+                alt={data.brand?.name || "Bus Mantra"}
+                width={220}
+                height={75}
                 priority
-                className="h-8 sm:h-8.5 w-auto max-w-40 object-contain object-left"
+                className="h-7 sm:h-8 w-auto max-w-36 sm:max-w-40 object-contain object-left"
               />
             </Link>
 
-            {/* Description */}
-            <p className="text-xs text-white/85 leading-relaxed mb-4 max-w-xs">
-              {data.brand.description}
+            <p className="text-xs sm:text-sm text-neutral-400 max-w-xl leading-snug">
+              {data.brand?.description}
             </p>
+          </div>
 
+          {/* Actions: Social Icons + Standout Highlighted CTA Button */}
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
             {/* Social Media Links */}
-            <div className="flex items-center gap-2 mt-auto">
-              {data.socialLinks.map((social) => (
+            <div className="flex items-center gap-2">
+              {data.socialLinks?.map((social) => (
                 <a
                   key={social.key}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className="w-7.5 h-7.5 rounded-full bg-white text-primary hover:bg-white/90 hover:scale-105 flex items-center justify-center transition-all duration-200 shadow-2xs"
+                  className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-primary hover:bg-primary text-neutral-300 hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs"
                 >
                   {renderSocialIcon(social.key)}
                 </a>
               ))}
             </div>
-          </div>
 
-          {/* NAVIGATION COLUMNS (6 cols on desktop with proportional sub-columns) */}
-          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-[1fr_1.35fr_1.35fr_1fr] gap-6 sm:gap-4 xl:gap-6">
-            {/* COLUMN 1: QUICK LINKS */}
-            <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
-                Quick Links
-              </h4>
-              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
-                {data.quickLinks.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-white/85 hover:text-white hover:underline transition-colors inline-block"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* COLUMN 2: BUS MANTRA FLEETS */}
-            <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
-                Our Fleet
-              </h4>
-              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
-                {data.fleets.map((fleet) => (
-                  <li key={fleet.label}>
-                    <Link
-                      href={fleet.href}
-                      className={`inline-flex items-center gap-1 transition-colors ${fleet.isCta
-                        ? "text-white font-bold underline hover:text-white/80"
-                        : "text-white/85 hover:text-white hover:underline"
-                        }`}
-                    >
-                      <span>{fleet.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* COLUMN 3: SERVICES */}
-            <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
-                Services
-              </h4>
-              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
-                {data.services.map((service) => (
-                  <li key={service.label}>
-                    <Link
-                      href={service.href}
-                      className={`inline-flex items-center gap-1 transition-colors ${service.isCta
-                        ? "text-white font-bold underline hover:text-white/80"
-                        : "text-white/85 hover:text-white hover:underline"
-                        }`}
-                    >
-                      <span>{service.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* COLUMN 4: DESTINATIONS */}
-            <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3.5">
-                Destinations
-              </h4>
-              <ul className="space-y-2 text-xs sm:text-[13px] leading-snug">
-                {data.destinations.map((dest) => (
-                  <li key={dest.label}>
-                    <Link
-                      href={dest.href}
-                      className={`inline-flex items-center gap-1 transition-colors ${dest.isCta
-                        ? "text-white font-bold underline hover:text-white/80"
-                        : "text-white/85 hover:text-white hover:underline"
-                        }`}
-                    >
-                      <span>{dest.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* RIGHT SIDE: PARTNER WITH US CARD (3 cols on desktop, compact & elegant) */}
-          <div className="lg:col-span-3 flex flex-col items-start lg:items-end">
-            <div className="w-full max-w-67.5 bg-white border border-white/40 rounded-2xl p-4 sm:p-4.5 shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden group/card">
-              <div className="relative z-10 flex flex-col gap-2.5">
-                {/* Heading with Icon */}
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-primary-subtle border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                    <Building2 className="w-4 h-4 stroke-[2.2]" />
-                  </div>
-
-                  <h3 className="text-sm sm:text-[15px] font-bold text-text-primary tracking-tight">
-                    {data.partner.title || "Become A Vendor"}
-                  </h3>
-                </div>
-
-                {/* Subtext */}
-                {data.partner.subtext && (
-                  <p className="text-[11px] sm:text-xs text-text-secondary leading-snug">
-                    {data.partner.subtext}
-                  </p>
-                )}
-
-                {/* CTA Button */}
-                <Link
-                  href={data.partner.ctaHref || "/vendor"}
-                  className="w-full py-2.5 px-3.5 mt-0.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs transition-all duration-200 active:scale-[0.98] group/partner focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
-                >
-                  <span>{data.partner.cta || "Register as a Vendor"}</span>
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover/partner:translate-x-0.5" />
-                </Link>
-              </div>
-            </div>
+            {/* Standout Highlighted Button */}
+            <Link
+              href={data.partner?.ctaHref || "/vendor"}
+              className="inline-flex items-center justify-center gap-2 px-4.5 py-2 sm:py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-bold shadow-md shadow-primary/25 hover:shadow-primary/45 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer border border-primary-light/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring"
+            >
+              <Building2 className="w-4 h-4 stroke-[2.2]" />
+              <span>{data.partner?.cta || "Register as a Vendor"}</span>
+              <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+            </Link>
           </div>
         </div>
 
         {/* ========================================================= */}
-        {/* BOTTOM COPYRIGHT & DEVELOPER BAR                          */}
+        {/* 2. UNCOMPRESSED FULL-WIDTH 4-COLUMN NAVIGATION            */}
         {/* ========================================================= */}
-        <div className="mt-8 sm:mt-10 pt-5 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/80 text-center sm:text-left">
-          {/* Copyright */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 py-6 sm:py-7">
+          {/* COLUMN 1: QUICK LINKS */}
+          <div>
+            <h4 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-2.5 sm:mb-3">
+              Quick Links
+            </h4>
+            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+              {data.quickLinks?.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-neutral-300 hover:text-primary transition-colors inline-block"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* COLUMN 2: BUS MANTRA FLEETS */}
+          <div>
+            <h4 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-2.5 sm:mb-3">
+              Our Fleet
+            </h4>
+            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+              {data.fleets?.map((fleet) => (
+                <li key={fleet.label}>
+                  <Link
+                    href={fleet.href}
+                    className={`inline-block transition-colors ${
+                      fleet.isCta
+                        ? "text-primary font-bold hover:underline"
+                        : "text-neutral-300 hover:text-primary"
+                    }`}
+                  >
+                    {fleet.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* COLUMN 3: SERVICES */}
+          <div>
+            <h4 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-2.5 sm:mb-3">
+              Services
+            </h4>
+            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+              {data.services?.map((service) => (
+                <li key={service.label}>
+                  <Link
+                    href={service.href}
+                    className={`inline-block transition-colors ${
+                      service.isCta
+                        ? "text-primary font-bold hover:underline"
+                        : "text-neutral-300 hover:text-primary"
+                    }`}
+                  >
+                    {service.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* COLUMN 4: DESTINATIONS */}
+          <div>
+            <h4 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider mb-2.5 sm:mb-3">
+              Destinations
+            </h4>
+            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+              {data.destinations?.map((dest) => (
+                <li key={dest.label}>
+                  <Link
+                    href={dest.href}
+                    className={`inline-block transition-colors ${
+                      dest.isCta
+                        ? "text-primary font-bold hover:underline"
+                        : "text-neutral-300 hover:text-primary"
+                    }`}
+                  >
+                    {dest.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* 3. BOTTOM COPYRIGHT & DEVELOPER BAR                       */}
+        {/* ========================================================= */}
+        <div className="pt-4 sm:pt-5 border-t border-neutral-800/80 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-neutral-400 text-center sm:text-left">
           <p>{data.copyright}</p>
 
-          {/* Developer Credit */}
           <p className="flex items-center justify-center sm:justify-start gap-1">
-            <span>{data.developer.prefix}</span>
+            <span>{data.developer?.prefix || "Developed by"}</span>
             <a
-              href={data.developer.href}
+              href={data.developer?.href || "https://kanakdrishtiinfo.com"}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white font-semibold hover:underline transition-colors"
+              className="text-neutral-200 hover:text-primary font-semibold transition-colors"
             >
-              {data.developer.name}
+              {data.developer?.name || "Kanak Drishti Infotech Pvt. Ltd."}
             </a>
           </p>
         </div>

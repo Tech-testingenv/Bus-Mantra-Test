@@ -220,11 +220,6 @@ function OfferPageContent() {
                     <ArrowLeft className="h-4 w-4" />
                     Back to home
                 </Link>
-
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
-                    <Sparkles className="h-3.5 w-3.5" />
-                    Special ₹1/KM Promotion
-                </span>
             </div>
 
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-9 xl:gap-10">
@@ -249,7 +244,19 @@ function OfferPageContent() {
 
                         <h1 className="text-3xl font-black leading-[1.05] tracking-tight text-neutral-900 sm:text-4xl lg:text-[42px] xl:text-[46px]">
                             {activeCategory.headline}
+                            <span className="inline-flex items-center ml-2 mt-0 md:-mt-5 align-middle -translate-y-0.5 select-none">
+                                <Image
+                                    src="/bus_mantra_t&c.png"
+                                    alt="Terms & Conditions Applied"
+                                    width={25}
+                                    height={25}
+                                    className="h-5 w-5 object-contain inline-block"
+                                />
+                            </span>
                         </h1>
+                        <span className="text-xl text-primary font-bold transition-all duration-700 ease-in-out opacity-100 translate-y-0 pointer-events-auto z-1">
+                            100% Free Cancellation, Your Ride Any Time!
+                        </span>
 
                         <p className="mt-2 text-sm font-medium text-neutral-600 sm:text-base">
                             {activeCategory.tagline}
@@ -863,11 +870,11 @@ function OfferPageContent() {
                         </div>
 
                         {/* Three Action Buttons */}
-                        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                             <button
                                 type="button"
                                 onClick={() => setShowBusImages(true)}
-                                className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-xs font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                                className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-md font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
                             >
                                 <ImageIcon className="h-4 w-4" />
                                 View Bus Images
@@ -875,7 +882,7 @@ function OfferPageContent() {
 
                             <button
                                 type="submit"
-                                className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
+                                className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
                             >
                                 Confirm Booking
                                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -884,10 +891,10 @@ function OfferPageContent() {
                             <button
                                 type="button"
                                 onClick={() => setQuoteRequested(true)}
-                                className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                                className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
                             >
                                 <PhoneCall className="h-4 w-4" />
-                                Request a Quote
+                                Custom Request
                             </button>
                         </div>
                     </form>

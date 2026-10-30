@@ -150,7 +150,7 @@ export default function BusMantraServices({
     >
       {/* SECTION HEADER */}
       <div className="mb-8 max-w-3xl sm:mb-12">
-        <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-3 sm:text-xs">
+        <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white sm:mb-3 sm:text-xs">
           {sectionData?.eyebrow || "SERVICES"}
         </span>
 
@@ -181,16 +181,14 @@ export default function BusMantraServices({
                     key={item.id || item.slug || idx}
                     type="button"
                     onClick={() => handleSelectSlide(idx)}
-                    className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 cursor-pointer select-none text-left ${
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
-                        : "bg-surface-secondary text-text-secondary hover:text-text-primary hover:bg-surface-muted border border-border"
-                    }`}
+                    className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 cursor-pointer select-none text-left ${isActive
+                      ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
+                      : "bg-surface-secondary text-text-secondary hover:text-text-primary hover:bg-surface-muted border border-border"
+                      }`}
                   >
                     <IconComponent
-                      className={`h-3.5 w-3.5 shrink-0 ${
-                        isActive ? "text-primary-foreground" : "text-primary"
-                      }`}
+                      className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-primary-foreground" : "text-primary"
+                        }`}
                     />
                     <span>{item.title}</span>
                   </button>
@@ -208,11 +206,10 @@ export default function BusMantraServices({
               return (
                 <div
                   key={item.id || item.slug || idx}
-                  className={`col-start-1 row-start-1 flex flex-col items-start transition-all duration-700 ease-in-out ${
-                    isActive
-                      ? "opacity-100 translate-y-0 pointer-events-auto z-1"
-                      : "opacity-0 translate-y-3 pointer-events-none z-0"
-                  }`}
+                  className={`col-start-1 row-start-1 flex flex-col items-start transition-all duration-700 ease-in-out ${isActive
+                    ? "opacity-100 translate-y-0 pointer-events-auto z-1"
+                    : "opacity-0 translate-y-3 pointer-events-none z-0"
+                    }`}
                   aria-hidden={!isActive}
                 >
                   {/* Title */}
@@ -266,11 +263,10 @@ export default function BusMantraServices({
                   key={idx}
                   type="button"
                   onClick={() => handleSelectSlide(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    activeSlide === idx
-                      ? "w-7 bg-primary"
-                      : "w-2 bg-neutral-300 hover:bg-neutral-400"
-                  }`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${activeSlide === idx
+                    ? "w-7 bg-primary"
+                    : "w-2 bg-neutral-300 hover:bg-neutral-400"
+                    }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
@@ -301,11 +297,10 @@ export default function BusMantraServices({
               return (
                 <div
                   key={item.id || item.slug || idx}
-                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                    isActive
-                      ? "opacity-100 scale-100 z-1 pointer-events-auto"
-                      : "opacity-0 scale-[1.03] z-0 pointer-events-none"
-                  }`}
+                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${isActive
+                    ? "opacity-100 scale-100 z-1 pointer-events-auto"
+                    : "opacity-0 scale-[1.03] z-0 pointer-events-none"
+                    }`}
                   aria-hidden={!isActive}
                 >
                   <Image

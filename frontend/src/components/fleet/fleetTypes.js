@@ -57,7 +57,7 @@ export default function FleetTypes({
 
       <div className="mb-6 text-left sm:mb-8 lg:mb-10">
         {sectionData?.eyebrow && (
-          <div className="mb-3.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted">
+          <div className="mb-3.5 inline-block select-none rounded-full border border-border bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white">
             {sectionData.eyebrow}
           </div>
         )}

@@ -111,9 +111,8 @@ export default function TestimonialsPage() {
             {trustMetrics.map((item, idx) => (
               <div
                 key={item.id}
-                className={`flex flex-col items-center text-center px-2 sm:px-4 ${
-                  idx > 0 ? "pt-3 sm:pt-0" : ""
-                }`}
+                className={`flex flex-col items-center text-center px-2 sm:px-4 ${idx > 0 ? "pt-3 sm:pt-0" : ""
+                  }`}
               >
                 <div className="flex items-center gap-1.5 text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-text-primary">
                   {item.id === "rating" && (
@@ -149,11 +148,10 @@ export default function TestimonialsPage() {
           <button
             type="button"
             onClick={() => setSelectedFilter("all")}
-            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-              selectedFilter === "all"
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${selectedFilter === "all"
                 ? "bg-primary text-white shadow-xs"
                 : "bg-surface border border-border text-text-secondary hover:border-primary/40 hover:text-primary"
-            }`}
+              }`}
           >
             All Stories ({counts.all})
           </button>
@@ -161,11 +159,10 @@ export default function TestimonialsPage() {
           <button
             type="button"
             onClick={() => setSelectedFilter("review")}
-            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-              selectedFilter === "review"
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${selectedFilter === "review"
                 ? "bg-primary text-white shadow-xs"
                 : "bg-surface border border-border text-text-secondary hover:border-primary/40 hover:text-primary"
-            }`}
+              }`}
           >
             Reviews ({counts.review})
           </button>
@@ -173,11 +170,10 @@ export default function TestimonialsPage() {
           <button
             type="button"
             onClick={() => setSelectedFilter("video")}
-            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-              selectedFilter === "video"
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${selectedFilter === "video"
                 ? "bg-primary text-white shadow-xs"
                 : "bg-surface border border-border text-text-secondary hover:border-primary/40 hover:text-primary"
-            }`}
+              }`}
           >
             Videos ({counts.video})
           </button>
@@ -185,11 +181,10 @@ export default function TestimonialsPage() {
           <button
             type="button"
             onClick={() => setSelectedFilter("media")}
-            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-              selectedFilter === "media"
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${selectedFilter === "media"
                 ? "bg-primary text-white shadow-xs"
                 : "bg-surface border border-border text-text-secondary hover:border-primary/40 hover:text-primary"
-            }`}
+              }`}
           >
             Media &amp; Brands ({counts.media})
           </button>
@@ -197,11 +192,10 @@ export default function TestimonialsPage() {
           <button
             type="button"
             onClick={() => setSelectedFilter("letter")}
-            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
-              selectedFilter === "letter"
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${selectedFilter === "letter"
                 ? "bg-primary text-white shadow-xs"
                 : "bg-surface border border-border text-text-secondary hover:border-primary/40 hover:text-primary"
-            }`}
+              }`}
           >
             Letters ({counts.letter})
           </button>
@@ -610,7 +604,7 @@ export default function TestimonialsPage() {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-white/20 active:scale-[0.98]"
             >
               <PhoneCall className="h-4 w-4" />
-              <span>Request a Quote</span>
+              <span>Custom Request</span>
             </Link>
           </div>
         </div>

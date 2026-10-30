@@ -2246,9 +2246,9 @@ export const offerBusCategories = {
     capacity: "19–32 Seats",
     minSeats: 1,
     maxSeats: 32,
-    image: "/fleet/12_seater_maharaja_tempo_traveller_2.png",
+    image: "/fleet/45-49_seater_tata_luxury_coach_2.png",
     gallery: [
-      "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+      "/fleet/45-49_seater_tata_luxury_coach_1.png",
     ],
     description:
       "Engineered for high-mileage dependability, the Tata Starbus Ultra delivers exceptional economy without compromising passenger safety. Features 2+2 pushback seats, roof-mounted AC, and ample luggage space for medium group tours.",
@@ -2292,9 +2292,9 @@ export const offerBusCategories = {
     capacity: "20–45 Seats",
     minSeats: 20,
     maxSeats: 45,
-    image: "/fleet/45-49_seater_tata_luxury_coach_2.png",
+    image: "/fleet/bus_mantra_bharatbenz.png",
     gallery: [
-      "/fleet/45-49_seater_tata_luxury_coach_1.png",
+      "/fleet/bus_mantra_bharatbenz.png",
     ],
     description:
       "German engineering meets Indian road conditions. The BharatBenz Executive Coach features whisper-quiet NVH insulation, executive high-back pushback recliners, individual overhead AC vents, and massive underfloor luggage compartments.",

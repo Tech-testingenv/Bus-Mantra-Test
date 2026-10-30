@@ -69,7 +69,7 @@ export default function ServiceSlugPage({ params }) {
           </Link>
         </div>
       </main>
-      
+
     );
   }
 
@@ -128,7 +128,7 @@ export default function ServiceSlugPage({ params }) {
       {/* Services Slug FAQ Section */}
       <FAQSection data={servicesSlugFaqData} />
     </main>
-    
+
   );
 }
 
@@ -259,17 +259,15 @@ function ServiceGallery({ service }) {
               key={`${image}-${index}`}
               type="button"
               onClick={() => setActiveImage(index)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:h-16 sm:w-24 ${
-                activeImage === index
-                  ? "border-primary"
-                  : "border-transparent opacity-65 hover:opacity-100"
-              }`}
+              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:h-16 sm:w-24 ${activeImage === index
+                ? "border-primary"
+                : "border-transparent opacity-65 hover:opacity-100"
+                }`}
             >
               <Image
                 src={image}
-                alt={`${service.title} thumbnail ${
-                  index + 1
-                }`}
+                alt={`${service.title} thumbnail ${index + 1
+                  }`}
                 fill
                 sizes="96px"
                 className="object-cover"
@@ -544,11 +542,11 @@ function ServiceBookingForm({ service }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           <button
             type="button"
             onClick={() => setShowBusImages(true)}
-            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-xs font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-md font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
           >
             <ImageIcon className="h-4 w-4" />
             View Bus Images
@@ -556,7 +554,7 @@ function ServiceBookingForm({ service }) {
 
           <button
             type="submit"
-            className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
+            className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
           >
             Confirm Booking
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -565,10 +563,10 @@ function ServiceBookingForm({ service }) {
           <button
             type="button"
             onClick={() => setQuoteRequested(true)}
-            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
           >
             <PhoneCall className="h-4 w-4" />
-            Request a Quote
+            Custom Request
           </button>
         </div>
       </form>
@@ -947,9 +945,8 @@ function BusImagesModal({
                   >
                     <Image
                       src={image}
-                      alt={`Bus image ${
-                        index + 1
-                      }`}
+                      alt={`Bus image ${index + 1
+                        }`}
                       fill
                       priority={
                         index === 0
