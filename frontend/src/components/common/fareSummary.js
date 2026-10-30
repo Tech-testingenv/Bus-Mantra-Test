@@ -9,7 +9,7 @@ import { formatCurrency } from "@/services/pricingService";
  * 1. Fare Excluding GST
  * 2. GST (5% standard transport GST)
  * 3. Total Fare Including GST (prominently highlighted)
- * 4. Parking Notice: "Airport & Station Parking Charges Apply As Per Actuals"
+ * 4. Parking Notice: "Airport & Railway Station Parking Charges Apply As Per Actuals"
  *
  * @param {Object} props
  * @param {number|string} props.basePrice - Pre-GST base fare amount or formatted string
