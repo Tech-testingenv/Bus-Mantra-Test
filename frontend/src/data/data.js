@@ -15,7 +15,7 @@ export const heroData = {
   stats: [
     {
       value: "100%",
-      label: "Dedicated Vehicle",
+      label: "Free Cancellation",
     },
     {
       value: "4.9/5",
@@ -71,7 +71,7 @@ export const heroData = {
   ],
   sliderTexts: [
     {
-      titleLine2: "100% Free Cancellation, Always!",
+      titleLine2: "100% Free Cancellation, Your Ride Any Time!",
       description:
         "Book your group journey with confidence and enjoy hassle-free booking with flexible cancellation.",
     },
