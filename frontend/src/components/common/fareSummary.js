@@ -93,7 +93,7 @@ export default function FareSummary({
       {showParkingNotice && (
         <div className="mt-2.5 pt-2 border-t border-primary/15 flex items-start gap-1.5 text-[11px] font-semibold text-primary/95 sm:text-xs">
           <Info className="h-3.5 w-3.5 shrink-0 text-primary mt-0.5" />
-          <span>Airport &amp; Station Parking Charges Apply As Per Actuals</span>
+          <span>Airport &amp; Railway Station Parking Charges Apply As Per Actuals</span>
         </div>
       )}
     </div>
