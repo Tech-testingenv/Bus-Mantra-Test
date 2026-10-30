@@ -518,7 +518,7 @@ function OfferPageContent() {
                     </section>
 
                     {/* Alternative Bus Categories */}
-                    <section className="mt-8 border-t border-neutral-200 pt-7 sm:mt-10 sm:pt-8">
+                    {/* <section className="mt-8 border-t border-neutral-200 pt-7 sm:mt-10 sm:pt-8">
                         <div className="mb-4">
                             <span className="inline-flex rounded-full bg-neutral-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-600">
                                 ALL CATEGORIES & UPGRADES
@@ -532,7 +532,7 @@ function OfferPageContent() {
                         </div>
 
                         <div className="space-y-3">
-                            {/* Tata */}
+                            {/* Tata
                             <div
                                 onClick={() => handleSelectCategory("tata")}
                                 className={`cursor-pointer rounded-2xl border p-4 transition-all ${selectedCategoryKey === "tata"
@@ -563,7 +563,7 @@ function OfferPageContent() {
                                 </p>
                             </div>
 
-                            {/* BharatBenz */}
+                            {/* BharatBenz 
                             <div
                                 onClick={() => handleSelectCategory("bharatbenz")}
                                 className={`cursor-pointer rounded-2xl border p-4 transition-all ${selectedCategoryKey === "bharatbenz"
@@ -594,7 +594,7 @@ function OfferPageContent() {
                                 </p>
                             </div>
 
-                            {/* Volvo */}
+                            {/* Volvo
                             <div
                                 onClick={() => handleSelectCategory("volvo")}
                                 className={`cursor-pointer rounded-2xl border p-4 transition-all ${selectedCategoryKey === "volvo"
@@ -625,7 +625,7 @@ function OfferPageContent() {
                                 </p>
                             </div>
                         </div>
-                    </section>
+                    </section> */}
                 </div>
 
                 {/* ================================================================= */}
