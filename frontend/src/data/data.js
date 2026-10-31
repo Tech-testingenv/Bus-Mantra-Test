@@ -36,35 +36,35 @@ export const heroData = {
     {
       src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
       alt: "Tata Luxury Coach [45/49]",
-      titleLine1: "",
+      titleLine1: "Luxury Tata Coach",
       description:
         "Move your entire group seamlessly with high-capacity Tata commercial luxury coaches, transparent per-km billing, and zero hidden costs.",
     },
     {
       src: "/fleet/bus_mantra_bharatbenz.png",
       alt: "BharatBenz Executive Luxury Coach [20/45]",
-      titleLine1: "",
+      titleLine1: "Luxury BharatBenz Coach",
       description:
         "Experience Daimler-engineered ride comfort, whisper-quiet acoustics, and premium executive recliner seating.",
     },
     {
       src: "/fleet/40_seater_volvo_with_washroom_1.png",
       alt: "40/45 Luxury Volvo Coach with & without Washroom",
-      titleLine1: "40/45 Luxury Volvo Coach with & without Washroom",
+      titleLine1: "Luxury Volvo Coach with & without Washroom",
       description:
         "Flagship multi-axle luxury touring with air suspension, onboard sanitized washroom, and business-class plush seating.",
     },
     {
       src: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
       alt: "Maharaja Tempo Traveler [12/16/20/26]",
-      titleLine1: "Maharaja Tempo Traveler [12/16/20/26]",
+      titleLine1: "Maharaja Tempo Traveler",
       description:
         "Dedicated Maharaja Tempo Travelers equipped with pushback seats, individual AC vents, and experienced chauffeurs.",
     },
     {
       src: "/fleet/bus_mantra_luxury_force_urbania.png",
       alt: "Luxury Force Urbania [12/16]",
-      titleLine1: "Luxury Force Urbania [12/16]",
+      titleLine1: "Luxury Force Urbania",
       description:
         "Next-generation European-styled luxury van offering world-class ride dynamics, panoramic windows, and plush seating.",
     },
