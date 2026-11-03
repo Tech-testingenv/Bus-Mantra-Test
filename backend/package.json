@@ -1,0 +1,21 @@
+{
+  "name": "bus-mantra-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start:web": "node web-backend/server.js",
+    "start:admin": "node admin-backend/server.js",
+    "dev:web": "node --watch web-backend/server.js",
+    "dev:admin": "node --watch admin-backend/server.js",
+    "db:init": "node scripts/init-db.mjs",
+    "db:seed": "node scripts/seed.mjs"
+  },
+  "dependencies": {
+    "bus-mantra": "file:..",
+    "pg": "^8.23.1"
+  }
+}

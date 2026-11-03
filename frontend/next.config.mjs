@@ -1,19 +1,10 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-
-const frontendRoot = path.join(repoRoot, "frontend");
+const WEB_BACKEND_URL = process.env.WEB_BACKEND_URL || "http://127.0.0.1:4000";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   agentRules: false,
-  // admin/ and backend/ are siblings of frontend/, so Turbopack must see the repo root.
-  turbopack: {
-    root: repoRoot,
-    resolveAlias: {
-      "@": path.join(frontendRoot),
-    },
+  async rewrites() {
+    return [{ source: "/api/:path*", destination: `${WEB_BACKEND_URL}/api/:path*` }];
   },
 };
 

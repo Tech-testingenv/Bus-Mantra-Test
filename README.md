@@ -1,28 +1,24 @@
 # Bus Mantra
 
-Bus Mantra is a Next.js group travel booking site backed by PostgreSQL. The API stores accounts, bookings, contact enquiries, vendor applications, and service requests, and serves fleet, destination, and service catalog data.
+Bus Mantra is a group travel booking platform backed by PostgreSQL, split into a public frontend, an admin panel, and two backend services (see Repository layout below). The APIs store accounts, bookings, contact enquiries, vendor applications, and service requests, and serve fleet, destination, and service catalog data.
 
 ## Local setup
 
 1. Install PostgreSQL and create a database (the local setup uses `busmantra`).
-2. Copy `frontend/.env.example` to `frontend/.env.local` and set `DATABASE_URL` for that database.
+2. Copy `backend/.env.example` to `backend/.env` and set `DATABASE_URL` for that database.
    Set `ADMIN_SUPER_USERNAME` and a strong `ADMIN_SUPER_PASSWORD` before initialization.
-3. Initialize the `bus_mantra` schema (including the superadmin account) and load the starter catalog:
+3. Install, initialize the `bus_mantra` schema (including the superadmin account), load the starter catalog, and run everything (details under Repository layout):
 
 ```bash
+npm run install:all
 npm run db:init
 npm run db:seed
-```
-
-4. Run the app:
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open the site at [http://localhost:3000](http://localhost:3000) and the admin panel at [http://localhost:3001/admin](http://localhost:3001/admin).
 
-Admin access is available at `/admin`. Fleet models are managed under `/admin/fleet-management`, with category lists at `/admin/fleet-management/minicoach-edit`, `/admin/fleet-management/premiumcoach-edit`, and `/admin/fleet-management/luxurycoach-edit`. Admin fleet edits and new coaches are stored in PostgreSQL and used by the public fleet catalog.
+Admin access is available at `/admin` on the admin app. Fleet models are managed under `/admin/fleet-management`, with category lists at `/admin/fleet-management/minicoach-edit`, `/admin/fleet-management/premiumcoach-edit`, and `/admin/fleet-management/luxurycoach-edit`. Admin fleet edits and new coaches are stored in PostgreSQL and used by the public fleet catalog.
 
 Coach main images and gallery images can be uploaded from the fleet editor. JPG, PNG, WebP, and GIF files up to 8 MB are stored in the server's `backend/uploads/` directory and served through `/api/uploads/[filename]`; persist that directory when deploying.
 
@@ -43,14 +39,29 @@ The schema is in `backend/database/schema.sql`; catalog seed data is in `backend
 
 ## Repository layout
 
-| Folder | Contents |
-| --- | --- |
-| `frontend/` | The Next.js app (run from here): public pages, components, data, services, `public/`, configs, `.env.local` |
-| `admin/` | Admin panel UI (`AdminPanel`, fleet manager, image upload field) |
-| `backend/web-backend/` | Public API handlers: fleets, destinations, services, bookings, inquiries, customer auth, image serving |
-| `backend/admin-backend/` | Admin API handlers: auth, admins, dashboard, catalog, fleets, records, image upload |
-| `backend/shared/` | DB pool, API helpers and upload config shared by both backends |
-| `backend/database/`, `backend/scripts/` | Schema, DB init and seed scripts |
-| `backend/uploads/` | Uploaded images (gitignored; persist it when deploying) |
+Four independently runnable services, each with its own `package.json`:
 
-`frontend/app/` holds the Next.js routes; its `api/` and `admin/` routes are thin files that import from `admin/` and `backend/`. Only `package.json` and `node_modules` live at the repo root, and the npm scripts run Next with `frontend` as the project directory. Set `UPLOAD_DIR` to override where uploaded images are stored.
+| Service | Folder | Port | Notes |
+| --- | --- | --- | --- |
+| Frontend (public site) | `frontend/` | 3000 | Next.js. Proxies `/api/*` to the web backend (`WEB_BACKEND_URL`). |
+| Admin panel | `admin/` | 3001 | Next.js, served at `/admin`. Proxies `/api/admin/*` to the admin backend (`ADMIN_BACKEND_URL`) and `/api/uploads/*` to the web backend. |
+| Web backend | `backend/web-backend/` | 4000 | Plain Node server: fleets, destinations, services, bookings, inquiries, customer auth, image serving. `GET /health`. |
+| Admin backend | `backend/admin-backend/` | 4001 | Plain Node server: admin auth, admins, dashboard, catalog, fleets, records, image upload. `GET /health`. |
+
+Both backends share `backend/package.json`, `backend/.env`, and `backend/shared/` (DB pool, request adapter, cookies, upload config). Database files live in `backend/database/` and `backend/scripts/`; uploaded images go to `backend/uploads/` (gitignored; persist it, or set `UPLOAD_DIR`).
+
+Configuration:
+
+- `backend/.env` (see `.env.example`): `DATABASE_URL`, `ADMIN_SUPER_*`, `WEB_BACKEND_PORT`, `ADMIN_BACKEND_PORT`, `ALLOWED_ORIGINS` (the admin UI origin(s) allowed to call the admin backend), optional `UPLOAD_DIR`.
+- `frontend/.env.local` and `admin/.env.local` (see their `.env.example`): backend URLs.
+
+Setup and run (Node 22+):
+
+```bash
+npm run install:all   # installs backend, frontend and admin dependencies
+npm run db:init
+npm run db:seed
+npm run dev           # starts all four services (use `npm run build` then `npm start` for production)
+```
+
+Or run a single service with `npm run dev` (or `dev:web` / `dev:admin` in `backend/`) from its own folder.

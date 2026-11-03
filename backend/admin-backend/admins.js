@@ -1,5 +1,5 @@
-import { query } from "../shared/db";
-import { adminError, hashPassword, requireAdmin, requireSameOrigin } from "./security";
+import { query } from "../shared/db.js";
+import { adminError, hashPassword, requireAdmin, requireSameOrigin } from "./security.js";
 
 export async function GET() {
   const access = await requireAdmin({ superadmin: true });

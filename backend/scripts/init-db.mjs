@@ -2,9 +2,11 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import pg from "pg";
 import crypto from "node:crypto";
+import { fileURLToPath } from "node:url";
 
 const { Pool } = pg;
-const envPath = path.join(process.cwd(), "frontend", ".env.local");
+const backendRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+const envPath = path.join(backendRoot, ".env");
 try {
   const envText = await fs.readFile(envPath, "utf8");
   for (const line of envText.split(/\r?\n/)) {
@@ -26,7 +28,7 @@ const pool = new Pool({
 });
 
 try {
-  const schema = await fs.readFile(path.join(process.cwd(), "backend", "database", "schema.sql"), "utf8");
+  const schema = await fs.readFile(path.join(backendRoot, "database", "schema.sql"), "utf8");
   await pool.query(schema);
   const username = process.env.ADMIN_SUPER_USERNAME;
   const password = process.env.ADMIN_SUPER_PASSWORD;

@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
-import { query } from "../shared/db";
+import { cookies } from "../shared/cookies.js";
+import { query } from "../shared/db.js";
 import {
   ADMIN_COOKIE,
   adminError,
@@ -9,7 +9,7 @@ import {
   requireSameOrigin,
   safeAdmin,
   verifyPassword,
-} from "./security";
+} from "./security.js";
 
 export async function GET() {
   try {

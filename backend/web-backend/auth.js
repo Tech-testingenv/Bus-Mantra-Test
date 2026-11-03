@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
-import { cookies } from "next/headers";
-import { query } from "../shared/db";
-import { jsonError, requireFields } from "../shared/api";
+import { cookies } from "../shared/cookies.js";
+import { query } from "../shared/db.js";
+import { jsonError, requireFields } from "../shared/api.js";
 
 export const runtime = "nodejs";
 

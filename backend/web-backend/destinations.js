@@ -1,4 +1,4 @@
-import { query } from "../shared/db";
+import { query } from "../shared/db.js";
 
 export const runtime = "nodejs";
 

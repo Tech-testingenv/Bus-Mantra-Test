@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
-import { cookies } from "next/headers";
-import { query } from "../shared/db";
+import { cookies } from "../shared/cookies.js";
+import { query } from "../shared/db.js";
 
 export const ADMIN_COOKIE = "bus_mantra_admin_session";
 const SESSION_DAYS = 12;
@@ -28,6 +28,12 @@ function hashToken(token) {
 export function requireSameOrigin(request) {
   const origin = request.headers.get("origin");
   if (origin) {
+    // The admin UI reaches this server through its own Next.js proxy, so its origin is allow-listed.
+    const allowedOrigins = (process.env.ALLOWED_ORIGINS || "http://127.0.0.1:3001,http://localhost:3001")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+    if (allowedOrigins.includes(origin)) return null;
     let originUrl;
     try {
       originUrl = new URL(origin);
