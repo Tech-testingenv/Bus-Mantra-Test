@@ -1,4 +1,4 @@
-import AdminPanel from "../../../admin_and_backend/AdminPanel";
+import AdminPanel from "@admin/AdminPanel";
 
 export const metadata = {
   title: "Admin Portal | Bus Mantra",

@@ -1,3 +1,3 @@
-export { POST } from "../../../../../admin_and_backend/imageUploads";
+export { POST } from "@admin-backend/imageUploads";
 
 export const runtime = "nodejs";

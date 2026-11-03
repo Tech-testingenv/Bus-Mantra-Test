@@ -26,7 +26,7 @@ const pool = new Pool({
 });
 
 try {
-  const schema = await fs.readFile(path.join(process.cwd(), "database", "schema.sql"), "utf8");
+  const schema = await fs.readFile(path.join(process.cwd(), "backend", "database", "schema.sql"), "utf8");
   await pool.query(schema);
   const username = process.env.ADMIN_SUPER_USERNAME;
   const password = process.env.ADMIN_SUPER_PASSWORD;

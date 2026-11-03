@@ -1,4 +1,4 @@
-import { query } from "@/lib/db";
+import { query } from "@shared/db";
 import { adminError, hashPassword, requireAdmin, requireSameOrigin } from "./security";
 
 export async function GET() {

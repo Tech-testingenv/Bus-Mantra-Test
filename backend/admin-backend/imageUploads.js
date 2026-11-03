@@ -1,11 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { UPLOAD_DIRECTORY } from "@shared/uploadConfig";
 import { adminError, requireAdmin, requireSameOrigin } from "./security";
 
 const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
-const UPLOAD_DIRECTORY = path.join(process.cwd(), "uploads");
-const IMAGE_TYPES = { jpg: "image/jpeg", png: "image/png", webp: "image/webp", gif: "image/gif" };
 
 function getImageExtension(buffer) {
   if (buffer.length >= 8 && buffer.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
@@ -56,26 +55,5 @@ export async function POST(request) {
     return Response.json({ image: `/api/uploads/${filename}` }, { status: 201 });
   } catch (error) {
     return adminError(error, "Admin image upload failed");
-  }
-}
-
-export async function GET(_request, { params }) {
-  const { filename } = await params;
-  const match = /^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.(jpg|png|webp|gif)$/.exec(filename);
-  if (!match) return Response.json({ error: "Image not found." }, { status: 404 });
-
-  try {
-    const image = await readFile(path.join(UPLOAD_DIRECTORY, filename));
-    return new Response(image, {
-      headers: {
-        "Content-Type": IMAGE_TYPES[match[2]],
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "X-Content-Type-Options": "nosniff",
-      },
-    });
-  } catch (error) {
-    if (error.code === "ENOENT") return Response.json({ error: "Image not found." }, { status: 404 });
-    console.error("Public image retrieval failed:", error);
-    return Response.json({ error: "The image could not be retrieved." }, { status: 500 });
   }
 }

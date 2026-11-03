@@ -39,4 +39,19 @@ Open `/admin` to sign in. The first superadmin is created from the two `ADMIN_SU
 - `GET /api/auth` returns the current session user; `DELETE /api/auth` logs out
 - `/api/admin/*` provides session-protected dashboard, booking and enquiry management, catalog CRUD, and superadmin-only account management
 
-The schema is in `database/schema.sql`; catalog seed data is in `scripts/seed.mjs`.
+The schema is in `backend/database/schema.sql`; catalog seed data is in `backend/scripts/seed.mjs`.
+
+## Repository layout
+
+| Folder | Contents |
+| --- | --- |
+| `frontend/` | Public site: components, data, services, API client helpers |
+| `admin/` | Admin panel UI (`AdminPanel`, fleet manager, image upload field) |
+| `backend/web-backend/` | Public API handlers: fleets, destinations, services, bookings, inquiries, customer auth, image serving |
+| `backend/admin-backend/` | Admin API handlers: auth, admins, dashboard, catalog, fleets, records, image upload |
+| `backend/shared/` | DB pool and upload config shared by both backends |
+| `backend/database/`, `backend/scripts/` | Schema, DB init and seed scripts |
+| `src/app/` | Next.js routing layer only: pages and thin `route.js` files that re-export from the folders above |
+| `frontend_remote_reference/` | The team's earlier standalone frontend, kept for reference only |
+
+Path aliases (see `jsconfig.json`): `@/` (src, then frontend), `@admin/`, `@web-backend/`, `@admin-backend/`, `@shared/`. Set `UPLOAD_DIR` to override where uploaded images are stored.

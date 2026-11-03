@@ -1,3 +1,3 @@
-export { GET } from "../../../../../admin_and_backend/imageUploads";
+export { GET } from "@web-backend/uploads";
 
 export const runtime = "nodejs";

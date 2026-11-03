@@ -1,3 +1,3 @@
-export { GET, PATCH } from "../../../../../../admin_and_backend/fleetApi";
+export { GET, PATCH } from "@admin-backend/fleetApi";
 
 export const runtime = "nodejs";

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import AdminPanel from "../../../../../../admin_and_backend/AdminPanel";
+import AdminPanel from "@admin/AdminPanel";
 
 const CATEGORIES = {
   "minicoach-edit": "mini-coach",

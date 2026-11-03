@@ -1,4 +1,4 @@
-import { query } from "@/lib/db";
+import { query } from "@shared/db";
 import { adminError, requireAdmin, requireSameOrigin } from "./security";
 
 const recordConfig = {

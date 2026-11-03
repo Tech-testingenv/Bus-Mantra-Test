@@ -1,3 +1,3 @@
-export { GET } from "../../../../../admin_and_backend/dashboard";
+export { GET } from "@admin-backend/dashboard";
 
 export const runtime = "nodejs";
