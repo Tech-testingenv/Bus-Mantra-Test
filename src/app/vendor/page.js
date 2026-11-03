@@ -149,6 +149,7 @@ function SectionLabel({ children, light = false }) {
 export default function VendorPage() {
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const inputClass =
     "mt-2 w-full rounded-xl border border-border bg-white px-4 py-3.5 text-sm text-text-primary outline-none placeholder:text-text-muted hover:border-primary focus:border-primary focus:ring-2 focus:ring-focus-ring/15";
@@ -162,17 +163,27 @@ export default function VendorPage() {
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-
-    // Frontend demonstration only.
-    // No information is sent or saved.
-    setSubmitted(true);
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, type: "vendor", subject: "Vendor partnership" }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to submit partnership enquiry.");
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error.message);
+    }
   }
 
   function handleReset() {
     setForm(initialForm);
     setSubmitted(false);
+    setSubmitError("");
   }
 
   return (
@@ -561,6 +572,7 @@ export default function VendorPage() {
                           className={inputClass}
                         />
                       </div>
+                      {submitError && <p className="mt-4 text-sm font-medium text-red-600">{submitError}</p>}
 
                       <div>
                         <label

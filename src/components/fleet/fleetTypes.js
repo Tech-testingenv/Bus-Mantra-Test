@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import FleetCard from "./fleetCard";
 import { fleetSectionData, fleetTypesData } from "@/data/data";
 
@@ -11,9 +11,28 @@ export default function FleetTypes({
   id = "fleets",
 }) {
   const fleetList = sectionData?.fleets || fleets || [];
+  const [databaseFleets, setDatabaseFleets] = useState(null);
 
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/fleets")
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load fleet catalog.");
+        return response.json();
+      })
+      .then((data) => {
+        if (active && Array.isArray(data)) setDatabaseFleets(data);
+      })
+      .catch((error) => console.error("Fleet catalog load failed:", error));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const displayedFleets = databaseFleets || fleetList;
 
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;
@@ -26,7 +45,7 @@ export default function FleetTypes({
 
     setActiveSlide(
       Math.min(
-        fleetList.length - 1,
+        displayedFleets.length - 1,
         Math.max(0, slideIndex)
       )
     );
@@ -77,7 +96,7 @@ export default function FleetTypes({
       {/* DESKTOP FLEET CARDS */}
 
       <div className="hidden items-stretch gap-6 md:grid md:grid-cols-3 lg:gap-8">
-        {fleetList.map((bus) => (
+        {displayedFleets.map((bus) => (
           <FleetCard key={bus.id} bus={bus} />
         ))}
       </div>
@@ -106,7 +125,7 @@ export default function FleetTypes({
             msOverflowStyle: "none",
           }}
         >
-          {fleetList.map((bus) => (
+          {displayedFleets.map((bus) => (
             <FleetCard
               key={bus.id}
               bus={bus}
@@ -118,7 +137,7 @@ export default function FleetTypes({
         {/* CAROUSEL INDICATORS */}
 
         <div className="mt-5 flex items-center justify-center gap-1.5">
-          {fleetList.map((_, idx) => (
+          {displayedFleets.map((_, idx) => (
             <button
               key={idx}
               type="button"

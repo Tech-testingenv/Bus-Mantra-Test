@@ -10,17 +10,18 @@ export default function SiteShell({ children }) {
   const pathname = usePathname();
 
   const isLoginPage = pathname === "/login";
+  const isAdminPage = pathname === "/admin" || pathname.startsWith("/admin/");
 
   return (
     <>
-      {!isLoginPage && <Navbar />}
+      {!isLoginPage && !isAdminPage && <Navbar />}
 
       <main className="flex-1">
         {children}
       </main>
 
-      {!isLoginPage && <FinalCtaSection />}
-      {!isLoginPage && <Footer />}
+      {!isLoginPage && !isAdminPage && <FinalCtaSection />}
+      {!isLoginPage && !isAdminPage && <Footer />}
     </>
   );
 }

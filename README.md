@@ -1,33 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-## Getting Started
-First, run the development server:
+# Bus Mantra
+
+Bus Mantra is a Next.js group travel booking site backed by PostgreSQL. The API stores accounts, bookings, contact enquiries, vendor applications, and service requests, and serves fleet, destination, and service catalog data.
+
+## Local setup
+
+1. Install PostgreSQL and create a database (the local setup uses `busmantra`).
+2. Copy `.env.example` to `.env.local` and set `DATABASE_URL` for that database.
+   Set `ADMIN_SUPER_USERNAME` and a strong `ADMIN_SUPER_PASSWORD` before initialization.
+3. Initialize the `bus_mantra` schema (including the superadmin account) and load the starter catalog:
+
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run db:init
+npm run db:seed
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Run the app:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+Admin access is available at `/admin`. Fleet models are managed under `/admin/fleet-management`, with category lists at `/admin/fleet-management/minicoach-edit`, `/admin/fleet-management/premiumcoach-edit`, and `/admin/fleet-management/luxurycoach-edit`. Admin fleet edits and new coaches are stored in PostgreSQL and used by the public fleet catalog.
 
-To learn more about Next.js, take a look at the following resources:
+Coach main images and gallery images can be uploaded from the fleet editor. JPG, PNG, WebP, and GIF files up to 8 MB are stored in the server's `uploads/` directory and served through `/api/uploads/[filename]`; persist that directory when deploying.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Fleet editors can also set an optional default round-trip distance and estimated fare for each coach. These estimates are shown until a visitor enters a pickup or destination, after which the public page calculates the fare for that route. Existing coaches without defaults continue to use route-based estimates.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open `/admin` to sign in. The first superadmin is created from the two `ADMIN_SUPER_*` environment variables during `npm run db:init`; subsequent runs do not overwrite an existing account or password. Superadmins can create, disable, reset, and delete admin accounts.
 
-## Deploy on Vercel
+## API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `GET /api/fleets`, `GET /api/destinations`, `GET /api/services`
+- `POST /api/bookings`
+- `POST /api/inquiries` with `type` set to `contact`, `vendor`, or `service`
+- `POST /api/auth` with `mode` set to `login` or `register`
+- `GET /api/auth` returns the current session user; `DELETE /api/auth` logs out
+- `/api/admin/*` provides session-protected dashboard, booking and enquiry management, catalog CRUD, and superadmin-only account management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The schema is in `database/schema.sql`; catalog seed data is in `scripts/seed.mjs`.

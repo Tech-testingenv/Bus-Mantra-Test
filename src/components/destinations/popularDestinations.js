@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Navigation, ArrowRight } from "lucide-react";
@@ -16,7 +16,39 @@ export default function PopularDestinations({
   const items = sectionData?.destinations || destinations || [];
 
   const [activeSlide, setActiveSlide] = useState(0);
+  const [databaseDestinations, setDatabaseDestinations] = useState(null);
   const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/destinations")
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load destination catalog.");
+        return response.json();
+      })
+      .then((data) => {
+        if (active && Array.isArray(data)) {
+          setDatabaseDestinations(
+            data.map((destination, index) => ({
+              id: destination.slug,
+              name: destination.name,
+              number: String(index + 1).padStart(2, "0"),
+              route: destination.route,
+              description: destination.description,
+              image: destination.gallery?.[0] || "/about_bus.png",
+              href: `/destinations/${destination.slug}`,
+              ctaText: `Fleet to ${destination.name}`,
+            }))
+          );
+        }
+      })
+      .catch((error) => console.error("Destination catalog load failed:", error));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const displayedDestinations = databaseDestinations || items;
 
   /* =========================================================
      MOBILE CAROUSEL
@@ -31,7 +63,7 @@ export default function PopularDestinations({
     const slideIndex = Math.round(scrollLeft / cardWidth);
 
     setActiveSlide(
-      Math.min(items.length - 1, Math.max(0, slideIndex))
+      Math.min(displayedDestinations.length - 1, Math.max(0, slideIndex))
     );
   };
 
@@ -134,7 +166,7 @@ export default function PopularDestinations({
           msOverflowStyle: "none",
         }}
       >
-        {items.map((dest) => {
+        {displayedDestinations.map((dest) => {
           const rawCta =
             dest.ctaText ||
             dest.cta ||
@@ -278,7 +310,7 @@ export default function PopularDestinations({
       ========================================================= */}
 
       <div className="mt-5 flex items-center justify-center gap-1.5 lg:hidden">
-        {items.map((_, index) => (
+        {displayedDestinations.map((_, index) => (
           <button
             key={index}
             type="button"

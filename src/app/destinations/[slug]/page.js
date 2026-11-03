@@ -319,6 +319,7 @@ function DestinationBookingForm({ destination }) {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [showBusImages, setShowBusImages] = useState(false);
   const [quoteRequested, setQuoteRequested] = useState(false);
 
@@ -338,8 +339,30 @@ function DestinationBookingForm({ destination }) {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.leadPassenger,
+          email: formData.email,
+          mobile: formData.mobile,
+          passengers: formData.passengers,
+          pickupPoint: formData.pickup,
+          destination: [formData.destination || destination?.name],
+          departureDateTime: `${formData.departureDate} | ${formData.departureTime}`,
+          returnDateTime: formData.returnDate ? `${formData.returnDate} | ${formData.returnTime}` : null,
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to submit booking.");
+    } catch (error) {
+      setSubmitError(error.message);
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -596,6 +619,7 @@ function DestinationBookingForm({ destination }) {
               Request a Quote
             </button>
           </div>
+          {submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
         </div>
       </form>
 

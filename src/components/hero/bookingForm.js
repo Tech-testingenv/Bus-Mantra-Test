@@ -238,6 +238,7 @@ export default function BookingForm({ data = heroData?.form }) {
   */
 
   const [formValues, setFormValues] = useState(defaultValues);
+  const [databaseDestinations, setDatabaseDestinations] = useState(null);
 
   const [capacityNotice, setCapacityNotice] = useState(null);
   const [passengerError, setPassengerError] = useState("");
@@ -246,6 +247,24 @@ export default function BookingForm({ data = heroData?.form }) {
   const [submitted, setSubmitted] = useState(false);
 
   const destRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/destinations")
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load destination options.");
+        return response.json();
+      })
+      .then((data) => {
+        if (active && Array.isArray(data)) {
+          setDatabaseDestinations(data.map((destination) => destination.name));
+        }
+      })
+      .catch((error) => console.error("Booking destinations load failed:", error));
+    return () => {
+      active = false;
+    };
+  }, []);
 
   /*
   =========================================================
@@ -614,7 +633,7 @@ export default function BookingForm({ data = heroData?.form }) {
   =========================================================
   */
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setPassengerError("");
@@ -675,8 +694,6 @@ export default function BookingForm({ data = heroData?.form }) {
       return;
     }
 
-    setSubmitted(true);
-
     /*
     =======================================================
     BOOKING PAYLOAD
@@ -719,6 +736,21 @@ export default function BookingForm({ data = heroData?.form }) {
       hasDeterminedPassengers:
         true,
     };
+
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingPayload),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to save booking.");
+    } catch (submitError) {
+      setCapacityNotice(submitError.message);
+      return;
+    }
+
+    setSubmitted(true);
 
     /*
     =======================================================
@@ -850,7 +882,7 @@ export default function BookingForm({ data = heroData?.form }) {
   */
 
   const filteredDestinations =
-    destinationOptions.filter((opt) =>
+    (databaseDestinations || destinationOptions).filter((opt) =>
       opt
         .toLowerCase()
         .includes(

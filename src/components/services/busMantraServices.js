@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Briefcase,
@@ -63,9 +63,37 @@ export default function BusMantraServices({
     services ||
     [];
 
+  const [databaseServices, setDatabaseServices] = useState(null);
   const [activeSlide, setActiveSlide] = useState(0);
 
   const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/services")
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load service catalog.");
+        return response.json();
+      })
+      .then((data) => {
+        if (active && Array.isArray(data)) {
+          setDatabaseServices(
+            data.map((service, index) => ({
+              ...service,
+              number: String(index + 1).padStart(2, "0"),
+              bottomLabel: "Explore Service",
+              href: `/services/${service.slug}`,
+            }))
+          );
+        }
+      })
+      .catch((error) => console.error("Service catalog load failed:", error));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const displayedServices = databaseServices || items;
 
   const handleScroll = () => {
     if (!scrollContainerRef.current) {
@@ -83,7 +111,7 @@ export default function BusMantraServices({
 
     setActiveSlide(
       Math.min(
-        items.length - 1,
+        displayedServices.length - 1,
         Math.max(0, slideIndex)
       )
     );
@@ -136,7 +164,7 @@ export default function BusMantraServices({
       {/* DESKTOP AND TABLET SERVICE GRID */}
 
       <div className="hidden items-stretch gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => {
+        {displayedServices.map((item) => {
           const IconComponent =
             ICON_MAP[item.icon] || Briefcase;
 
@@ -232,7 +260,7 @@ export default function BusMantraServices({
             msOverflowStyle: "none",
           }}
         >
-          {items.map((item) => {
+          {displayedServices.map((item) => {
             const IconComponent =
               ICON_MAP[item.icon] || Briefcase;
 
@@ -315,7 +343,7 @@ export default function BusMantraServices({
         {/* Carousel Indicators */}
 
         <div className="mt-5 flex items-center justify-center gap-1.5">
-          {items.map((item, idx) => (
+          {displayedServices.map((item, idx) => (
             <button
               key={
                 item.id ||

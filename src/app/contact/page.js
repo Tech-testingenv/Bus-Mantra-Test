@@ -41,16 +41,28 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    // Frontend-only form: connect this handler to your contact API when available.
-    setSubmitted(true);
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, type: "contact", subject: form.topic }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to send enquiry.");
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error.message);
+    }
   }
 
   function resetForm() {
@@ -62,6 +74,7 @@ export default function ContactPage() {
       message: "",
     });
     setSubmitted(false);
+    setSubmitError("");
   }
 
   return (
@@ -230,6 +243,7 @@ export default function ContactPage() {
                       Send enquiry <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
                     </button>
                   </div>
+                  {submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
                 </form>
               </>
             )}

@@ -42,7 +42,7 @@ export default function LoginPage() {
     if (error) setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -51,8 +51,19 @@ export default function LoginPage() {
       return;
     }
 
-    // Connect this handler to your authentication API.
-    console.log(isRegister ? "Registration form:" : "Login form:", formData);
+    try {
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, mode: isRegister ? "register" : "login" }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Authentication failed.");
+      router.push("/");
+      router.refresh();
+    } catch (submitError) {
+      setError(submitError.message);
+    }
   };
 
   const toggleMode = () => {

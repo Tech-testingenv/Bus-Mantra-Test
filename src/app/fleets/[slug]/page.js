@@ -36,11 +36,12 @@ import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
 
 import { getBusBySlug } from "@/services/busSelectionService";
 import { calculateRouteDistance } from "@/services/distanceCalculationService";
-import { calculateCharterPrice } from "@/services/pricingService";
+import { calculateCharterPrice, formatCurrency } from "@/services/pricingService";
 import { fleetSlugFaqData } from "@/data/data";
 import FAQSection from "@/components/common/faq"
 
 import {
+  getBookingSession,
   resolveInitialBookingState,
   saveBookingSession,
 } from "@/services/bookingState";
@@ -112,16 +113,29 @@ export default function FleetDetailPage({ params }) {
   const unwrappedParams = use(params);
   const slug = unwrappedParams?.slug;
 
-  const bus = getBusBySlug(slug);
+  const initialBus = getBusBySlug(slug);
+  const [bus, setBus] = useState(initialBus);
 
   const searchParams = useSearchParams();
 
   const [bookingData, setBookingData] = useState(() =>
     resolveInitialBookingState(searchParams)
   );
+  const [hasCustomRoute, setHasCustomRoute] = useState(() => {
+    const savedBooking = getBookingSession();
+    return (
+      searchParams.has("pickup") ||
+      searchParams.has("pickupPoint") ||
+      searchParams.has("dest") ||
+      searchParams.has("destination") ||
+      Boolean(savedBooking?.pickupPoint || savedBooking?.destination)
+    );
+  });
 
   const [distanceResult, setDistanceResult] = useState(null);
   const [pricingResult, setPricingResult] = useState(null);
+  const hasCoachEstimate = !hasCustomRoute &&
+    (bus?.defaultRoundTripKm != null || bus?.defaultEstimatedFare != null);
 
   const [isBooked, setIsBooked] = useState(false);
   const [showFleetModal, setShowFleetModal] = useState(false);
@@ -129,33 +143,22 @@ export default function FleetDetailPage({ params }) {
 
   const [, startTransition] = useTransition();
 
-  if (!bus) {
-    return (
-      <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
-        <div className="text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary">
-            FLEET NOT FOUND
-          </span>
-
-          <h1 className="mt-2 text-3xl font-black text-text-primary">
-            We couldn't find this coach.
-          </h1>
-
-          <p className="mt-2 text-sm text-text-muted">
-            The fleet you're looking for is not available.
-          </p>
-
-          <Link
-            href="/fleets"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Fleet
-          </Link>
-        </div>
-      </main>
-    );
-  }
+  useEffect(() => {
+    let active = true;
+    fetch(`/api/fleets/${encodeURIComponent(slug)}`)
+      .then(async (response) => {
+        if (response.status === 404) return null;
+        if (!response.ok) throw new Error("Unable to load coach details.");
+        return response.json();
+      })
+      .then((result) => {
+        if (active && result) setBus(result);
+      })
+      .catch((error) => console.error("Fleet detail load failed:", error));
+    return () => {
+      active = false;
+    };
+  }, [slug]);
 
   const updateRouteCalculation = useCallback(
     async (pickup, destinations) => {
@@ -182,6 +185,7 @@ export default function FleetDetailPage({ params }) {
   );
 
   useEffect(() => {
+    if (!bus) return;
     updateRouteCalculation(
       bookingData.pickupPoint,
       bookingData.destination
@@ -189,10 +193,27 @@ export default function FleetDetailPage({ params }) {
   }, [
     bookingData.pickupPoint,
     bookingData.destination,
+    bus,
     updateRouteCalculation,
   ]);
 
+  if (!bus) {
+    return (
+      <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
+        <div className="text-center">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary">FLEET NOT FOUND</span>
+          <h1 className="mt-2 text-3xl font-black text-text-primary">We couldn&apos;t find this coach.</h1>
+          <p className="mt-2 text-sm text-text-muted">The fleet you&apos;re looking for is not available.</p>
+          <Link href="/fleets" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover">
+            <ArrowLeft className="h-4 w-4" /> Back to Fleet
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   const handleFieldChange = (key, value) => {
+    if (key === "pickupPoint" || key === "destination") setHasCustomRoute(true);
     setBookingData((previous) => {
       const updated = {
         ...previous,
@@ -485,7 +506,9 @@ export default function FleetDetailPage({ params }) {
 
                     <div className="mt-1">
                       <span className="text-xl font-black text-text-primary">
-                        ≈ {distanceResult?.totalKm || 0}
+                        ≈ {!hasCustomRoute && bus.defaultRoundTripKm != null
+                          ? Number(bus.defaultRoundTripKm).toLocaleString("en-IN")
+                          : distanceResult?.totalKm || 0}
                       </span>
 
                       <span className="ml-1 text-[11px] font-bold uppercase text-text-muted">
@@ -500,7 +523,9 @@ export default function FleetDetailPage({ params }) {
                     </span>
 
                     <div className="mt-1 text-xl font-black text-text-primary">
-                      {pricingResult?.formattedTotalPrice || "₹0"}
+                      {!hasCustomRoute && bus.defaultEstimatedFare != null
+                        ? formatCurrency(Number(bus.defaultEstimatedFare))
+                        : pricingResult?.formattedTotalPrice || "₹0"}
                     </div>
                   </div>
                 </div>
@@ -512,8 +537,10 @@ export default function FleetDetailPage({ params }) {
                     <span className="font-bold text-text-primary">
                       Trip Route:
                     </span>{" "}
-                    {distanceResult?.routeSummaryText ||
-                      "Your selected pickup and destination route will appear here."}
+                    {hasCoachEstimate
+                      ? "Enter your pickup and destinations to see a custom route estimate."
+                      : distanceResult?.routeSummaryText ||
+                        "Your selected pickup and destination route will appear here."}
                   </span>
                 </div>
 

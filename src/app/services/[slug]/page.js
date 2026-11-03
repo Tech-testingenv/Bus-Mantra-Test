@@ -316,6 +316,7 @@ function ServiceBookingForm({ service }) {
 
   const [submitted, setSubmitted] =
     useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const estimatedKm =
     service?.estimatedKm ?? 560;
@@ -330,8 +331,28 @@ function ServiceBookingForm({ service }) {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          type: "service",
+          fullName: formData.leadPassenger,
+          phone: formData.mobile,
+          subject: service?.title || "Service booking",
+          serviceSlug: service?.slug,
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to submit request.");
+    } catch (error) {
+      setSubmitError(error.message);
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -627,6 +648,7 @@ function ServiceBookingForm({ service }) {
               Request a Quote
             </button>
           </div>
+          {submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
         </div>
       </form>
 
