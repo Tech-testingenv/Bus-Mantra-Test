@@ -4,7 +4,7 @@ import path from "node:path";
 
 const { Pool } = pg;
 try {
-  const envText = await fs.readFile(path.join(process.cwd(), ".env.local"), "utf8");
+  const envText = await fs.readFile(path.join(process.cwd(), "frontend", ".env.local"), "utf8");
   for (const line of envText.split(/\r?\n/)) {
     const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
     if (match && !process.env[match[1]]) {

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { UPLOAD_DIRECTORY } from "@shared/uploadConfig";
+import { UPLOAD_DIRECTORY } from "../shared/uploadConfig";
 import { adminError, requireAdmin, requireSameOrigin } from "./security";
 
 const MAX_IMAGE_SIZE = 8 * 1024 * 1024;

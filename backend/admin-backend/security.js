@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
-import { query } from "@shared/db";
+import { query } from "../shared/db";
 
 export const ADMIN_COOKIE = "bus_mantra_admin_session";
 const SESSION_DAYS = 12;

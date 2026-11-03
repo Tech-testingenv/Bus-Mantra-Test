@@ -5,7 +5,7 @@ Bus Mantra is a Next.js group travel booking site backed by PostgreSQL. The API 
 ## Local setup
 
 1. Install PostgreSQL and create a database (the local setup uses `busmantra`).
-2. Copy `.env.example` to `.env.local` and set `DATABASE_URL` for that database.
+2. Copy `frontend/.env.example` to `frontend/.env.local` and set `DATABASE_URL` for that database.
    Set `ADMIN_SUPER_USERNAME` and a strong `ADMIN_SUPER_PASSWORD` before initialization.
 3. Initialize the `bus_mantra` schema (including the superadmin account) and load the starter catalog:
 
@@ -24,7 +24,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Admin access is available at `/admin`. Fleet models are managed under `/admin/fleet-management`, with category lists at `/admin/fleet-management/minicoach-edit`, `/admin/fleet-management/premiumcoach-edit`, and `/admin/fleet-management/luxurycoach-edit`. Admin fleet edits and new coaches are stored in PostgreSQL and used by the public fleet catalog.
 
-Coach main images and gallery images can be uploaded from the fleet editor. JPG, PNG, WebP, and GIF files up to 8 MB are stored in the server's `uploads/` directory and served through `/api/uploads/[filename]`; persist that directory when deploying.
+Coach main images and gallery images can be uploaded from the fleet editor. JPG, PNG, WebP, and GIF files up to 8 MB are stored in the server's `backend/uploads/` directory and served through `/api/uploads/[filename]`; persist that directory when deploying.
 
 Fleet editors can also set an optional default round-trip distance and estimated fare for each coach. These estimates are shown until a visitor enters a pickup or destination, after which the public page calculates the fare for that route. Existing coaches without defaults continue to use route-based estimates.
 
@@ -45,13 +45,12 @@ The schema is in `backend/database/schema.sql`; catalog seed data is in `backend
 
 | Folder | Contents |
 | --- | --- |
-| `frontend/` | Public site: components, data, services, API client helpers |
+| `frontend/` | The Next.js app (run from here): public pages, components, data, services, `public/`, configs, `.env.local` |
 | `admin/` | Admin panel UI (`AdminPanel`, fleet manager, image upload field) |
 | `backend/web-backend/` | Public API handlers: fleets, destinations, services, bookings, inquiries, customer auth, image serving |
 | `backend/admin-backend/` | Admin API handlers: auth, admins, dashboard, catalog, fleets, records, image upload |
-| `backend/shared/` | DB pool and upload config shared by both backends |
+| `backend/shared/` | DB pool, API helpers and upload config shared by both backends |
 | `backend/database/`, `backend/scripts/` | Schema, DB init and seed scripts |
-| `src/app/` | Next.js routing layer only: pages and thin `route.js` files that re-export from the folders above |
-| `frontend_remote_reference/` | The team's earlier standalone frontend, kept for reference only |
+| `backend/uploads/` | Uploaded images (gitignored; persist it when deploying) |
 
-Path aliases (see `jsconfig.json`): `@/` (src, then frontend), `@admin/`, `@web-backend/`, `@admin-backend/`, `@shared/`. Set `UPLOAD_DIR` to override where uploaded images are stored.
+`frontend/app/` holds the Next.js routes; its `api/` and `admin/` routes are thin files that import from `admin/` and `backend/`. Only `package.json` and `node_modules` live at the repo root, and the npm scripts run Next with `frontend` as the project directory. Set `UPLOAD_DIR` to override where uploaded images are stored.

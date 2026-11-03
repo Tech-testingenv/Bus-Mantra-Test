@@ -1,4 +1,4 @@
-import { query } from "@shared/db";
+import { query } from "../shared/db";
 import { adminError, requireAdmin, requireSameOrigin } from "./security";
 
 const COACH_TYPES = ["mini-coach", "premium-coach", "luxury-coach"];

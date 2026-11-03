@@ -4,7 +4,7 @@ import pg from "pg";
 import crypto from "node:crypto";
 
 const { Pool } = pg;
-const envPath = path.join(process.cwd(), ".env.local");
+const envPath = path.join(process.cwd(), "frontend", ".env.local");
 try {
   const envText = await fs.readFile(envPath, "utf8");
   for (const line of envText.split(/\r?\n/)) {

@@ -1,4 +1,4 @@
-import { query } from "@shared/db";
+import { query } from "../shared/db";
 import { adminError, requireAdmin } from "./security";
 
 export async function GET() {

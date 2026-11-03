@@ -1,5 +1,5 @@
-import { query } from "@shared/db";
-import { jsonError, requireFields } from "@/lib/api";
+import { query } from "../shared/db";
+import { jsonError, requireFields } from "../shared/api";
 
 export const runtime = "nodejs";
 

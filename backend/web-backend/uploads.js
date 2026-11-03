@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { IMAGE_TYPES, UPLOAD_DIRECTORY } from "@shared/uploadConfig";
+import { IMAGE_TYPES, UPLOAD_DIRECTORY } from "../shared/uploadConfig";
 
 export async function GET(_request, { params }) {
   const { filename } = await params;
