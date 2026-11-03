@@ -6,8 +6,10 @@ export async function GET() {
   if (access.response) return access.response;
   try {
     const result = await query(
-      `SELECT id, username, role, is_active, created_at, last_login_at
-       FROM admin_users ORDER BY created_at`
+      `SELECT a.id, a.username, a.role, a.role_id, r.name AS role_name,
+        a.is_active, a.created_at, a.last_login_at
+       FROM admin_users a LEFT JOIN admin_roles r ON r.id = a.role_id
+       ORDER BY a.created_at`
     );
     return Response.json({ admins: result.rows });
   } catch (error) {
@@ -29,11 +31,15 @@ export async function POST(request) {
     if (typeof body.password !== "string" || body.password.length < 12) {
       return Response.json({ error: "Admin passwords must be at least 12 characters." }, { status: 400 });
     }
+    const role = body.roleId
+      ? await query("SELECT id FROM admin_roles WHERE id = $1", [body.roleId])
+      : await query("SELECT id FROM admin_roles WHERE name = 'Operations'");
+    if (!role.rowCount) return Response.json({ error: "Select a valid role." }, { status: 400 });
     const result = await query(
-      `INSERT INTO admin_users (username, password_hash, role, created_by)
-       VALUES ($1, $2, 'admin', $3)
-       RETURNING id, username, role, is_active, created_at`,
-      [username, hashPassword(body.password), access.admin.id]
+      `INSERT INTO admin_users (username, password_hash, role, role_id, created_by)
+       VALUES ($1, $2, 'admin', $3, $4)
+       RETURNING id, username, role, role_id, is_active, created_at`,
+      [username, hashPassword(body.password), role.rows[0].id, access.admin.id]
     );
     return Response.json({ admin: result.rows[0] }, { status: 201 });
   } catch (error) {
@@ -62,12 +68,18 @@ export async function PATCH(request) {
       values.push(hashPassword(body.password));
       fields.push(`password_hash = $${values.length}`);
     }
-    if (!fields.length) return Response.json({ error: "Provide a password or active status to update." }, { status: 400 });
+    if (typeof body.roleId === "string") {
+      const role = await query("SELECT id FROM admin_roles WHERE id = $1", [body.roleId]);
+      if (!role.rowCount) return Response.json({ error: "Select a valid role." }, { status: 400 });
+      values.push(body.roleId);
+      fields.push(`role_id = $${values.length}`);
+    }
+    if (!fields.length) return Response.json({ error: "Provide a password, role, or active status to update." }, { status: 400 });
     values.push(body.id);
     const result = await query(
       `UPDATE admin_users SET ${fields.join(", ")}
        WHERE id = $${values.length} AND role = 'admin'
-       RETURNING id, username, role, is_active, created_at, last_login_at`,
+       RETURNING id, username, role, role_id, is_active, created_at, last_login_at`,
       values
     );
     if (!result.rowCount) return Response.json({ error: "Admin not found or cannot be changed." }, { status: 404 });

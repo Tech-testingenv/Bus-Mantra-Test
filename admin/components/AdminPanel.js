@@ -1,42 +1,45 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import FleetManagerPanel from "./FleetManagerPanel";
+import CatalogModule from "./CatalogModule";
+import RolesManager from "./RolesManager";
+import SalesManager from "./SalesManager";
 import {
   Activity,
   Bus,
   CalendarDays,
   Check,
-  ChevronDown,
   ClipboardList,
   Database,
+  MapPin,
   LayoutDashboard,
   LoaderCircle,
   LogOut,
   Menu,
   Plus,
   RefreshCw,
-  Save,
   Search,
   ShieldCheck,
+  TrendingUp,
+  BriefcaseBusiness,
+  Settings2,
   Trash2,
   Users,
   X,
 } from "lucide-react";
 
 const NAVIGATION = [
-  { id: "dashboard", label: "Overview", icon: LayoutDashboard },
-  { id: "bookings", label: "Bookings", icon: CalendarDays },
-  { id: "inquiries", label: "Enquiries", icon: ClipboardList },
-  { id: "fleet-management", label: "Fleet management", icon: Bus },
+  { id: "dashboard", label: "Overview", icon: LayoutDashboard, module: "dashboard" },
+  { id: "sales", label: "Sales", icon: TrendingUp, module: "sales" },
+  { id: "bookings", label: "Bookings", icon: CalendarDays, module: "sales" },
+  { id: "inquiries", label: "Enquiries", icon: ClipboardList, module: "sales" },
+  { id: "fleet-management", label: "Fleet management", icon: Bus, module: "fleet" },
+  { id: "services", label: "Services", icon: BriefcaseBusiness, module: "services" },
+  { id: "destinations", label: "Destinations", icon: MapPin, module: "destinations" },
+  { id: "roles", label: "Roles & permissions", icon: Settings2, superadmin: true },
   { id: "admins", label: "Admin accounts", icon: Users, superadmin: true },
-];
-
-const CATALOGS = [
-  { id: "fleets", label: "Fleets" },
-  { id: "destinations", label: "Destinations" },
-  { id: "services", label: "Services" },
 ];
 
 const STATUS_OPTIONS = {
@@ -54,12 +57,6 @@ const EMPTY_STATS = {
   destinations: 0,
   services: 0,
 };
-
-function displayValue(value) {
-  if (value == null || value === "") return "—";
-  if (typeof value === "object") return JSON.stringify(value);
-  return String(value);
-}
 
 function formatDate(value) {
   if (!value) return "—";
@@ -175,6 +172,7 @@ function StatCard({ label, value, subLabel, icon: Icon, tone }) {
 
 function Dashboard({ data, onNavigate }) {
   const stats = data?.stats || EMPTY_STATS;
+  const canViewSales = data?.canViewSales === true;
   return (
     <div className="space-y-7">
       <div>
@@ -187,7 +185,7 @@ function Dashboard({ data, onNavigate }) {
         <StatCard label="Customers" value={stats.customers} subLabel="Registered accounts" icon={Users} tone="bg-violet-50 text-violet-600" />
         <StatCard label="Catalog items" value={Number(stats.fleets) + Number(stats.destinations) + Number(stats.services)} subLabel={`${stats.fleets} fleets · ${stats.destinations} destinations · ${stats.services} services`} icon={Database} tone="bg-emerald-50 text-emerald-600" />
       </div>
-      <div className="grid gap-5 xl:grid-cols-2">
+      {canViewSales && <div className="grid gap-5 xl:grid-cols-2">
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
             <div><h2 className="font-bold text-slate-900">Recent bookings</h2><p className="mt-0.5 text-xs text-slate-400">Latest customer requests</p></div>
@@ -216,7 +214,7 @@ function Dashboard({ data, onNavigate }) {
             )) : <p className="px-5 py-8 text-center text-sm text-slate-400">No enquiries yet.</p>}
           </div>
         </section>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -253,9 +251,10 @@ function RecordTable({ kind, records, onStatusChange }) {
   );
 }
 
-function AdminAccounts({ admins, reload, notify }) {
+function AdminAccounts({ admins, roles, reload, notify }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [roleId, setRoleId] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function createAdmin(event) {
@@ -264,10 +263,11 @@ function AdminAccounts({ admins, reload, notify }) {
     try {
       await apiRequest("/api/admin/admins", {
         method: "POST",
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, roleId }),
       });
       setUsername("");
       setPassword("");
+      setRoleId("");
       notify("Admin account created.");
       await reload();
     } catch (error) {
@@ -318,9 +318,10 @@ function AdminAccounts({ admins, reload, notify }) {
   return (
     <div className="space-y-6">
       <div><p className="text-sm font-medium text-slate-500">Superadmin-only controls</p><h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900">Admin accounts</h1></div>
-      <form onSubmit={createAdmin} className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-[1fr_1fr_auto] md:items-end">
+      <form onSubmit={createAdmin} className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-[1fr_1fr_1fr_auto] md:items-end">
         <label className="text-xs font-bold text-slate-600">Username or email<input required value={username} onChange={(event) => setUsername(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-slate-200 px-3 text-sm font-normal outline-none focus:border-orange-500" placeholder="operations@busmantra.com" /></label>
         <label className="text-xs font-bold text-slate-600">Temporary password<input required minLength={12} value={password} onChange={(event) => setPassword(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-slate-200 px-3 text-sm font-normal outline-none focus:border-orange-500" placeholder="At least 12 characters" /></label>
+        <label className="text-xs font-bold text-slate-600">Role<select required value={roleId} onChange={(event) => setRoleId(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-normal outline-none focus:border-orange-500"><option value="">Select role</option>{roles.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}</select></label>
         <button disabled={busy} className="flex h-11 items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 text-sm font-bold text-white hover:bg-orange-600 disabled:opacity-60"><Plus size={17} /> Create admin</button>
       </form>
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -328,8 +329,17 @@ function AdminAccounts({ admins, reload, notify }) {
         <div className="divide-y divide-slate-100">
           {admins.map((admin) => (
             <div key={admin.id} className="flex flex-wrap items-center justify-between gap-4 px-5 py-4">
-              <div><p className="font-semibold text-slate-800">{admin.username}</p><p className="mt-1 text-xs capitalize text-slate-400">{admin.role} · {admin.is_active ? "Active" : "Disabled"} · Last login {formatDate(admin.last_login_at)}</p></div>
+              <div><p className="font-semibold text-slate-800">{admin.username}</p><p className="mt-1 text-xs capitalize text-slate-400">{admin.role === "superadmin" ? "Superadmin" : admin.role_name || "Admin"} · {admin.is_active ? "Active" : "Disabled"} · Last login {formatDate(admin.last_login_at)}</p></div>
               {admin.role === "admin" && <div className="flex flex-wrap gap-2">
+                <select aria-label={`Change role for ${admin.username}`} value={admin.role_id || ""} onChange={async (event) => {
+                  try {
+                    await apiRequest("/api/admin/admins", { method: "PATCH", body: JSON.stringify({ id: admin.id, roleId: event.target.value }) });
+                    notify("Admin role updated.");
+                    await reload();
+                  } catch (error) {
+                    notify(error.message, "error");
+                  }
+                }} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold">{roles.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}</select>
                 <button onClick={() => resetPassword(admin)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:border-orange-300 hover:text-orange-700">Reset password</button>
                 <button onClick={() => toggleAdmin(admin)} className={`rounded-lg px-3 py-2 text-xs font-semibold ${admin.is_active ? "bg-amber-50 text-amber-700 hover:bg-amber-100" : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"}`}>{admin.is_active ? "Disable" : "Enable"}</button>
                 <button onClick={() => removeAdmin(admin)} aria-label={`Delete ${admin.username}`} className="rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100"><Trash2 size={15} /></button>
@@ -339,110 +349,6 @@ function AdminAccounts({ admins, reload, notify }) {
           {!admins.length && <p className="px-5 py-10 text-center text-sm text-slate-400">No admin accounts.</p>}
         </div>
       </section>
-    </div>
-  );
-}
-
-function CatalogManager({ collection, setCollection, notify }) {
-  const [records, setRecords] = useState([]);
-  const [key, setKey] = useState("id");
-  const [editing, setEditing] = useState(null);
-  const [jsonValue, setJsonValue] = useState("");
-  const [search, setSearch] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const reload = useCallback(async () => {
-    const result = await apiRequest(`/api/admin/catalog?collection=${collection}`);
-    setRecords(result.records);
-    setKey(result.key);
-  }, [collection]);
-
-  useEffect(() => {
-    let active = true;
-    apiRequest(`/api/admin/catalog?collection=${collection}`)
-      .then((result) => {
-        if (active) {
-          setRecords(result.records);
-          setKey(result.key);
-        }
-      })
-      .catch((error) => {
-        if (active) notify(error.message, "error");
-      });
-    return () => {
-      active = false;
-    };
-  }, [collection, notify]);
-
-  const filtered = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    if (!term) return records;
-    return records.filter((record) => JSON.stringify(record).toLowerCase().includes(term));
-  }, [records, search]);
-
-  function edit(record) {
-    setEditing(record ? { originalKey: record[key], isNew: false } : { originalKey: null, isNew: true });
-    setJsonValue(record ? JSON.stringify(record, null, 2) : "{\n  \n}");
-  }
-
-  async function save(event) {
-    event.preventDefault();
-    setBusy(true);
-    try {
-      const data = JSON.parse(jsonValue);
-      const result = editing.isNew
-        ? await apiRequest(`/api/admin/catalog?collection=${collection}`, { method: "POST", body: JSON.stringify(data) })
-        : await apiRequest(`/api/admin/catalog?collection=${collection}`, { method: "PATCH", body: JSON.stringify({ keyValue: editing.originalKey, data }) });
-      setEditing(null);
-      notify(editing.isNew ? "Catalog item created." : "Catalog item updated.");
-      await reload();
-      return result;
-    } catch (error) {
-      notify(error instanceof SyntaxError ? "Catalog data must be valid JSON." : error.message, "error");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function remove(record) {
-    if (!window.confirm(`Delete ${displayValue(record[key])}?`)) return;
-    try {
-      await apiRequest(`/api/admin/catalog?collection=${collection}&key=${encodeURIComponent(record[key])}`, { method: "DELETE" });
-      notify("Catalog item deleted.");
-      await reload();
-    } catch (error) {
-      notify(error.message, "error");
-    }
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div><p className="text-sm font-medium text-slate-500">Edit content served by the public site</p><h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900">Website catalog</h1></div>
-        <button onClick={() => edit(null)} className="flex h-11 items-center gap-2 rounded-xl bg-orange-500 px-4 text-sm font-bold text-white hover:bg-orange-600"><Plus size={17} /> Add item</button>
-      </div>
-      <div className="flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <label className="relative min-w-56 flex-1"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search catalog..." className="h-10 w-full rounded-xl border border-slate-200 pl-9 pr-3 text-sm outline-none focus:border-orange-500" /></label>
-        <label className="relative"><select value={collection} onChange={(event) => setCollection(event.target.value)} className="h-10 appearance-none rounded-xl border border-slate-200 bg-white pl-3 pr-9 text-sm font-semibold text-slate-700 outline-none focus:border-orange-500">{CATALOGS.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}</select><ChevronDown size={15} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" /></label>
-      </div>
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="divide-y divide-slate-100">
-          {filtered.map((record) => (
-            <div key={record[key]} className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
-              <div className="min-w-0"><p className="font-semibold text-slate-800">{displayValue(record.name || record.title || record.id || record.slug)}</p><p className="mt-1 max-w-xl truncate text-xs text-slate-400">{record.slug || record.id} · {record.description || record.capacity || ""}</p></div>
-              <div className="flex gap-2"><button onClick={() => edit(record)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 hover:border-orange-300 hover:text-orange-700">Edit JSON</button><button onClick={() => remove(record)} aria-label="Delete catalog item" className="rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100"><Trash2 size={15} /></button></div>
-            </div>
-          ))}
-          {!filtered.length && <p className="px-5 py-12 text-center text-sm text-slate-400">No catalog items found.</p>}
-        </div>
-      </section>
-      {editing && <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-        <form onSubmit={save} className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
-          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4"><div><h2 className="font-bold text-slate-900">{editing.isNew ? "Add catalog item" : "Edit catalog item"}</h2><p className="mt-1 text-xs text-slate-400">Valid JSON · database fields use snake_case</p></div><button type="button" onClick={() => setEditing(null)} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100"><X size={18} /></button></div>
-          <textarea spellCheck={false} value={jsonValue} onChange={(event) => setJsonValue(event.target.value)} className="min-h-[50vh] flex-1 resize-y bg-slate-950 p-5 font-mono text-xs leading-6 text-emerald-200 outline-none" />
-          <div className="flex justify-end gap-2 border-t border-slate-100 p-4"><button type="button" onClick={() => setEditing(null)} className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600">Cancel</button><button disabled={busy} className="flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-bold text-white hover:bg-orange-600 disabled:opacity-60"><Save size={16} /> Save changes</button></div>
-        </form>
-      </div>}
     </div>
   );
 }
@@ -459,13 +365,14 @@ export default function AdminPanel({
   const [dashboard, setDashboard] = useState(null);
   const [records, setRecords] = useState([]);
   const [admins, setAdmins] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [recordSearch, setRecordSearch] = useState("");
   const [recordStatus, setRecordStatus] = useState("");
-  const [catalog, setCatalog] = useState("fleets");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState(null);
   const [mobileNav, setMobileNav] = useState(false);
+  const [salesReloadKey, setSalesReloadKey] = useState(0);
 
   const notify = useCallback((message, type = "success") => {
     setNotice({ message, type });
@@ -482,6 +389,11 @@ export default function AdminPanel({
     setAdmins(result.admins);
   }, []);
 
+  const loadRoles = useCallback(async () => {
+    const result = await apiRequest("/api/admin/roles");
+    setRoles(result.roles);
+  }, []);
+
   const loadRecords = useCallback(async () => {
     const params = new URLSearchParams({ search: recordSearch });
     if (recordStatus) params.set("status", recordStatus);
@@ -495,14 +407,17 @@ export default function AdminPanel({
     setError("");
     try {
       if (activeSection === "dashboard") await loadDashboard();
-      if (activeSection === "admins" && adminRole === "superadmin") await loadAdmins();
+      if ((activeSection === "admins" || activeSection === "roles") && adminRole === "superadmin") {
+        await Promise.all([loadAdmins(), loadRoles()]);
+      }
+      if (activeSection === "sales") setSalesReloadKey((key) => key + 1);
       if (activeSection === "bookings" || activeSection === "inquiries") await loadRecords();
     } catch (requestError) {
       setError(requestError.message);
     } finally {
       setLoading(false);
     }
-  }, [activeSection, adminRole, loadAdmins, loadDashboard, loadRecords]);
+  }, [activeSection, adminRole, loadAdmins, loadDashboard, loadRecords, loadRoles]);
 
   useEffect(() => {
     let active = true;
@@ -529,7 +444,10 @@ export default function AdminPanel({
     return () => window.clearTimeout(timer);
   }, [adminRole, refresh]);
 
-  const navigation = NAVIGATION.filter((item) => !item.superadmin || admin?.role === "superadmin");
+  const navigation = NAVIGATION.filter((item) => {
+    if (item.superadmin) return admin?.role === "superadmin";
+    return admin?.role === "superadmin" || admin?.permissions?.[item.module]?.view === true;
+  });
 
   function navigate(id) {
     const destination = id === "dashboard" ? "/admin" : `/admin/${id}`;
@@ -608,7 +526,8 @@ export default function AdminPanel({
           </header>
           <div className="mx-auto max-w-[1500px] p-4 sm:p-7 lg:p-10">
             {error && <div role="alert" className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"><span>{error}</span><button onClick={() => setError("")} aria-label="Dismiss error"><X size={16} /></button></div>}
-            {activeSection === "dashboard" && <Dashboard data={dashboard} onNavigate={navigate} />}
+            {activeSection === "dashboard" && (admin.role === "superadmin" || admin.permissions?.dashboard?.view) && <Dashboard data={dashboard} onNavigate={navigate} />}
+            {activeSection === "sales" && admin.permissions?.sales?.view && <SalesManager key={salesReloadKey} permissions={admin.permissions.sales} notify={notify} />}
             {(activeSection === "bookings" || activeSection === "inquiries") && <div className="space-y-6">
               <div><p className="text-sm font-medium text-slate-500">Review, search and update incoming requests</p><h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900">{activeSection === "bookings" ? "Bookings" : "Enquiries"}</h1></div>
               <div className="flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -617,8 +536,11 @@ export default function AdminPanel({
               </div>
               <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><RecordTable kind={activeSection} records={records} onStatusChange={updateStatus} /></section>
             </div>}
-            {activeSection === "fleet-management" && <FleetManagerPanel category={initialCategory} coachId={initialCoachId} onNotice={notify} />}
-            {activeSection === "admins" && admin.role === "superadmin" && <AdminAccounts admins={admins} reload={loadAdmins} notify={notify} />}
+            {activeSection === "fleet-management" && <FleetManagerPanel category={initialCategory} coachId={initialCoachId} onNotice={notify} permissions={admin.permissions?.fleet} />}
+            {activeSection === "services" && admin.permissions?.services?.view && <CatalogModule collection="services" permissions={admin.permissions.services} notify={notify} />}
+            {activeSection === "destinations" && admin.permissions?.destinations?.view && <CatalogModule collection="destinations" permissions={admin.permissions.destinations} notify={notify} />}
+            {activeSection === "roles" && admin.role === "superadmin" && <RolesManager notify={notify} />}
+            {activeSection === "admins" && admin.role === "superadmin" && <AdminAccounts admins={admins} roles={roles} reload={loadAdmins} notify={notify} />}
             {loading && <div className="fixed bottom-5 right-5 flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-xs font-semibold text-white shadow-xl"><LoaderCircle size={15} className="animate-spin" /> Syncing database</div>}
           </div>
         </section>

@@ -32,9 +32,36 @@ import FAQSection from "@/components/common/faq";
 export default function ServiceSlugPage({ params }) {
   const { slug } = use(params);
 
-  const service = servicesSlugData?.find(
+  const fallbackService = servicesSlugData?.find(
     (item) => item.slug === slug
   );
+  const [databaseService, setDatabaseService] = useState(null);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
+  const [catalogFailed, setCatalogFailed] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/services")
+      .then((response) => {
+        if (!response.ok) throw new Error(`Service catalog returned ${response.status}.`);
+        return response.json();
+      })
+      .then((services) => {
+        if (active) setDatabaseService(services.find((item) => item.slug === slug) || null);
+      })
+      .catch((error) => {
+        console.error("Service detail catalog load failed:", error);
+        if (active) setCatalogFailed(true);
+      })
+      .finally(() => { if (active) setCatalogLoaded(true); });
+    return () => { active = false; };
+  }, [slug]);
+
+  const service = databaseService || (catalogLoaded ? (catalogFailed ? fallbackService : null) : fallbackService);
+
+  if (!service && !catalogLoaded) {
+    return <main className="flex min-h-[60vh] items-center justify-center text-sm font-semibold text-neutral-500">Loading service…</main>;
+  }
 
   if (!service) {
     return (

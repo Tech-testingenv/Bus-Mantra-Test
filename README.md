@@ -26,6 +26,8 @@ Fleet editors can also set an optional default round-trip distance and estimated
 
 Open `/admin` to sign in. The first superadmin is created from the two `ADMIN_SUPER_*` environment variables during `npm run db:init`; subsequent runs do not overwrite an existing account or password. Superadmins can create, disable, reset, and delete admin accounts.
 
+The admin panel includes dedicated Fleet, Services, and Destinations management screens with add/edit forms and image upload. Service and destination edits are read from PostgreSQL by the public website. Superadmins can create custom roles, assign per-module view/create/edit/delete permissions, and assign those roles to admin accounts; backend APIs enforce the assigned permissions. The Sales module includes date-filtered booking and lead reports, booking/payment statuses, fare estimates, lead assignment and follow-up, and CSV export. Booking fare estimates are entered by staff; they are forecasts, not payment records.
+
 ## API
 
 - `GET /api/fleets`, `GET /api/destinations`, `GET /api/services`
@@ -34,6 +36,8 @@ Open `/admin` to sign in. The first superadmin is created from the two `ADMIN_SU
 - `POST /api/auth` with `mode` set to `login` or `register`
 - `GET /api/auth` returns the current session user; `DELETE /api/auth` logs out
 - `/api/admin/*` provides session-protected dashboard, booking and enquiry management, catalog CRUD, and superadmin-only account management
+- `GET /api/admin/sales?from=YYYY-MM-DD&to=YYYY-MM-DD` returns the sales dashboard; add `format=csv` to export the filtered report
+- `/api/admin/roles` manages custom roles and module permissions (superadmin only)
 
 The schema is in `backend/database/schema.sql`; catalog seed data is in `backend/scripts/seed.mjs`.
 
@@ -44,7 +48,7 @@ Four independently runnable services, each with its own `package.json`:
 | Service | Folder | Port | Notes |
 | --- | --- | --- | --- |
 | Frontend (public site) | `frontend/` | 3000 | Next.js. Proxies `/api/*` to the web backend (`WEB_BACKEND_URL`). |
-| Admin panel | `admin/` | 3001 | Next.js, served at `/admin`. Proxies `/api/admin/*` to the admin backend (`ADMIN_BACKEND_URL`) and `/api/uploads/*` to the web backend. |
+| Admin panel | `admin/` | 3001 | Next.js, open at `http://localhost:3001/admin`. Proxies `/api/admin/*` to the admin backend (`ADMIN_BACKEND_URL`) and `/api/uploads/*` to the web backend. |
 | Web backend | `backend/web-backend/` | 4000 | Plain Node server: fleets, destinations, services, bookings, inquiries, customer auth, image serving. `GET /health`. |
 | Admin backend | `backend/admin-backend/` | 4001 | Plain Node server: admin auth, admins, dashboard, catalog, fleets, records, image upload. `GET /health`. |
 

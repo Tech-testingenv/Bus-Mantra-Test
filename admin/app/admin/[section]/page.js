@@ -3,8 +3,12 @@ import { redirect } from "next/navigation";
 import AdminPanel from "@/components/AdminPanel";
 
 const ADMIN_SECTIONS = new Set([
+  "sales",
   "bookings",
   "inquiries",
+  "services",
+  "destinations",
+  "roles",
   "admins",
 ]);
 

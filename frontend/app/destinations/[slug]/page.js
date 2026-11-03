@@ -27,7 +27,34 @@ import FAQSection from "@/components/common/faq";
 export default function DestinationSlugPage({ params }) {
   const { slug } = use(params);
 
-  const destination = destinationsData?.[slug];
+  const fallbackDestination = destinationsData?.[slug];
+  const [databaseDestination, setDatabaseDestination] = useState(null);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
+  const [catalogFailed, setCatalogFailed] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/destinations")
+      .then((response) => {
+        if (!response.ok) throw new Error(`Destination catalog returned ${response.status}.`);
+        return response.json();
+      })
+      .then((destinations) => {
+        if (active) setDatabaseDestination(destinations.find((item) => item.slug === slug) || null);
+      })
+      .catch((error) => {
+        console.error("Destination detail catalog load failed:", error);
+        if (active) setCatalogFailed(true);
+      })
+      .finally(() => { if (active) setCatalogLoaded(true); });
+    return () => { active = false; };
+  }, [slug]);
+
+  const destination = databaseDestination || (catalogLoaded ? (catalogFailed ? fallbackDestination : null) : fallbackDestination);
+
+  if (!destination && !catalogLoaded) {
+    return <main className="flex min-h-[60vh] items-center justify-center text-sm font-semibold text-neutral-500">Loading destination…</main>;
+  }
 
   if (!destination) {
     return (

@@ -29,7 +29,7 @@ function getImageExtension(buffer) {
 export async function POST(request) {
   const originError = requireSameOrigin(request);
   if (originError) return originError;
-  const access = await requireAdmin();
+  const access = await requireAdmin({ module: ["fleet", "services", "destinations"], action: ["create", "edit"] });
   if (access.response) return access.response;
 
   try {

@@ -24,11 +24,35 @@ CREATE TABLE IF NOT EXISTS admin_users (
   username TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'admin' CHECK (role IN ('superadmin', 'admin')),
+  role_id UUID,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   created_by UUID REFERENCES admin_users(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   last_login_at TIMESTAMPTZ
 );
+
+CREATE TABLE IF NOT EXISTS admin_roles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL UNIQUE,
+  description TEXT NOT NULL DEFAULT '',
+  is_system BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS admin_role_permissions (
+  role_id UUID NOT NULL REFERENCES admin_roles(id) ON DELETE CASCADE,
+  module_key TEXT NOT NULL CHECK (module_key IN ('dashboard', 'fleet', 'services', 'destinations', 'sales', 'roles', 'admins')),
+  can_view BOOLEAN NOT NULL DEFAULT FALSE,
+  can_create BOOLEAN NOT NULL DEFAULT FALSE,
+  can_edit BOOLEAN NOT NULL DEFAULT FALSE,
+  can_delete BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (role_id, module_key)
+);
+
+ALTER TABLE admin_users ADD COLUMN IF NOT EXISTS role_id UUID;
+ALTER TABLE admin_users DROP CONSTRAINT IF EXISTS admin_users_role_id_fkey;
+ALTER TABLE admin_users ADD CONSTRAINT admin_users_role_id_fkey
+  FOREIGN KEY (role_id) REFERENCES admin_roles(id) ON DELETE SET NULL;
 
 CREATE TABLE IF NOT EXISTS admin_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -105,8 +129,18 @@ CREATE TABLE IF NOT EXISTS bookings (
   return_at TEXT,
   fleet_id TEXT REFERENCES fleets(id) ON DELETE SET NULL,
   status TEXT NOT NULL DEFAULT 'new',
+  estimated_fare NUMERIC(12,2),
+  payment_status TEXT NOT NULL DEFAULT 'unpaid'
+    CHECK (payment_status IN ('unpaid', 'deposit_paid', 'paid', 'refunded')),
+  assigned_to UUID REFERENCES admin_users(id) ON DELETE SET NULL,
+  sales_notes TEXT NOT NULL DEFAULT '',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS estimated_fare NUMERIC(12,2);
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'unpaid';
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS assigned_to UUID REFERENCES admin_users(id) ON DELETE SET NULL;
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS sales_notes TEXT NOT NULL DEFAULT '';
 
 CREATE TABLE IF NOT EXISTS inquiries (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -117,10 +151,21 @@ CREATE TABLE IF NOT EXISTS inquiries (
   subject TEXT,
   payload JSONB NOT NULL DEFAULT '{}',
   status TEXT NOT NULL DEFAULT 'new',
+  assigned_to UUID REFERENCES admin_users(id) ON DELETE SET NULL,
+  expected_value NUMERIC(12,2),
+  follow_up_at TIMESTAMPTZ,
+  sales_notes TEXT NOT NULL DEFAULT '',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS assigned_to UUID REFERENCES admin_users(id) ON DELETE SET NULL;
+ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS expected_value NUMERIC(12,2);
+ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS follow_up_at TIMESTAMPTZ;
+ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS sales_notes TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS sessions_token_hash_idx ON sessions(token_hash);
 CREATE INDEX IF NOT EXISTS admin_sessions_token_hash_idx ON admin_sessions(token_hash);
 CREATE INDEX IF NOT EXISTS bookings_created_at_idx ON bookings(created_at DESC);
 CREATE INDEX IF NOT EXISTS inquiries_created_at_idx ON inquiries(created_at DESC);
+CREATE INDEX IF NOT EXISTS bookings_assigned_to_idx ON bookings(assigned_to);
+CREATE INDEX IF NOT EXISTS inquiries_assigned_to_idx ON inquiries(assigned_to);

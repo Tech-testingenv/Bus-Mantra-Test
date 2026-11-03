@@ -2,9 +2,10 @@ import { query } from "../shared/db.js";
 import { adminError, requireAdmin } from "./security.js";
 
 export async function GET() {
-  const access = await requireAdmin();
+  const access = await requireAdmin({ module: "dashboard", action: "view" });
   if (access.response) return access.response;
   try {
+    const canViewSales = access.admin.role === "superadmin" || access.admin.permissions?.sales?.view === true;
     const [counts, bookings, inquiries] = await Promise.all([
       query(`SELECT
         (SELECT COUNT(*) FROM bookings)::int AS bookings,
@@ -15,16 +16,21 @@ export async function GET() {
         (SELECT COUNT(*) FROM fleets)::int AS fleets,
         (SELECT COUNT(*) FROM destinations)::int AS destinations,
         (SELECT COUNT(*) FROM services)::int AS services`),
-      query(`SELECT id, full_name, email, mobile, passengers, pickup_point, destinations,
-        departure_at, status, created_at
-        FROM bookings ORDER BY created_at DESC LIMIT 8`),
-      query(`SELECT id, type, full_name, email, phone, subject, status, created_at
-        FROM inquiries ORDER BY created_at DESC LIMIT 8`),
+      canViewSales
+        ? query(`SELECT id, full_name, email, mobile, passengers, pickup_point, destinations,
+            departure_at, status, created_at
+            FROM bookings ORDER BY created_at DESC LIMIT 8`)
+        : Promise.resolve({ rows: [] }),
+      canViewSales
+        ? query(`SELECT id, type, full_name, email, phone, subject, status, created_at
+            FROM inquiries ORDER BY created_at DESC LIMIT 8`)
+        : Promise.resolve({ rows: [] }),
     ]);
     return Response.json({
       stats: counts.rows[0],
       recentBookings: bookings.rows,
       recentInquiries: inquiries.rows,
+      canViewSales,
       admin: access.admin,
     });
   } catch (error) {

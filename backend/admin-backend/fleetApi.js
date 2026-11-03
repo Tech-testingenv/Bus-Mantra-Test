@@ -38,7 +38,7 @@ function validateFleet(body, { creating = false } = {}) {
 }
 
 export async function GET(request, context = {}) {
-  const access = await requireAdmin();
+  const access = await requireAdmin({ module: "fleet", action: "view" });
   if (access.response) return access.response;
   try {
     const routeParams = await context.params;
@@ -65,7 +65,7 @@ export async function GET(request, context = {}) {
 export async function POST(request) {
   const originError = requireSameOrigin(request);
   if (originError) return originError;
-  const access = await requireAdmin();
+  const access = await requireAdmin({ module: "fleet", action: "create" });
   if (access.response) return access.response;
   try {
     const body = await request.json();
@@ -109,7 +109,7 @@ export async function POST(request) {
 export async function PATCH(request, { params }) {
   const originError = requireSameOrigin(request);
   if (originError) return originError;
-  const access = await requireAdmin();
+  const access = await requireAdmin({ module: "fleet", action: "edit" });
   if (access.response) return access.response;
   try {
     const { id } = await params;

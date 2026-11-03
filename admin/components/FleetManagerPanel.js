@@ -85,7 +85,7 @@ function FleetOverview({ onNotice }) {
   );
 }
 
-function FleetList({ category }) {
+function FleetList({ category, permissions }) {
   const router = useRouter();
   const type = COACH_TYPES.find((item) => item.id === category);
   const [coaches, setCoaches] = useState([]);
@@ -113,7 +113,7 @@ function FleetList({ category }) {
           <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900">{type.name}</h1>
           <p className="mt-2 text-sm text-slate-500">{loading ? "Loading coaches…" : `${coaches.length} ${coaches.length === 1 ? "coach" : "coaches"}`}</p>
         </div>
-        <button onClick={() => router.push(`/admin/fleet-management/${route}/new`)} className="flex h-11 items-center gap-2 rounded-xl bg-orange-500 px-4 text-sm font-bold text-white shadow-sm transition hover:bg-orange-600"><Plus size={18} /> Add Coach</button>
+        {permissions?.create && <button onClick={() => router.push(`/admin/fleet-management/${route}/new`)} className="flex h-11 items-center gap-2 rounded-xl bg-orange-500 px-4 text-sm font-bold text-white shadow-sm transition hover:bg-orange-600"><Plus size={18} /> Add Coach</button>}
       </div>
       {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -135,7 +135,7 @@ function FleetList({ category }) {
                   <td className="px-5 py-4 text-sm text-slate-600">{coach.min_seats}–{coach.max_seats} seats</td>
                   <td className="px-5 py-4 text-sm font-semibold text-slate-700">₹{Number(coach.rate_per_km).toLocaleString("en-IN")}</td>
                   <td className="px-5 py-4">{coach.is_popular ? <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700"><Star size={12} fill="currentColor" /> Popular</span> : <span className="text-xs text-slate-400">Standard</span>}</td>
-                  <td className="px-5 py-4 text-right"><button onClick={() => router.push(`/admin/fleet-management/${route}/${encodeURIComponent(coach.id)}`)} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3.5 py-2 text-xs font-bold text-slate-700 transition hover:border-orange-300 hover:text-orange-600">Edit <ChevronRight size={15} /></button></td>
+                  <td className="px-5 py-4 text-right">{permissions?.edit && <button onClick={() => router.push(`/admin/fleet-management/${route}/${encodeURIComponent(coach.id)}`)} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3.5 py-2 text-xs font-bold text-slate-700 transition hover:border-orange-300 hover:text-orange-600">Edit <ChevronRight size={15} /></button>}</td>
                 </tr>
               ))}
             </tbody>
@@ -144,17 +144,18 @@ function FleetList({ category }) {
           {loading && <div className="flex justify-center py-12"><LoaderCircle className="animate-spin text-orange-500" size={24} /></div>}
         </div>
       </section>
-      <div className="flex justify-center border-t border-slate-200 pt-6 pb-4">
+      {permissions?.create && <div className="flex justify-center border-t border-slate-200 pt-6 pb-4">
         <button onClick={() => router.push(`/admin/fleet-management/${route}/new`)} className="flex items-center gap-2 rounded-xl border-2 border-dashed border-orange-300 px-7 py-3.5 text-sm font-bold text-orange-600 transition hover:border-orange-500 hover:bg-orange-50"><Plus size={18} /> Add Coach</button>
-      </div>
+      </div>}
     </div>
   );
 }
 
-function FleetEditor({ category, coachId, onNotice }) {
+function FleetEditor({ category, coachId, onNotice, permissions }) {
   const router = useRouter();
   const type = COACH_TYPES.find((item) => item.id === category);
   const isNew = coachId === "new";
+  const canSave = isNew ? permissions?.create === true : permissions?.edit === true;
   const [form, setForm] = useState({ ...EMPTY_FLEET, coach_type: category });
   const [galleryText, setGalleryText] = useState("");
   const [amenitiesText, setAmenitiesText] = useState("");
@@ -286,15 +287,15 @@ function FleetEditor({ category, coachId, onNotice }) {
         {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
         <div className="flex flex-wrap justify-end gap-3 pb-8">
           <button type="button" onClick={() => router.push(backUrl)} className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50">Cancel</button>
-          <button disabled={busy || uploadsInProgress > 0} className="flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-orange-600 disabled:opacity-60">{busy || uploadsInProgress > 0 ? <LoaderCircle className="animate-spin" size={17} /> : <Save size={17} />}{uploadsInProgress > 0 ? "Uploading images…" : isNew ? "Add coach" : "Save changes"}</button>
+          {canSave && <button disabled={busy || uploadsInProgress > 0} className="flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-orange-600 disabled:opacity-60">{busy || uploadsInProgress > 0 ? <LoaderCircle className="animate-spin" size={17} /> : <Save size={17} />}{uploadsInProgress > 0 ? "Uploading images…" : isNew ? "Add coach" : "Save changes"}</button>}
         </div>
       </form>
     </div>
   );
 }
 
-export default function FleetManagerPanel({ category, coachId, onNotice }) {
-  if (coachId) return <FleetEditor category={category} coachId={coachId} onNotice={onNotice} />;
-  if (category) return <FleetList category={category} />;
+export default function FleetManagerPanel({ category, coachId, onNotice, permissions }) {
+  if (coachId) return <FleetEditor category={category} coachId={coachId} onNotice={onNotice} permissions={permissions} />;
+  if (category) return <FleetList category={category} permissions={permissions} />;
   return <FleetOverview onNotice={onNotice} />;
 }

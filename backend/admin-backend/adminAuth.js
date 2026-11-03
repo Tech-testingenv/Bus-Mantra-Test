@@ -30,7 +30,7 @@ export async function POST(request) {
       return Response.json({ error: "Username and password are required." }, { status: 400 });
     }
     const result = await query(
-      "SELECT id, username, password_hash, role FROM admin_users WHERE username = $1 AND is_active = TRUE",
+      "SELECT id, username, password_hash, role, role_id FROM admin_users WHERE username = $1 AND is_active = TRUE",
       [username]
     );
     const admin = result.rows[0];
@@ -39,7 +39,7 @@ export async function POST(request) {
     }
     await query("UPDATE admin_users SET last_login_at = NOW() WHERE id = $1", [admin.id]);
     await createAdminSession(admin.id, request);
-    return Response.json({ admin: safeAdmin(admin) });
+    return Response.json({ admin: safeAdmin(await getAdminSession()) });
   } catch (error) {
     return adminError(error, "Admin login failed");
   }

@@ -27,6 +27,10 @@ function parseCollection(request) {
   return catalogConfig[collection] ? { collection, config: catalogConfig[collection] } : null;
 }
 
+function permissionModule(collection) {
+  return collection === "fleets" ? "fleet" : collection;
+}
+
 function normalizeData(input, config) {
   if (!input || typeof input !== "object" || Array.isArray(input)) return null;
   const entries = Object.entries(input).filter(([key]) => config.columns.includes(key));
@@ -34,11 +38,28 @@ function normalizeData(input, config) {
   return entries;
 }
 
+function validateRecord(collection, body) {
+  const slug = typeof body.slug === "string" ? body.slug.trim() : "";
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return "Slug must use lowercase letters, numbers, and hyphens.";
+  if (collection === "destinations") {
+    if (typeof body.name !== "string" || !body.name.trim()) return "Destination name is required.";
+    if (typeof body.description !== "string" || !body.description.trim()) return "Description is required.";
+    if (!Array.isArray(body.gallery) || !Array.isArray(body.popular_places)) return "Gallery and popular places must be lists.";
+  }
+  if (collection === "services") {
+    if (typeof body.id !== "string" || !/^[a-z0-9][a-z0-9_-]{1,79}$/i.test(body.id.trim())) return "Enter a valid service ID.";
+    if (typeof body.title !== "string" || !body.title.trim()) return "Service title is required.";
+    if (typeof body.description !== "string" || !body.description.trim()) return "Description is required.";
+    if (!body.content || typeof body.content !== "object" || Array.isArray(body.content)) return "Service content must be an object.";
+  }
+  return null;
+}
+
 export async function GET(request) {
-  const access = await requireAdmin();
-  if (access.response) return access.response;
   const selected = parseCollection(request);
   if (!selected) return Response.json({ error: "Unknown catalog collection." }, { status: 400 });
+  const access = await requireAdmin({ module: permissionModule(selected.collection), action: "view" });
+  if (access.response) return access.response;
   try {
     const result = await query(
       `SELECT ${selected.config.columns.join(", ")} FROM ${selected.config.table} ORDER BY ${selected.config.key}`
@@ -52,12 +73,15 @@ export async function GET(request) {
 export async function POST(request) {
   const originError = requireSameOrigin(request);
   if (originError) return originError;
-  const access = await requireAdmin();
-  if (access.response) return access.response;
   const selected = parseCollection(request);
   if (!selected) return Response.json({ error: "Unknown catalog collection." }, { status: 400 });
+  const access = await requireAdmin({ module: permissionModule(selected.collection), action: "create" });
+  if (access.response) return access.response;
   try {
-    const entries = normalizeData(await request.json(), selected.config);
+    const body = await request.json();
+    const validationError = validateRecord(selected.collection, body);
+    if (validationError) return Response.json({ error: validationError }, { status: 400 });
+    const entries = normalizeData(body, selected.config);
     if (!entries) return Response.json({ error: "Catalog record data is required." }, { status: 400 });
     const names = entries.map(([name]) => name);
     const values = entries.map(([, value]) => value);
@@ -79,12 +103,14 @@ export async function POST(request) {
 export async function PATCH(request) {
   const originError = requireSameOrigin(request);
   if (originError) return originError;
-  const access = await requireAdmin();
-  if (access.response) return access.response;
   const selected = parseCollection(request);
   if (!selected) return Response.json({ error: "Unknown catalog collection." }, { status: 400 });
+  const access = await requireAdmin({ module: permissionModule(selected.collection), action: "edit" });
+  if (access.response) return access.response;
   try {
     const body = await request.json();
+    const validationError = validateRecord(selected.collection, body.data || {});
+    if (validationError) return Response.json({ error: validationError }, { status: 400 });
     const keyValue = body.keyValue;
     const entries = normalizeData(body.data, selected.config)?.filter(([name]) => name !== selected.config.key);
     if (!keyValue || !entries?.length) {
@@ -111,10 +137,10 @@ export async function PATCH(request) {
 export async function DELETE(request) {
   const originError = requireSameOrigin(request);
   if (originError) return originError;
-  const access = await requireAdmin();
-  if (access.response) return access.response;
   const selected = parseCollection(request);
   if (!selected) return Response.json({ error: "Unknown catalog collection." }, { status: 400 });
+  const access = await requireAdmin({ module: permissionModule(selected.collection), action: "delete" });
+  if (access.response) return access.response;
   try {
     const keyValue = new URL(request.url).searchParams.get("key");
     if (!keyValue) return Response.json({ error: "Record key is required." }, { status: 400 });

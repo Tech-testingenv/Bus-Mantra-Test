@@ -83,20 +83,56 @@ export async function getAdminSession() {
   const token = store.get(ADMIN_COOKIE)?.value;
   if (!token) return null;
   const result = await query(
-    `SELECT a.id, a.username, a.role
+    `SELECT a.id, a.username, a.role, r.id AS role_id, r.name AS role_name
      FROM admin_sessions s
      JOIN admin_users a ON a.id = s.admin_id
+     LEFT JOIN admin_roles r ON r.id = a.role_id
      WHERE s.token_hash = $1 AND s.expires_at > NOW() AND a.is_active = TRUE`,
     [hashToken(token)]
   );
-  return result.rows[0] || null;
+  const admin = result.rows[0];
+  if (!admin) return null;
+  if (admin.role === "superadmin") {
+    admin.permissions = Object.fromEntries(
+      ["dashboard", "fleet", "services", "destinations", "sales", "roles", "admins"].map((module) => [
+        module,
+        { view: true, create: true, edit: true, delete: true },
+      ])
+    );
+    return admin;
+  }
+  const permissions = await query(
+    `SELECT module_key, can_view, can_create, can_edit, can_delete
+     FROM admin_role_permissions WHERE role_id = $1`,
+    [admin.role_id]
+  );
+  admin.permissions = Object.fromEntries(permissions.rows.map((permission) => [
+    permission.module_key,
+    {
+      view: permission.can_view,
+      create: permission.can_create,
+      edit: permission.can_edit,
+      delete: permission.can_delete,
+    },
+  ]));
+  return admin;
 }
 
-export async function requireAdmin({ superadmin = false } = {}) {
+export async function requireAdmin({ superadmin = false, module, action = "view" } = {}) {
   const admin = await getAdminSession();
   if (!admin) return { admin: null, response: Response.json({ error: "Authentication required." }, { status: 401 }) };
   if (superadmin && admin.role !== "superadmin") {
     return { admin: null, response: Response.json({ error: "Superadmin access required." }, { status: 403 }) };
+  }
+  const modules = Array.isArray(module) ? module : module ? [module] : [];
+  const actions = Array.isArray(action) ? action : [action];
+  if (
+    modules.length &&
+    admin.role !== "superadmin" &&
+    !modules.some((key) => actions.some((permission) => admin.permissions?.[key]?.[permission] === true))
+  ) {
+    const required = actions.length === 1 ? actions[0] : "requested";
+    return { admin: null, response: Response.json({ error: `${required[0].toUpperCase()}${required.slice(1)} access is not allowed.` }, { status: 403 }) };
   }
   return { admin, response: null };
 }
@@ -118,5 +154,12 @@ export function adminError(error, label) {
 
 export function safeAdmin(admin) {
   if (!admin) return null;
-  return { id: admin.id, username: admin.username, role: admin.role };
+  return {
+    id: admin.id,
+    username: admin.username,
+    role: admin.role,
+    roleId: admin.role_id || null,
+    roleName: admin.role === "superadmin" ? "Superadmin" : admin.role_name || "Admin",
+    permissions: admin.permissions || {},
+  };
 }

@@ -33,6 +33,7 @@ export const metadata = {
   description:
     "Comprehensive group transportation services for corporate travel, tours, events, school trips, airport transfers and hotel transfers.",
 };
+export const dynamic = "force-dynamic";
 
 const FEATURED_POINT_ICONS = [
   ShieldCheck,
@@ -40,7 +41,23 @@ const FEATURED_POINT_ICONS = [
   Route,
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  let serviceItems = servicesPageSectionData.services;
+  try {
+    const response = await fetch(`${process.env.WEB_BACKEND_URL || "http://127.0.0.1:4000"}/api/services`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Service catalog returned ${response.status}.`);
+    const rows = await response.json();
+    serviceItems = rows.map((service, index) => ({
+      ...service,
+      number: service.number || String(index + 1).padStart(2, "0"),
+      icon: service.icon || "briefcase",
+      href: `/services/${service.slug}`,
+      ctaLabel: service.ctaLabel || "Explore Service",
+    }));
+  } catch (error) {
+    console.error("Service catalog could not be loaded:", error);
+  }
+
   return (
     <div className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-24 pb-12 sm:pb-16 lg:pb-20">
 
@@ -78,7 +95,7 @@ export default function ServicesPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
-          {servicesPageSectionData.services.map((service) => (
+          {serviceItems.map((service) => (
             <ServiceCard
               key={service.id}
               service={service}
