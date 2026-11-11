@@ -7,6 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
+    "dev": "node scripts/run-all.mjs backend",
+    "start": "node scripts/run-all.mjs backend start",
     "start:web": "node web-backend/server.js",
     "start:admin": "node admin-backend/server.js",
     "dev:web": "node --watch web-backend/server.js",

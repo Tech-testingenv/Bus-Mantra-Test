@@ -98,12 +98,11 @@ export default function FinalCtaSection({
   };
 
   return (
-    <section
-      className={`relative w-full py-8 sm:py-12 lg:py-14 ${className}`}
-    >
-      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className={`relative w-full mx-auto`}>
+      <div className="px-4 sm:px-6 lg:px-8">
         {/* Main CTA Card */}
-        <div className="relative flex flex-col items-start justify-center overflow-hidden rounded-[28px] border border-border bg-surface-secondary px-6 py-12 text-left shadow-[0_12px_35px_rgba(0,0,0,0.04)] sm:rounded-4xl sm:px-12 sm:py-16 md:py-18 lg:rounded-[36px] lg:px-16 lg:py-20">
+        <div className="relative flex flex-col overflow-hidden rounded-[28px] border border-border bg-surface-secondary px-6 py-12 text-left shadow-[0_12px_35px_rgba(0,0,0,0.04)] sm:rounded-4xl sm:px-12 sm:py-16 md:py-18 lg:rounded-[36px] lg:px-16 lg:py-20">
+
           {/* Decorative Background */}
           <div
             className="pointer-events-none absolute inset-0 select-none overflow-hidden"
@@ -158,6 +157,7 @@ export default function FinalCtaSection({
             </svg>
 
             {/* Travel Route Lines */}
+
             <svg
               className="absolute -bottom-20 -left-20 h-72 w-72 text-primary opacity-[0.24] sm:h-105 sm:w-105"
               viewBox="0 0 600 600"
@@ -186,41 +186,63 @@ export default function FinalCtaSection({
             </svg>
           </div>
 
-          {/* Eyebrow */}
-          {currentEyebrow && (
-            <span className="relative z-10 mb-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-primary sm:mb-4.5 sm:text-xs">
-              {currentEyebrow}
-            </span>
-          )}
+          {/* 70:30 CONTENT LAYOUT */}
 
-          {/* Heading */}
-          <h2 className="relative z-10 mb-3.5 max-w-4xl text-3xl font-black leading-[1.14] tracking-tight text-text-primary sm:mb-4.5 sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px]">
-            {renderHeading()}
-          </h2>
+          <div className="relative z-10 grid w-full grid-cols-1 items-center gap-7 lg:grid-cols-[minmax(0,70fr)_minmax(0,30fr)] lg:gap-10">
 
-          {/* Description */}
-          <p className="relative z-10 mb-7 max-w-xl text-sm font-normal leading-relaxed text-text-secondary sm:mb-9 sm:text-base md:text-[17px]">
-            {currentDescription}
-          </p>
+            {/* LEFT COLUMN: 70% */}
 
-          {/* CTA Button */}
-          <div className="relative z-10">
-            <Link
-              href={currentButton.href || "#booking-form"}
-              onClick={handleCtaClick}
-              className="group inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-200 hover:bg-primary-hover active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-secondary sm:px-7 sm:py-3.5 sm:text-base"
-            >
-              <span>{currentButton.label || "Book a Bus"}</span>
+            <div className="w-full min-w-0">
 
-              <ArrowRight className="h-4 w-4 stroke-[2.2] text-primary-foreground transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
+              {/* Eyebrow */}
+
+              {currentEyebrow && (
+                <span className="mb-3.5 inline-block text-[11px] font-bold uppercase tracking-[0.22em] text-primary sm:mb-4.5 sm:text-xs">
+                  {currentEyebrow}
+                </span>
+              )}
+
+              {/* Heading */}
+
+              <h2 className="mb-3.5 w-full text-3xl font-black leading-[1.14] tracking-tight text-text-primary sm:mb-4.5 sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px]">
+                {renderHeading()}
+              </h2>
+
+              {/* Description */}
+
+              <p className="w-full text-sm font-normal leading-relaxed text-text-secondary sm:text-base md:text-[17px]">
+                {currentDescription}
+              </p>
+
+            </div>
+
+            {/* RIGHT COLUMN: 30% */}
+
+            <div className="flex w-full items-center justify-start lg:translate-y-2 lg:justify-end">
+
+              {/* CTA Button */}
+
+              <Link
+                href={currentButton.href || "#booking-form"}
+                onClick={handleCtaClick}
+                className="group inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#DD650D] px-4 text-sm font-semibold text-white shadow-sm shadow-[#DD650D]/20 transition-all duration-200 hover:bg-[#C75A0B] hover:shadow-md active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-secondary xl:px-5"
+              >
+                <span>{currentButton.label || "Book a Bus"}</span>
+
+                <ArrowRight className="h-4 w-4 shrink-0 stroke-[2.2] text-white transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+
+            </div>
+
           </div>
 
           {/* Bottom Accent */}
+
           <div
             className="pointer-events-none absolute bottom-0 left-6 h-1 w-20 rounded-t-full bg-primary sm:left-12 lg:left-16"
             aria-hidden="true"
           />
+
         </div>
       </div>
     </section>

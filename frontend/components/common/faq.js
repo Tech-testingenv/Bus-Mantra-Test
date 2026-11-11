@@ -16,13 +16,17 @@ export default function FAQSection({ data }) {
   };
 
   return (
-    <section className="relative w-full py-14 sm:py-18 lg:py-24">
-      <div className="relative overflow-hidden rounded-[28px] border border-border bg-white px-5 py-8 sm:rounded-4xl sm:px-8 sm:py-10 lg:px-10 lg:py-12 xl:px-12">
+    <section className="relative w-full py-0">
+      <div className="relative overflow-hidden rounded-[28px] border border-[#D5DAE2] bg-white px-5 py-8 sm:rounded-4xl sm:px-8 sm:py-10 lg:px-10 lg:py-12 xl:px-12">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-20">
+
           {/* LEFT: FAQ INTRODUCTION */}
+
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-28">
+
               {/* Eyebrow */}
+
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-subtle text-sm font-bold text-primary">
                   ?
@@ -34,18 +38,21 @@ export default function FAQSection({ data }) {
               </div>
 
               {/* Heading */}
+
               <h2 className="mt-6 max-w-md text-3xl font-black leading-[1.02] tracking-tight text-text-primary sm:text-4xl lg:text-[46px]">
                 Frequently Asked{" "}
                 <span className="text-primary">Questions.</span>
               </h2>
 
               {/* Description */}
+
               <p className="mt-5 max-w-md text-sm leading-6 text-text-muted sm:text-base">
                 {data.description ||
                   "Find answers to common questions about Bus Mantra and group transportation."}
               </p>
 
               {/* Help Information */}
+
               <div className="mt-8 hidden lg:block">
                 <div className="flex items-center gap-3">
                   <div className="h-px w-10 bg-primary" />
@@ -66,7 +73,7 @@ export default function FAQSection({ data }) {
                 >
                   Start your journey
 
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D5DAE2] bg-white transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
                     <ArrowUpRight
                       size={14}
                       className="transition-transform duration-300 group-hover:rotate-45"
@@ -78,15 +85,16 @@ export default function FAQSection({ data }) {
           </div>
 
           {/* RIGHT: FAQ ACCORDION */}
+
           <div className="lg:col-span-8">
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface-secondary sm:rounded-3xl">
+            <div className="overflow-hidden rounded-2xl border border-[#D5DAE2] bg-surface-secondary sm:rounded-3xl">
               {data.faqs.map((faq, index) => {
                 const isOpen = openIndex === index;
 
                 return (
                   <article
                     key={faq.id || faq.question || index}
-                    className={`group relative border-b border-border last:border-b-0 transition-colors duration-300 ${
+                    className={`group relative border-b border-[#D5DAE2] last:border-b-0 transition-colors duration-300 ${
                       isOpen
                         ? "bg-primary-subtle"
                         : "bg-white hover:bg-surface-secondary/60"
@@ -99,6 +107,7 @@ export default function FAQSection({ data }) {
                       className="relative flex w-full cursor-pointer items-center gap-4 px-5 py-5 text-left sm:px-7 sm:py-6"
                     >
                       {/* Question Number */}
+
                       <span
                         className={`flex w-7 shrink-0 text-[10px] font-bold tracking-[0.12em] transition-colors duration-300 sm:w-8 ${
                           isOpen
@@ -110,6 +119,7 @@ export default function FAQSection({ data }) {
                       </span>
 
                       {/* Question */}
+
                       <span
                         className={`flex-1 pr-2 text-sm font-bold leading-6 transition-all duration-300 sm:text-[15px] ${
                           isOpen
@@ -121,11 +131,12 @@ export default function FAQSection({ data }) {
                       </span>
 
                       {/* Toggle Button */}
+
                       <span
                         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                           isOpen
                             ? "border-primary bg-primary text-primary-foreground"
-                            : "border-border bg-white text-text-muted group-hover:border-primary group-hover:bg-primary-subtle group-hover:text-primary"
+                            : "border-[#D5DAE2] bg-white text-text-muted group-hover:border-primary group-hover:bg-primary-subtle group-hover:text-primary"
                         }`}
                       >
                         <ChevronDown
@@ -138,6 +149,7 @@ export default function FAQSection({ data }) {
                       </span>
 
                       {/* Active Indicator */}
+
                       <span
                         className={`absolute bottom-0 left-0 h-0.75 bg-primary transition-all duration-500 ${
                           isOpen ? "w-full" : "w-0"
@@ -146,6 +158,7 @@ export default function FAQSection({ data }) {
                     </button>
 
                     {/* Answer */}
+
                     <div
                       className={`grid transition-[grid-template-rows] duration-300 ease-out ${
                         isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
@@ -167,7 +180,8 @@ export default function FAQSection({ data }) {
             </div>
 
             {/* BOTTOM CONTACT STRIP */}
-            <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface-secondary px-5 py-4 sm:px-6">
+
+            <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl border border-[#D5DAE2] bg-surface-secondary px-5 py-4 sm:px-6">
               <div>
                 <p className="text-xs font-bold text-text-primary sm:text-sm">
                   Still have questions?

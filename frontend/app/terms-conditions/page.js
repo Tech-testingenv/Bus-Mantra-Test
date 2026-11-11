@@ -178,8 +178,8 @@ function Reveal({ children, delay = 0, className = "" }) {
       reducedMotion ||
       !("IntersectionObserver" in window)
     ) {
-      setVisible(true);
-      return;
+      const frame = window.requestAnimationFrame(() => setVisible(true));
+      return () => window.cancelAnimationFrame(frame);
     }
 
     const observer = new IntersectionObserver(
@@ -303,13 +303,6 @@ export default function TermsAndConditionsPage() {
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const validIds = sections.map((section) => section.id);
-    const hash = window.location.hash.replace("#", "");
-
-    if (validIds.includes(hash)) {
-      setActiveSection(hash);
-    }
-
     let ticking = false;
 
     const updateActiveSection = () => {
@@ -362,11 +355,18 @@ export default function TermsAndConditionsPage() {
       }
     };
 
-    updateActiveSection();
+    const hash = window.location.hash.replace("#", "");
+    const initialFrame = window.requestAnimationFrame(() => {
+      updateActiveSection();
+      if (sections.some((section) => section.id === hash)) {
+        setActiveSection(hash);
+      }
+    });
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
     window.addEventListener("resize", onScrollOrResize);
 
     return () => {
+      window.cancelAnimationFrame(initialFrame);
       window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onScrollOrResize);
     };

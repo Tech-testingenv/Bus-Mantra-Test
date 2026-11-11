@@ -11,8 +11,12 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  ImageIcon,
+  Mail,
   MapPin,
   Phone,
+  PhoneCall,
+  User,
   Users,
   X,
 } from "lucide-react";
@@ -23,6 +27,14 @@ import {
   destinationSlugFaqData
 } from "@/data/data";
 import FAQSection from "@/components/common/faq";
+import BookingFormField from "@/components/common/bookingFormField";
+import BookingDateTimeField from "@/components/common/bookingDateTimeField";
+import BookingDurationField from "@/components/common/bookingDurationField";
+import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
+import FareSummary from "@/components/common/fareSummary";
+import { calculateFareBreakdown } from "@/services/pricingService";
+import { validateEmail } from "@/services/validationService";
+import { combineDateTime, getTodayISODate, toApiDateTime } from "@/services/dateService";
 
 export default function DestinationSlugPage({ params }) {
   const { slug } = use(params);
@@ -39,18 +51,28 @@ export default function DestinationSlugPage({ params }) {
         if (!response.ok) throw new Error(`Destination catalog returned ${response.status}.`);
         return response.json();
       })
-      .then((destinations) => {
-        if (active) setDatabaseDestination(destinations.find((item) => item.slug === slug) || null);
+      .then((rows) => {
+        if (active) setDatabaseDestination(rows.find((item) => item.slug === slug) || null);
       })
       .catch((error) => {
         console.error("Destination detail catalog load failed:", error);
         if (active) setCatalogFailed(true);
       })
-      .finally(() => { if (active) setCatalogLoaded(true); });
-    return () => { active = false; };
+      .finally(() => {
+        if (active) setCatalogLoaded(true);
+      });
+    return () => {
+      active = false;
+    };
   }, [slug]);
 
-  const destination = databaseDestination || (catalogLoaded ? (catalogFailed ? fallbackDestination : null) : fallbackDestination);
+  const destination = databaseDestination
+    ? { ...fallbackDestination, ...databaseDestination }
+    : catalogLoaded
+      ? catalogFailed
+        ? fallbackDestination
+        : null
+      : fallbackDestination;
 
   if (!destination && !catalogLoaded) {
     return <main className="flex min-h-[60vh] items-center justify-center text-sm font-semibold text-neutral-500">Loading destination…</main>;
@@ -65,7 +87,7 @@ export default function DestinationSlugPage({ params }) {
           </p>
 
           <h1 className="mt-2 text-3xl font-black text-black">
-            We couldn't find this destination.
+            We couldn&apos;t find this destination.
           </h1>
 
           <Link
@@ -96,7 +118,7 @@ export default function DestinationSlugPage({ params }) {
         <div className="lg:col-span-7">
           <DestinationHeader destination={destination} />
 
-          <DestinationGallery destination={destination} />
+          <DestinationGallery key={destination.slug} destination={destination} />
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -183,10 +205,6 @@ function DestinationGallery({ destination }) {
   const [activeImage, setActiveImage] = useState(0);
   const [changing, setChanging] = useState(false);
 
-  useEffect(() => {
-    setActiveImage(0);
-  }, [destination.slug]);
-
   const changeImage = (index) => {
     if (
       index === activeImage ||
@@ -240,11 +258,10 @@ function DestinationGallery({ destination }) {
             priority
             quality={100}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 58vw"
-            className={`object-cover transition-all duration-300 ${
-              changing
-                ? "scale-[1.015] opacity-60"
-                : "scale-100 opacity-100"
-            }`}
+            className={`object-cover transition-all duration-300 ${changing
+              ? "scale-[1.015] opacity-60"
+              : "scale-100 opacity-100"
+              }`}
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-black/45">
@@ -286,11 +303,10 @@ function DestinationGallery({ destination }) {
               key={`${image}-${index}`}
               type="button"
               onClick={() => changeImage(index)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${
-                activeImage === index
-                  ? "border-primary"
-                  : "border-transparent opacity-65 hover:opacity-100"
-              }`}
+              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${activeImage === index
+                ? "border-primary"
+                : "border-transparent opacity-65 hover:opacity-100"
+                }`}
             >
               <Image
                 src={image}
@@ -334,8 +350,12 @@ function QuickInfo({
 }
 
 function DestinationBookingForm({ destination }) {
+  const destinationName =
+    destination?.name || "Jaipur";
+
   const [formData, setFormData] = useState({
     pickup: "",
+    destination: [destinationName],
     departureDate: "",
     departureTime: "07:00",
     returnDate: "",
@@ -343,9 +363,12 @@ function DestinationBookingForm({ destination }) {
     passengers: "",
     leadPassenger: "",
     mobile: "",
+    email: "",
   });
 
+  const [emailError, setEmailError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [showBusImages, setShowBusImages] = useState(false);
   const [quoteRequested, setQuoteRequested] = useState(false);
@@ -356,18 +379,43 @@ function DestinationBookingForm({ destination }) {
   const estimatedFare =
     destination?.estimatedFare ?? 16464;
 
-  const destinationName =
-    destination?.name || "Jaipur";
+  const fareBreakdown = useMemo(
+    () => calculateFareBreakdown(estimatedFare),
+    [estimatedFare]
+  );
 
   const updateField = (field, value) => {
-    setFormData((current) => ({
-      ...current,
-      [field]: value,
-    }));
+    setFormData((current) => {
+      const updated = {
+        ...current,
+        [field]: value,
+      };
+
+      if (field === "departureDate" && value) {
+        if (updated.returnDate && updated.returnDate < value) {
+          updated.returnDate = value;
+        }
+      }
+
+      return updated;
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!formData.departureDate) {
+      setSubmitError("Please select a departure date.");
+      return;
+    }
+    if (formData.email) {
+      const err = validateEmail(formData.email, { required: false });
+      if (err) {
+        setEmailError(err);
+        return;
+      }
+    }
+    setEmailError("");
+    setSubmitting(true);
     setSubmitError("");
     try {
       const response = await fetch("/api/bookings", {
@@ -379,237 +427,191 @@ function DestinationBookingForm({ destination }) {
           mobile: formData.mobile,
           passengers: formData.passengers,
           pickupPoint: formData.pickup,
-          destination: [formData.destination || destination?.name],
-          departureDateTime: `${formData.departureDate} | ${formData.departureTime}`,
-          returnDateTime: formData.returnDate ? `${formData.returnDate} | ${formData.returnTime}` : null,
+          destination: selectedDestinations,
+          departureDateTime: toApiDateTime(formData.departureDate, formData.departureTime),
+          returnDateTime: toApiDateTime(formData.returnDate, formData.returnTime),
         }),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Unable to submit booking.");
+      if (!response.ok) throw new Error(result.error || "Unable to submit booking request.");
+      setSubmitted(true);
     } catch (error) {
       setSubmitError(error.message);
-      return;
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitted(true);
   };
+
+  const selectedDestinations = Array.isArray(formData.destination)
+    ? formData.destination
+    : formData.destination
+      ? [formData.destination]
+      : [destinationName];
 
   return (
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full rounded-2xl border border-black/10 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
+        className="space-y-5 rounded-2xl border border-border bg-surface p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7"
       >
-        <div className="border-b border-black/10 pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+        {submitError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
+        <div className="border-b border-border pb-4">
+          <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-primary sm:text-[11px]">
             CUSTOM ROUTE & FARE
-          </p>
+          </span>
 
-          <h2 className="mt-1 text-[24px] font-black leading-tight tracking-tight text-black sm:text-[25px]">
-            Reserve Mini Coach
+          <h2 className="text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+            Trip to {destinationName}
           </h2>
         </div>
 
-        <div className="mt-5 space-y-3">
-          <div className="rounded-xl bg-white px-4 py-3.5">
-            <div className="flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-primary" />
+        <div className="space-y-3.5">
+          <BookingFormField
+            id="destinationPickup"
+            icon={MapPin}
+            label="PICK-UP POINT"
+            value={formData.pickup}
+            placeholder="Enter pickup point"
+            required
+            onChange={(value) => updateField("pickup", value)}
+          />
 
-              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
-                PICK-UP POINT
-              </span>
-            </div>
+          <DestinationMultiSelect
+            selectedDestinations={selectedDestinations}
+            onChange={(destinations) =>
+              updateField("destination", destinations)
+            }
+          />
 
-            <input
-              type="text"
-              value={formData.pickup}
-              onChange={(event) =>
-                updateField(
-                  "pickup",
-                  event.target.value
-                )
-              }
-              className="mt-1 w-full bg-transparent text-xs font-bold text-black outline-none placeholder:text-black/50 placeholder:opacity-100"
-              placeholder="Enter pickup point"
-              required
-            />
-          </div>
-
-          <div>
-            <div className="mb-1.5 flex items-center justify-between">
-              <label className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
-                <MapPin className="h-3.5 w-3.5 text-primary" />
-                DESTINATION(S)
-              </label>
-
-              <span className="text-[9px] text-black/45">
-                multi-city route
-              </span>
-            </div>
-
-            <div className="flex min-h-13.25 items-center gap-2 rounded-xl bg-white px-3.5">
-              <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-black/10 bg-white px-3 py-1.5 text-xs font-semibold text-black/80 shadow-sm">
-                {destinationName}
-
-                <button
-                  type="button"
-                  className="text-sm leading-none text-black/45 transition-colors hover:text-black/80"
-                >
-                  ×
-                </button>
-              </span>
-
-              <span className="truncate text-xs text-black/45">
-                + Add another city...
-              </span>
-
-              <ChevronRight className="ml-auto h-4 w-4 shrink-0 rotate-90 text-black/45" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            <DateTimeField
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <BookingDateTimeField
+              id="destinationDeparture"
               label="DEPARTURE"
               date={formData.departureDate}
               time={formData.departureTime}
               onDateChange={(value) =>
-                updateField(
-                  "departureDate",
-                  value
-                )
+                updateField("departureDate", value)
               }
               onTimeChange={(value) =>
-                updateField(
-                  "departureTime",
-                  value
-                )
+                updateField("departureTime", value)
               }
             />
 
-            <DateTimeField
+            <BookingDateTimeField
+              id="destinationReturn"
               label="RETURN"
               date={formData.returnDate}
               time={formData.returnTime}
+              minDate={formData.departureDate}
               onDateChange={(value) =>
-                updateField(
-                  "returnDate",
-                  value
-                )
+                updateField("returnDate", value)
               }
               onTimeChange={(value) =>
-                updateField(
-                  "returnTime",
-                  value
-                )
+                updateField("returnTime", value)
               }
             />
           </div>
 
-          <div className="rounded-xl bg-white px-3.5 py-3.5">
-            <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5 text-primary" />
+          <BookingDurationField
+            departureValue={combineDateTime(formData.departureDate, formData.departureTime)}
+            returnValue={combineDateTime(formData.returnDate, formData.returnTime)}
+          />
 
-              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
-                NO. OF PASSENGERS
-              </span>
-            </div>
+          <BookingFormField
+            id="destinationPassengers"
+            icon={Users}
+            label="NO. OF PASSENGERS"
+            type="number"
+            min={1}
+            max={60}
+            value={formData.passengers}
+            placeholder="e.g. 19"
+            required
+            onChange={(value) => updateField("passengers", value)}
+          />
 
-            <input
-              type="number"
-              min="1"
-              max="60"
-              value={formData.passengers}
-              onChange={(event) =>
-                updateField(
-                  "passengers",
-                  event.target.value
-                )
-              }
-              placeholder="e.g. 19"
-              className="mt-1 w-full bg-transparent text-xs font-bold text-black outline-none placeholder:text-black/50 placeholder:opacity-100"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            <FormInput
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <BookingFormField
+              id="destinationName"
+              icon={User}
               label="LEAD PASSENGER"
-              placeholder="e.g. Rahul Sharma"
               value={formData.leadPassenger}
-              onChange={(value) =>
-                updateField(
-                  "leadPassenger",
-                  value
-                )
-              }
-              icon={<UserIcon />}
+              placeholder="Your name"
               required
+              onChange={(value) =>
+                updateField("leadPassenger", value)
+              }
             />
 
-            <FormInput
+            <BookingFormField
+              id="destinationMobile"
+              icon={Phone}
               label="CONTACT MOBILE"
-              placeholder="+91 XXXXX XXXXX"
               type="tel"
               value={formData.mobile}
-              onChange={(value) =>
-                updateField(
-                  "mobile",
-                  value
-                )
-              }
-              icon={
-                <Phone className="h-3.5 w-3.5" />
-              }
+              placeholder="+91 XXXXX XXXXX"
               required
+              onChange={(value) =>
+                updateField("mobile", value)
+              }
             />
           </div>
 
-          <div className="grid grid-cols-1 gap-2.5 pt-1 sm:grid-cols-2">
-            <div className="rounded-xl bg-white px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
-                EST. ROUND TRIP
-              </p>
+          <BookingFormField
+            id="destinationEmail"
+            icon={Mail}
+            label="EMAIL ADDRESS"
+            type="email"
+            value={formData.email || ""}
+            placeholder="Enter your email address"
+            error={emailError}
+            onChange={(value) => {
+              updateField("email", value);
+              if (emailError) {
+                setEmailError(validateEmail(value, { required: false }));
+              }
+            }}
+            onBlur={(e) => {
+              setEmailError(validateEmail(e.target.value, { required: false }));
+            }}
+          />
+        </div>
 
-              <div className="mt-1 flex items-baseline gap-1">
-                <span className="text-[22px] font-black leading-none text-black">
-                  ≈ {estimatedKm}
-                </span>
+        <div className="space-y-3.5 border-t border-border pt-4">
+          <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 flex items-center justify-between">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
+              EST. ROUND TRIP DISTANCE
+            </span>
 
-                <span className="text-[10px] font-bold text-black/60">
-                  KM
-                </span>
-              </div>
-            </div>
+            <div>
+              <span className="text-xl font-black text-text-primary">
+                ≈ {estimatedKm}
+              </span>
 
-            <div className="rounded-xl border border-primary/30 bg-primary-subtle px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-primary">
-                TOTAL ESTIMATED FARE
-              </p>
-
-              <div className="mt-1">
-                <span className="text-[22px] font-black leading-none text-black">
-                  ₹
-                  {Number(
-                    estimatedFare
-                  ).toLocaleString("en-IN")}
-                </span>
-              </div>
+              <span className="ml-1 text-[11px] font-bold uppercase text-text-muted">
+                KM
+              </span>
             </div>
           </div>
 
-          <div className="rounded-xl bg-white px-3.5 py-3">
-            <div className="flex items-start gap-2 text-[10px] leading-5 text-black/70">
-              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+          <FareSummary
+            basePrice={fareBreakdown.formattedBasePrice}
+            gstAmount={fareBreakdown.formattedGst}
+            totalFare={fareBreakdown.formattedTotalPrice}
+            gstRatePercent={fareBreakdown.gstPercent}
+          />
 
-              <span>
-                <span className="font-bold text-black">
-                  Route Path:
-                </span>{" "}
-                {formData.pickup || "Delhi NCR"} →{" "}
-                {destinationName} →{" "}
-                {formData.pickup || "Delhi NCR"}{" "}
-                (Return)
-              </span>
-            </div>
+          <div className="flex items-start gap-2 rounded-xl bg-surface-secondary p-3 text-[11px] font-medium leading-5 text-text-secondary">
+            <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+
+            <span>
+              <span className="font-bold text-text-primary">
+                Trip Route:
+              </span>{" "}
+              {formData.pickup || "Delhi NCR"} →{" "}
+              {selectedDestinations.join(", ")} →{" "}
+              {formData.pickup || "Delhi NCR"} (Return)
+            </span>
           </div>
 
           <div className="grid grid-cols-2 gap-x-5 gap-y-2 px-0.5 pt-1 sm:grid-cols-3">
@@ -619,34 +621,35 @@ function DestinationBookingForm({ destination }) {
             <Benefit text="Driver Allowance" />
             <Benefit text="Fuel & GST Included" />
           </div>
+        </div>
 
-          <div className="mt-1 grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() => setShowBusImages(true)}
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-primary/30 bg-surface px-2 text-[10px] font-bold leading-tight text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-md sm:px-3 sm:text-xs"
-            >
-              View Bus Images
-            </button>
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <button
+            type="button"
+            onClick={() => setShowBusImages(true)}
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-md font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+          >
+            <ImageIcon className="h-4 w-4" />
+            View Bus Images
+          </button>
 
-            <button
-              type="submit"
-              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-primary px-2 text-[10px] font-bold leading-tight text-primary-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-md active:translate-y-0 sm:px-3 sm:text-xs"
-            >
-              <span>Confirm Booking</span>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98] disabled:cursor-wait disabled:opacity-60"
+          >
+            {submitting ? "Submitting..." : "Confirm Booking"}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </button>
 
-              <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1 sm:h-4 sm:w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setQuoteRequested(true)}
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl border border-border bg-surface-inverse px-2 text-[10px] font-bold leading-tight text-text-inverse transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:shadow-md sm:px-3 sm:text-xs"
-            >
-              Request a Quote
-            </button>
-          </div>
-          {submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
+          <button
+            type="button"
+            onClick={() => setQuoteRequested(true)}
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+          >
+            <PhoneCall className="h-4 w-4" />
+            Custom Request
+          </button>
         </div>
       </form>
 
@@ -952,114 +955,12 @@ function BusImagesModal({
   );
 }
 
-function DateTimeField({
-  label,
-  date,
-  time,
-  onDateChange,
-  onTimeChange,
-}) {
-  return (
-    <div className="rounded-xl bg-white px-3.5 py-3.5">
-      <div className="flex items-center gap-1.5">
-        <CalendarDays className="h-3.5 w-3.5 text-primary" />
-
-        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/45">
-          {label}
-        </span>
-      </div>
-
-      <div className="mt-1.5 flex items-center gap-1.5">
-        <input
-          type="date"
-          value={date}
-          onChange={(event) =>
-            onDateChange(
-              event.target.value
-            )
-          }
-          className="min-w-0 flex-1 bg-transparent text-[11px] font-bold text-black outline-none"
-          required={label === "DEPARTURE"}
-        />
-
-        <span className="text-[10px] text-black/45">
-          |
-        </span>
-
-        <input
-          type="time"
-          value={time}
-          onChange={(event) =>
-            onTimeChange(
-              event.target.value
-            )
-          }
-          className="w-18.5 bg-transparent text-[11px] font-bold text-black outline-none"
-        />
-      </div>
-    </div>
-  );
-}
-
-function FormInput({
-  label,
-  placeholder,
-  value,
-  onChange,
-  icon,
-  type = "text",
-  required = false,
-}) {
-  return (
-    <div className="rounded-xl border border-border bg-white px-3.5 py-3.5 transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-focus-ring">
-      <div className="flex items-center gap-1.5">
-        <span className="text-black/60">{icon}</span>
-
-        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-black/60">
-          {label}
-        </span>
-      </div>
-
-      <input
-        type={type}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        required={required}
-        className="mt-1 w-full bg-transparent text-sm font-semibold text-black placeholder:text-black/50 placeholder:opacity-100 outline-none"
-      />
-    </div>
-  );
-}
 function Benefit({ text }) {
   return (
-    <div className="flex items-center gap-1.5 text-[9px] font-medium text-black/60 sm:text-[10px]">
-      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-primary">
-        <CheckCircle2 className="h-3.5 w-3.5" />
-      </span>
-
+    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-text-secondary sm:text-[11px]">
+      <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
       <span>{text}</span>
     </div>
-  );
-}
-
-function UserIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      className="h-3.5 w-3.5"
-    >
-      <path d="M20 21a8 8 0 0 0-16 0" />
-
-      <circle
-        cx="12"
-        cy="7"
-        r="4"
-      />
-    </svg>
   );
 }
 
@@ -1135,11 +1036,10 @@ function PopularPlaceCard({
       style={{
         transitionDelay: `${index * 120}ms`,
       }}
-      className={`group w-full overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${
-        visible
-          ? "translate-y-0 opacity-100"
-          : "translate-y-8 opacity-0"
-      } hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
+      className={`group w-full overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_5px_20px_rgba(0,0,0,0.045)] transition-all duration-700 ${visible
+        ? "translate-y-0 opacity-100"
+        : "translate-y-8 opacity-0"
+        } hover:-translate-y-1 hover:border-black/20 hover:shadow-[0_14px_32px_rgba(0,0,0,0.075)]`}
     >
       <div className="grid min-h-67.5 grid-cols-[165px_1fr] items-stretch sm:min-h-71.25 sm:grid-cols-[185px_1fr] lg:min-h-75 lg:grid-cols-[205px_1fr]">
         <div className="relative min-h-67.5 overflow-hidden bg-white sm:min-h-71.25 lg:min-h-75">

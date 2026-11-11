@@ -55,7 +55,10 @@ export default function LoginPage() {
       const response = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, mode: isRegister ? "register" : "login" }),
+        body: JSON.stringify({
+          ...formData,
+          mode: isRegister ? "register" : "login",
+        }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Authentication failed.");

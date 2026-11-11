@@ -3,33 +3,37 @@ import AboutSection from "@/components/hero/aboutSection";
 import FleetTypes from "@/components/fleet/fleetTypes";
 import BusMantraServices from "@/components/services/busMantraServices";
 import PopularDestinations from "@/components/destinations/popularDestinations";
-import CustomerTestimonials from "@/components/testimonials/customerTestimonials";
+import CustomerTestimonials from "@/components/home/customerTestimonials";
 import FAQSection from "@/components/common/faq";
+import FinalCtaSection from "@/components/cta/finalCtaSection";
 
 import { homeFaqData } from "@/data/data";
 
 export default function Home() {
   return (
-    <>
-      <section className="relative w-full max-w-360 mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-20">
+    <main className="w-full">
+
+      {/* HOMEPAGE SECTIONS */}
+
+      <section className="relative mx-auto flex w-full max-w-360 flex-col gap-6 px-4 pt-20 sm:gap-18 sm:px-16 sm:pt-24 lg:gap-20 lg:px-8 lg:pt-28 *:my-0! *:py-2! mb-16">
         <HeroSection />
-
-        <AboutSection />
-
-        <FleetTypes />
-
         <BusMantraServices />
-
         <PopularDestinations />
-
+        <FleetTypes />
+        {/* <AboutSection /> */}
         <CustomerTestimonials />
+
+        {/* FAQ SECTION */}
+        <section className="relative w-full bg-white">
+          <div className="mx-auto w-full max-w-360 px-4 sm:px-6 lg:px-8">
+            <FAQSection data={homeFaqData} />
+          </div>
+        </section>
+
+        {/* FINAL CTA SECTION */}
+        <FinalCtaSection />
       </section>
 
-      <section className="relative w-full border-t border-border bg-surface-warm">
-        <div className="mx-auto w-full max-w-360 px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-          <FAQSection data={homeFaqData} />
-        </div>
-      </section>
-    </>
+    </main>
   );
 }

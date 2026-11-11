@@ -13,33 +13,29 @@ export default function PopularDestinations({
   sectionData = destinationsSectionData,
   destinations = popularDestinationsData,
 }) {
-  const items = sectionData?.destinations || destinations || [];
+  const fallbackItems = sectionData?.destinations || destinations || [];
+  const [databaseDestinations, setDatabaseDestinations] = useState(null);
+  const items = databaseDestinations || fallbackItems;
 
   const [activeSlide, setActiveSlide] = useState(0);
-  const [databaseDestinations, setDatabaseDestinations] = useState(null);
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     let active = true;
     fetch("/api/destinations")
       .then((response) => {
-        if (!response.ok) throw new Error("Unable to load destination catalog.");
+        if (!response.ok) throw new Error(`Destination catalog returned ${response.status}.`);
         return response.json();
       })
-      .then((data) => {
-        if (active && Array.isArray(data)) {
-          setDatabaseDestinations(
-            data.map((destination, index) => ({
-              id: destination.slug,
-              name: destination.name,
-              number: String(index + 1).padStart(2, "0"),
-              route: destination.route,
-              description: destination.description,
-              image: destination.gallery?.[0] || "/about_bus.png",
-              href: `/destinations/${destination.slug}`,
-              ctaText: `Fleet to ${destination.name}`,
-            }))
-          );
+      .then((rows) => {
+        if (active && Array.isArray(rows)) {
+          setDatabaseDestinations(rows.map((destination) => ({
+            ...destination,
+            id: destination.slug,
+            image: destination.gallery?.[0] || "/images/destinations/agra-fort.jpg",
+            href: `/destinations/${destination.slug}`,
+            ctaText: `Fleet to ${destination.name}`,
+          })));
         }
       })
       .catch((error) => console.error("Destination catalog load failed:", error));
@@ -47,8 +43,6 @@ export default function PopularDestinations({
       active = false;
     };
   }, []);
-
-  const displayedDestinations = databaseDestinations || items;
 
   /* =========================================================
      MOBILE CAROUSEL
@@ -63,7 +57,7 @@ export default function PopularDestinations({
     const slideIndex = Math.round(scrollLeft / cardWidth);
 
     setActiveSlide(
-      Math.min(displayedDestinations.length - 1, Math.max(0, slideIndex))
+      Math.min(items.length - 1, Math.max(0, slideIndex))
     );
   };
 
@@ -86,54 +80,54 @@ export default function PopularDestinations({
       id="destinations"
       className="relative my-4 w-full py-12 sm:my-6 sm:py-16 lg:py-20"
     >
-      {/* =========================================================
-          SECTION HEADER
-      ========================================================= */}
+      {/* SECTION HEADER (70:30) */}
 
-      <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-12 sm:gap-6 md:flex-row md:items-end">
-        <div className="flex max-w-2xl flex-col items-start text-left">
-          <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-3 sm:text-xs">
-            {sectionData?.eyebrow || "DESTINATIONS"}
-          </span>
+      <div className="mb-8 w-full sm:mb-12">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] lg:gap-6">
 
-          <h2 className="text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
-            {sectionData?.heading || "Where will your group go?"}
-          </h2>
+          {/* LEFT COLUMN: 70% */}
 
-          <p className="mt-2 text-sm font-normal leading-relaxed text-text-secondary sm:mt-2.5 sm:text-base">
-            {sectionData?.description ||
-              "Explore popular destinations for your next group journey."}
-          </p>
-        </div>
+          <div className="flex w-full min-w-0 flex-col items-start text-left">
 
-        {/* View All */}
-        <div className="flex shrink-0 items-center md:pb-1">
-          <Link
-            href={sectionData?.headerCta?.href || "#booking-form"}
-            className="group/link inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-text-primary transition-colors duration-200 hover:text-primary sm:text-base"
-          >
-            <span>
-              {sectionData?.headerCta?.label ||
-                "View All Destinations"}
+            {/* EYEBROW */}
+
+            <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white sm:mb-3 sm:text-xs">
+              {sectionData?.eyebrow || "DESTINATIONS"}
             </span>
 
-            <ArrowRight
-              className="h-4 w-4 text-primary transition-transform duration-200 group-hover/link:translate-x-1"
-              strokeWidth={2.2}
-            />
-          </Link>
+            {/* HEADING */}
+
+            <h2 className="w-full max-w-none text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
+              {sectionData?.heading || "Where will your group go?"}
+            </h2>
+
+            {/* DESCRIPTION */}
+
+            <p className="mt-2 w-full text-sm font-normal leading-relaxed text-text-secondary sm:mt-2.5 sm:text-base">
+              {sectionData?.description ||
+                "Explore popular destinations for your next group journey."}
+            </p>
+          </div>
+
+          {/* RIGHT COLUMN: 30% */}
+
+          <div className="flex w-full items-center justify-start lg:translate-y-18 lg:justify-end">
+            <Link
+              href={sectionData?.headerCta?.href || "#booking-form"}
+              className="group inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#DD650D] px-4 text-sm font-semibold text-white shadow-sm shadow-[#DD650D]/20 transition-all duration-200 hover:bg-[#C75A0B] hover:shadow-md active:scale-[0.98] xl:px-5"
+            >
+              <span>
+                {sectionData?.headerCta?.label ||
+                  "View All Destinations"}
+              </span>
+
+              <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* =========================================================
-          DESTINATION CARDS
-
-          Desktop:
-          3-column grid
-
-          Mobile / Tablet:
-          Horizontal carousel
-      ========================================================= */}
+      {/* DESTINATION CARDS */}
 
       <div
         ref={scrollContainerRef}
@@ -166,7 +160,7 @@ export default function PopularDestinations({
           msOverflowStyle: "none",
         }}
       >
-        {displayedDestinations.map((dest) => {
+        {items.map((dest) => {
           const rawCta =
             dest.ctaText ||
             dest.cta ||
@@ -209,9 +203,7 @@ export default function PopularDestinations({
                 lg:snap-align-none
               "
             >
-              {/* =================================================
-                  IMAGE
-              ================================================= */}
+              {/* IMAGE */}
 
               <div className="relative aspect-16/10 w-full overflow-hidden rounded-t-[20px] bg-surface-muted">
                 {dest?.image ? (
@@ -239,20 +231,22 @@ export default function PopularDestinations({
                   </div>
                 )}
 
-                {/* Subtle image overlay */}
+                {/* SUBTLE IMAGE OVERLAY */}
+
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent" />
 
-                {/* Accent line */}
+                {/* ACCENT LINE */}
+
                 <div className="absolute bottom-0 left-0 h-1 w-16 bg-primary transition-all duration-300 group-hover:w-24" />
               </div>
 
-              {/* =================================================
-                  CARD CONTENT
-              ================================================= */}
+              {/* CARD CONTENT */}
 
               <div className="flex flex-1 flex-col justify-between bg-white p-5 sm:p-6 lg:p-7">
                 <div>
-                  {/* Route */}
+
+                  {/* ROUTE */}
+
                   <div className="mb-2.5 flex items-center gap-1.5 text-xs font-semibold text-text-muted">
                     <Navigation
                       className="h-3.5 w-3.5 shrink-0 text-primary"
@@ -262,20 +256,20 @@ export default function PopularDestinations({
                     <span>{dest.route}</span>
                   </div>
 
-                  {/* Destination */}
+                  {/* DESTINATION */}
+
                   <h3 className="mb-1.5 text-xl font-bold tracking-tight text-text-primary transition-colors duration-300 group-hover:text-primary sm:text-[22px]">
                     {dest.name}
                   </h3>
 
-                  {/* Description */}
+                  {/* DESCRIPTION */}
+
                   <p className="text-sm font-normal leading-relaxed text-text-secondary">
                     {dest.description}
                   </p>
                 </div>
 
-                {/* =================================================
-                    CTA
-                ================================================= */}
+                {/* CTA */}
 
                 <div>
                   <div className="my-4 border-t border-border" />
@@ -305,12 +299,10 @@ export default function PopularDestinations({
         })}
       </div>
 
-      {/* =========================================================
-          MOBILE CAROUSEL INDICATORS
-      ========================================================= */}
+      {/* MOBILE CAROUSEL INDICATORS */}
 
       <div className="mt-5 flex items-center justify-center gap-1.5 lg:hidden">
-        {displayedDestinations.map((_, index) => (
+        {items.map((_, index) => (
           <button
             key={index}
             type="button"

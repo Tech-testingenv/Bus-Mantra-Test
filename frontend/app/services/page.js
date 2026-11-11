@@ -33,13 +33,14 @@ export const metadata = {
   description:
     "Comprehensive group transportation services for corporate travel, tours, events, school trips, airport transfers and hotel transfers.",
 };
-export const dynamic = "force-dynamic";
 
 const FEATURED_POINT_ICONS = [
   ShieldCheck,
   Sparkles,
   Route,
 ];
+
+export const dynamic = "force-dynamic";
 
 export default async function ServicesPage() {
   let serviceItems = servicesPageSectionData.services;
@@ -369,7 +370,7 @@ export default async function ServicesPage() {
             <div className="relative rounded-3xl overflow-hidden bg-black/5 border border-black/10 p-4 sm:p-5">
 
               <Image
-                src="/fleet/fleet.png"
+                src="/bus_mantra_about_bus.png"
                 alt="Bus Mantra luxury coach fleet"
                 width={1400}
                 height={800}

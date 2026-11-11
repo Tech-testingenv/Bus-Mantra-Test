@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Briefcase,
@@ -10,6 +11,14 @@ import {
   Plane,
   Hotel,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Globe,
+  Users,
+  Heart,
+  Palmtree,
+  Flower2,
+  Bike,
 } from "lucide-react";
 import {
   servicesSectionData,
@@ -23,9 +32,27 @@ const ICON_MAP = {
   "graduation-cap": GraduationCap,
   plane: Plane,
   hotel: Hotel,
+  globe: Globe,
+  users: Users,
+  heart: Heart,
+  palmtree: Palmtree,
+  flower: Flower2,
+  bike: Bike,
 };
 
 const SERVICE_SLUG_MAP = {
+  "Inbound Trips": "group-tours",
+  "Corporate Trips": "corporate-travel",
+  "MICE / Conference Trips": "corporate-travel",
+  "School / College Trips": "school-trips",
+  "Destination Wedding": "events-weddings",
+  "Airport / Railway Station Pick-Up & Drop-Off": "airport-transfers",
+  "Leisure Trips": "group-tours",
+  "Meditation Trips": "group-tours",
+  "Cycling Trips": "group-tours",
+
+  // Legacy names for backward compatibility
+  Corporate: "corporate-travel",
   "Corporate Travel": "corporate-travel",
   "Group Tours": "group-tours",
   Events: "events-weddings",
@@ -33,8 +60,8 @@ const SERVICE_SLUG_MAP = {
   "School Trips": "school-trips",
   "Airport Pick Up & Transfer": "airport-transfers",
   "Airport Transfers": "airport-transfers",
-  "Hotel Pick Up & Transfer": "hotel-pick-up-transfer",
-  "Hotel Transfers": "hotel-pick-up-transfer",
+  "Hotel Pick Up & Transfer": "hotel-transfers",
+  "Hotel Transfers": "hotel-transfers",
 };
 
 function getServiceHref(item) {
@@ -50,6 +77,10 @@ function getServiceHref(item) {
     return `/services/${SERVICE_SLUG_MAP[item.title]}`;
   }
 
+  if (item.id && SERVICE_SLUG_MAP[item.id]) {
+    return `/services/${SERVICE_SLUG_MAP[item.id]}`;
+  }
+
   return "/services";
 }
 
@@ -57,34 +88,34 @@ export default function BusMantraServices({
   sectionData = servicesSectionData,
   services = servicesData,
 }) {
-  const items =
+  const fallbackItems =
     sectionData?.services ||
     sectionData?.useCases ||
     services ||
     [];
 
   const [databaseServices, setDatabaseServices] = useState(null);
+  const items = databaseServices || fallbackItems;
   const [activeSlide, setActiveSlide] = useState(0);
-
-  const scrollContainerRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartXRef = useRef(null);
+  const totalSlides = items.length;
 
   useEffect(() => {
     let active = true;
     fetch("/api/services")
       .then((response) => {
-        if (!response.ok) throw new Error("Unable to load service catalog.");
+        if (!response.ok) throw new Error(`Service catalog returned ${response.status}.`);
         return response.json();
       })
-      .then((data) => {
-        if (active && Array.isArray(data)) {
-          setDatabaseServices(
-            data.map((service, index) => ({
-              ...service,
-              number: String(index + 1).padStart(2, "0"),
-              bottomLabel: "Explore Service",
-              href: `/services/${service.slug}`,
-            }))
-          );
+      .then((rows) => {
+        if (active && Array.isArray(rows)) {
+          setDatabaseServices(rows.map((service, index) => ({
+            ...service,
+            number: service.number || String(index + 1).padStart(2, "0"),
+            icon: service.icon || "briefcase",
+            href: `/services/${service.slug}`,
+          })));
         }
       })
       .catch((error) => console.error("Service catalog load failed:", error));
@@ -93,46 +124,54 @@ export default function BusMantraServices({
     };
   }, []);
 
-  const displayedServices = databaseServices || items;
+  const handleNext = useCallback(() => {
+    if (totalSlides === 0) return;
+    setActiveSlide((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
 
-  const handleScroll = () => {
-    if (!scrollContainerRef.current) {
-      return;
-    }
+  const handlePrev = useCallback(() => {
+    if (totalSlides === 0) return;
+    setActiveSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
 
-    const { scrollLeft, clientWidth } =
-      scrollContainerRef.current;
-
-    const cardWidth = clientWidth * 0.82 + 16;
-
-    const slideIndex = Math.round(
-      scrollLeft / cardWidth
-    );
-
-    setActiveSlide(
-      Math.min(
-        displayedServices.length - 1,
-        Math.max(0, slideIndex)
-      )
-    );
-  };
-
-  const scrollToSlide = (index) => {
-    if (!scrollContainerRef.current) {
-      return;
-    }
-
-    const cardWidth =
-      scrollContainerRef.current.clientWidth * 0.82 +
-      16;
-
-    scrollContainerRef.current.scrollTo({
-      left: index * cardWidth,
-      behavior: "smooth",
-    });
-
+  const handleSelectSlide = useCallback((index) => {
     setActiveSlide(index);
+  }, []);
+
+  // Autoplay functionality
+  useEffect(() => {
+    if (isPaused || totalSlides <= 1) return;
+
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5500);
+
+    return () => clearInterval(timer);
+  }, [isPaused, totalSlides, handleNext]);
+
+  // Touch swipe support for mobile
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
   };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+
+    const deltaX =
+      e.changedTouches[0].clientX - touchStartXRef.current;
+
+    if (deltaX > 45) {
+      handlePrev();
+    } else if (deltaX < -45) {
+      handleNext();
+    }
+
+    touchStartXRef.current = null;
+  };
+
+  if (!items || items.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -140,227 +179,224 @@ export default function BusMantraServices({
       className="relative my-4 w-full py-12 sm:my-6 sm:py-16 lg:py-20"
     >
       {/* SECTION HEADER */}
+<div className="mb-8 w-full sm:mb-12">
+  <div className="grid grid-cols-1 items-end gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(0,3fr)] lg:gap-8">
 
-      <div className="mb-8 grid grid-cols-1 items-end gap-4 sm:mb-12 sm:gap-6 lg:grid-cols-12 lg:gap-8">
-        <div className="flex flex-col items-start text-left lg:col-span-7">
-          <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-surface-secondary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-text-muted sm:mb-3 sm:text-xs">
-            {sectionData?.eyebrow || "SERVICES"}
-          </span>
+    {/* LEFT COLUMN: 70% */}
+    <div className="w-full min-w-0">
+      <span className="mb-2.5 inline-block select-none rounded-full border border-border bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white sm:mb-3 sm:text-xs">
+        {sectionData?.eyebrow || "SERVICES"}
+      </span>
 
-          <h2 className="text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
-            {sectionData?.heading ||
-              "Travel solutions for every group."}
-          </h2>
-        </div>
+      <h2 className="w-full max-w-none text-3xl font-extrabold leading-[1.14] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
+        {sectionData?.heading || "Travel solutions for every group."}
+      </h2>
 
-        <div className="flex flex-col justify-end text-left lg:col-span-5 lg:pb-1">
-          <p className="max-w-lg text-sm font-normal leading-relaxed text-text-secondary sm:text-base">
-            {sectionData?.description ||
-              "From business travel to airport transfers, we make group transportation simple, comfortable and reliable."}
-          </p>
-        </div>
-      </div>
+      {sectionData?.description && (
+        <p className="mt-3 w-full text-sm font-normal leading-relaxed text-text-secondary sm:text-base">
+          {sectionData.description}
+        </p>
+      )}
+    </div>
 
-      {/* DESKTOP AND TABLET SERVICE GRID */}
+    {/* RIGHT COLUMN: 30% */}
+    <div className="flex w-full items-center justify-start lg:-translate-y-10 lg:justify-end">
 
-      <div className="hidden items-stretch gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
-        {displayedServices.map((item) => {
-          const IconComponent =
-            ICON_MAP[item.icon] || Briefcase;
+      <Link
+        href="/services"
+        className="group inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#DD650D] px-4 text-sm font-semibold text-white shadow-sm shadow-[#DD650D]/20 transition-all duration-200 hover:bg-[#C75A0B] hover:shadow-md active:scale-[0.98] xl:px-5"
+      >
+        <span>View All Services</span>
+        <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
+      </Link>
+    </div>
 
-          const href = getServiceHref(item);
+  </div>
+</div>
 
-          return (
-            <Link
-              key={
-                item.id ||
-                item.slug ||
-                item.number ||
-                item.title
-              }
-              href={href}
-              className="
-                group
-                relative
-                flex
-                flex-col
-                justify-between
-                overflow-hidden
-                rounded-[20px]
-                border
-                border-border
-                bg-white
-                p-7
-                shadow-xs
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:border-primary/40
-                hover:shadow-md
-                focus:outline-none
-                focus-visible:ring-2
-                focus-visible:ring-focus-ring
-                sm:p-8
-              "
-            >
-              {/* Top accent */}
-              <div className="absolute left-0 top-0 h-1 w-12 bg-primary transition-all duration-300 group-hover:w-full" />
+      {/* 50-50 TWO COLUMN CAROUSEL */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
 
-              <div>
-                {/* Number and Icon */}
-                <div className="mb-6 flex items-center justify-between">
-                  <div className="inline-flex select-none items-center justify-center rounded-md border border-primary/20 bg-primary-subtle px-2.5 py-1 text-xs font-bold tracking-wide text-primary">
-                    {item.number}
-                  </div>
+        {/* Left Column (50%): Service Pills, Small Write-up, Details Button */}
+        <div className="flex flex-col items-start justify-center text-left order-2 lg:order-1">
 
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/20 bg-primary-subtle text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
-                    <IconComponent className="h-5 w-5 stroke-2" />
-                  </div>
-                </div>
+          {/* Service Pills Navigation */}
+<div className="w-full mb-6 sm:mb-8">
+  <div className="flex flex-wrap gap-2 sm:gap-2.5">
+    {items.map((item, idx) => {
+      const IconComponent = ICON_MAP[item.icon] || Briefcase;
+      const isActive = idx === activeSlide;
+      const href = getServiceHref(item);
 
-                {/* Service Title */}
-                <h3 className="mb-2.5 text-xl font-bold tracking-tight text-text-primary transition-colors duration-300 group-hover:text-primary">
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p className="mb-8 text-sm font-normal leading-relaxed text-text-secondary">
-                  {item.description}
-                </p>
-              </div>
-
-              {/* Bottom Action */}
-              <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
-                <div className="flex items-center gap-2.5 text-xs font-medium text-text-secondary sm:text-[13px]">
-                  <IconComponent className="h-4 w-4 shrink-0 stroke-[1.8] text-primary" />
-
-                  <span className="transition-colors duration-300 group-hover:text-primary">
-                    {item.bottomLabel || "Explore Service"}
-                  </span>
-                </div>
-
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-subtle text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* MOBILE SERVICE CAROUSEL */}
-
-      <div className="sm:hidden">
-        <div
-          ref={scrollContainerRef}
-          onScroll={handleScroll}
-          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 scrollbar-none"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
+      return (
+        <Link
+          key={item.id || item.slug || idx}
+          href={href}
+          className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 cursor-pointer select-none text-left ${
+            isActive
+              ? "bg-primary text-primary-foreground shadow-sm scale-[1.02]"
+              : "bg-surface-secondary text-text-secondary hover:text-text-primary hover:bg-surface-muted border border-border"
+          }`}
         >
-          {displayedServices.map((item) => {
-            const IconComponent =
-              ICON_MAP[item.icon] || Briefcase;
+          <IconComponent
+            className={`h-3.5 w-3.5 shrink-0 ${
+              isActive
+                ? "text-primary-foreground"
+                : "text-primary"
+            }`}
+          />
+          <span>{item.title}</span>
+        </Link>
+      );
+    })}
+  </div>
+</div>
 
-            const href = getServiceHref(item);
+          {/* Active Service Content Carousel */}
+          <div className="grid grid-cols-1 w-full min-h-43.75 sm:min-h-40">
+            {items.map((item, idx) => {
+              const isActive = idx === activeSlide;
 
-            return (
-              <Link
-                key={
-                  item.id ||
-                  item.slug ||
-                  item.number ||
-                  item.title
-                }
-                href={href}
-                className="
-                  group
-                  relative
-                  flex
-                  w-[82vw]
-                  max-w-85
-                  shrink-0
-                  snap-center
-                  flex-col
-                  justify-between
-                  overflow-hidden
-                  rounded-[20px]
-                  border
-                  border-border
-                  bg-white
-                  p-6
-                  shadow-xs
-                  transition-all
-                  duration-200
-                  active:scale-[0.99]
-                "
-              >
-                {/* Top accent */}
-                <div className="absolute left-0 top-0 h-1 w-12 bg-primary" />
 
-                <div>
-                  {/* Number and Icon */}
-                  <div className="mb-5 flex items-center justify-between">
-                    <div className="inline-flex select-none items-center justify-center rounded-md border border-primary/20 bg-primary-subtle px-2.5 py-1 text-xs font-bold tracking-wide text-primary">
-                      {item.number}
-                    </div>
-
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/20 bg-primary-subtle text-primary">
-                      <IconComponent className="h-5 w-5 stroke-2" />
-                    </div>
-                  </div>
-
-                  {/* Service Title */}
-                  <h3 className="mb-2 text-lg font-bold tracking-tight text-text-primary">
+              return (
+                <div
+                  key={item.id || item.slug || idx}
+                  className={`col-start-1 row-start-1 flex flex-col items-start transition-all duration-700 ease-in-out ${
+                    isActive
+                      ? "opacity-100 translate-y-0 pointer-events-auto z-1"
+                      : "opacity-0 translate-y-3 pointer-events-none z-0"
+                  }`}
+                  aria-hidden={!isActive}
+                >
+                  {/* Title */}
+                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-extrabold text-text-primary tracking-tight mb-3">
                     {item.title}
                   </h3>
 
-                  {/* Description */}
-                  <p className="mb-6 text-xs font-normal leading-relaxed text-text-secondary">
+                  {/* Small Write-Up / Description */}
+                  <p className="text-sm sm:text-base text-text-secondary leading-relaxed max-w-xl mb-6">
                     {item.description}
                   </p>
+
+
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Bottom Action */}
-                <div className="mt-auto flex items-center justify-between border-t border-border pt-3.5">
-                  <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
-                    <IconComponent className="h-3.5 w-3.5 shrink-0 stroke-[1.8] text-primary" />
+          {/* Carousel Navigation Bar */}
+          <div className="flex items-center gap-4 mt-8 pt-6 border-t border-border w-full">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handlePrev}
+                aria-label="Previous service"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface-secondary hover:bg-surface-muted text-text-primary hover:border-primary/40 transition-all cursor-pointer active:scale-95"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
 
-                    <span>{item.bottomLabel || "Explore Service"}</span>
-                  </div>
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label="Next service"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface-secondary hover:bg-surface-muted text-text-primary hover:border-primary/40 transition-all cursor-pointer active:scale-95"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
 
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-subtle text-primary transition-all duration-200 group-active:bg-primary group-active:text-primary-foreground">
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+            {/* Slide Dots */}
+            <div className="flex items-center gap-1.5">
+              {items.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleSelectSlide(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeSlide === idx
+                      ? "w-7 bg-primary"
+                      : "w-2 bg-neutral-300 hover:bg-neutral-400"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            <div className="ml-auto text-xs font-bold text-text-muted tracking-wider select-none">
+              <span className="text-primary font-black">
+                {String(activeSlide + 1).padStart(2, "0")}
+              </span>
+              {" / "}
+              <span>{String(items.length).padStart(2, "0")}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Carousel Indicators */}
+        {/* Right Column (50%): Service Image Display */}
+        <div className="w-full order-1 lg:order-2">
+          <div
+            className="relative w-full aspect-4/3 sm:aspect-16/10 lg:aspect-4/3 rounded-3xl overflow-hidden border border-border shadow-md bg-surface-muted group select-none"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            {items.map((item, idx) => {
+              const isActive = idx === activeSlide;
 
-        <div className="mt-5 flex items-center justify-center gap-1.5">
-          {displayedServices.map((item, idx) => (
+              return (
+                <div
+                  key={item.id || item.slug || idx}
+                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                    isActive
+                      ? "opacity-100 scale-100 z-1 pointer-events-auto"
+                      : "opacity-0 scale-[1.03] z-0 pointer-events-none"
+                  }`}
+                  aria-hidden={!isActive}
+                >
+                  <Image
+                    src={item.image || "/images/services/corporate-india.jpg"}
+                    alt={item.title || "Bus Mantra Group Service"}
+                    fill
+                    priority={idx === 0}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+
+                  {/* Gradient Shadow at Bottom */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+
+                  {/* Slide Counter on Image Bottom */}
+                  <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-10 pointer-events-none">
+                    <span className="text-xs font-bold text-white bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10">
+                      {String(idx + 1).padStart(2, "0")} /{" "}
+                      {String(items.length).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Overlay Navigation Arrows on Image */}
             <button
-              key={
-                item.id ||
-                item.slug ||
-                item.number ||
-                idx
-              }
               type="button"
-              onClick={() => scrollToSlide(idx)}
-              className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ${
-                activeSlide === idx
-                  ? "w-6 bg-primary"
-                  : "w-1.5 bg-neutral-300 hover:bg-primary-hover"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
+              onClick={handlePrev}
+              aria-label="Previous slide"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-xs transition-opacity duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
+            >
+              <ChevronLeft className="h-5 w-5 stroke-[2.3]" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next slide"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-xs transition-opacity duration-200 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
+            >
+              <ChevronRight className="h-5 w-5 stroke-[2.3]" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

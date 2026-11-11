@@ -41,6 +41,7 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
   function handleChange(event) {
@@ -50,18 +51,25 @@ export default function ContactPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setSubmitting(true);
     setSubmitError("");
     try {
       const response = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "contact", subject: form.topic }),
+        body: JSON.stringify({
+          ...form,
+          type: "contact",
+          subject: form.topic,
+        }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Unable to send enquiry.");
       setSubmitted(true);
     } catch (error) {
       setSubmitError(error.message);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -199,7 +207,7 @@ export default function ContactPage() {
                 <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-success/15 text-success"><CheckCircle2 size={32} /></span>
                 <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-success">Form completed</p>
                 <h3 className="mt-3 text-3xl font-bold tracking-tight text-text-primary">Thanks for reaching out.</h3>
-                <p className="mt-4 max-w-md text-sm leading-7 text-text-muted">Your details are currently only held in this page's form state. Connect this form to your backend API to send and store the enquiry.</p>
+                <p className="mt-4 max-w-md text-sm leading-7 text-text-muted">Your enquiry has been received. Our team will review your message and get back to you.</p>
                 <button type="button" onClick={resetForm} className="mt-7 inline-flex items-center gap-3 rounded-xl bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground hover:bg-primary-hover">Submit another enquiry <ArrowRight size={16} /></button>
               </div>
             ) : (
@@ -213,6 +221,7 @@ export default function ContactPage() {
                   <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-subtle text-primary sm:flex"><Send size={21} /></span>
                 </div>
                 <form onSubmit={handleSubmit} className="pt-7">
+                  {submitError && <p role="alert" className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
                   <div className="grid gap-x-5 gap-y-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="fullName" className="text-sm font-semibold text-text-primary">Full name <span className="text-primary">*</span></label>
@@ -239,11 +248,10 @@ export default function ContactPage() {
                   </div>
                   <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                     <p className="max-w-sm text-xs leading-5 text-text-muted">Please avoid including sensitive personal or payment information in your message.</p>
-                    <button type="submit" className="group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover">
-                      Send enquiry <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+                    <button type="submit" disabled={submitting} className="group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-wait disabled:opacity-60">
+                      {submitting ? "Sending..." : "Send enquiry"} <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
                     </button>
                   </div>
-                  {submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
                 </form>
               </>
             )}

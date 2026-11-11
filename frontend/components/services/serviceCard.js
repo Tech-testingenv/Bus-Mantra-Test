@@ -7,6 +7,12 @@ import {
   Plane,
   Hotel,
   ArrowRight,
+  Globe,
+  Users,
+  Heart,
+  Palmtree,
+  Flower2,
+  Bike,
 } from "lucide-react";
 
 const ICON_MAP = {
@@ -16,6 +22,12 @@ const ICON_MAP = {
   "graduation-cap": GraduationCap,
   plane: Plane,
   hotel: Hotel,
+  globe: Globe,
+  users: Users,
+  heart: Heart,
+  palmtree: Palmtree,
+  flower: Flower2,
+  bike: Bike,
 };
 
 /**

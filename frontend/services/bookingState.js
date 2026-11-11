@@ -72,6 +72,8 @@ export function encodeBookingToQuery(data) {
   if (data.fullName) params.set("name", data.fullName);
   if (data.mobile) params.set("phone", data.mobile);
   if (data.email) params.set("email", data.email);
+  if (data.category) params.set("category", data.category);
+  if (data.vehicleType) params.set("vehicleType", data.vehicleType);
 
   return params.toString();
 }
@@ -94,8 +96,10 @@ export function parseBookingFromQuery(searchParams) {
   const name = get("name") || get("fullName");
   const phone = get("phone") || get("mobile");
   const email = get("email");
+  const category = get("category") || get("busCategory");
+  const vehicleType = get("vehicleType") || get("vehicle");
 
-  if (!pickup && !destRaw && !passengers && !dep) {
+  if (!pickup && !destRaw && !passengers && !dep && !category && !vehicleType) {
     return null;
   }
 
@@ -112,6 +116,14 @@ export function parseBookingFromQuery(searchParams) {
     fullName: name || "",
     mobile: phone || "",
     email: email || "",
+    category: category || "tata",
+    vehicleType: vehicleType || null,
+    vehicleTypeName:
+      vehicleType === "tempo-traveler"
+        ? "Tempo Traveler"
+        : vehicleType === "mini-coach"
+          ? "Mini Coach"
+          : null,
     hasDeterminedPassengers: Boolean(passengers && parseInt(passengers, 10) > 0),
   };
 }
@@ -122,6 +134,9 @@ export function parseBookingFromQuery(searchParams) {
 export function resolveInitialBookingState(searchParams) {
   const fromQuery = parseBookingFromQuery(searchParams);
   const fromSession = getBookingSession();
+
+  const vehicleType =
+    fromQuery?.vehicleType || fromSession?.vehicleType || null;
 
   const merged = {
     pickupPoint: fromQuery?.pickupPoint || fromSession?.pickupPoint || "Delhi NCR",
@@ -146,6 +161,12 @@ export function resolveInitialBookingState(searchParams) {
     fullName: fromQuery?.fullName || fromSession?.fullName || "",
     mobile: fromQuery?.mobile || fromSession?.mobile || "",
     email: fromQuery?.email || fromSession?.email || "",
+    category: fromQuery?.category || fromSession?.category || "tata",
+    vehicleType,
+    vehicleTypeName:
+      fromQuery?.vehicleTypeName ||
+      fromSession?.vehicleTypeName ||
+      null,
     hasDeterminedPassengers: Boolean(
       (fromQuery?.passengers && parseInt(fromQuery.passengers, 10) > 0) ||
       (fromSession?.passengers && parseInt(fromSession.passengers, 10) > 0)

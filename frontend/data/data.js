@@ -1,11 +1,19 @@
 export const heroData = {
   eyebrow: "FULL BUS BOOKING",
-  titleLines: ["Book your Luxury Coach @₹1/KM.", "Yes, You Read That Right!"],
+  titleLines: ["Book your Luxury Coach @₹1/KM.", "Yes, You Read That Right!", "/bus_mantra_t&c_logo.png"],
+  tcLogo: "/bus_mantra_t&c.png",
   description:
-    "Book an entire luxury coach for your group and travel together in comfort, without the hassle.",
+    "Travel in comfort and style with Bus Mantra! With over 35 years of experience in the travel industry, we offer premium luxury coach rental services at just ₹1/KM. Whether you're planning a family vacation, corporate trip, wedding, or group tour, enjoy safe, comfortable, and affordable journeys with us.",
+
+  staffExperienceTitle:
+    "15+ Years Experienced Staff for Hassle-Free Journey",
+
+  staffExperienceDescription:
+    "Travel with confidence with Bus Mantra's experienced and dedicated travel team. Our skilled staff brings over 15 years of industry experience, ensuring smooth coordination, reliable support, and hassle-free travel arrangements. From booking your coach to reaching your destination, we make every group journey comfortable, convenient, and stress-free.",
+
   primaryButton: {
     label: "Book a Bus",
-    href: "#booking-form",
+    href: "/offer",
   },
   secondaryButton: {
     label: "Explore Fleet",
@@ -14,7 +22,7 @@ export const heroData = {
   stats: [
     {
       value: "100%",
-      label: "Dedicated Vehicle",
+      label: "Free Cancellation",
     },
     {
       value: "4.9/5",
@@ -26,11 +34,75 @@ export const heroData = {
     },
   ],
   image: {
-    src: "/about_bus.png",
-    alt: "BUS MANTRA Modern Luxury Coach Bus",
+    src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
+    alt: "Tata Luxury Coach",
     width: 1920,
     height: 1080,
   },
+  heroSliderImages: [
+    {
+      src: "/fleet/45-49_seater_tata_luxury_coach_1.png",
+      alt: "Tata Luxury Coach [45/49]",
+      titleLine1: "Luxury Tata Coach",
+      description:
+        "Move your entire group seamlessly with high-capacity Tata commercial luxury coaches, transparent per-km billing, and zero hidden costs.",
+    },
+    {
+      src: "/fleet/bus_mantra_bharatbenz.png",
+      alt: "BharatBenz Executive Luxury Coach [20/45]",
+      titleLine1: "Luxury BharatBenz Coach",
+      description:
+        "Experience Daimler-engineered ride comfort, whisper-quiet acoustics, and premium executive recliner seating.",
+    },
+    {
+      src: "/fleet/40_seater_volvo_with_washroom_1.png",
+      alt: "40/45 Luxury Volvo Coach with & without Washroom",
+      titleLine1: "Luxury Volvo Coach with & without Washroom",
+      description:
+        "Flagship multi-axle luxury touring with air suspension, onboard sanitized washroom, and business-class plush seating.",
+    },
+    {
+      src: "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+      alt: "Maharaja Tempo Traveler [12/16/20/26]",
+      titleLine1: "Maharaja Tempo Traveler",
+      description:
+        "Dedicated Maharaja Tempo Travelers equipped with pushback seats, individual AC vents, and experienced chauffeurs.",
+    },
+    {
+      src: "/fleet/bus_mantra_luxury_force_urbania.png",
+      alt: "Luxury Force Urbania [12/16]",
+      titleLine1: "Luxury Force Urbania",
+      description:
+        "Next-generation European-styled luxury van offering world-class ride dynamics, panoramic windows, and plush seating.",
+    },
+  ],
+  sliderTexts: [
+    {
+      titleLine2: "100% Free Cancellation, Your Ride Any Time!",
+      description:
+        "Enjoy complete booking flexibility with Bus Mantra. Plans can change, but your travel experience should remain stress-free. Book your preferred luxury coach with confidence and enjoy the freedom of hassle-free cancellations and convenient travel whenever you need it.",
+    },
+    {
+      titleLine2: "Luxury Travel, Made Easy for Everyone!",
+      description:
+        "Experience the perfect blend of comfort, convenience, and affordability with Bus Mantra. From family getaways and group adventures to corporate journeys and special celebrations, we make premium travel accessible to everyone. Enjoy spacious luxury coaches, reliable service, and budget-friendly bus rentals that turn every journey into a memorable experience.",
+    },
+    {
+      titleLine2: "Your Group, One Dedicated Coach!",
+      description:
+        "Whether travelling with family, friends, colleagues, or students, Bus Mantra offers dedicated luxury coaches for every group. Choose from comfortable travel options for male and female passengers and enjoy a safe, convenient, and hassle-free journey together. One group, one coach, endless memories.",
+    },
+    {
+      titleLine2: "Transparent Pricing, No Surprises!",
+      description:
+        "Travel smarter with Bus Mantra, where honesty meets affordability. Get clear and upfront bus rental pricing with no hidden surprises. From luxury coach bookings to group travel packages, we keep your journey budget-friendly and hassle-free. Know what you pay, enjoy what you get, and travel with complete peace of mind.",
+    },
+    {
+      titleLine2: "Sanitized & Verified Coaches, Always!",
+      description:
+        "At Bus Mantra, your comfort and well-being come first. Our coaches are maintained with care and cleaned before journeys to provide a fresh, hygienic, and comfortable travel experience. Enjoy every kilometre with peace of mind, knowing your group travel experience is designed around cleanliness, comfort, and reliability.",
+    },
+  ],
   form: {
     badge: "FULL BUS RESERVATION",
     title: "Quick Bus Fleet Search",
@@ -58,7 +130,7 @@ export const heroData = {
     ],
     labels: {
       fullName: "FULL NAME",
-      mobile: "MOBILE NUMBER",
+      mobile: "WHATSAPP NUMBER",
       email: "EMAIL ADDRESS",
       passengers: "NO. OF PASSENGERS",
       pickupPoint: "PICK-UP POINT",
@@ -97,7 +169,7 @@ export const heroData = {
       },
       {
         id: "mobileNumber",
-        label: "Mobile Number",
+        label: "WHATSAPP NUMBER",
         placeholder: "+91 98765 43210",
         defaultValue: "+91 98765 43210",
         type: "tel",
@@ -218,7 +290,7 @@ export const aboutData = {
   ========================================================= */
 
   image: {
-    src: "/images/about/hero-bus.png",
+    src: "/bus_mantra_about_bus.png",
     alt: "Luxury Bus Mantra coach travelling through a scenic Indian mountain route",
     width: 1920,
     height: 1080,
@@ -436,115 +508,30 @@ export const aboutData = {
   },
 };
 
-export const fleetTypesData = [
-  {
-    id: "mini-coach",
-    slug: "mini-coach",
-    name: "Mini Coach",
-    capacity: "15–19 Seats",
-    minSeats: 1,
-    maxSeats: 19,
-    ratePerKm: 28,
-    isPopular: false,
-    image: "/fleet/1.jpg",
-    gallery: [
-      "/fleet/2.jpg",
-      "/fleet/3.jpg",
-      "/fleet/4.jpg",
-    ],
-    description:
-      "Agile maneuverability, ideal for medium corporate teams, wedding parties, family trips, and airport pickups.",
-    amenities: [
-      "AC & Climate Control",
-      "Push-back Reclining Seats",
-      "Dedicated Luggage Space",
-      "Music System & PA Mic",
-      "USB Charging at Every Seat",
-      "First Aid Kit & Fire Safety",
-    ],
-    features: {
-      luggage: "15–20 Standard Bags",
-      entertainment: "Stereo Audio & Mic",
-      climate: "Dual Powerful AC Vents",
-      seats: "Plush Recliners (2+2 Layout)",
-    },
-    ctaText: "View Details",
-    href: "/fleets/mini-coach",
-  },
-  {
-    id: "premium-coach",
-    slug: "premium-coach",
-    name: "Premium Coach",
-    capacity: "20–45 Seats",
-    minSeats: 20,
-    maxSeats: 45,
-    ratePerKm: 42,
-    isPopular: true,
-    image: "/fleet/9.jpg",
-    gallery: [
-      "/fleet/10.jpg",
-      "/fleet/11.jpg",
-      "/fleet/12.jpg",
-    ],
-    description:
-      "Ergonomic reclining seats, spacious luggage bays, and Wi-Fi connectivity for smooth multi-hour intercity transit.",
-    amenities: [
-      "Ergonomic Reclining Seats",
-      "Fast Onboard Wi-Fi",
-      "USB Charging at Every Seat",
-      "Individual AC Vents",
-      "Spacious Underfloor Luggage Bay",
-      "Chilled Mineral Water Dispenser",
-    ],
-    features: {
-      luggage: "40–45 Large Suitcases",
-      entertainment: "HD Screen & Sound System",
-      climate: "Individual Overhead AC",
-      seats: "Executive Recliner (2+2 Layout)",
-    },
-    ctaText: "View Details",
-    href: "/fleets/premium-coach",
-  },
-  {
-    id: "luxury-coach",
-    slug: "luxury-coach",
-    name: "Luxury Coach",
-    capacity: "46–60 Seats",
-    minSeats: 46,
-    maxSeats: 60,
-    ratePerKm: 58,
-    isPopular: false,
-    image: "/fleet/5.jpg",
-    gallery: [
-      "/fleet/6.jpg",
-      "/fleet/7.jpg",
-      "/fleet/8.jpg",
-    ],
-    description:
-      "Maximum capacity touring with onboard restroom, entertainment systems, and expansive undercarriage bays for long tours.",
-    amenities: [
-      "Executive Luxury Plush Seats",
-      "Expansive Undercarriage Bays",
-      "Dual LED Entertainment Screens",
-      "Air Suspension Ride for Smooth Transit",
-      "Onboard Clean Washroom",
-      "Surround Audio System & Wireless Mic",
-    ],
-    features: {
-      luggage: "60+ Large Suitcases",
-      entertainment: "Dual Full-HD Displays",
-      climate: "Multi-Zone Climate Control",
-      seats: "Ultra Luxury Ergonomic (2+2)",
-    },
-    ctaText: "View Details",
-    href: "/fleets/luxury-coach",
-  },
-];
+import {
+  FLEET_CATEGORIES,
+  FLEET_VEHICLE_VARIANTS,
+  getAllVehicleVariants,
+  getVehicleVariantById,
+  getCategoryBySlug,
+  getCategoryForVariant,
+} from "./fleetData";
+
+export const fleetTypesData = FLEET_CATEGORIES;
+export {
+  FLEET_CATEGORIES,
+  FLEET_VEHICLE_VARIANTS,
+  getAllVehicleVariants,
+  getVehicleVariantById,
+  getCategoryBySlug,
+  getCategoryForVariant,
+};
+
 
 export const fleetSectionData = {
   eyebrow: "OUR FLEET",
-  heading: "Choose your bus.",
-  description: "Comfortable coaches for every group size.",
+  heading: "Choose Your Bus/Coaches – Comfort & Luxury for Every Journey!",
+  description: "Find the perfect ride for your group with Bus Mantra. From premium Maharaja Tempo Travellers and Force Urbania to spacious Tata, Bharat Benz, and Volvo luxury coaches, we offer multiple seating configurations to match your travel needs. Whether it's a family holiday, corporate trip, destination wedding, or large group tour, choose your ideal bus and enjoy a comfortable, convenient, and memorable journey.",
   fleets: fleetTypesData,
 };
 
@@ -554,7 +541,7 @@ export const fleetPageHeroData = {
   titleLines: ["One fleet.", "Every kind of journey."],
   description:
     "From compact coaches to premium luxury buses, our fleet is built to make group travel comfortable, reliable and easy — whatever the size of your journey.",
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
   imageAlt: "Bus Mantra luxury coach fleet",
 };
 
@@ -569,7 +556,7 @@ export const ctaData = {
   heading: "Your group. Your bus. Your journey.",
   headingLines: ["Your group. Your bus.", "Your journey."],
   description:
-    "Tell us where you're going and we'll help you find the right coach for your group.",
+    "Every group deserves a journey that feels special! With Bus Mantra, choose from a wide range of luxury Tempo Travellers, Force Urbania, Tata, Bharat Benz, and Volvo coaches tailored to your group size and travel needs. Whether it's a family getaway, corporate event, wedding celebration, or adventure trip, enjoy the freedom to travel together, your way. Pick your ride, bring your people, and let the journey begin",
   button: {
     label: "Book a Bus",
     href: "/fleets",
@@ -639,6 +626,7 @@ export const popularDestinationsData = [
     id: "jaipur",
     number: "01",
     name: "Jaipur",
+    showInFooter: true,
     route: "Delhi → Jaipur • ~5.5 HRS",
     description: "Royal architecture & weekend getaways",
     ctaText: "Fleet to Jaipur",
@@ -650,6 +638,7 @@ export const popularDestinationsData = [
     id: "manali",
     number: "02",
     name: "Manali",
+    showInFooter: true,
     route: "Delhi → Manali • ~11.0 HRS",
     description: "Mountain escapes & group tours",
     ctaText: "Fleet to Manali",
@@ -661,6 +650,7 @@ export const popularDestinationsData = [
     id: "agra",
     number: "03",
     name: "Agra",
+    showInFooter: true,
     route: "Delhi → Agra • ~3.5 HRS",
     description: "Heritage trips & weekend travel",
     ctaText: "Fleet to Agra",
@@ -672,6 +662,7 @@ export const popularDestinationsData = [
     id: "haridwar",
     number: "04",
     name: "Haridwar",
+    showInFooter: true,
     route: "Delhi → Haridwar • ~4.5 HRS",
     description: "Pilgrimage & group journeys",
     ctaText: "Fleet to Haridwar",
@@ -683,6 +674,7 @@ export const popularDestinationsData = [
     id: "udaipur",
     number: "05",
     name: "Udaipur",
+    showInFooter: false,
     route: "Delhi → Udaipur • ~10 HRS",
     description: "Lake city & group tours",
     ctaText: "Fleet to Udaipur",
@@ -694,6 +686,7 @@ export const popularDestinationsData = [
     id: "goa",
     number: "06",
     name: "Goa",
+    showInFooter: false,
     route: "Delhi → Goa • ~18.0 HRS",
     description: "Beaches & group getaways",
     ctaText: "Fleet to Goa",
@@ -710,15 +703,15 @@ export const destinationsPageHeroData = {
   ],
   description:
     "Discover popular destinations across India and make every group journey comfortable, convenient and memorable with Bus Mantra.",
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
   imageAlt:
     "Bus Mantra coach ready for group travel across India",
 };
 
 export const destinationsSectionData = {
   eyebrow: "DESTINATIONS",
-  heading: "Where will your group go?",
-  description: "Explore popular destinations for your next group journey.",
+  heading: "Explore India's Most Popular Destinations with Bus Mantra",
+  description: "Discover India's most beautiful destinations with Bus Mantra! From breathtaking hill stations and scenic beaches to royal heritage cities and spiritual destinations, we make group travel comfortable, convenient, and memorable. Choose your destination, gather your group, and let us take care of your journey with luxury coach rental services.",
   headerCta: {
     label: "View All Destinations",
     href: "#booking-form",
@@ -1193,81 +1186,121 @@ export const destinationsData = {
 
 export const servicesData = [
   {
-    id: "corporate",
+    id: "inbound-trips",
     number: "01",
-    title: "Corporate",
+    title: "Inbound Trips",
+    showInFooter: true,
     description:
-      "Reliable group transportation for meetings, conferences, team travel, employee movement and corporate events.",
-    bottomLabel: "Professional group transport",
-    icon: "briefcase",
-    image: "/images/services/corporate-india.jpg",
-    ctaLabel: "Explore Service",
-    href: "/services/corporate-travel",
-  },
-
-  {
-    id: "group-tours",
-    number: "02",
-    title: "Group Tours",
-    description:
-      "Comfortable coaches for sightseeing, multi-city journeys, weekend trips and organised group travel.",
-    bottomLabel: "Travel together with ease",
-    icon: "map",
-    image: "/images/services/group-tours-india.jpg",
-    ctaLabel: "Explore Service",
+      "Make every arrival memorable with Bus Mantra's reliable inbound travel services. Whether welcoming tourists, business travellers, or visiting groups, we provide comfortable luxury coach rentals, convenient pickups, and hassle-free transportation. Explore new destinations with ease while enjoying a smooth, safe, and memorable journey.",
+    bottomLabel: "International & inbound group travel",
+    icon: "globe",
+    image: "/images/services/inbound-trips.jpg",
+    ctaLabel: "Explore Inbound Trips",
     href: "/services/group-tours",
   },
-
   {
-    id: "events",
-    number: "03",
-    title: "Events",
+    id: "corporate-trips",
+    number: "02",
+    title: "Corporate Trips",
+    showInFooter: true,
     description:
-      "Seamless transportation for weddings, celebrations, conferences, exhibitions and large gatherings.",
-    bottomLabel: "Coordinated event transport",
-    icon: "calendar",
-    image: "/images/services/events-india.jpg",
-    ctaLabel: "Explore Service",
-    href: "/services/events-weddings",
+      "Make business travel effortless with Bus Mantra's premium corporate transportation solutions. From employee commutes and business meetings to conferences, seminars, and corporate events, we provide comfortable luxury coaches tailored to your team's needs. Enjoy punctual pickups, spacious seating, reliable service, and cost-effective group transportation that keeps your business moving.",
+    bottomLabel: "Executive group transportation",
+    icon: "briefcase",
+    image: "/images/services/corporate-trips.jpg",
+    ctaLabel: "Explore Corporate Trips",
+    href: "/services/corporate-travel",
   },
-
   {
-    id: "school-trips",
-    number: "04",
-    title: "School Trips",
+    id: "mice-conference-trips",
+    number: "03",
+    title: "MICE / Conference Trips",
+    showInFooter: true,
     description:
-      "Safe and organised group transportation for school excursions, educational trips and student travel.",
-    bottomLabel: "Comfortable group travel",
+      "Make every business event a success with Bus Mantra's dedicated group transportation services. From meetings and incentive tours to conferences, exhibitions, and corporate events, we provide comfortable luxury coaches for seamless travel. Ensure your delegates, guests, and teams reach every destination together, comfortably, and on time.",
+    bottomLabel: "Conferences, summits & expositions",
+    icon: "users",
+    image: "/images/services/mice-conference-trips.jpg",
+    ctaLabel: "Explore MICE Trips",
+    href: "/services/corporate-travel",
+  },
+  {
+    id: "school-college-trips",
+    number: "04",
+    title: "School / College Trips",
+    showInFooter: true,
+    description:
+      "Turn educational outings into unforgettable experiences with Bus Mantra. From school excursions and college tours to picnics, industrial visits, and educational trips, we offer comfortable and well-maintained coaches for student groups. Make every journey enjoyable with organised transportation, experienced drivers, and travel solutions designed for hassle-free group adventures.",
+    bottomLabel: "Safe & vetted student travel",
     icon: "graduation-cap",
-    image: "/images/services/school-trips-india.jpg",
-    ctaLabel: "Explore Service",
+    image: "/images/services/school-college-trips.png",
+    ctaLabel: "Explore Student Trips",
     href: "/services/school-trips",
   },
-
   {
-    id: "airport-transfer",
+    id: "destination-wedding",
     number: "05",
-    title: "Airport Pick Up & Transfer",
+    title: "Destination Wedding",
+    showInFooter: true,
     description:
-      "Convenient group airport transfers with comfortable vehicles and coordinated pickup and drop-off.",
-    bottomLabel: "Easy airport transfers",
+      "Make every wedding celebration extraordinary with Bus Mantra's premium group transportation services. From guest pickups and hotel transfers to venue transportation and outstation wedding travel, we make every ride smooth, comfortable, and convenient. Keep your guests together, arrive in style, and let the celebrations begin without travel worries.",
+    bottomLabel: "Grand wedding & guest transfers",
+    icon: "heart",
+    image: "/images/services/destination-wedding.png",
+    ctaLabel: "Explore Wedding Travel",
+    href: "/services/events-weddings",
+  },
+  {
+    id: "airport-railway-transfers",
+    number: "06",
+    title: "Airport / Railway Station Pick-Up & Drop-Off",
+    showInFooter: false,
+    description:
+      "Start and end your journey with complete peace of mind with Bus Mantra. We provide convenient group transportation for airport pickups, railway station transfers, and hotel drop-offs. Whether welcoming guests, organising corporate travel, or managing family arrivals, enjoy comfortable coaches, smooth transfers, and hassle-free connections to your destination.",
+    bottomLabel: "Punctual station & airport pickups",
     icon: "plane",
-    image: "/images/services/airport-transfer-india.jpg",
-    ctaLabel: "Explore Service",
+    image: "/images/services/airport-railway-transfers.jpg",
+    ctaLabel: "Explore Transit Transfers",
     href: "/services/airport-transfers",
   },
-
   {
-    id: "hotel-transfer",
-    number: "06",
-    title: "Hotel Pick Up & Transfer",
+    id: "leisure-trips",
+    number: "07",
+    title: "Leisure Trips",
+    showInFooter: false,
     description:
-      "Reliable hotel transfers for groups travelling together, with convenient pickup and destination coordination.",
-    bottomLabel: "Door-to-door convenience",
-    icon: "hotel",
-    image: "/images/services/hotel-transfer-india.jpg",
-    ctaLabel: "Explore Service",
-    href: "/services/hotel-transfers",
+      "Turn your free time into unforgettable travel experiences with Bus Mantra. Whether it's a weekend getaway, family vacation, sightseeing tour, or an exciting group adventure, we make every journey comfortable and enjoyable. Travel together in spacious luxury coaches, explore new destinations, and create beautiful memories along the way.",
+    bottomLabel: "Scenic group holidays & getaways",
+    icon: "palmtree",
+    image: "/images/services/leisure-trips.png",
+    ctaLabel: "Explore Leisure Trips",
+    href: "/services/group-tours",
+  },
+  {
+    id: "meditation-trips",
+    number: "08",
+    title: "Meditation Trips",
+    showInFooter: false,
+    description:
+      "Make your spiritual escape more meaningful with Bus Mantra. Whether travelling to peaceful retreats, meditation centres, yoga destinations, or wellness gatherings, we provide comfortable group transportation for a relaxing travel experience. Leave the travel arrangements to us, enjoy the journey together, and focus on finding your inner peace.",
+    bottomLabel: "Serene spiritual & yoga retreats",
+    icon: "flower",
+    image: "/images/services/meditation-trips.jpg",
+    ctaLabel: "Explore Meditation Trips",
+    href: "/services/group-tours",
+  },
+  {
+    id: "cycling-trips",
+    number: "09",
+    title: "Cycling Trips",
+    showInFooter: false,
+    description:
+      "Take your cycling adventures beyond the ordinary with Bus Mantra. Whether planning a weekend cycling getaway, an adventure expedition, or a group cycling event, we offer convenient coach transportation to get your team to the starting point comfortably. Travel together, explore new routes, and make every cycling adventure unforgettable.",
+    bottomLabel: "Escort support & cycling expeditions",
+    icon: "bike",
+    image: "/images/services/cycling-trips.jpg",
+    ctaLabel: "Explore Cycling Trips",
+    href: "/services/group-tours",
   },
 ];
 
@@ -1282,7 +1315,7 @@ export const servicesSectionData = {
   eyebrow: "SERVICES",
   heading: "Travel solutions for every group.",
   description:
-    "From business travel to airport transfers, we make group transportation simple, comfortable and reliable.",
+    "Every group has a destination, and every trip should be comfortable. With dependable luxury coach rentals, roomy seats, and affordable travel options, Bus Mantra brings people together for anything from memorable family vacations to business excursions, wedding celebrations, and educational tours. Take pleasure in the freedom to travel with each other, develop memories, and make every mile matter.",
   services: servicesData,
   useCases: servicesData,
 };
@@ -1298,7 +1331,7 @@ export const servicesPageHeroData = {
   titleLines: ["Group travel,", "made simple."],
   description:
     "From corporate travel and school trips to airport transfers and group tours, Bus Mantra provides comfortable, reliable transportation for every kind of group journey.",
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
   imageAlt: "Bus Mantra comfortable coach fleet for group travel",
 };
 
@@ -1346,7 +1379,7 @@ export const featuredServiceData = {
     },
   ],
 
-  image: "/about_bus.png",
+  image: "/bus_mantra_about_bus.png",
 
   imageAlt:
     "Bus Mantra luxury coach for full-bus group charter travel",
@@ -1792,7 +1825,7 @@ export const testimonialsSectionData = {
   eyebrow: "CUSTOMER STORIES",
   heading: "Trusted by Groups That Travel Together",
   description:
-    "From family holidays and school trips to corporate events and weddings, see what our customers say about their BUS MANTRA experience.",
+    "At Bus Mantra, every journey is built on comfort, reliability, and trust. From family holidays and corporate outings to destination weddings and large group adventures, we bring people together with dependable luxury coach rental services. Our commitment to quality travel, comfortable rides, and hassle-free bookings makes every trip worth remembering. When groups travel together, they choose Bus Mantra.",
   testimonials: testimonialsData,
   trustStats: [
     {
@@ -2142,19 +2175,29 @@ export const contactFaqData = {
   ],
 };
 
+export const topContactData = {
+  phone: "+91 9876543210",
+  phoneHref: "tel:+919876543210",
+  email: "charter@busmantra.in",
+  emailHref: "mailto:charter@busmantra.in",
+  supportText: "24/7 Group Charter Booking Assistance",
+};
+
 export const footerData = {
   brand: {
     name: "BUS MANTRA",
     description:
       "India's trusted platform for full-bus charters and group road travel. Reserving the entire vehicle for weddings, corporate offsites, school trips, and pilgrimage tours with verified professional chauffeurs.",
-    logo: "/logo-bus-mantra.jpeg",
+    logo: "/logo-bus-mantra.png",
   },
+
   contact: {
     phone: "+91 9876543210",
     phoneHref: "tel:+919876543210",
     email: "charter@busmantra.in",
     emailHref: "mailto:charter@busmantra.in",
   },
+
   socialLinks: [
     { name: "Facebook", href: "https://facebook.com", key: "facebook" },
     { name: "Instagram", href: "https://instagram.com", key: "instagram" },
@@ -2162,30 +2205,47 @@ export const footerData = {
     { name: "LinkedIn", href: "https://linkedin.com", key: "linkedin" },
     { name: "YouTube", href: "https://youtube.com", key: "youtube" },
   ],
+
   quickLinks: [
-    { label: "About Us", href: "/about" },
+    { label: "About Indian Driver", href: "/about-indian-driver" },
+    { label: "Testimonials", href: "/testimonials" },
     { label: "Blogs", href: "/blogs" },
+    { label: "Monument & Entry Fee", href: "/monument-entry-fee" },
+    { label: "Travel Insurance", href: "/privacy-policy" },
+    { label: "Why Travel With Us", href: "why-travel-with-us" },
+  ],
+
+  Legal: [
+    { label: "About Us", href: "/about" },
+    { label: "Contact Us", href: "/contact" },
+    { label: "Vehicle Breakdown", href: "/vehicle-breakdown" },
     { label: "Terms and Conditions", href: "/terms-conditions" },
     { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Contact Us", href: "/contact" },
   ],
+
   fleets: [
     ...fleetTypesData.map((fleet) => ({
       label: fleet.capacity ? `${fleet.name} (${fleet.capacity})` : fleet.name,
       href: "/fleets",
     })),
   ],
+
   services: [
-    ...servicesData.map((service) => ({
-      label: service.title,
-      href: "/services",
-    })),
+    ...servicesData
+      .filter((service) => service.showInFooter === true)
+      .map((service) => ({
+        label: service.title,
+        href: "/services",
+      })),
   ],
+
   destinations: [
-    ...popularDestinationsData.map((dest) => ({
-      label: dest.name,
-      href: "/destinations",
-    })),
+    ...popularDestinationsData
+      .filter((dest) => dest.showInFooter === true)
+      .map((dest) => ({
+        label: dest.name,
+        href: "/destinations",
+      })),
   ],
   partner: {
     eyebrow: "PARTNER WITH US",
@@ -2202,10 +2262,207 @@ export const footerData = {
     subtext: "Fast 2-minute registration",
   },
   copyright:
-    "© 2026 Bus Mantra Pvt Ltd. All rights reserved.",
+    "© 2026 Bus Mantra All rights reserved.",
   developer: {
     prefix: "Developed by",
     name: "Kanak Drishti Infotech Pvt. Ltd.",
     href: "https://kanakdrishtiinfo.com",
   },
 };
+
+export const offerBusCategories = {
+  tata: {
+    id: "tata",
+    key: "tata",
+    brand: "Tata",
+    name: "Tata Starbus Ultra",
+    shortName: "Tata Coach",
+    offerTag: "₹1/KM OFFER",
+    buttonLabel: "Book Tata — ₹1/km Offer",
+    badge: "AFFORDABLE CHARTER OFFER",
+    headline: "Affordable Group Travel at ₹1/KM",
+    tagline: "India's most trusted commercial coach platform, now under our exclusive ₹1/km offer.",
+    ratePerKm: 1,
+    capacity: "19–32 Seats",
+    minSeats: 1,
+    maxSeats: 32,
+    image: "/fleet/45-49_seater_tata_luxury_coach_2.png",
+    gallery: [
+      "/fleet/45-49_seater_tata_luxury_coach_1.png",
+    ],
+    description:
+      "Engineered for high-mileage dependability, the Tata Starbus Ultra delivers exceptional economy without compromising passenger safety. Features 2+2 pushback seats, roof-mounted AC, and ample luggage space for medium group tours.",
+    features: {
+      seats: "Plush Recliners (2+2 Layout)",
+      climate: "Dual Powerful AC Vents",
+      luggage: "15–20 Standard Bags",
+      entertainment: "Stereo Audio & Mic",
+    },
+    specs: [
+      { label: "Vehicle Brand", value: "Tata Motors" },
+      { label: "Model", value: "Starbus Ultra High-Deck" },
+      { label: "Seating Capacity", value: "19 to 32 Passengers" },
+      { label: "Air Conditioning", value: "Roof-Mounted Heavy Duty" },
+      { label: "Engine Type", value: "Turbocharged Intercooled Diesel" },
+      { label: "Suspension", value: "Parabolic Leaf Spring with Shock Absorbers" },
+      { label: "Safety Kit", value: "Fire Extinguisher, First Aid, Speed Governor" },
+    ],
+    amenities: [
+      "AC & Climate Control",
+      "Push-back Reclining Seats",
+      "Dedicated Luggage Space",
+      "Music System & PA Mic",
+      "USB Charging at Every Seat",
+      "First Aid Kit & Fire Safety",
+    ],
+    pricingNote: "Promotional ₹1/km base tariff. 200 KM minimum billing & 5% GST apply.",
+  },
+  bharatbenz: {
+    id: "bharatbenz",
+    key: "bharatbenz",
+    brand: "BharatBenz",
+    name: "BharatBenz Executive Coach",
+    shortName: "BharatBenz",
+    offerTag: "PREMIUM COMFORT",
+    buttonLabel: "Book Premium",
+    badge: "PREMIUM CHARTER",
+    headline: "Engineered For Executive Comfort",
+    tagline: "Daimler-engineered chassis, superior soundproofing, and executive plush recliners.",
+    ratePerKm: 42,
+    capacity: "20–45 Seats",
+    minSeats: 20,
+    maxSeats: 45,
+    image: "/fleet/bus_mantra_bharatbenz.png",
+    gallery: [
+      "/fleet/bus_mantra_bharatbenz.png",
+    ],
+    description:
+      "German engineering meets Indian road conditions. The BharatBenz Executive Coach features whisper-quiet NVH insulation, executive high-back pushback recliners, individual overhead AC vents, and massive underfloor luggage compartments.",
+    features: {
+      seats: "Executive Recliner (2+2 Layout)",
+      climate: "Individual Overhead Ducted AC",
+      luggage: "40–45 Large Suitcases",
+      entertainment: "HD Screen & Sound System",
+    },
+    specs: [
+      { label: "Vehicle Brand", value: "BharatBenz (Daimler)" },
+      { label: "Model", value: "1624 Executive High-Deck" },
+      { label: "Seating Capacity", value: "20 to 45 Passengers" },
+      { label: "Air Conditioning", value: "Climate Control Ducted Overhead" },
+      { label: "Engine Type", value: "Daimler OM 926 6-Cylinder Diesel" },
+      { label: "Suspension", value: "Full Air Suspension / Anti-Roll" },
+      { label: "Safety Kit", value: "ABS, EBD, Emergency Exit, Fire Sensors" },
+    ],
+    amenities: [
+      "Ergonomic Reclining Seats",
+      "Fast Onboard Wi-Fi",
+      "USB Charging at Every Seat",
+      "Individual AC Vents",
+      "Spacious Underfloor Luggage Bay",
+      "Chilled Mineral Water Dispenser",
+    ],
+    pricingNote: "Standard Premium rate of ₹42/km. 200 KM minimum billing & 5% GST apply.",
+  },
+  volvo: {
+    id: "volvo",
+    key: "volvo",
+    brand: "Volvo",
+    name: "Volvo 9400 Multi-Axle Luxury Coach",
+    shortName: "Volvo Coach",
+    offerTag: "FLAGSHIP LUXURY",
+    buttonLabel: "Book Luxury",
+    badge: "LUXURY FLAGSHIP",
+    headline: "The Gold Standard of Highway Touring",
+    tagline: "Ultra-luxurious multi-axle touring coach with air suspension, dual LED screens, and business-class plush seating.",
+    ratePerKm: 58,
+    capacity: "46–60 Seats",
+    minSeats: 46,
+    maxSeats: 60,
+    image: "/fleet/40_seater_volvo_with_washroom_1.png",
+    gallery: [
+      "/fleet/40_seater_volvo_with_washroom_2.png",
+    ],
+    description:
+      "Unrivaled long-distance comfort for large groups, wedding entourages, and VIP delegations. Features electronically controlled air suspension for a cloud-like ride, business-class ergonomic plush recliners, onboard washroom, and surround audio.",
+    features: {
+      seats: "Business Class Plush Recliners",
+      climate: "Full Climate Control Air Purification",
+      luggage: "Expansive Undercarriage Bays",
+      entertainment: "Dual LED Screens & Surround Sound",
+    },
+    specs: [
+      { label: "Vehicle Brand", value: "Volvo Buses" },
+      { label: "Model", value: "9400 B11R Multi-Axle" },
+      { label: "Seating Capacity", value: "46 to 60 Passengers" },
+      { label: "Air Conditioning", value: "Automatic Climate Control & Air Purification" },
+      { label: "Engine Type", value: "Volvo D11A 430HP Euro VI Engine" },
+      { label: "Suspension", value: "Electronically Controlled Air Suspension (ECS)" },
+      { label: "Safety Kit", value: "Electronic Braking System (EBS), Roll Stability, Washroom" },
+    ],
+    amenities: [
+      "Executive Luxury Plush Seats",
+      "Expansive Undercarriage Bays",
+      "Dual LED Entertainment Screens",
+      "Air Suspension Ride for Smooth Transit",
+      "Onboard Clean Washroom",
+      "Surround Audio System & Wireless Mic",
+    ],
+    pricingNote: "Flagship Luxury rate of ₹58/km. 200 KM minimum billing & 5% GST apply.",
+  },
+};
+
+export const offerFaqData = {
+  eyebrow: "₹1/KM OFFER FAQ",
+  heading: "Everything you need to know about our ₹1/km offer.",
+  description:
+    "Transparent answers about vehicle categories, pricing calculations, inclusions, and booking process.",
+  faqs: [
+    {
+      id: "offer-pricing",
+      question: "How does the ₹1/km Bus Booking Offer work?",
+      answer:
+        "Under this special promotional offer, groups can book our affordable Tata bus category starting at a promotional base tariff of ₹1 per kilometer. Standard minimum billing distance (200 KM round-trip) and statutory 5% transport GST apply to ensure upfront transparency with no hidden charges.",
+    },
+    {
+      id: "offer-brands",
+      question: "Which bus brands are available in this offer?",
+      answer:
+        "The standard ₹1/km offer features reliable Tata commercial coaches. You can also easily upgrade on the same form to Book Premium with BharatBenz (₹42/km) or Book Luxury with Volvo (₹58/km) based on your group's comfort preference.",
+    },
+    {
+      id: "offer-switching",
+      question: "Will switching between Tata, Premium, and Luxury reset my form details?",
+      answer:
+        "No. When you switch between Tata, Book Premium (BharatBenz), and Book Luxury (Volvo), all your entered trip details—including pickup location, destinations, travel dates, passenger count, and contact information—are preserved automatically.",
+    },
+    {
+      id: "offer-inclusions",
+      question: "What is included in the fare breakdown?",
+      answer:
+        "The fare breakdown displays the base vehicle charter fee and 5% transport GST. Chauffeur allowances, commercial insurance, and sanitized vehicles are included. Highway tolls and state boundary taxes are billed as per actual receipts.",
+    },
+    {
+      id: "offer-distance",
+      question: "What is the minimum billing distance?",
+      answer:
+        "As with standard interstate and outstation tourist charters, a minimum billing of 200 KM round-trip applies to cover vehicle dispatch and driver mobilization.",
+    },
+    {
+      id: "offer-booking",
+      question: "How quickly is my booking confirmed?",
+      answer:
+        "Once you submit your booking or request a quote, our dedicated dispatch team reviews your journey route, assigns the verified vehicle, and contacts you within 15–30 minutes to confirm your travel itinerary.",
+    },
+  ],
+};
+
+// Re-export dedicated testimonials page data
+export {
+  testimonialsHeroData,
+  trustMetrics,
+  mediaAndOrgRemarks,
+  videoTestimonials,
+  customerReviews,
+  appreciationLetters,
+  testimonialFaqs,
+} from "./testimonialsData";

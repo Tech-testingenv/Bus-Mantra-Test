@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ArrowRight, CheckCircle2, ShieldCheck, MapPin, Sparkles, PhoneCall } from "lucide-react";
+import FareSummary from "@/components/common/fareSummary";
 
 /**
  * DistancePriceCard
@@ -63,23 +64,13 @@ export default function DistancePriceCard({
           </span>
         </div>
 
-        {/* Estimated Total Price */}
-        <div className="bg-primary-subtle rounded-2xl p-4 border border-primary/20 flex flex-col justify-center">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] sm:text-xs font-bold text-primary uppercase tracking-wider">
-              TOTAL ESTIMATED PRICE
-            </span>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-surface text-text-secondary border border-border">
-              {pricingData?.formattedRatePerKm || "₹35/KM"}
-            </span>
-          </div>
-          <div className="text-2xl sm:text-3xl font-black text-text-primary tracking-tight">
-            {pricingData?.formattedTotalPrice || "₹0"}
-          </div>
-          <span className="text-[11px] text-text-muted mt-1">
-            Fuel, chauffeur &amp; standard GST included
-          </span>
-        </div>
+        {/* Estimated Total Price Breakdown */}
+        <FareSummary
+          basePrice={pricingData?.formattedBasePrice || "₹0"}
+          gstAmount={pricingData?.formattedEstimatedTax || "₹0"}
+          totalFare={pricingData?.formattedTotalPrice || "₹0"}
+          gstRatePercent={pricingData?.gstPercent || "5%"}
+        />
       </div>
 
       {/* Route Summary Path */}
@@ -154,7 +145,15 @@ export default function DistancePriceCard({
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-text-muted">Estimated Total:</span>
+                <span className="text-text-muted">Fare Excl. GST:</span>
+                <span className="font-semibold">{pricingData?.formattedBasePrice || "₹0"}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-text-muted">GST:</span>
+                <span className="font-semibold">{pricingData?.formattedEstimatedTax || "₹0"}</span>
+              </div>
+              <div className="flex justify-between border-t border-border pt-1">
+                <span className="font-bold text-primary">Total Fare:</span>
                 <span className="font-bold text-primary">
                   {pricingData?.formattedTotalPrice}
                 </span>

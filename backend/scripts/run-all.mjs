@@ -3,7 +3,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const mode = process.argv[2] === "start" ? "start" : "dev";
+const args = process.argv.slice(2);
+const mode = args.includes("start") ? "start" : "dev";
+const backendOnly = args.includes("backend");
 
 const services = [
   { name: "web-backend", cwd: "backend", script: mode === "start" ? "start:web" : "dev:web" },
@@ -12,7 +14,9 @@ const services = [
   { name: "admin", cwd: "admin", script: mode },
 ];
 
-const children = services.map(({ name, cwd, script }) => {
+const selectedServices = backendOnly ? services.filter(({ name }) => name.endsWith("backend")) : services;
+
+const children = selectedServices.map(({ name, cwd, script }) => {
   const child = spawn("npm", ["run", script], { cwd: path.join(root, cwd), shell: true, stdio: ["ignore", "pipe", "pipe"] });
   const prefix = (stream, target) =>
     stream.on("data", (chunk) => {

@@ -56,7 +56,7 @@ export default function PageHero({
 
   return (
     <section
-      className={`relative w-full pt-1 pb-6 sm:pt-2 sm:pb-8 lg:pb-10 ${className}`}
+      className={`relative w-full pt-1 pb-0 sm:pt-2 sm:pb-0 lg:pb-0 ${className}`}
     >
       <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-10 xl:gap-12">
 
@@ -83,7 +83,7 @@ export default function PageHero({
 
         {/* RIGHT COLUMN: Coach Image */}
         <div className="flex w-full items-center justify-center">
-          <div className="w-full rounded-2xl border border-border bg-surface-muted p-3.5 sm:rounded-3xl sm:p-4 lg:p-5 xl:rounded-[28px] xl:p-6 shadow-xs">
+          <div className="w-full rounded-2xl border border-border bg-surface-muted p-3.5 shadow-xs sm:rounded-3xl sm:p-4 lg:p-5 xl:rounded-[28px] xl:p-6">
 
             <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl xl:rounded-3xl">
               <Image

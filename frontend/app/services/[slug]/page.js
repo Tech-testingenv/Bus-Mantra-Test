@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,10 +13,14 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  ImageIcon,
+  Mail,
   MapPin,
   Phone,
+  PhoneCall,
   Route,
   ShieldCheck,
+  User,
   Users,
   X,
 } from "lucide-react";
@@ -28,6 +32,14 @@ import {
 } from "@/data/data";
 
 import FAQSection from "@/components/common/faq";
+import BookingFormField from "@/components/common/bookingFormField";
+import BookingDateTimeField from "@/components/common/bookingDateTimeField";
+import BookingDurationField from "@/components/common/bookingDurationField";
+import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
+import FareSummary from "@/components/common/fareSummary";
+import { calculateFareBreakdown } from "@/services/pricingService";
+import { validateEmail } from "@/services/validationService";
+import { combineDateTime, getTodayISODate, toApiDateTime } from "@/services/dateService";
 
 export default function ServiceSlugPage({ params }) {
   const { slug } = use(params);
@@ -46,15 +58,19 @@ export default function ServiceSlugPage({ params }) {
         if (!response.ok) throw new Error(`Service catalog returned ${response.status}.`);
         return response.json();
       })
-      .then((services) => {
-        if (active) setDatabaseService(services.find((item) => item.slug === slug) || null);
+      .then((rows) => {
+        if (active) setDatabaseService(rows.find((item) => item.slug === slug) || null);
       })
       .catch((error) => {
         console.error("Service detail catalog load failed:", error);
         if (active) setCatalogFailed(true);
       })
-      .finally(() => { if (active) setCatalogLoaded(true); });
-    return () => { active = false; };
+      .finally(() => {
+        if (active) setCatalogLoaded(true);
+      });
+    return () => {
+      active = false;
+    };
   }, [slug]);
 
   const service = databaseService || (catalogLoaded ? (catalogFailed ? fallbackService : null) : fallbackService);
@@ -72,7 +88,7 @@ export default function ServiceSlugPage({ params }) {
           </p>
 
           <h1 className="mt-2 text-3xl font-black text-neutral-900">
-            We couldn't find this service.
+            We couldn&apos;t find this service.
           </h1>
 
           <Link
@@ -84,7 +100,7 @@ export default function ServiceSlugPage({ params }) {
           </Link>
         </div>
       </main>
-      
+
     );
   }
 
@@ -104,7 +120,7 @@ export default function ServiceSlugPage({ params }) {
         <div className="lg:col-span-7">
           <ServiceHeader service={service} />
 
-          <ServiceGallery service={service} />
+          <ServiceGallery key={service.slug} service={service} />
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -143,7 +159,7 @@ export default function ServiceSlugPage({ params }) {
       {/* Services Slug FAQ Section */}
       <FAQSection data={servicesSlugFaqData} />
     </main>
-    
+
   );
 }
 
@@ -189,10 +205,6 @@ function ServiceGallery({ service }) {
   }, [service]);
 
   const [activeImage, setActiveImage] = useState(0);
-
-  useEffect(() => {
-    setActiveImage(0);
-  }, [service.slug]);
 
   const nextImage = () => {
     if (gallery.length <= 1) {
@@ -274,17 +286,15 @@ function ServiceGallery({ service }) {
               key={`${image}-${index}`}
               type="button"
               onClick={() => setActiveImage(index)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:h-16 sm:w-24 ${
-                activeImage === index
-                  ? "border-primary"
-                  : "border-transparent opacity-65 hover:opacity-100"
-              }`}
+              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:h-16 sm:w-24 ${activeImage === index
+                ? "border-primary"
+                : "border-transparent opacity-65 hover:opacity-100"
+                }`}
             >
               <Image
                 src={image}
-                alt={`${service.title} thumbnail ${
-                  index + 1
-                }`}
+                alt={`${service.title} thumbnail ${index + 1
+                  }`}
                 fill
                 sizes="96px"
                 className="object-cover"
@@ -325,7 +335,7 @@ function QuickInfo({
 function ServiceBookingForm({ service }) {
   const [formData, setFormData] = useState({
     pickup: "Delhi NCR",
-    destination: "",
+    destination: ["Jaipur"],
     departureDate: "",
     departureTime: "07:00",
     returnDate: "",
@@ -333,302 +343,252 @@ function ServiceBookingForm({ service }) {
     passengers: "",
     leadPassenger: "",
     mobile: "",
+    email: "",
   });
 
-  const [showBusImages, setShowBusImages] =
-    useState(false);
-
-  const [quoteRequested, setQuoteRequested] =
-    useState(false);
-
-  const [submitted, setSubmitted] =
-    useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [showBusImages, setShowBusImages] = useState(false);
+  const [quoteRequested, setQuoteRequested] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const estimatedKm =
-    service?.estimatedKm ?? 560;
+  const estimatedKm = service?.estimatedKm ?? 560;
+  const estimatedFare = service?.estimatedFare ?? 16464;
 
-  const estimatedFare =
-    service?.estimatedFare ?? 16464;
+  const fareBreakdown = useMemo(
+    () => calculateFareBreakdown(estimatedFare),
+    [estimatedFare]
+  );
 
   const updateField = (field, value) => {
-    setFormData((current) => ({
-      ...current,
-      [field]: value,
-    }));
+    setFormData((current) => {
+      const updated = {
+        ...current,
+        [field]: value,
+      };
+
+      if (field === "departureDate" && value) {
+        if (updated.returnDate && updated.returnDate < value) {
+          updated.returnDate = value;
+        }
+      }
+
+      return updated;
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!formData.departureDate) {
+      setSubmitError("Please select a departure date.");
+      return;
+    }
+    if (formData.email) {
+      const err = validateEmail(formData.email, { required: false });
+      if (err) {
+        setEmailError(err);
+        return;
+      }
+    }
+    setEmailError("");
+    setSubmitting(true);
     setSubmitError("");
     try {
-      const response = await fetch("/api/inquiries", {
+      const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
-          type: "service",
           fullName: formData.leadPassenger,
-          phone: formData.mobile,
-          subject: service?.title || "Service booking",
-          serviceSlug: service?.slug,
+          email: formData.email,
+          mobile: formData.mobile,
+          passengers: formData.passengers,
+          pickupPoint: formData.pickup,
+          destination: selectedDestinations,
+          departureDateTime: toApiDateTime(formData.departureDate, formData.departureTime),
+          returnDateTime: toApiDateTime(formData.returnDate, formData.returnTime),
         }),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Unable to submit request.");
+      if (!response.ok) throw new Error(result.error || "Unable to submit booking request.");
+      setSubmitted(true);
     } catch (error) {
       setSubmitError(error.message);
-      return;
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitted(true);
   };
+
+  const selectedDestinations = Array.isArray(formData.destination)
+    ? formData.destination
+    : formData.destination
+      ? [formData.destination]
+      : ["Jaipur"];
 
   return (
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full rounded-2xl border border-neutral-200/90 bg-white p-5 shadow-[0_12px_40px_rgba(0,0,0,0.065)] sm:rounded-3xl sm:p-6"
+        className="space-y-5 rounded-2xl border border-border bg-surface p-5 shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-3xl sm:p-7"
       >
-        <div className="border-b border-neutral-100 pb-4">
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+        {submitError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
+        <div className="border-b border-border pb-4">
+          <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-primary sm:text-[11px]">
             CUSTOM ROUTE & FARE
-          </p>
+          </span>
 
-          <h2 className="mt-1 text-[24px] font-black leading-tight tracking-tight text-neutral-900">
-            Reserve Mini Coach
+          <h2 className="text-xl font-black tracking-tight text-text-primary sm:text-2xl">
+            {service?.title ? `Reserve ${service.title}` : "Reserve Service"}
           </h2>
-
-          <p className="mt-1.5 text-xs text-neutral-500">
-            Plan your group journey.
-          </p>
         </div>
 
-        <div className="mt-5 space-y-3">
-          <div className="rounded-xl bg-surface-secondary px-4 py-3.5">
-            <div className="flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-primary" />
+        <div className="space-y-3.5">
+          <BookingFormField
+            id="servicePickup"
+            icon={MapPin}
+            label="PICK-UP POINT"
+            value={formData.pickup}
+            placeholder="Enter pickup point"
+            required
+            onChange={(value) => updateField("pickup", value)}
+          />
 
-              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
-                PICK-UP POINT
-              </span>
-            </div>
+          <DestinationMultiSelect
+            selectedDestinations={selectedDestinations}
+            onChange={(destinations) =>
+              updateField("destination", destinations)
+            }
+          />
 
-            <input
-              type="text"
-              value={formData.pickup}
-              onChange={(event) =>
-                updateField(
-                  "pickup",
-                  event.target.value
-                )
-              }
-              className="mt-1 w-full bg-transparent text-xs font-bold text-black outline-none"
-              placeholder="Delhi NCR"
-              required
-            />
-          </div>
-
-          <div>
-            <div className="mb-1.5 flex items-center justify-between">
-              <label
-                htmlFor="serviceDestination"
-                className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400"
-              >
-                <MapPin className="h-3.5 w-3.5 text-primary" />
-                DESTINATION(S)
-              </label>
-
-              <span className="text-[9px] text-neutral-400">
-                multi-city route
-              </span>
-            </div>
-
-            <div className="flex min-h-13.25 items-center gap-2 rounded-xl bg-surface-secondary px-3.5 transition-all duration-200 focus-within:bg-white focus-within:ring-2 focus-within:ring-focus-ring">
-              {formData.destination ? (
-                <span className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-700 shadow-sm">
-                  {formData.destination}
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateField("destination", "")
-                    }
-                    aria-label="Remove destination"
-                    className="text-sm leading-none text-neutral-400 transition-colors hover:text-neutral-700"
-                  >
-                    ×
-                  </button>
-                </span>
-              ) : (
-                <input
-                  id="serviceDestination"
-                  type="text"
-                  value={formData.destination}
-                  onChange={(event) =>
-                    updateField(
-                      "destination",
-                      event.target.value
-                    )
-                  }
-                  placeholder="Enter destination"
-                  className="w-full bg-transparent text-xs font-semibold text-black outline-none placeholder:text-black/55"
-                  required
-                />
-              )}
-
-              {formData.destination && (
-                <span className="truncate text-xs text-neutral-400">
-                  Add another city if needed
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            <DateTimeField
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <BookingDateTimeField
+              id="serviceDeparture"
               label="DEPARTURE"
               date={formData.departureDate}
               time={formData.departureTime}
               onDateChange={(value) =>
-                updateField(
-                  "departureDate",
-                  value
-                )
+                updateField("departureDate", value)
               }
               onTimeChange={(value) =>
-                updateField(
-                  "departureTime",
-                  value
-                )
+                updateField("departureTime", value)
               }
             />
 
-            <DateTimeField
+            <BookingDateTimeField
+              id="serviceReturn"
               label="RETURN"
               date={formData.returnDate}
               time={formData.returnTime}
+              minDate={formData.departureDate}
               onDateChange={(value) =>
-                updateField(
-                  "returnDate",
-                  value
-                )
+                updateField("returnDate", value)
               }
               onTimeChange={(value) =>
-                updateField(
-                  "returnTime",
-                  value
-                )
+                updateField("returnTime", value)
               }
             />
           </div>
 
-          <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
-            <div className="flex items-center gap-1.5">
-              <Users className="h-3.5 w-3.5 text-primary" />
+          <BookingDurationField
+            departureValue={combineDateTime(formData.departureDate, formData.departureTime)}
+            returnValue={combineDateTime(formData.returnDate, formData.returnTime)}
+          />
 
-              <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
-                NO. OF PASSENGERS
-              </span>
-            </div>
+          <BookingFormField
+            id="servicePassengers"
+            icon={Users}
+            label="NO. OF PASSENGERS"
+            type="number"
+            min={1}
+            max={60}
+            value={formData.passengers}
+            placeholder="e.g. 23"
+            required
+            onChange={(value) => updateField("passengers", value)}
+          />
 
-            <input
-              type="number"
-              min="1"
-              max="60"
-              value={formData.passengers}
-              onChange={(event) =>
-                updateField(
-                  "passengers",
-                  event.target.value
-                )
-              }
-              placeholder="e.g. 23"
-              className="mt-1 w-full bg-transparent text-xs font-bold text-black outline-none placeholder:text-neutral-400"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            <FormInput
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <BookingFormField
+              id="serviceName"
+              icon={User}
               label="LEAD PASSENGER"
-              placeholder="e.g. Rahul Sharma"
               value={formData.leadPassenger}
-              onChange={(value) =>
-                updateField(
-                  "leadPassenger",
-                  value
-                )
-              }
+              placeholder="Your name"
               required
+              onChange={(value) =>
+                updateField("leadPassenger", value)
+              }
             />
 
-            <FormInput
+            <BookingFormField
+              id="serviceMobile"
+              icon={Phone}
               label="CONTACT MOBILE"
-              placeholder="+91 XXXXX XXXXX"
               type="tel"
               value={formData.mobile}
-              onChange={(value) =>
-                updateField(
-                  "mobile",
-                  value
-                )
-              }
+              placeholder="+91 XXXXX XXXXX"
               required
+              onChange={(value) =>
+                updateField("mobile", value)
+              }
             />
           </div>
 
-          <div className="grid grid-cols-1 gap-2.5 pt-1 sm:grid-cols-2">
-            <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
-                EST. ROUND TRIP
-              </p>
+          <BookingFormField
+            id="serviceEmail"
+            icon={Mail}
+            label="EMAIL ADDRESS"
+            type="email"
+            value={formData.email || ""}
+            placeholder="Enter your email address"
+            error={emailError}
+            onChange={(value) => {
+              updateField("email", value);
+              if (emailError) {
+                setEmailError(validateEmail(value, { required: false }));
+              }
+            }}
+            onBlur={(e) => {
+              setEmailError(validateEmail(e.target.value, { required: false }));
+            }}
+          />
+        </div>
 
-              <div className="mt-1 flex items-baseline gap-1">
-                <span className="text-[22px] font-black leading-none text-neutral-900">
-                  ≈ {estimatedKm}
-                </span>
+        <div className="space-y-3.5 border-t border-border pt-4">
+          <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 flex items-center justify-between">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
+              EST. ROUND TRIP DISTANCE
+            </span>
 
-                <span className="text-[10px] font-bold text-neutral-500">
-                  KM
-                </span>
-              </div>
-            </div>
+            <div>
+              <span className="text-xl font-black text-text-primary">
+                ≈ {estimatedKm}
+              </span>
 
-            <div className="rounded-xl border border-primary/30 bg-primary-subtle px-3.5 py-3.5">
-              <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-primary">
-                TOTAL ESTIMATED FARE
-              </p>
-
-              <div className="mt-1">
-                <span className="text-[22px] font-black leading-none text-neutral-900">
-                  ₹
-                  {Number(
-                    estimatedFare
-                  ).toLocaleString("en-IN")}
-                </span>
-              </div>
+              <span className="ml-1 text-[11px] font-bold uppercase text-text-muted">
+                KM
+              </span>
             </div>
           </div>
 
-          <div className="rounded-xl bg-surface-secondary px-3.5 py-3">
-            <div className="flex items-start gap-2 text-[10px] leading-5 text-neutral-600">
-              <Route className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+          <FareSummary
+            basePrice={fareBreakdown.formattedBasePrice}
+            gstAmount={fareBreakdown.formattedGst}
+            totalFare={fareBreakdown.formattedTotalPrice}
+            gstRatePercent={fareBreakdown.gstPercent}
+          />
 
-              <span>
-                <span className="font-bold text-neutral-800">
-                  Route Path:
-                </span>{" "}
-                {formData.pickup ||
-                  "Delhi NCR"}{" "}
-                →{" "}
-                {formData.destination ||
-                  "Your destination"}{" "}
-                →{" "}
-                {formData.pickup ||
-                  "Delhi NCR"}{" "}
-                (Return)
-              </span>
-            </div>
+          <div className="flex items-start gap-2 rounded-xl bg-surface-secondary p-3 text-[11px] font-medium leading-5 text-text-secondary">
+            <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+
+            <span>
+              <span className="font-bold text-text-primary">
+                Trip Route:
+              </span>{" "}
+              {formData.pickup || "Delhi NCR"} →{" "}
+              {selectedDestinations.join(", ")} →{" "}
+              {formData.pickup || "Delhi NCR"} (Return)
+            </span>
           </div>
 
           <div className="grid grid-cols-2 gap-x-5 gap-y-2 px-0.5 pt-1 sm:grid-cols-3">
@@ -638,44 +598,35 @@ function ServiceBookingForm({ service }) {
             <Benefit text="Driver Allowance" />
             <Benefit text="Fuel & GST Included" />
           </div>
+        </div>
 
-          <div className="mt-1 grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() =>
-                setShowBusImages(true)
-              }
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl border border-primary/30 bg-white px-2 text-[10px] font-bold leading-tight text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground hover:shadow-md sm:px-3 sm:text-xs"
-            >
-              <BusFront className="h-3.5 w-3.5 shrink-0" />
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <button
+            type="button"
+            onClick={() => setShowBusImages(true)}
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-md font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+          >
+            <ImageIcon className="h-4 w-4" />
+            View Bus Images
+          </button>
 
-              <span>
-                View Bus Images
-              </span>
-            </button>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98] disabled:cursor-wait disabled:opacity-60"
+          >
+            {submitting ? "Submitting..." : "Confirm Booking"}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </button>
 
-            <button
-              type="submit"
-              className="group flex h-14 min-h-14 min-w-0 items-center justify-center gap-1 rounded-xl bg-primary px-2 text-[10px] font-bold leading-tight text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg sm:px-3 sm:text-xs"
-            >
-              <span>
-                Confirm Booking
-              </span>
-
-              <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                setQuoteRequested(true)
-              }
-              className="flex h-14 min-h-14 min-w-0 items-center justify-center rounded-xl bg-black px-2 text-[10px] font-bold leading-tight text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-black/90 hover:shadow-md sm:px-3 sm:text-xs"
-            >
-              Request a Quote
-            </button>
-          </div>
-          {submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
+          <button
+            type="button"
+            onClick={() => setQuoteRequested(true)}
+            className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+          >
+            <PhoneCall className="h-4 w-4" />
+            Custom Request
+          </button>
         </div>
       </form>
 
@@ -742,8 +693,7 @@ function BusImagesModal({
   passengers,
   onClose,
 }) {
-  const [mounted, setMounted] =
-    useState(false);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   const matchingBuses = useMemo(() => {
     return fleetTypesData.filter((bus) => {
@@ -786,14 +736,6 @@ function BusImagesModal({
     () => [...new Set(fleetImages)],
     [fleetImages]
   );
-
-  useEffect(() => {
-    setMounted(true);
-
-    return () => {
-      setMounted(false);
-    };
-  }, []);
 
   useEffect(() => {
     if (!mounted) {
@@ -1053,9 +995,8 @@ function BusImagesModal({
                   >
                     <Image
                       src={image}
-                      alt={`Bus image ${
-                        index + 1
-                      }`}
+                      alt={`Bus image ${index + 1
+                        }`}
                       fill
                       priority={
                         index === 0
@@ -1190,93 +1131,10 @@ function ConfirmationModal({
   );
 }
 
-function DateTimeField({
-  label,
-  date,
-  time,
-  onDateChange,
-  onTimeChange,
-}) {
-  return (
-    <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
-      <div className="flex items-center gap-1.5">
-        <CalendarDays className="h-3.5 w-3.5 text-primary" />
-
-        <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
-          {label}
-        </span>
-      </div>
-
-      <div className="mt-1.5 flex items-center gap-1.5">
-        <input
-          type="date"
-          value={date}
-          onChange={(event) =>
-            onDateChange(
-              event.target.value
-            )
-          }
-          required={
-            label ===
-            "DEPARTURE"
-          }
-          className="min-w-0 flex-1 bg-transparent text-[11px] font-bold text-black outline-none"
-        />
-
-        <span className="text-[10px] text-neutral-400">
-          |
-        </span>
-
-        <input
-          type="time"
-          value={time}
-          onChange={(event) =>
-            onTimeChange(
-              event.target.value
-            )
-          }
-          className="w-18.5 bg-transparent text-[11px] font-bold text-black outline-none"
-        />
-      </div>
-    </div>
-  );
-}
-
-function FormInput({
-  label,
-  placeholder,
-  value,
-  onChange,
-  type = "text",
-  required = false,
-}) {
-  return (
-    <div className="rounded-xl bg-surface-secondary px-3.5 py-3.5">
-      <span className="text-[9px] font-bold uppercase tracking-[0.08em] text-neutral-400">
-        {label}
-      </span>
-
-      <input
-        type={type}
-        value={value}
-        onChange={(event) =>
-          onChange(
-            event.target.value
-          )
-        }
-        placeholder={placeholder}
-        required={required}
-        className="mt-1 w-full bg-transparent text-xs font-semibold text-black outline-none placeholder:text-black/55"
-      />
-    </div>
-  );
-}
-
 function Benefit({ text }) {
   return (
-    <div className="flex items-center gap-1.5 text-[9px] font-medium text-neutral-500 sm:text-[10px]">
+    <div className="flex items-center gap-1.5 text-[10px] leading-5 text-text-secondary sm:text-[11px]">
       <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-primary" />
-
       <span>{text}</span>
     </div>
   );
@@ -1301,7 +1159,7 @@ function ServiceHighlights({
         </h2>
 
         <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500">
-          Everything is organised around your group's travel requirements.
+          Everything is organised around your group&apos;s travel requirements.
         </p>
       </div>
 

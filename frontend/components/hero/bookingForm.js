@@ -24,6 +24,13 @@ import {
   saveBookingSession,
   encodeBookingToQuery,
 } from "@/services/bookingState";
+import {
+  calculateTripDuration,
+  isReturnBeforeDeparture,
+  parseDateComponents,
+  toApiDateTime,
+} from "@/services/dateService";
+import BookingDurationField from "@/components/common/bookingDurationField";
 
 const FALLBACK_DESTINATION_OPTIONS = [
   "Jaipur",
@@ -170,7 +177,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
   const labels = data?.labels || {
     fullName: "FULL NAME",
-    mobile: "MOBILE NUMBER",
+    mobile: "WHATSAPP NUMBER",
     email: "EMAIL ADDRESS",
     passengers: "NO. OF PASSENGERS",
     pickupPoint: "PICK-UP POINT",
@@ -238,7 +245,6 @@ export default function BookingForm({ data = heroData?.form }) {
   */
 
   const [formValues, setFormValues] = useState(defaultValues);
-  const [databaseDestinations, setDatabaseDestinations] = useState(null);
 
   const [capacityNotice, setCapacityNotice] = useState(null);
   const [passengerError, setPassengerError] = useState("");
@@ -247,24 +253,6 @@ export default function BookingForm({ data = heroData?.form }) {
   const [submitted, setSubmitted] = useState(false);
 
   const destRef = useRef(null);
-
-  useEffect(() => {
-    let active = true;
-    fetch("/api/destinations")
-      .then((response) => {
-        if (!response.ok) throw new Error("Unable to load destination options.");
-        return response.json();
-      })
-      .then((data) => {
-        if (active && Array.isArray(data)) {
-          setDatabaseDestinations(data.map((destination) => destination.name));
-        }
-      })
-      .catch((error) => console.error("Booking destinations load failed:", error));
-    return () => {
-      active = false;
-    };
-  }, []);
 
   /*
   =========================================================
@@ -580,15 +568,33 @@ export default function BookingForm({ data = heroData?.form }) {
     const finalValue =
       `${draftDate} | ${customHour}:${finalMinute} ${customPeriod}`;
 
-    const fieldKey =
-      activePicker === "departure"
-        ? "departureDateTime"
-        : "returnDateTime";
+    if (activePicker === "departure") {
+      setFormValues((prev) => {
+        const updated = {
+          ...prev,
+          departureDateTime: finalValue,
+        };
 
-    handleChange(
-      fieldKey,
-      finalValue
-    );
+        // If return date precedes new departure date, auto-adjust return date
+        if (prev.returnDateTime && isReturnBeforeDeparture(finalValue, prev.returnDateTime)) {
+          updated.returnDateTime = finalValue;
+        }
+
+        return updated;
+      });
+    } else {
+      setFormValues((prev) => {
+        let finalReturn = finalValue;
+        if (prev.departureDateTime && isReturnBeforeDeparture(prev.departureDateTime, finalValue)) {
+          finalReturn = prev.departureDateTime;
+        }
+
+        return {
+          ...prev,
+          returnDateTime: finalReturn,
+        };
+      });
+    }
 
     setActivePicker(null);
   };
@@ -679,6 +685,7 @@ export default function BookingForm({ data = heroData?.form }) {
 
     const {
       bus,
+      variant,
       error,
       exceedsCapacity,
     } = getBusForPassengers(
@@ -731,7 +738,13 @@ export default function BookingForm({ data = heroData?.form }) {
       selectedBusId: bus.id,
 
       selectedBusName:
-        bus.name,
+        variant?.name || bus.name,
+
+      vehicleType:
+        variant?.id || formValues.vehicleType || "",
+
+      vehicle:
+        variant?.id || formValues.vehicleType || "",
 
       hasDeterminedPassengers:
         true,
@@ -741,12 +754,16 @@ export default function BookingForm({ data = heroData?.form }) {
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingPayload),
+        body: JSON.stringify({
+          ...bookingPayload,
+          departureDateTime: toApiDateTime(formValues.departureDateTime),
+          returnDateTime: toApiDateTime(formValues.returnDateTime),
+        }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Unable to save booking.");
-    } catch (submitError) {
-      setCapacityNotice(submitError.message);
+    } catch (error) {
+      setCapacityNotice(error.message);
       return;
     }
 
@@ -882,7 +899,7 @@ export default function BookingForm({ data = heroData?.form }) {
   */
 
   const filteredDestinations =
-    (databaseDestinations || destinationOptions).filter((opt) =>
+    destinationOptions.filter((opt) =>
       opt
         .toLowerCase()
         .includes(
@@ -1059,19 +1076,42 @@ export default function BookingForm({ data = heroData?.form }) {
                   draftYearNum ===
                     calYear;
 
+                const isBeforeDeparture =
+                  activePicker === "return" &&
+                  (() => {
+                    const dep = parseDateComponents(
+                      formValues.departureDateTime
+                    );
+                    if (!dep) return false;
+                    const thisDateUtc = Date.UTC(
+                      calYear,
+                      calMonth,
+                      day
+                    );
+                    const depUtc = Date.UTC(
+                      dep.year,
+                      dep.month - 1,
+                      dep.day
+                    );
+                    return thisDateUtc < depUtc;
+                  })();
+
                 return (
                   <button
                     key={day}
                     type="button"
-                    onClick={() =>
-                      handleSelectDay(
-                        day
-                      )
-                    }
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-150 mx-auto cursor-pointer ${
-                      isSelected
-                        ? "bg-primary text-primary-foreground shadow-xs font-bold scale-105"
-                        : "text-text-secondary hover:bg-primary-subtle hover:text-primary"
+                    disabled={isBeforeDeparture}
+                    onClick={() => {
+                      if (!isBeforeDeparture) {
+                        handleSelectDay(day);
+                      }
+                    }}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-150 mx-auto ${
+                      isBeforeDeparture
+                        ? "opacity-30 cursor-not-allowed text-text-muted"
+                        : isSelected
+                          ? "bg-primary text-primary-foreground shadow-xs font-bold scale-105 cursor-pointer"
+                          : "text-text-secondary hover:bg-primary-subtle hover:text-primary cursor-pointer"
                     }`}
                   >
                     {day}
@@ -1350,8 +1390,6 @@ export default function BookingForm({ data = heroData?.form }) {
         onSubmit={handleSubmit}
         className="space-y-3.5 sm:space-y-4"
       >
-        {/* ========================================================= */}
-        {/* ========================================================= */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
           {/* Full Name */}
@@ -1396,7 +1434,7 @@ export default function BookingForm({ data = heroData?.form }) {
               className="text-[10px] sm:text-[11px] font-bold text-text-muted uppercase tracking-wider select-none mb-1 cursor-pointer"
             >
               {labels.mobile ||
-                "MOBILE NUMBER"}
+                "WHATSAPP NUMBER"}
             </label>
 
             <div className="flex items-center gap-2">
@@ -1516,7 +1554,7 @@ export default function BookingForm({ data = heroData?.form }) {
         {/* SECOND ROW */}
         {/* ========================================================= */}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 items-stretch">
 
           {/* Pick-Up */}
           <div className="bg-surface-secondary hover:bg-surface-muted focus-within:bg-surface focus-within:ring-2 focus-within:ring-focus-ring/30 border border-transparent focus-within:border-primary rounded-xl px-4 py-3 transition-all duration-150 flex flex-col justify-center">
@@ -1915,8 +1953,15 @@ export default function BookingForm({ data = heroData?.form }) {
               )}
           </div>
 
+          {/* Duration */}
+          <BookingDurationField
+            departureValue={formValues.departureDateTime}
+            returnValue={formValues.returnDateTime}
+            variant="compact"
+          />
+
           {/* Find Buses */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-1 flex items-stretch">
+          <div className="col-span-1 sm:col-span-2 md:col-span-1 xl:col-span-1 flex items-stretch">
             <button
               type="submit"
               className="w-full h-full min-h-14 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground font-semibold text-sm lg:text-[15px] flex items-center justify-center gap-2 shadow-xs hover:shadow-md active:scale-[0.98] transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 select-none group"
@@ -1960,6 +2005,13 @@ export default function BookingForm({ data = heroData?.form }) {
                 "Delhi NCR"}{" "}
               (Return)
             </span>
+
+            {calculateTripDuration(formValues.departureDateTime, formValues.returnDateTime).text && (
+              <span className="inline-flex items-center gap-1 rounded bg-white/10 px-2 py-0.5 text-[11px] font-bold text-white select-none">
+                <Clock className="h-3 w-3 text-primary stroke-[2.2]" />
+                {calculateTripDuration(formValues.departureDateTime, formValues.returnDateTime).text}
+              </span>
+            )}
           </div>
 
           <div className="flex items-center gap-2 text-neutral-300 text-xs sm:text-[13px] font-medium">

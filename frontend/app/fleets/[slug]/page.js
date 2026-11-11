@@ -4,7 +4,10 @@ import {
   use,
   useCallback,
   useEffect,
+  useMemo,
+  useRef,
   useState,
+  useSyncExternalStore,
   useTransition,
 } from "react";
 
@@ -16,12 +19,18 @@ import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
+  Bus,
   Calendar,
   Check,
   CheckCircle2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
+  FileText,
   Flame,
   ImageIcon,
+  Mail,
   MapPin,
   Phone,
   PhoneCall,
@@ -36,23 +45,34 @@ import DestinationMultiSelect from "@/components/fleet/destinationMultiSelect";
 
 import { getBusBySlug } from "@/services/busSelectionService";
 import { calculateRouteDistance } from "@/services/distanceCalculationService";
-import { calculateCharterPrice, formatCurrency } from "@/services/pricingService";
+import { calculateCharterPrice, calculateFareBreakdown } from "@/services/pricingService";
 import { fleetSlugFaqData } from "@/data/data";
 import FAQSection from "@/components/common/faq"
 
+import BookingDateTimeField from "@/components/common/bookingDateTimeField";
+import BookingDurationField from "@/components/common/bookingDurationField";
+import BookingFormField from "@/components/common/bookingFormField";
+import FareSummary from "@/components/common/fareSummary";
+import { validateEmail } from "@/services/validationService";
 import {
-  getBookingSession,
+  toISODateString,
+  isReturnBeforeDeparture,
+  combineDateTime,
+  toApiDateTime,
+} from "@/services/dateService";
+
+import {
   resolveInitialBookingState,
   saveBookingSession,
 } from "@/services/bookingState";
 
-const DEFAULT_FLEET_IMAGE = "/fleet/fleet.png";
+const DEFAULT_FLEET_IMAGE = "/fleet/12_seater_maharaja_tempo_traveller_1.png";
 
 const IMAGE_FIELDS = ["image", "imageUrl", "imagePath", "photo", "thumbnail"];
 
 const FALLBACK_FLEET_IMAGES = [
-  "/fleet/fleet.png",
-  "/fleet/coach.png",
+  "/fleet/12_seater_maharaja_tempo_traveller_1.png",
+  "/fleet/45-49_seater_tata_luxury_coach_1.png",
 ];
 
 function getFleetImages(fleet) {
@@ -82,18 +102,15 @@ function SafeFleetImage({
   sizes,
   priority = false,
 }) {
-  const [currentSrc, setCurrentSrc] = useState(src);
-
-  useEffect(() => {
-    setCurrentSrc(src);
-  }, [src]);
+  const [imageState, setImageState] = useState({ src, currentSrc: src });
+  const currentSrc = imageState.src === src ? imageState.currentSrc : src;
 
   const handleError = () => {
     if (currentSrc === DEFAULT_FLEET_IMAGE) {
       return;
     }
 
-    setCurrentSrc(DEFAULT_FLEET_IMAGE);
+    setImageState({ src, currentSrc: DEFAULT_FLEET_IMAGE });
   };
 
   return (
@@ -113,64 +130,206 @@ export default function FleetDetailPage({ params }) {
   const unwrappedParams = use(params);
   const slug = unwrappedParams?.slug;
 
-  const initialBus = getBusBySlug(slug);
-  const [bus, setBus] = useState(initialBus);
+  const fallbackBus = getBusBySlug(slug);
+  const [databaseBus, setDatabaseBus] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/fleets")
+      .then((response) => {
+        if (!response.ok) throw new Error(`Fleet catalog returned ${response.status}.`);
+        return response.json();
+      })
+      .then((rows) => {
+        if (!active) return;
+        const row = rows.find((fleet) => fleet.slug === slug);
+        if (row) {
+          setDatabaseBus({
+            ...fallbackBus,
+            ...row,
+            id: row.id,
+            slug: row.slug,
+            name: row.name,
+            image: row.image || fallbackBus?.image,
+            gallery: row.gallery?.length ? row.gallery : fallbackBus?.gallery,
+            amenities: row.amenities?.length ? row.amenities : fallbackBus?.amenities,
+            vehicleTypes: fallbackBus?.vehicleTypes || [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Fleet detail catalog load failed:", error);
+      });
+    return () => {
+      active = false;
+    };
+  }, [fallbackBus, slug]);
+
+  const isBusMissing = !databaseBus && !fallbackBus;
+  const bus = useMemo(
+    () => databaseBus || fallbackBus || { vehicleTypes: [] },
+    [databaseBus, fallbackBus]
+  );
 
   const searchParams = useSearchParams();
 
   const [bookingData, setBookingData] = useState(() =>
     resolveInitialBookingState(searchParams)
   );
-  const [hasCustomRoute, setHasCustomRoute] = useState(() => {
-    const savedBooking = getBookingSession();
-    return (
-      searchParams.has("pickup") ||
-      searchParams.has("pickupPoint") ||
-      searchParams.has("dest") ||
-      searchParams.has("destination") ||
-      Boolean(savedBooking?.pickupPoint || savedBooking?.destination)
-    );
-  });
 
   const [distanceResult, setDistanceResult] = useState(null);
   const [pricingResult, setPricingResult] = useState(null);
-  const hasCoachEstimate = !hasCustomRoute &&
-    (bus?.defaultRoundTripKm != null || bus?.defaultEstimatedFare != null);
 
   const [isBooked, setIsBooked] = useState(false);
   const [showFleetModal, setShowFleetModal] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [routeCustomized, setRouteCustomized] = useState(false);
 
   const [, startTransition] = useTransition();
 
-  useEffect(() => {
-    let active = true;
-    fetch(`/api/fleets/${encodeURIComponent(slug)}`)
-      .then(async (response) => {
-        if (response.status === 404) return null;
-        if (!response.ok) throw new Error("Unable to load coach details.");
-        return response.json();
-      })
-      .then((result) => {
-        if (active && result) setBus(result);
-      })
-      .catch((error) => console.error("Fleet detail load failed:", error));
-    return () => {
-      active = false;
+  const vehicleTypeOptions = useMemo(
+    () => (Array.isArray(bus?.vehicleTypes) ? bus.vehicleTypes : []),
+    [bus]
+  );
+
+  const supportsVehicleTypeSelection = vehicleTypeOptions.length > 0;
+
+  const [selectedVehicleTypeKey, setSelectedVehicleTypeKey] = useState(() => {
+    const fromQuery = searchParams?.get("vehicle") || searchParams?.get("vehicleType");
+    if (fromQuery && vehicleTypeOptions.some((o) => o.id === fromQuery || o.slug === fromQuery)) {
+      const match = vehicleTypeOptions.find((o) => o.id === fromQuery || o.slug === fromQuery);
+      return match.id;
+    }
+    const sessionVehicle = bookingData?.vehicleType;
+    if (sessionVehicle && vehicleTypeOptions.some((o) => o.id === sessionVehicle)) {
+      return sessionVehicle;
+    }
+    if (bus?.defaultVariantId && vehicleTypeOptions.some((o) => o.id === bus.defaultVariantId)) {
+      return bus.defaultVariantId;
+    }
+    const pCount = parseInt(bookingData?.passengers, 10);
+    if (!isNaN(pCount) && pCount > 0) {
+      const fitting = vehicleTypeOptions.filter((v) => (v.maxSeats || v.seats) >= pCount);
+      if (fitting.length > 0) {
+        fitting.sort((a, b) => (a.maxSeats || a.seats) - (b.maxSeats || b.seats));
+        return fitting[0].id;
+      }
+    }
+    return vehicleTypeOptions[0]?.id || "";
+  });
+
+  const activeVehicleType = useMemo(() => {
+    if (vehicleTypeOptions.length === 0) return null;
+    return (
+      vehicleTypeOptions.find((opt) => opt.id === selectedVehicleTypeKey) ||
+      vehicleTypeOptions[0]
+    );
+  }, [vehicleTypeOptions, selectedVehicleTypeKey]);
+
+  // Merged effective bus object for the active variant
+  const effectiveBus = useMemo(() => {
+    if (!activeVehicleType) return bus;
+    return {
+      ...bus,
+      ...activeVehicleType,
+      id: activeVehicleType.id,
+      name: activeVehicleType.name,
+      capacity: activeVehicleType.capacity || `${activeVehicleType.seats} Passengers`,
+      seatLayout: activeVehicleType.seatLayout,
+      description: activeVehicleType.description || bus.description,
+      image: activeVehicleType.image || bus.image,
+      imageUrl: activeVehicleType.image || bus.imageUrl,
+      gallery:
+        activeVehicleType.gallery?.length > 0
+          ? activeVehicleType.gallery
+          : bus.gallery || [activeVehicleType.image || bus.image],
+      images:
+        activeVehicleType.gallery?.length > 0
+          ? activeVehicleType.gallery
+          : bus.images || [activeVehicleType.image || bus.image],
+      ratePerKm: activeVehicleType.ratePerKm || bus.ratePerKm,
+      features: {
+        luggage: activeVehicleType.specs?.luggage || bus.features?.luggage || "Standard boot space",
+        climate: activeVehicleType.specs?.climate || bus.features?.climate || "Individual AC vents",
+        seats: `${activeVehicleType.seatLayout} Reclining Seats`,
+        entertainment: activeVehicleType.specs?.audioVisual || bus.features?.entertainment || "Audio System",
+        charging: activeVehicleType.specs?.charging || "USB Ports at each seat",
+        washroom: activeVehicleType.specs?.washroom || bus.features?.washroom || "Not Available",
+      },
+      amenities:
+        activeVehicleType.amenities?.length > 0
+          ? activeVehicleType.amenities
+          : bus.amenities,
+      inclusions:
+        activeVehicleType.inclusions?.length > 0
+          ? activeVehicleType.inclusions
+          : bus.inclusions,
     };
-  }, [slug]);
+  }, [bus, activeVehicleType]);
+
+  const passengerCount = parseInt(bookingData.passengers, 10);
+  const capacityWarning = useMemo(() => {
+    if (
+      !activeVehicleType ||
+      isNaN(passengerCount) ||
+      passengerCount <= 0
+    ) {
+      return "";
+    }
+    const max = activeVehicleType.maxSeats || activeVehicleType.seats;
+    if (passengerCount > max) {
+      return `${activeVehicleType.name} accommodates up to ${max} passengers. Your group has ${passengerCount} passengers.`;
+    }
+    return "";
+  }, [activeVehicleType, passengerCount]);
 
   const updateRouteCalculation = useCallback(
-    async (pickup, destinations) => {
+    async (pickup, destinations, vehicleOverride) => {
       try {
+        if (isBusMissing) return;
+
+        if (
+          !routeCustomized &&
+          Number(bus.defaultRoundTripKm) > 0 &&
+          Number(bus.defaultEstimatedFare) > 0
+        ) {
+          const fare = calculateFareBreakdown(bus.defaultEstimatedFare);
+          startTransition(() => {
+            setDistanceResult({
+              totalKm: Number(bus.defaultRoundTripKm),
+              routeSummaryText: "Default round-trip estimate",
+            });
+            setPricingResult({
+              ...fare,
+              formattedEstimatedTax: fare.formattedGst,
+            });
+          });
+          return;
+        }
         const dist = await calculateRouteDistance({
           pickup,
           destinations,
         });
 
+        const activeVehicle =
+          vehicleOverride !== undefined ? vehicleOverride : activeVehicleType;
+
+        const busForCalc = activeVehicle
+          ? {
+            ...bus,
+            ...activeVehicle,
+            id: activeVehicle.id,
+            name: activeVehicle.name,
+            ratePerKm: activeVehicle.ratePerKm,
+          }
+          : bus;
+
         const pricing = calculateCharterPrice({
           totalDistanceKm: dist.totalKm,
-          bus,
+          bus: busForCalc,
         });
 
         startTransition(() => {
@@ -181,44 +340,141 @@ export default function FleetDetailPage({ params }) {
         console.error("Calculation failed:", error);
       }
     },
-    [bus, startTransition]
+    [bus, isBusMissing, activeVehicleType, routeCustomized, startTransition]
   );
 
   useEffect(() => {
-    if (!bus) return;
     updateRouteCalculation(
       bookingData.pickupPoint,
-      bookingData.destination
+      bookingData.destination,
+      activeVehicleType
     );
   }, [
     bookingData.pickupPoint,
     bookingData.destination,
-    bus,
+    activeVehicleType,
     updateRouteCalculation,
   ]);
 
-  if (!bus) {
-    return (
-      <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
-        <div className="text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary">FLEET NOT FOUND</span>
-          <h1 className="mt-2 text-3xl font-black text-text-primary">We couldn&apos;t find this coach.</h1>
-          <p className="mt-2 text-sm text-text-muted">The fleet you&apos;re looking for is not available.</p>
-          <Link href="/fleets" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover">
-            <ArrowLeft className="h-4 w-4" /> Back to Fleet
-          </Link>
-        </div>
-      </main>
+  const handleVehicleTypeChange = (newKey) => {
+    setSelectedVehicleTypeKey(newKey);
+    const selectedOpt =
+      vehicleTypeOptions.find((o) => o.id === newKey) ||
+      vehicleTypeOptions[0];
+
+    const newPassengers = String(selectedOpt?.seats || selectedOpt?.maxSeats || bookingData.passengers);
+
+    setBookingData((previous) => {
+      const updated = {
+        ...previous,
+        vehicleType: newKey,
+        vehicleTypeName: selectedOpt.name,
+        ratePerKm: selectedOpt.ratePerKm,
+        passengers: newPassengers,
+      };
+      saveBookingSession(updated);
+      return updated;
+    });
+
+    if (typeof window !== "undefined") {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("vehicle", newKey);
+        url.searchParams.set("passengers", newPassengers);
+        window.history.replaceState(null, "", url.toString());
+      } catch {
+        // Safe fallback
+      }
+    }
+
+    updateRouteCalculation(
+      bookingData.pickupPoint,
+      bookingData.destination,
+      selectedOpt
     );
-  }
+  };
+
+  const handlePassengerCountChange = (newVal) => {
+    const pCount = parseInt(newVal, 10);
+
+    let matchedVariant = null;
+    if (!isNaN(pCount) && pCount > 0 && vehicleTypeOptions.length > 0) {
+      const fitting = vehicleTypeOptions.filter(
+        (v) => (v.maxSeats || v.seats) >= pCount
+      );
+      if (fitting.length > 0) {
+        fitting.sort((a, b) => (a.maxSeats || a.seats) - (b.maxSeats || b.seats));
+        matchedVariant = fitting[0];
+      } else {
+        matchedVariant = vehicleTypeOptions[vehicleTypeOptions.length - 1];
+      }
+    }
+
+    if (matchedVariant && matchedVariant.id !== selectedVehicleTypeKey) {
+      setSelectedVehicleTypeKey(matchedVariant.id);
+    }
+
+    const currentVariant = matchedVariant || activeVehicleType;
+
+    setBookingData((previous) => {
+      const updated = {
+        ...previous,
+        passengers: newVal,
+        ...(currentVariant
+          ? {
+            vehicleType: currentVariant.id,
+            vehicleTypeName: currentVariant.name,
+            ratePerKm: currentVariant.ratePerKm,
+          }
+          : {}),
+      };
+      saveBookingSession(updated);
+      return updated;
+    });
+
+    if (typeof window !== "undefined") {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("passengers", newVal);
+        if (currentVariant) {
+          url.searchParams.set("vehicle", currentVariant.id);
+        }
+        window.history.replaceState(null, "", url.toString());
+      } catch {
+        // Safe fallback
+      }
+    }
+
+    updateRouteCalculation(
+      bookingData.pickupPoint,
+      bookingData.destination,
+      currentVariant
+    );
+  };
 
   const handleFieldChange = (key, value) => {
-    if (key === "pickupPoint" || key === "destination") setHasCustomRoute(true);
+    if (key === "pickupPoint" || key === "destination") {
+      setRouteCustomized(true);
+    }
     setBookingData((previous) => {
       const updated = {
         ...previous,
         [key]: value,
       };
+
+      // If departure date/time changes, ensure return date/time does not precede departure
+      if (key === "departureDateTime" && value) {
+        if (
+          updated.returnDateTime &&
+          isReturnBeforeDeparture(value, updated.returnDateTime)
+        ) {
+          // Sync return date to match departure date
+          const depIso = toISODateString(value);
+          const retParts = (updated.returnDateTime || "").split("|");
+          const retTime = (retParts[1] || " 09:00 PM").trim();
+          updated.returnDateTime = combineDateTime(depIso, retTime);
+        }
+      }
 
       saveBookingSession(updated);
 
@@ -230,9 +486,45 @@ export default function FleetDetailPage({ params }) {
     handleFieldChange("destination", destinations);
   };
 
-  const handleConfirmBooking = (event) => {
+  const handleConfirmBooking = async (event) => {
     event.preventDefault();
-    setIsBooked(true);
+    if (!bookingData.departureDateTime) {
+      setSubmitError("Please select a departure date.");
+      return;
+    }
+    if (bookingData.email) {
+      const err = validateEmail(bookingData.email, { required: false });
+      if (err) {
+        setEmailError(err);
+        return;
+      }
+    }
+    setEmailError("");
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: bookingData.fullName,
+          email: bookingData.email,
+          mobile: bookingData.mobile,
+          passengers: bookingData.passengers,
+          pickupPoint: bookingData.pickupPoint,
+          destination: bookingData.destination,
+          departureDateTime: toApiDateTime(bookingData.departureDateTime),
+          returnDateTime: toApiDateTime(bookingData.returnDateTime),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unable to submit booking request.");
+      setIsBooked(true);
+    } catch (error) {
+      setSubmitError(error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const openFleetModal = () => {
@@ -242,6 +534,31 @@ export default function FleetDetailPage({ params }) {
   const closeFleetModal = () => {
     setShowFleetModal(false);
   };
+
+  if (isBusMissing) {
+    return (
+      <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
+        <div className="text-center">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-primary">
+            FLEET NOT FOUND
+          </span>
+          <h1 className="mt-2 text-3xl font-black text-text-primary">
+            We couldn&apos;t find this coach.
+          </h1>
+          <p className="mt-2 text-sm text-text-muted">
+            The fleet you&apos;re looking for is not available.
+          </p>
+          <Link
+            href="/fleets"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Fleet
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -260,8 +577,12 @@ export default function FleetDetailPage({ params }) {
           <div className="flex w-full flex-col gap-8 lg:col-span-7">
             <div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-surface px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-text-secondary">
-                  {bus.badge || "CHARTER COACH"}
+                <span className="rounded-full bg-surface px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-text-secondary border border-border">
+                  {bus.name}
+                </span>
+
+                <span className="rounded-full bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary border border-primary/20">
+                  {effectiveBus.seatLayout} Layout
                 </span>
 
                 {bus.isPopular && (
@@ -272,62 +593,94 @@ export default function FleetDetailPage({ params }) {
                 )}
               </div>
 
-              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-4xl lg:text-[42px]">
-                {bus.name}
+              <h1 className="text-3xl font-black leading-[1.1] tracking-tight text-text-primary sm:text-4xl lg:text-[40px]">
+                {effectiveBus.name}
               </h1>
 
-              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-text-secondary">
-                <Users className="h-4 w-4 text-primary" />
-                Capacity: {bus.capacity}
+              <div className="mt-3 flex flex-wrap items-center gap-4 text-sm font-semibold text-text-secondary">
+                <span className="inline-flex items-center gap-1.5">
+                  <Users className="h-4 w-4 text-primary" />
+                  Capacity: <strong className="text-text-primary">{effectiveBus.capacity}</strong>
+                </span>
+                <span className="text-text-muted">•</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Bus className="h-4 w-4 text-primary" />
+                  Seating: <strong className="text-text-primary">{effectiveBus.seatLayout} Push-back</strong>
+                </span>
               </div>
 
-              {bus.description && (
+              {effectiveBus.description && (
                 <p className="mt-4 max-w-2xl text-sm leading-6 text-text-muted sm:text-base">
-                  {bus.description}
+                  {effectiveBus.description}
                 </p>
               )}
             </div>
 
-            <FleetHeroImage bus={bus} />
+            <FleetHeroImage bus={effectiveBus} />
 
-            {bus.features && (
-              <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6">
-                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
-                  VEHICLE SPECIFICATIONS
-                </h2>
+            {effectiveBus.features && (
+              <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
+                    VEHICLE SPECIFICATIONS
+                  </h2>
+                </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   <Specification
-                    label="Luggage Bay"
-                    value={bus.features.luggage}
+                    label="Seating Capacity"
+                    value={effectiveBus.capacity}
+                  />
+
+                  <Specification
+                    label="Seat Configuration"
+                    value={`${effectiveBus.seatLayout} Recliner`}
+                  />
+
+                  <Specification
+                    label="Luggage Space"
+                    value={effectiveBus.features.luggage}
                   />
 
                   <Specification
                     label="Climate Control"
-                    value={bus.features.climate}
-                  />
-
-                  <Specification
-                    label="Seating Layout"
-                    value={bus.features.seats}
+                    value={effectiveBus.features.climate}
                   />
 
                   <Specification
                     label="Audio & Visual"
-                    value={bus.features.entertainment}
+                    value={effectiveBus.features.entertainment}
                   />
+
+                  <Specification
+                    label="Onboard Washroom"
+                    value={effectiveBus.features.washroom || "Not Available"}
+                  />
+                </div>
+
+                <div className="mt-4 pt-3.5 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                  <span className="text-xs text-text-muted">
+                    Looking for full engine, cabin dimensions, and mechanical specs?
+                  </span>
+                  <Link
+                    href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-surface-secondary px-3 py-1.5 text-xs font-bold text-text-primary hover:text-primary transition-colors border border-border"
+                  >
+                    View Specifications Page
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
                 </div>
               </section>
             )}
 
-            {bus.amenities?.length > 0 && (
+            {effectiveBus.amenities?.length > 0 && (
               <section className="rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
                 <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
-                  INCLUDED COACH AMENITIES
+                  CABIN FEATURES & AMENITIES
                 </h2>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {bus.amenities.map((amenity, index) => (
+                  {effectiveBus.amenities.map((amenity, index) => (
                     <div
                       key={`${amenity}-${index}`}
                       className="flex items-center gap-2.5 text-xs font-semibold text-text-secondary sm:text-sm"
@@ -337,6 +690,29 @@ export default function FleetDetailPage({ params }) {
                       </span>
 
                       {amenity}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {effectiveBus.inclusions?.length > 0 && (
+              <section className="rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">
+                  BOOKING INCLUSIONS
+                </h2>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {effectiveBus.inclusions.map((inclusion, index) => (
+                    <div
+                      key={`${inclusion}-${index}`}
+                      className="flex items-center gap-2.5 text-xs font-semibold text-text-secondary sm:text-sm"
+                    >
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 className="h-3.5 w-3.5 stroke-[2.4]" />
+                      </span>
+
+                      {inclusion}
                     </div>
                   ))}
                 </div>
@@ -396,34 +772,86 @@ export default function FleetDetailPage({ params }) {
                 </span>
 
                 <h2 className="text-xl font-black tracking-tight text-text-primary sm:text-2xl">
-                  Reserve {bus.name}
+                  Reserve {effectiveBus.name}
                 </h2>
               </div>
+              {submitError && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{submitError}</p>}
 
               <div className="space-y-3.5">
-                <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30">
-                  <label
-                    htmlFor="detailPickupPoint"
-                    className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-text-muted"
-                  >
-                    <MapPin className="h-3.5 w-3.5 text-primary" />
-                    PICK-UP POINT
-                  </label>
+                {/* 1. NO. OF PASSENGERS */}
+                <BookingFormField
+                  id="detailPassengers"
+                  icon={Users}
+                  label="NO. OF PASSENGERS"
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={bookingData.passengers || ""}
+                  placeholder="e.g. 20"
+                  onChange={handlePassengerCountChange}
+                />
 
-                  <input
-                    id="detailPickupPoint"
-                    type="text"
-                    value={bookingData.pickupPoint || ""}
-                    onChange={(event) =>
-                      handleFieldChange(
-                        "pickupPoint",
-                        event.target.value
-                      )
-                    }
-                    placeholder="Enter pickup point"
-                    className="w-full bg-transparent text-xs font-semibold text-text-primary placeholder:text-text-muted outline-none sm:text-sm"
-                  />
-                </div>
+                {/* 2. SELECT VEHICLE DROPDOWN (Filtered to this fleet category) */}
+                {vehicleTypeOptions.length > 0 && (
+                  <div className="space-y-1">
+                    <div className="rounded-xl border border-border bg-surface-secondary px-4 py-2.5 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30">
+                      <label
+                        htmlFor="detailVehicleType"
+                        className="mb-1 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-text-muted select-none"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Bus className="h-3.5 w-3.5 text-primary shrink-0" />
+                          <span>SELECT VEHICLE</span>
+                        </span>
+                        {activeVehicleType?.capacity && (
+                          <span className="text-[10px] font-bold text-primary">
+                            {activeVehicleType.capacity}
+                          </span>
+                        )}
+                      </label>
+
+                      <div className="relative">
+                        <select
+                          id="detailVehicleType"
+                          value={selectedVehicleTypeKey}
+                          onChange={(e) => handleVehicleTypeChange(e.target.value)}
+                          className="w-full appearance-none bg-transparent pr-8 text-xs font-semibold text-text-primary outline-none sm:text-sm cursor-pointer"
+                        >
+                          {vehicleTypeOptions.map((opt) => (
+                            <option
+                              key={opt.id}
+                              value={opt.id}
+                              className="bg-surface text-text-primary py-1"
+                            >
+                              {opt.name} ({opt.capacity || `${opt.seats} Seats`})
+                            </option>
+                          ))}
+                        </select>
+
+                        <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted" />
+                      </div>
+                    </div>
+
+                    {capacityWarning && (
+                      <p className="px-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                        {capacityWarning}
+                      </p>
+                    )}
+                  </div>
+                )}
+                <BookingFormField
+                  id="detailPickupPoint"
+                  icon={MapPin}
+                  label="PICK-UP POINT"
+                  value={bookingData.pickupPoint || ""}
+                  onChange={(value) =>
+                    handleFieldChange(
+                      "pickupPoint",
+                      value
+                    )
+                  }
+                  placeholder="Enter pickup point"
+                />
 
                 <DestinationMultiSelect
                   selectedDestinations={
@@ -437,12 +865,10 @@ export default function FleetDetailPage({ params }) {
                 />
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <FormField
+                  <BookingDateTimeField
                     id="detailDeparture"
-                    icon={Calendar}
                     label="DEPARTURE"
                     value={bookingData.departureDateTime || ""}
-                    placeholder="30-09-2026 | 07:00 AM"
                     onChange={(value) =>
                       handleFieldChange(
                         "departureDateTime",
@@ -451,12 +877,11 @@ export default function FleetDetailPage({ params }) {
                     }
                   />
 
-                  <FormField
+                  <BookingDateTimeField
                     id="detailReturn"
-                    icon={Calendar}
                     label="RETURN"
                     value={bookingData.returnDateTime || ""}
-                    placeholder="02-10-2026 | 09:00 PM"
+                    minDate={toISODateString(bookingData.departureDateTime)}
                     onChange={(value) =>
                       handleFieldChange(
                         "returnDateTime",
@@ -466,8 +891,13 @@ export default function FleetDetailPage({ params }) {
                   />
                 </div>
 
+                <BookingDurationField
+                  departureValue={bookingData.departureDateTime}
+                  returnValue={bookingData.returnDateTime}
+                />
+
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <FormField
+                  <BookingFormField
                     id="detailName"
                     icon={User}
                     label="LEAD PASSENGER"
@@ -481,7 +911,7 @@ export default function FleetDetailPage({ params }) {
                     }
                   />
 
-                  <FormField
+                  <BookingFormField
                     id="detailMobile"
                     icon={Phone}
                     label="CONTACT MOBILE"
@@ -495,40 +925,50 @@ export default function FleetDetailPage({ params }) {
                     }
                   />
                 </div>
+
+                <BookingFormField
+                  id="detailEmail"
+                  icon={Mail}
+                  label="EMAIL ADDRESS"
+                  type="email"
+                  value={bookingData.email || ""}
+                  placeholder="Enter your email address"
+                  error={emailError}
+                  onChange={(value) => {
+                    handleFieldChange("email", value);
+                    if (emailError) {
+                      setEmailError(validateEmail(value, { required: false }));
+                    }
+                  }}
+                  onBlur={(e) => {
+                    setEmailError(validateEmail(e.target.value, { required: false }));
+                  }}
+                />
               </div>
 
               <div className="space-y-3.5 border-t border-border pt-4">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl border border-border bg-surface-secondary p-3.5">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-text-muted">
-                      EST. ROUND TRIP
+                <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted">
+                    EST. ROUND TRIP DISTANCE
+                  </span>
+
+                  <div>
+                    <span className="text-xl font-black text-text-primary">
+                      ≈ {distanceResult?.totalKm || 0}
                     </span>
 
-                    <div className="mt-1">
-                      <span className="text-xl font-black text-text-primary">
-                        ≈ {!hasCustomRoute && bus.defaultRoundTripKm != null
-                          ? Number(bus.defaultRoundTripKm).toLocaleString("en-IN")
-                          : distanceResult?.totalKm || 0}
-                      </span>
-
-                      <span className="ml-1 text-[11px] font-bold uppercase text-text-muted">
-                        KM
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-primary/20 bg-primary-subtle p-3.5">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-primary">
-                      TOTAL ESTIMATED FARE
+                    <span className="ml-1 text-[11px] font-bold uppercase text-text-muted">
+                      KM
                     </span>
-
-                    <div className="mt-1 text-xl font-black text-text-primary">
-                      {!hasCustomRoute && bus.defaultEstimatedFare != null
-                        ? formatCurrency(Number(bus.defaultEstimatedFare))
-                        : pricingResult?.formattedTotalPrice || "₹0"}
-                    </div>
                   </div>
                 </div>
+
+                <FareSummary
+                  basePrice={pricingResult?.formattedBasePrice || "₹0"}
+                  gstAmount={pricingResult?.formattedEstimatedTax || "₹0"}
+                  totalFare={pricingResult?.formattedTotalPrice || "₹0"}
+                  gstRatePercent={pricingResult?.gstPercent || "5%"}
+                />
 
                 <div className="flex items-start gap-2 rounded-xl bg-surface-secondary p-3 text-[11px] font-medium leading-5 text-text-secondary">
                   <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
@@ -537,10 +977,8 @@ export default function FleetDetailPage({ params }) {
                     <span className="font-bold text-text-primary">
                       Trip Route:
                     </span>{" "}
-                    {hasCoachEstimate
-                      ? "Enter your pickup and destinations to see a custom route estimate."
-                      : distanceResult?.routeSummaryText ||
-                        "Your selected pickup and destination route will appear here."}
+                    {distanceResult?.routeSummaryText ||
+                      "Your selected pickup and destination route will appear here."}
                   </span>
                 </div>
 
@@ -553,61 +991,65 @@ export default function FleetDetailPage({ params }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-                <button
-                  type="button"
-                  onClick={openFleetModal}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-surface px-3 py-3 text-xs font-bold text-text-primary transition-all hover:border-primary/40 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
-                >
-                  <ImageIcon className="h-4 w-4" />
-                  View Bus Images
-                </button>
+              <div className="space-y-2.5">
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href={`/fleet-specifications/${effectiveBus.id || effectiveBus.slug}`}
+                    className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-md font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                  >
+                    <FileText className="h-4 w-4 text-primary shrink-0" />
+                    <span>Specifications</span>
+                  </Link>
 
-                <button
-                  type="button"
-                  onClick={handleConfirmBooking}
-                  className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-xs font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98]"
-                >
-                  Confirm Booking
+                  <button
+                    type="button"
+                    onClick={openFleetModal}
+                    className="flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-xl border border-border bg-surface px-3 py-2 text-md font-bold text-text-primary transition-all hover:border-primary/50 hover:bg-primary-subtle hover:text-primary active:scale-[0.98]"
+                  >
+                    <ImageIcon className="h-4 w-4 text-primary shrink-0" />
+                    <span>Bus Images ({getFleetImages(effectiveBus).length})</span>
+                  </button>
+                </div>
 
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </button>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={handleConfirmBooking}
+                    disabled={submitting}
+                    className="group flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-3 py-3 text-md font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-hover active:scale-[0.98] disabled:cursor-wait disabled:opacity-60"
+                  >
+                    <span>{submitting ? "Submitting..." : "Confirm Booking"}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={() => setShowQuote(true)}
-                  className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-xs font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
-                >
-                  <PhoneCall className="h-4 w-4" />
-                  Request a Quote
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowQuote(true)}
+                    className="flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl bg-surface-inverse px-3 py-3 text-md font-bold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+                  >
+                    <PhoneCall className="h-4 w-4" />
+                    <span>Custom Request</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-
       {/* Fleet Detail Page FAQs */}
       <FAQSection data={fleetSlugFaqData} />
 
       {showFleetModal && (
         <FleetImagesModal
-          fleet={bus}
-          onClose={closeFleetModal}
-        />
-      )}
-
-      {showFleetModal && (
-        <FleetImagesModal
-          fleet={bus}
+          fleet={effectiveBus}
           onClose={closeFleetModal}
         />
       )}
 
       {showQuote && (
         <QuoteModal
-          bus={bus}
+          bus={effectiveBus}
           bookingData={bookingData}
           onClose={() => setShowQuote(false)}
         />
@@ -615,7 +1057,7 @@ export default function FleetDetailPage({ params }) {
 
       {isBooked && (
         <BookingConfirmation
-          bus={bus}
+          bus={effectiveBus}
           bookingData={bookingData}
           pricingResult={pricingResult}
           onClose={() => setIsBooked(false)}
@@ -627,11 +1069,7 @@ export default function FleetDetailPage({ params }) {
 
 function FleetImagesModal({ fleet, onClose }) {
   const images = getFleetImages(fleet);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   useEffect(() => {
     if (!mounted) {
@@ -821,17 +1259,144 @@ function FleetImagesModal({ fleet, onClose }) {
 }
 
 function FleetHeroImage({ bus }) {
-  const image = getFleetImages(bus)[0];
+  const images = useMemo(() => getFleetImages(bus), [bus]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartXRef = useRef(null);
+
+  const busKey = bus?.id || bus?.slug || bus?.name;
+  const [prevBusKey, setPrevBusKey] = useState(busKey);
+  if (busKey !== prevBusKey) {
+    setPrevBusKey(busKey);
+    setActiveIndex(0);
+  }
+
+  useEffect(() => {
+    if (images.length <= 1 || isPaused) return;
+
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [images.length, isPaused]);
+
+  const handlePrev = useCallback(
+    (e) => {
+      e?.stopPropagation?.();
+      setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    },
+    [images.length]
+  );
+
+  const handleNext = useCallback(
+    (e) => {
+      e?.stopPropagation?.();
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    },
+    [images.length]
+  );
+
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
+    if (deltaX > 40) {
+      handlePrev();
+    } else if (deltaX < -40) {
+      handleNext();
+    }
+    touchStartXRef.current = null;
+  };
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
-      <SafeFleetImage
-        src={image}
-        alt={bus?.name || "Bus Mantra coach"}
-        sizes="(max-width: 1024px) 100vw, 58vw"
-        priority
-        className="object-cover"
-      />
+    <div
+      className="space-y-3"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div
+        className="group relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {images.map((img, idx) => (
+          <div
+            key={`${img}-${idx}`}
+            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+              activeIndex === idx
+                ? "opacity-100 z-10"
+                : "opacity-0 z-0 pointer-events-none"
+            }`}
+          >
+            <SafeFleetImage
+              src={img}
+              alt={`${bus?.name || "Bus Mantra coach"} - View ${idx + 1}`}
+              sizes="(max-width: 1024px) 100vw, 58vw"
+              priority={idx === 0}
+              className="object-cover"
+            />
+          </div>
+        ))}
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous coach image"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
+            >
+              <ChevronLeft className="h-5 w-5 stroke-[2.2]" />
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next coach image"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
+            >
+              <ChevronRight className="h-5 w-5 stroke-[2.2]" />
+            </button>
+
+            <div className="absolute bottom-3 right-3 z-20 rounded-full bg-black/60 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-sm pointer-events-none select-none">
+              <ImageIcon className="h-3.5 w-3.5 text-primary" />
+              <span>
+                {activeIndex + 1} / {images.length}
+              </span>
+            </div>
+          </>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+          {images.map((img, idx) => (
+            <button
+              key={`${img}-${idx}`}
+              type="button"
+              onClick={() => setActiveIndex(idx)}
+              onMouseEnter={() => setActiveIndex(idx)}
+              onFocus={() => setActiveIndex(idx)}
+              aria-label={`View ${bus?.name || "Coach"} thumbnail ${idx + 1}`}
+              className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border transition-all cursor-pointer ${
+                activeIndex === idx
+                  ? "border-primary ring-2 ring-primary/40 scale-102"
+                  : "border-border opacity-70 hover:opacity-100"
+              }`}
+            >
+              <SafeFleetImage
+                src={img}
+                alt={`${bus?.name || "Coach"} thumbnail ${idx + 1}`}
+                sizes="96px"
+                className="object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -878,36 +1443,6 @@ function MiniAssurance({
     <div className="flex items-center gap-2.5 text-xs font-semibold text-white/80">
       <Icon className="h-4 w-4 text-primary" />
       {title}
-    </div>
-  );
-}
-
-function FormField({
-  id,
-  icon: Icon,
-  label,
-  value,
-  placeholder,
-  onChange,
-}) {
-  return (
-    <div className="rounded-xl border border-border bg-surface-secondary px-4 py-3 transition-colors focus-within:border-primary focus-within:ring-2 focus-within:ring-focus-ring/30">
-      <label
-        htmlFor={id}
-        className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-text-muted"
-      >
-        <Icon className="h-3.5 w-3.5 text-primary" />
-        {label}
-      </label>
-
-      <input
-        id={id}
-        type="text"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        className="w-full bg-transparent text-xs font-semibold text-text-primary placeholder:text-text-muted outline-none sm:text-sm"
-      />
     </div>
   );
 }
@@ -978,6 +1513,12 @@ function QuoteModal({
             <p className="mt-1 text-xs text-text-muted">
               {bookingData.mobile || "Mobile number"}
             </p>
+
+            {bookingData.email && (
+              <p className="mt-0.5 text-xs text-text-muted">
+                {bookingData.email}
+              </p>
+            )}
           </div>
 
           <div className="rounded-xl bg-surface-secondary p-4 border border-border">
