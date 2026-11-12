@@ -606,7 +606,7 @@ function OfferPageContent() {
                                 </p>
                             </div>
 
-                            {/* BharatBenz
+                            {/* BharatBenz 
                             <div
                                 onClick={() => handleSelectCategory("bharatbenz")}
                                 className={`cursor-pointer rounded-2xl border p-4 transition-all ${selectedCategoryKey === "bharatbenz"

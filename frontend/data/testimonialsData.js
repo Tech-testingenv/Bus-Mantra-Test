@@ -42,6 +42,7 @@ export const trustMetrics = [
     subtext: "Commercial permit, AC & GPS equipped",
   },
 ];
+
 /**
  * Media & Organization Remarks
  * Specifically featuring: CMBC, TV9, Nestlé, Paytm, Republic Bharat
@@ -555,3 +556,4 @@ export const mixedTestimonials = [
     ...customerReviews[5], // Dr. Arvind Swaminathan
   },
 ];
+
