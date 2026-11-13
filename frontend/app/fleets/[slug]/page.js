@@ -48,6 +48,7 @@ import { calculateRouteDistance } from "@/services/distanceCalculationService";
 import { calculateCharterPrice, calculateFareBreakdown } from "@/services/pricingService";
 import { fleetSlugFaqData } from "@/data/data";
 import FAQSection from "@/components/common/faq"
+import Carousal from "@/components/common/carousal";
 
 import BookingDateTimeField from "@/components/common/bookingDateTimeField";
 import BookingDurationField from "@/components/common/bookingDurationField";
@@ -616,7 +617,7 @@ export default function FleetDetailPage({ params }) {
               )}
             </div>
 
-            <FleetHeroImage bus={effectiveBus} />
+            <Carousal bus={effectiveBus} title={effectiveBus.name} />
 
             {effectiveBus.features && (
               <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
@@ -1259,146 +1260,7 @@ function FleetImagesModal({ fleet, onClose }) {
 }
 
 function FleetHeroImage({ bus }) {
-  const images = useMemo(() => getFleetImages(bus), [bus]);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const touchStartXRef = useRef(null);
-
-  const busKey = bus?.id || bus?.slug || bus?.name;
-  const [prevBusKey, setPrevBusKey] = useState(busKey);
-  if (busKey !== prevBusKey) {
-    setPrevBusKey(busKey);
-    setActiveIndex(0);
-  }
-
-  useEffect(() => {
-    if (images.length <= 1 || isPaused) return;
-
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % images.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [images.length, isPaused]);
-
-  const handlePrev = useCallback(
-    (e) => {
-      e?.stopPropagation?.();
-      setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    },
-    [images.length]
-  );
-
-  const handleNext = useCallback(
-    (e) => {
-      e?.stopPropagation?.();
-      setActiveIndex((prev) => (prev + 1) % images.length);
-    },
-    [images.length]
-  );
-
-  const handleTouchStart = (e) => {
-    touchStartXRef.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e) => {
-    if (touchStartXRef.current === null) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
-    if (deltaX > 40) {
-      handlePrev();
-    } else if (deltaX < -40) {
-      handleNext();
-    }
-    touchStartXRef.current = null;
-  };
-
-  return (
-    <div
-      className="space-y-3"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      <div
-        className="group relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl select-none"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {images.map((img, idx) => (
-          <div
-            key={`${img}-${idx}`}
-            className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-              activeIndex === idx
-                ? "opacity-100 z-10"
-                : "opacity-0 z-0 pointer-events-none"
-            }`}
-          >
-            <SafeFleetImage
-              src={img}
-              alt={`${bus?.name || "Bus Mantra coach"} - View ${idx + 1}`}
-              sizes="(max-width: 1024px) 100vw, 58vw"
-              priority={idx === 0}
-              className="object-cover"
-            />
-          </div>
-        ))}
-
-        {images.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous coach image"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
-            >
-              <ChevronLeft className="h-5 w-5 stroke-[2.2]" />
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next coach image"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition-all hover:bg-black/80 hover:scale-105 active:scale-95 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer shadow-md"
-            >
-              <ChevronRight className="h-5 w-5 stroke-[2.2]" />
-            </button>
-
-            <div className="absolute bottom-3 right-3 z-20 rounded-full bg-black/60 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-sm pointer-events-none select-none">
-              <ImageIcon className="h-3.5 w-3.5 text-primary" />
-              <span>
-                {activeIndex + 1} / {images.length}
-              </span>
-            </div>
-          </>
-        )}
-      </div>
-
-      {images.length > 1 && (
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
-          {images.map((img, idx) => (
-            <button
-              key={`${img}-${idx}`}
-              type="button"
-              onClick={() => setActiveIndex(idx)}
-              onMouseEnter={() => setActiveIndex(idx)}
-              onFocus={() => setActiveIndex(idx)}
-              aria-label={`View ${bus?.name || "Coach"} thumbnail ${idx + 1}`}
-              className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border transition-all cursor-pointer ${
-                activeIndex === idx
-                  ? "border-primary ring-2 ring-primary/40 scale-102"
-                  : "border-border opacity-70 hover:opacity-100"
-              }`}
-            >
-              <SafeFleetImage
-                src={img}
-                alt={`${bus?.name || "Coach"} thumbnail ${idx + 1}`}
-                sizes="96px"
-                className="object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <Carousal bus={bus} title={bus?.name} />;
 }
 
 function Specification({ label, value }) {

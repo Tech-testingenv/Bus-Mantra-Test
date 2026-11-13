@@ -27,6 +27,7 @@ import {
   destinationSlugFaqData
 } from "@/data/data";
 import FAQSection from "@/components/common/faq";
+import Carousal from "@/components/common/carousal";
 import BookingFormField from "@/components/common/bookingFormField";
 import BookingDateTimeField from "@/components/common/bookingDateTimeField";
 import BookingDurationField from "@/components/common/bookingDurationField";
@@ -118,7 +119,7 @@ export default function DestinationSlugPage({ params }) {
         <div className="lg:col-span-7">
           <DestinationHeader destination={destination} />
 
-          <DestinationGallery key={destination.slug} destination={destination} />
+          <Carousal key={destination.slug} destination={destination} title={destination.name} />
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -190,138 +191,7 @@ function DestinationHeader({ destination }) {
 }
 
 function DestinationGallery({ destination }) {
-  const gallery = useMemo(() => {
-    if (destination?.gallery?.length) {
-      return destination.gallery;
-    }
-
-    if (destination?.image) {
-      return [destination.image];
-    }
-
-    return [];
-  }, [destination]);
-
-  const [activeImage, setActiveImage] = useState(0);
-  const [changing, setChanging] = useState(false);
-
-  const changeImage = (index) => {
-    if (
-      index === activeImage ||
-      gallery.length <= 1
-    ) {
-      return;
-    }
-
-    setChanging(true);
-
-    window.setTimeout(() => {
-      setActiveImage(index);
-      setChanging(false);
-    }, 120);
-  };
-
-  const nextImage = () => {
-    if (gallery.length <= 1) {
-      return;
-    }
-
-    const next =
-      activeImage === gallery.length - 1
-        ? 0
-        : activeImage + 1;
-
-    changeImage(next);
-  };
-
-  const previousImage = () => {
-    if (gallery.length <= 1) {
-      return;
-    }
-
-    const previous =
-      activeImage === 0
-        ? gallery.length - 1
-        : activeImage - 1;
-
-    changeImage(previous);
-  };
-
-  return (
-    <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
-      <div className="relative aspect-video w-full overflow-hidden">
-        {gallery.length > 0 ? (
-          <Image
-            src={gallery[activeImage]}
-            alt={`${destination.name} destination`}
-            fill
-            priority
-            quality={100}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 58vw"
-            className={`object-cover transition-all duration-300 ${changing
-              ? "scale-[1.015] opacity-60"
-              : "scale-100 opacity-100"
-              }`}
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-sm text-black/45">
-            Image unavailable
-          </div>
-        )}
-
-        {gallery.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={previousImage}
-              aria-label="Previous image"
-              className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-primary hover:text-primary-foreground sm:left-4 sm:h-10 sm:w-10"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={nextImage}
-              aria-label="Next image"
-              className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-md transition-all duration-200 hover:scale-105 hover:bg-primary hover:text-primary-foreground sm:right-4 sm:h-10 sm:w-10"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-
-            <div className="absolute bottom-3 right-3 z-10 rounded-full bg-black/65 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm sm:bottom-4 sm:right-4">
-              {activeImage + 1}/{gallery.length}
-            </div>
-          </>
-        )}
-      </div>
-
-      {gallery.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto bg-white p-2.5 sm:p-3">
-          {gallery.map((image, index) => (
-            <button
-              key={`${image}-${index}`}
-              type="button"
-              onClick={() => changeImage(index)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200 sm:h-16 sm:w-24 ${activeImage === index
-                ? "border-primary"
-                : "border-transparent opacity-65 hover:opacity-100"
-                }`}
-            >
-              <Image
-                src={image}
-                alt={`${destination.name} thumbnail ${index + 1}`}
-                fill
-                quality={100}
-                sizes="96px"
-                className="object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <Carousal destination={destination} title={destination?.name} />;
 }
 
 function QuickInfo({

@@ -34,31 +34,9 @@ import {
   getVehicleVariantById,
   FLEET_CATEGORIES,
 } from "@/data/fleetData";
+import Carousal from "@/components/common/carousal";
 
 const DEFAULT_FLEET_IMAGE = "/fleet/12_seater_maharaja_tempo_traveller_1.png";
-
-function SafeSpecImage({
-  src,
-  alt,
-  fill = true,
-  className = "",
-  sizes,
-  priority = false,
-}) {
-  const [currentSrc, setCurrentSrc] = useState(src || DEFAULT_FLEET_IMAGE);
-
-  return (
-    <Image
-      src={currentSrc || DEFAULT_FLEET_IMAGE}
-      alt={alt}
-      fill={fill}
-      sizes={sizes}
-      priority={priority}
-      onError={() => setCurrentSrc(DEFAULT_FLEET_IMAGE)}
-      className={className}
-    />
-  );
-}
 
 export default function FleetSpecificationPage({ params }) {
   const unwrappedParams = use(params);
@@ -101,8 +79,6 @@ export default function FleetSpecificationPage({ params }) {
     return unique.length > 0 ? unique : [DEFAULT_FLEET_IMAGE];
   }, [variant]);
 
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-
   if (!variant || !category) {
     return (
       <main className="mx-auto flex min-h-[65vh] max-w-360 items-center justify-center px-6 pt-28">
@@ -141,9 +117,6 @@ export default function FleetSpecificationPage({ params }) {
     const qStr = paramsCopy.toString();
     return qStr ? `${base}?${qStr}` : base;
   };
-
-  const activeSrc =
-    galleryImages[activeImageIndex] || galleryImages[0] || DEFAULT_FLEET_IMAGE;
 
   return (
     <main className="relative mx-auto w-full max-w-360 px-4 pb-20 pt-24 sm:px-6 sm:pb-24 sm:pt-28 lg:px-8 lg:pt-32">
@@ -268,54 +241,7 @@ export default function FleetSpecificationPage({ params }) {
           </div>
 
           {/* Interactive Image Gallery */}
-          <section
-            aria-label="Vehicle image gallery"
-            className="space-y-3"
-          >
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_12px_35px_rgba(0,0,0,0.06)] sm:rounded-3xl">
-              <SafeSpecImage
-                key={activeSrc}
-                src={activeSrc}
-                alt={`${variant.name} primary photo`}
-                sizes="(max-width: 1024px) 100vw, 65vw"
-                priority
-                className="object-cover transition-opacity duration-300"
-              />
-
-              <div className="absolute bottom-3.5 right-3.5 rounded-full bg-black/60 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-md">
-                <ImageIcon className="h-3.5 w-3.5 text-primary" />
-                <span>
-                  Photo {activeImageIndex + 1} of {galleryImages.length}
-                </span>
-              </div>
-            </div>
-
-            {/* Thumbnail Row */}
-            {galleryImages.length > 1 && (
-              <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
-                {galleryImages.map((img, idx) => (
-                  <button
-                    key={`${img}-${idx}`}
-                    type="button"
-                    onClick={() => setActiveImageIndex(idx)}
-                    aria-label={`View photo ${idx + 1} of ${variant.name}`}
-                    className={`relative h-18 w-28 shrink-0 overflow-hidden rounded-xl border transition-all cursor-pointer ${
-                      activeImageIndex === idx
-                        ? "border-primary ring-2 ring-primary/40 scale-102"
-                        : "border-border opacity-70 hover:opacity-100"
-                    }`}
-                  >
-                    <SafeSpecImage
-                      src={img}
-                      alt={`${variant.name} thumbnail ${idx + 1}`}
-                      sizes="112px"
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </section>
+          <Carousal images={galleryImages} title={variant.name} />
 
           {/* Detailed Specifications Table / Card Grid */}
           <section

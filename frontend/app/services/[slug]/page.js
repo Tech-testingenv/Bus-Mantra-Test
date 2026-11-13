@@ -32,6 +32,7 @@ import {
 } from "@/data/data";
 
 import FAQSection from "@/components/common/faq";
+import Carousal from "@/components/common/carousal";
 import BookingFormField from "@/components/common/bookingFormField";
 import BookingDateTimeField from "@/components/common/bookingDateTimeField";
 import BookingDurationField from "@/components/common/bookingDurationField";
@@ -120,7 +121,7 @@ export default function ServiceSlugPage({ params }) {
         <div className="lg:col-span-7">
           <ServiceHeader service={service} />
 
-          <ServiceGallery key={service.slug} service={service} />
+          <Carousal key={service.slug} service={service} title={service.title} />
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -192,119 +193,7 @@ function ServiceHeader({ service }) {
 }
 
 function ServiceGallery({ service }) {
-  const gallery = useMemo(() => {
-    if (service?.gallery?.length) {
-      return service.gallery;
-    }
-
-    if (service?.image) {
-      return [service.image];
-    }
-
-    return [];
-  }, [service]);
-
-  const [activeImage, setActiveImage] = useState(0);
-
-  const nextImage = () => {
-    if (gallery.length <= 1) {
-      return;
-    }
-
-    setActiveImage((current) =>
-      current === gallery.length - 1
-        ? 0
-        : current + 1
-    );
-  };
-
-  const previousImage = () => {
-    if (gallery.length <= 1) {
-      return;
-    }
-
-    setActiveImage((current) =>
-      current === 0
-        ? gallery.length - 1
-        : current - 1
-    );
-  };
-
-  return (
-    <div className="overflow-hidden rounded-2xl border border-neutral-200/80 bg-surface-secondary shadow-[0_10px_35px_rgba(0,0,0,0.055)] sm:rounded-3xl">
-      <div className="relative aspect-video w-full overflow-hidden">
-        {gallery.length > 0 ? (
-          <Image
-            src={gallery[activeImage]}
-            alt={
-              service.imageAlt ||
-              `${service.title} service`
-            }
-            fill
-            priority
-            quality={100}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 58vw"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-sm text-neutral-400">
-            Image unavailable
-          </div>
-        )}
-
-        {gallery.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={previousImage}
-              aria-label="Previous image"
-              className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-neutral-900 shadow-md transition-all hover:scale-105 hover:bg-white sm:left-4 sm:h-10 sm:w-10"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={nextImage}
-              aria-label="Next image"
-              className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-neutral-900 shadow-md transition-all hover:scale-105 hover:bg-white sm:right-4 sm:h-10 sm:w-10"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-
-            <div className="absolute bottom-3 right-3 z-10 rounded-full bg-black/65 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
-              {activeImage + 1}/{gallery.length}
-            </div>
-          </>
-        )}
-      </div>
-
-      {gallery.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto bg-white p-2.5 sm:p-3">
-          {gallery.map((image, index) => (
-            <button
-              key={`${image}-${index}`}
-              type="button"
-              onClick={() => setActiveImage(index)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all sm:h-16 sm:w-24 ${activeImage === index
-                ? "border-primary"
-                : "border-transparent opacity-65 hover:opacity-100"
-                }`}
-            >
-              <Image
-                src={image}
-                alt={`${service.title} thumbnail ${index + 1
-                  }`}
-                fill
-                sizes="96px"
-                className="object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <Carousal service={service} title={service?.title} />;
 }
 
 function QuickInfo({
