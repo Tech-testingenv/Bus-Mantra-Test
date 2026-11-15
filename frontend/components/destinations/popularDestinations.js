@@ -32,7 +32,7 @@ export default function PopularDestinations({
           setDatabaseDestinations(rows.map((destination) => ({
             ...destination,
             id: destination.slug,
-            image: destination.gallery?.[0] || "/images/destinations/agra-fort.jpg",
+            image: destination.heroImage || destination.gallery?.[0] || "/images/destinations/agra-fort.jpg",
             href: `/destinations/${destination.slug}`,
             ctaText: `Fleet to ${destination.name}`,
           })));

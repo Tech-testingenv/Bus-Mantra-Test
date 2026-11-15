@@ -103,8 +103,11 @@ CREATE TABLE IF NOT EXISTS destinations (
   description TEXT NOT NULL,
   gallery JSONB NOT NULL DEFAULT '[]',
   popular_places JSONB NOT NULL DEFAULT '[]',
+  content JSONB NOT NULL DEFAULT '{}',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE destinations ADD COLUMN IF NOT EXISTS content JSONB NOT NULL DEFAULT '{}';
 
 CREATE TABLE IF NOT EXISTS services (
   slug TEXT PRIMARY KEY,

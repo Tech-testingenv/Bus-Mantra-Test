@@ -119,7 +119,7 @@ export default function DestinationSlugPage({ params }) {
         <div className="lg:col-span-7">
           <DestinationHeader destination={destination} />
 
-          <Carousal key={destination.slug} destination={destination} title={destination.name} />
+          <Carousal key={destination.slug} images={[destination.heroImage, ...(destination.gallery || [])].filter(Boolean)} destination={destination} title={destination.name} />
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -145,6 +145,8 @@ export default function DestinationSlugPage({ params }) {
           <div className="mt-10 sm:mt-12 lg:mt-14">
             <PopularPlaces
               places={destination.popularPlaces || []}
+              heading={destination.placesHeading}
+              description={destination.placesDescription}
             />
           </div>
         </div>
@@ -156,7 +158,10 @@ export default function DestinationSlugPage({ params }) {
         </div>
       </div>
       {/* Destination Slug FAQ Section */}
-      <FAQSection data={destinationSlugFaqData} />
+      <FAQSection data={{
+        ...destinationSlugFaqData,
+        faqs: destination.faqs?.length ? destination.faqs : destinationSlugFaqData.faqs,
+      }} />
     </main>
   );
 }
@@ -179,6 +184,10 @@ function DestinationHeader({ destination }) {
           <MapPin className="h-4 w-4 text-primary" />
           {destination.route}
         </div>
+      )}
+
+      {destination.oneLiner && (
+        <p className="mt-2 text-sm font-medium text-black/60">{destination.oneLiner}</p>
       )}
 
       {destination.description && (
@@ -834,7 +843,7 @@ function Benefit({ text }) {
   );
 }
 
-function PopularPlaces({ places }) {
+function PopularPlaces({ places, heading, description }) {
   if (!places?.length) {
     return null;
   }
@@ -847,22 +856,25 @@ function PopularPlaces({ places }) {
         </span>
 
         <h2 className="mt-3 text-2xl font-black tracking-tight text-black sm:text-3xl">
-          Popular places to visit
+          {heading || "Popular places to visit"}
         </h2>
 
         <p className="mt-2 max-w-md text-sm leading-6 text-black/60">
-          Discover some of the places your group can explore during the journey.
+          {description || "Discover some of the places your group can explore during the journey."}
         </p>
       </div>
 
       <div className="w-full space-y-5 sm:space-y-6">
-        {places.map((place, index) => (
+        {places.map((entry, index) => {
+          const place = typeof entry === "string" ? { name: entry } : entry;
+          return (
           <PopularPlaceCard
-            key={place.id || place.name}
+            key={place.id || `${place.name}-${index}`}
             place={place}
             index={index}
           />
-        ))}
+          );
+        })}
       </div>
     </section>
   );

@@ -28,6 +28,8 @@ Open `/admin` to sign in. The first superadmin is created from the two `ADMIN_SU
 
 The admin panel includes dedicated Fleet, Services, and Destinations management screens with add/edit forms and image upload. Service and destination edits are read from PostgreSQL by the public website. Superadmins can create custom roles, assign per-module view/create/edit/delete permissions, and assign those roles to admin accounts; backend APIs enforce the assigned permissions. The Sales module includes date-filtered booking and lead reports, booking/payment statuses, fare estimates, lead assignment and follow-up, and CSV export. Booking fare estimates are entered by staff; they are forecasts, not payment records.
 
+Service editors manage the hero, gallery, highlights, suitable-for and Why Bus Mantra sections. Destination editors manage the hero, explore-section heading and description, and structured place cards with images and pointers. Both editors support ordered FAQs; leaving the FAQ list empty shows the existing default FAQs. An empty Why Bus Mantra list uses the existing service-specific defaults, or the standard default for newly added services. Run `npm run db:init` after updating to add the destination content column without removing existing catalog data.
+
 ## API
 
 - `GET /api/fleets`, `GET /api/destinations`, `GET /api/services`

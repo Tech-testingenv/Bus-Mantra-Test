@@ -10,8 +10,8 @@ const SETTINGS = {
     title: "Destinations",
     description: "Manage destination pages and the places shown on each page.",
     key: "slug",
-    blank: { slug: "", name: "", badge: "", route: "", description: "", gallery: [], popular_places: [] },
-    fields: ["slug", "name", "badge", "route", "description", "gallery", "popular_places"],
+    blank: { slug: "", name: "", badge: "", route: "", description: "", gallery: [], popular_places: [], content: {} },
+    fields: ["slug", "name", "badge", "route", "description", "gallery", "popular_places", "content"],
   },
   services: {
     title: "Services",
@@ -26,7 +26,8 @@ const inputClass = "mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 t
 const textClass = "mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-normal outline-none focus:border-orange-500";
 
 function splitLines(value) {
-  return String(value || "").split(/\r?\n/).map((item) => item.trim()).filter(Boolean);
+  return (Array.isArray(value) ? value : String(value || "").split(/\r?\n/))
+    .map((item) => String(item).trim()).filter(Boolean);
 }
 
 function lineValue(value) {
@@ -36,7 +37,7 @@ function lineValue(value) {
 function normalizeRecord(collection, record) {
   if (!record) return { ...SETTINGS[collection].blank };
   if (collection === "destinations") {
-    return { ...record, gallery: record.gallery || [], popular_places: record.popular_places || [] };
+    return { ...record, gallery: record.gallery || [], popular_places: record.popular_places || [], content: record.content || {} };
   }
   return { ...record, content: record.content || {} };
 }
@@ -54,6 +55,49 @@ function apiRequest(url, options = {}) {
 
 function Field({ label, children }) {
   return <label className="block text-xs font-bold text-slate-600">{label}{children}</label>;
+}
+
+function ListEditor({ title, items, onChange, fields, createItem, renderExtra }) {
+  function update(index, key, value) {
+    onChange(items.map((item, i) => i === index ? { ...item, [key]: value } : item));
+  }
+  function move(index, offset) {
+    const next = [...items];
+    const target = index + offset;
+    if (target < 0 || target >= next.length) return;
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  }
+  return (
+    <section className="space-y-3 rounded-xl border border-slate-200 p-4">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-sm font-bold">{title}</h3>
+        <button type="button" onClick={() => onChange([...items, createItem()])} className="rounded-lg bg-orange-50 px-3 py-2 text-xs font-bold text-orange-700">Add</button>
+      </div>
+      {items.map((item, index) => (
+        <div key={index} className="space-y-3 rounded-lg border border-slate-100 p-3">
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <span className="mr-auto">{index + 1}</span>
+            <button type="button" disabled={index === 0} onClick={() => move(index, -1)} className="disabled:opacity-30">Up</button>
+            <button type="button" disabled={index === items.length - 1} onClick={() => move(index, 1)} className="disabled:opacity-30">Down</button>
+            <button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} className="text-red-600">Remove</button>
+          </div>
+          {fields.map(({ key, label, multiline, lines }) => (
+            <Field key={key} label={label}>
+              {multiline
+                ? <textarea rows={3} value={lines ? lineValue(item[key]) : item[key] || ""} onChange={(e) => update(index, key, e.target.value)} className={textClass} />
+                : <input value={item[key] || ""} onChange={(e) => update(index, key, e.target.value)} className={inputClass} />}
+            </Field>
+          ))}
+          {renderExtra?.(item, (key, value) => update(index, key, value))}
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function objectItems(items, key) {
+  return Array.isArray(items) ? items.map((item) => typeof item === "string" ? { [key]: item } : item) : [];
 }
 
 export default function CatalogModule({ collection, permissions, notify }) {
@@ -113,7 +157,14 @@ export default function CatalogModule({ collection, permissions, notify }) {
     setSaving(true);
     try {
       const data = collection === "destinations"
-        ? { ...form, slug: form.slug.trim(), name: form.name.trim(), description: form.description.trim(), gallery: splitLines(form.gallery), popular_places: splitLines(form.popular_places) }
+        ? {
+            ...form,
+            slug: form.slug.trim(),
+            name: form.name.trim(),
+            description: form.description.trim(),
+            gallery: splitLines(form.gallery),
+            popular_places: objectItems(form.popular_places, "name").map((place) => ({ ...place, highlights: splitLines(place.highlights) })),
+          }
         : {
             ...form,
             slug: form.slug.trim(),
@@ -122,10 +173,10 @@ export default function CatalogModule({ collection, permissions, notify }) {
             description: form.description.trim(),
             content: {
               ...form.content,
-              intro: form.content.intro?.heading ? { heading: form.content.intro.heading } : {},
-              highlights: splitLines(form.content.highlights),
+              intro: { ...form.content.intro },
+              highlights: objectItems(form.content.highlights, "title"),
               suitableFor: splitLines(form.content.suitableFor),
-              benefits: splitLines(form.content.benefits),
+              benefits: objectItems(form.content.benefits, "title"),
               gallery: splitLines(form.content.gallery),
             },
           };
@@ -196,8 +247,18 @@ export default function CatalogModule({ collection, permissions, notify }) {
                 <Field label="Badge"><input value={form.badge || ""} onChange={(e) => setField("badge", e.target.value)} className={inputClass} /></Field>
                 <Field label="Route"><input value={form.route || ""} onChange={(e) => setField("route", e.target.value)} className={inputClass} placeholder="Delhi to Jaipur" /></Field>
               </div>
+              <Field label="One liner"><input value={form.content.oneLiner || ""} onChange={(e) => updateContent("oneLiner", e.target.value)} className={inputClass} /></Field>
               <Field label="Description"><textarea required rows={3} value={form.description} onChange={(e) => setField("description", e.target.value)} className={textClass} /></Field>
-              <Field label="Popular places (one per line)"><textarea rows={4} value={lineValue(form.popular_places)} onChange={(e) => setField("popular_places", e.target.value)} className={textClass} /></Field>
+              <Field label="Hero image path"><input value={form.content.heroImage || ""} onChange={(e) => updateContent("heroImage", e.target.value)} className={inputClass} /></Field>
+              <ImageUploadField label="Destination hero image" value={form.content.heroImage} onUploaded={(value) => updateContent("heroImage", value)} onUploadingChange={(change) => setUploads((count) => count + change)} />
+              <Field label="Explore heading"><input value={form.content.placesHeading || ""} onChange={(e) => updateContent("placesHeading", e.target.value)} className={inputClass} /></Field>
+              <Field label="Explore description"><textarea rows={3} value={form.content.placesDescription || ""} onChange={(e) => updateContent("placesDescription", e.target.value)} className={textClass} /></Field>
+              <ListEditor title="Popular place cards" items={objectItems(form.popular_places, "name")} onChange={(items) => setField("popular_places", items)} createItem={() => ({ name: "", image: "", description: "", highlights: [] })} fields={[
+                { key: "name", label: "Place name" },
+                { key: "image", label: "Image path" },
+                { key: "description", label: "Description", multiline: true },
+                { key: "highlights", label: "Pointers (one per line)", multiline: true, lines: true },
+              ]} renderExtra={(item, update) => <ImageUploadField label="Place image" value={item.image} onUploaded={(value) => update("image", value)} onUploadingChange={(change) => setUploads((count) => count + change)} />} />
               <Field label="Gallery image paths (one per line)"><textarea rows={3} value={lineValue(form.gallery)} onChange={(e) => setField("gallery", e.target.value)} className={textClass} /></Field>
               <ImageUploadField label="Destination gallery" multiple onUploaded={(value) => uploadResult("gallery", value, true)} onUploadingChange={(change) => setUploads((count) => count + change)} />
             </> : <>
@@ -209,14 +270,19 @@ export default function CatalogModule({ collection, permissions, notify }) {
               </div>
               <Field label="Description"><textarea required rows={3} value={form.description} onChange={(e) => setField("description", e.target.value)} className={textClass} /></Field>
               <Field label="Intro heading"><input value={form.content.intro?.heading || ""} onChange={(e) => setForm((current) => ({ ...current, content: { ...current.content, intro: { ...current.content.intro, heading: e.target.value } } }))} className={inputClass} /></Field>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {["highlights", "suitableFor", "benefits"].map((key) => <Field key={key} label={`${key === "suitableFor" ? "Suitable for" : key} (one per line)`}><textarea rows={4} value={lineValue(form.content[key])} onChange={(e) => updateContent(key, e.target.value)} className={textClass} /></Field>)}
-                <Field label="Detail gallery paths (one per line)"><textarea rows={4} value={lineValue(form.content.gallery)} onChange={(e) => updateContent("gallery", e.target.value)} className={textClass} /></Field>
-              </div>
+              <Field label="Service highlights heading"><input value={form.content.highlightsHeading || ""} onChange={(e) => updateContent("highlightsHeading", e.target.value)} className={inputClass} /></Field>
+              <Field label="Service highlights description"><textarea rows={3} value={form.content.highlightsDescription || ""} onChange={(e) => updateContent("highlightsDescription", e.target.value)} className={textClass} /></Field>
+              <ListEditor title="Service highlights" items={objectItems(form.content.highlights, "title")} onChange={(items) => updateContent("highlights", items)} createItem={() => ({ title: "", description: "" })} fields={[{ key: "title", label: "Title" }, { key: "description", label: "Description", multiline: true }]} />
+              <Field label="Suitable for heading"><input value={form.content.suitableForHeading || ""} onChange={(e) => updateContent("suitableForHeading", e.target.value)} className={inputClass} /></Field>
+              <Field label="Suitable for pointers (one per line)"><textarea rows={4} value={lineValue(form.content.suitableFor)} onChange={(e) => updateContent("suitableFor", e.target.value)} className={textClass} /></Field>
+              <Field label="Why Bus Mantra heading (blank uses default)"><input value={form.content.benefitsHeading || ""} onChange={(e) => updateContent("benefitsHeading", e.target.value)} className={inputClass} /></Field>
+              <ListEditor title="Why Bus Mantra pointers (empty uses default)" items={objectItems(form.content.benefits, "title")} onChange={(items) => updateContent("benefits", items)} createItem={() => ({ title: "", description: "" })} fields={[{ key: "title", label: "Title" }, { key: "description", label: "Description", multiline: true }]} />
+              <Field label="Detail gallery paths (one per line)"><textarea rows={4} value={lineValue(form.content.gallery)} onChange={(e) => updateContent("gallery", e.target.value)} className={textClass} /></Field>
               <Field label="Card / hero image path"><input value={form.image || ""} onChange={(e) => setField("image", e.target.value)} className={inputClass} /></Field>
               <ImageUploadField label="Service image" value={form.image} onUploaded={(value) => uploadResult("image", value)} onUploadingChange={(change) => setUploads((count) => count + change)} />
-              <ImageUploadField label="Service gallery" value={lineValue(form.content.gallery)} multiple onUploaded={(value) => updateContent("gallery", [...(Array.isArray(form.content.gallery) ? form.content.gallery : splitLines(form.content.gallery)), value])} onUploadingChange={(change) => setUploads((count) => count + change)} />
+              <ImageUploadField label="Service gallery" value={lineValue(form.content.gallery)} multiple onUploaded={(value) => setForm((current) => ({ ...current, content: { ...current.content, gallery: [...splitLines(current.content.gallery), value] } }))} onUploadingChange={(change) => setUploads((count) => count + change)} />
             </>}
+            <ListEditor title="FAQs (empty uses default)" items={form.content.faqs || []} onChange={(items) => updateContent("faqs", items)} createItem={() => ({ question: "", answer: "" })} fields={[{ key: "question", label: "Question" }, { key: "answer", label: "Answer", multiline: true }]} />
           </div>
           <div className="flex justify-end gap-2 border-t border-slate-100 p-4"><button type="button" onClick={() => setEditing(null)} className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold">Cancel</button><button disabled={saving || uploads > 0} className="flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-60"><Save size={16} /> {uploads ? "Uploading…" : saving ? "Saving…" : "Save changes"}</button></div>
         </form>

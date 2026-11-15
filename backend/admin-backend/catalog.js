@@ -11,8 +11,8 @@ const catalogConfig = {
   destinations: {
     table: "destinations",
     key: "slug",
-    columns: ["slug", "name", "badge", "route", "description", "gallery", "popular_places"],
-    json: ["gallery", "popular_places"],
+    columns: ["slug", "name", "badge", "route", "description", "gallery", "popular_places", "content"],
+    json: ["gallery", "popular_places", "content"],
   },
   services: {
     table: "services",
@@ -38,13 +38,14 @@ function normalizeData(input, config) {
   return entries;
 }
 
-function validateRecord(collection, body) {
+export function validateRecord(collection, body) {
   const slug = typeof body.slug === "string" ? body.slug.trim() : "";
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return "Slug must use lowercase letters, numbers, and hyphens.";
   if (collection === "destinations") {
     if (typeof body.name !== "string" || !body.name.trim()) return "Destination name is required.";
     if (typeof body.description !== "string" || !body.description.trim()) return "Description is required.";
     if (!Array.isArray(body.gallery) || !Array.isArray(body.popular_places)) return "Gallery and popular places must be lists.";
+    if (body.content !== undefined && (!body.content || typeof body.content !== "object" || Array.isArray(body.content))) return "Destination content must be an object.";
   }
   if (collection === "services") {
     if (typeof body.id !== "string" || !/^[a-z0-9][a-z0-9_-]{1,79}$/i.test(body.id.trim())) return "Enter a valid service ID.";
@@ -52,6 +53,38 @@ function validateRecord(collection, body) {
     if (typeof body.description !== "string" || !body.description.trim()) return "Description is required.";
     if (!body.content || typeof body.content !== "object" || Array.isArray(body.content)) return "Service content must be an object.";
   }
+  const content = body.content || {};
+  const isText = (value) => typeof value === "string";
+  const isTextList = (value) => Array.isArray(value) && value.every(isText);
+  const isCardList = (value, key) => Array.isArray(value) && value.every((item) =>
+    (isText(item) && item.trim()) ||
+    (item && typeof item === "object" && !Array.isArray(item) &&
+      isText(item[key]) && item[key].trim() &&
+      (item.description === undefined || isText(item.description)))
+  );
+  if (collection === "destinations") {
+    if (!isTextList(body.gallery)) return "Gallery images must be text paths.";
+    if (!isCardList(body.popular_places, "name") || body.popular_places.some((place) =>
+      (place.image !== undefined && !isText(place.image)) ||
+      (place.highlights !== undefined && !isTextList(place.highlights))
+    )) return "Each popular place needs a name, image path, description, and list of pointers.";
+  }
+  if (collection === "services") {
+    for (const key of ["highlights", "benefits"]) {
+      if (content[key] !== undefined && !isCardList(content[key], "title")) return `Each ${key} item needs a title.`;
+    }
+    for (const key of ["oneLiner", "heroImage", "placesHeading", "placesDescription", "eyebrow", "highlightsHeading", "highlightsDescription", "suitableForHeading", "benefitsHeading"]) {
+      if (content[key] !== undefined && !isText(content[key])) return `${key} must be text.`;
+    }
+    if (content.intro !== undefined && (!content.intro || typeof content.intro !== "object" || Array.isArray(content.intro) ||
+      (content.intro.heading !== undefined && !isText(content.intro.heading)))) return "Intro heading must be text.";
+    for (const key of ["gallery", "suitableFor"]) {
+      if (content[key] !== undefined && !isTextList(content[key])) return `${key} must be a list of text values.`;
+    }
+  }
+  if (content.faqs !== undefined && (!Array.isArray(content.faqs) || content.faqs.some((faq) =>
+    !faq || typeof faq.question !== "string" || !faq.question.trim() || typeof faq.answer !== "string" || !faq.answer.trim()
+  ))) return "Each FAQ needs a question and answer.";
   return null;
 }
 

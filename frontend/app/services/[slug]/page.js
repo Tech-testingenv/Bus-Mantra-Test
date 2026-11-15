@@ -121,7 +121,7 @@ export default function ServiceSlugPage({ params }) {
         <div className="lg:col-span-7">
           <ServiceHeader service={service} />
 
-          <Carousal key={service.slug} service={service} title={service.title} />
+          <Carousal key={service.slug} images={[service.image, ...(service.gallery || [])].filter(Boolean)} service={service} title={service.title} />
 
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <QuickInfo
@@ -150,7 +150,7 @@ export default function ServiceSlugPage({ params }) {
 
           <SuitableFor service={service} />
 
-          <ServiceBenefits service={service} />
+          <ServiceBenefits service={service} defaultBenefits={fallbackService?.benefits || servicesSlugData[0]?.benefits || []} />
         </div>
 
         <div className="lg:sticky lg:top-24 lg:col-span-5 lg:h-fit lg:self-start">
@@ -158,7 +158,10 @@ export default function ServiceSlugPage({ params }) {
         </div>
       </div>
       {/* Services Slug FAQ Section */}
-      <FAQSection data={servicesSlugFaqData} />
+      <FAQSection data={{
+        ...servicesSlugFaqData,
+        faqs: service.faqs?.length ? service.faqs : servicesSlugFaqData.faqs,
+      }} />
     </main>
 
   );
@@ -1044,11 +1047,11 @@ function ServiceHighlights({
         </span>
 
         <h2 className="mt-3 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl">
-          Built around your journey
+          {service.highlightsHeading || "Built around your journey"}
         </h2>
 
         <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500">
-          Everything is organised around your group&apos;s travel requirements.
+          {service.highlightsDescription || "Everything is organised around your group's travel requirements."}
         </p>
       </div>
 
@@ -1069,11 +1072,11 @@ function ServiceHighlights({
 
                 <div>
                   <h3 className="text-sm font-black text-neutral-900 sm:text-base">
-                    {item.title}
+                    {typeof item === "string" ? item : item.title}
                   </h3>
 
                   <p className="mt-1.5 text-[11px] leading-[1.65] text-neutral-500 sm:text-xs">
-                    {item.description}
+                    {typeof item === "string" ? "" : item.description}
                   </p>
                 </div>
               </div>
@@ -1100,7 +1103,7 @@ function SuitableFor({
         </span>
 
         <h2 className="mt-3 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl">
-          Groups that travel together
+          {service.suitableForHeading || "Groups that travel together"}
         </h2>
       </div>
 
@@ -1126,8 +1129,10 @@ function SuitableFor({
 
 function ServiceBenefits({
   service,
+  defaultBenefits,
 }) {
-  if (!service.benefits?.length) {
+  const benefits = service.benefits?.length ? service.benefits : defaultBenefits;
+  if (!benefits.length) {
     return null;
   }
 
@@ -1139,12 +1144,12 @@ function ServiceBenefits({
         </span>
 
         <h2 className="mt-3 text-2xl font-black tracking-tight text-neutral-900 sm:text-3xl">
-          A simpler way to move your group
+          {service.benefitsHeading || "A simpler way to move your group"}
         </h2>
       </div>
 
       <div className="space-y-3">
-        {service.benefits.map(
+        {benefits.map(
           (item, index) => (
             <article
               key={
@@ -1160,11 +1165,11 @@ function ServiceBenefits({
 
                 <div>
                   <h3 className="text-sm font-black text-neutral-900 sm:text-base">
-                    {item.title}
+                    {typeof item === "string" ? item : item.title}
                   </h3>
 
                   <p className="mt-1.5 text-[11px] leading-[1.65] text-neutral-500 sm:text-xs">
-                    {item.description}
+                    {typeof item === "string" ? "" : item.description}
                   </p>
                 </div>
               </div>
