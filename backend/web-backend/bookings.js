@@ -12,11 +12,20 @@ export async function POST(request) {
       return jsonError("Passenger count must be a positive whole number.");
     }
 
-    const fleet = await query(
-      `SELECT id, name, slug, capacity, max_seats AS "maxSeats"
-       FROM fleets WHERE max_seats >= $1 ORDER BY max_seats LIMIT 1`,
-      [passengers]
-    );
+    if (body.fleetId !== undefined && (typeof body.fleetId !== "string" || !body.fleetId.trim())) {
+      return jsonError("Select a valid coach.");
+    }
+    const fleet = body.fleetId
+      ? await query(
+        `SELECT id, name, slug, capacity, max_seats AS "maxSeats"
+         FROM fleets WHERE id = $1 AND max_seats >= $2`,
+        [body.fleetId, passengers]
+      )
+      : await query(
+        `SELECT id, name, slug, capacity, max_seats AS "maxSeats"
+         FROM fleets WHERE max_seats >= $1 ORDER BY max_seats LIMIT 1`,
+        [passengers]
+      );
     if (!fleet.rows[0]) {
       return jsonError("No vehicle is available for this group size. Please contact us for a custom arrangement.", 422);
     }

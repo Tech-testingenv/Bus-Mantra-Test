@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -38,10 +38,64 @@ import Carousal from "@/components/common/carousal";
 
 const DEFAULT_FLEET_IMAGE = "/fleet/12_seater_maharaja_tempo_traveller_1.png";
 
+function DatabaseFleetSpecifications({ coach, query }) {
+  const details = coach.content || {
+    tag: "",
+    specifications: Object.entries(coach.features || {}).map(([label, value]) => ({ label, value: String(value), description: "" })),
+    features: [],
+    inclusions: [],
+    cabinAmenities: coach.amenities || [],
+    bookingInclusions: [],
+  };
+  const bookingUrl = `/fleets/${coach.slug}${query ? `?${query}` : ""}`;
+  return (
+    <main className="relative mx-auto w-full max-w-360 px-4 pb-20 pt-24 sm:px-6 lg:px-8">
+      <Link href={bookingUrl} className="inline-flex items-center gap-2 text-sm font-bold text-primary"><ArrowLeft className="h-4 w-4" /> Back to coach</Link>
+      <div className="mt-6 grid gap-8 lg:grid-cols-12">
+        <div className="space-y-8 lg:col-span-8">
+          <div>
+            {details.tag && <span className="text-xs font-bold uppercase text-primary">{details.tag}</span>}
+            <h1 className="mt-2 text-3xl font-black text-text-primary">{coach.name}</h1>
+            <p className="mt-2 text-sm font-semibold text-text-secondary">{coach.capacity}</p>
+            <p className="mt-3 text-sm text-text-muted">{coach.description}</p>
+          </div>
+          <Carousal images={[coach.image, ...coach.gallery]} title={coach.name} />
+          {details.specifications.length > 0 && <section className="rounded-2xl border border-border bg-surface p-6">
+            <h2 className="mb-5 text-xl font-black">Vehicle Specifications</h2>
+            <div className="grid gap-3 sm:grid-cols-2">{details.specifications.map((item, index) => <SpecMetricItem key={`${item.label}-${index}`} icon={Bus} label={item.label} value={item.value} sub={item.description} />)}</div>
+          </section>}
+          {[["Features", details.features], ["Inclusions", details.inclusions], ["Cabin Features & Amenities", details.cabinAmenities], ["Booking Inclusions", details.bookingInclusions]].map(([heading, items]) => items.length > 0 && <section key={heading} className="rounded-2xl border border-border bg-surface p-6">
+            <h2 className="mb-4 text-xl font-black">{heading}</h2>
+            <ul className="grid gap-3 sm:grid-cols-2">{items.map((item, index) => <li key={`${item}-${index}`} className="rounded-xl bg-surface-secondary p-3 text-sm font-semibold">{item}</li>)}</ul>
+          </section>)}
+        </div>
+        <div className="lg:col-span-4"><Link href={bookingUrl} className="inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground">Book this coach</Link></div>
+      </div>
+    </main>
+  );
+}
+
 export default function FleetSpecificationPage({ params }) {
   const unwrappedParams = use(params);
   const slug = unwrappedParams?.slug || "";
   const searchParams = useSearchParams();
+  const [databaseCoach, setDatabaseCoach] = useState(null);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
+  const [catalogError, setCatalogError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch(`/api/fleets/${encodeURIComponent(slug)}`)
+      .then((response) => {
+        if (response.status === 404) return null;
+        if (!response.ok) throw new Error(`Fleet detail returned ${response.status}.`);
+        return response.json();
+      })
+      .then((coach) => { if (active) setDatabaseCoach(coach); })
+      .catch((error) => { console.error("Fleet specification load failed:", error); if (active) setCatalogError(true); })
+      .finally(() => { if (active) setCatalogLoaded(true); });
+    return () => { active = false; };
+  }, [slug]);
 
   // Resolve variant directly or via category slug
   const resolvedData = useMemo(() => {
@@ -78,6 +132,18 @@ export default function FleetSpecificationPage({ params }) {
     const unique = [...new Set(imgs)];
     return unique.length > 0 ? unique : [DEFAULT_FLEET_IMAGE];
   }, [variant]);
+
+  if (databaseCoach && (databaseCoach.content || !variant || !category)) {
+    return <DatabaseFleetSpecifications coach={databaseCoach} query={searchParams?.toString()} />;
+  }
+
+  if ((!variant || !category) && !catalogLoaded) {
+    return <main className="flex min-h-[60vh] items-center justify-center">Loading specifications...</main>;
+  }
+
+  if ((!variant || !category) && catalogError) {
+    return <main role="alert" className="flex min-h-[60vh] items-center justify-center">Unable to load specifications. Please try again later.</main>;
+  }
 
   if (!variant || !category) {
     return (

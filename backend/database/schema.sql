@@ -79,8 +79,25 @@ CREATE TABLE IF NOT EXISTS fleets (
   description TEXT NOT NULL,
   amenities JSONB NOT NULL DEFAULT '[]',
   features JSONB NOT NULL DEFAULT '{}',
+  content JSONB,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+DO $$
+BEGIN
+  IF to_regclass('bus_mantra.fleet_categories') IS NULL THEN
+    CREATE TABLE fleet_categories (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      capacity TEXT NOT NULL DEFAULT '',
+      description TEXT NOT NULL DEFAULT ''
+    );
+    INSERT INTO fleet_categories (id, name, capacity, description) VALUES
+      ('mini-coach', 'Mini Coach', '15–19 Seats', 'Compact coaches for smaller groups and local trips.'),
+      ('premium-coach', 'Premium Coach', '20–45 Seats', 'Comfortable mid-size coaches for longer group journeys.'),
+      ('luxury-coach', 'Luxury Coach', '46–60 Seats', 'Full-size luxury coaches for large groups and tours.');
+  END IF;
+END $$;
 
 ALTER TABLE fleets ADD COLUMN IF NOT EXISTS coach_type TEXT;
 UPDATE fleets
@@ -94,6 +111,16 @@ ALTER TABLE fleets ALTER COLUMN coach_type SET DEFAULT 'mini-coach';
 ALTER TABLE fleets ALTER COLUMN coach_type SET NOT NULL;
 ALTER TABLE fleets ADD COLUMN IF NOT EXISTS default_round_trip_km INTEGER;
 ALTER TABLE fleets ADD COLUMN IF NOT EXISTS default_estimated_fare NUMERIC(10,2);
+ALTER TABLE fleets ADD COLUMN IF NOT EXISTS content JSONB;
+INSERT INTO fleet_categories (id, name)
+SELECT DISTINCT coach_type, coach_type FROM fleets
+ON CONFLICT (id) DO NOTHING;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conrelid = 'bus_mantra.fleets'::regclass AND conname = 'fleets_coach_type_fkey') THEN
+    ALTER TABLE fleets ADD CONSTRAINT fleets_coach_type_fkey FOREIGN KEY (coach_type) REFERENCES fleet_categories(id);
+  END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS destinations (
   slug TEXT PRIMARY KEY,

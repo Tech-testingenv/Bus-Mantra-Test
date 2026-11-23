@@ -31,6 +31,14 @@ function permissionModule(collection) {
   return collection === "fleets" ? "fleet" : collection;
 }
 
+function catalogError(error, selected, label) {
+  if (selected.collection === "destinations" && error?.code === "42703" && /content/i.test(error.message)) {
+    console.error(`${label}:`, error);
+    return Response.json({ error: "Destination database migration is missing. Run npm run db:init and restart the services." }, { status: 500 });
+  }
+  return adminError(error, label);
+}
+
 function normalizeData(input, config) {
   if (!input || typeof input !== "object" || Array.isArray(input)) return null;
   const entries = Object.entries(input).filter(([key]) => config.columns.includes(key));
@@ -99,7 +107,7 @@ export async function GET(request) {
     );
     return Response.json({ records: result.rows, key: selected.config.key });
   } catch (error) {
-    return adminError(error, "Admin catalog list failed");
+    return catalogError(error, selected, "Admin catalog list failed");
   }
 }
 
@@ -129,7 +137,7 @@ export async function POST(request) {
     );
     return Response.json({ record: result.rows[0] }, { status: 201 });
   } catch (error) {
-    return adminError(error, "Admin catalog create failed");
+    return catalogError(error, selected, "Admin catalog create failed");
   }
 }
 
@@ -163,7 +171,7 @@ export async function PATCH(request) {
     if (!result.rowCount) return Response.json({ error: "Catalog record not found." }, { status: 404 });
     return Response.json({ record: result.rows[0] });
   } catch (error) {
-    return adminError(error, "Admin catalog update failed");
+    return catalogError(error, selected, "Admin catalog update failed");
   }
 }
 

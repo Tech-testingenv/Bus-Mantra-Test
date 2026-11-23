@@ -77,6 +77,9 @@ const FALLBACK_FLEET_IMAGES = [
 ];
 
 function getFleetImages(fleet) {
+  if (fleet?.content) {
+    return [...new Set([fleet.image, ...(fleet.gallery || [])].filter(Boolean))];
+  }
   const images = [
     ...(Array.isArray(fleet?.gallery) ? fleet.gallery : []),
     ...(Array.isArray(fleet?.images) ? fleet.images : []),
@@ -133,6 +136,8 @@ export default function FleetDetailPage({ params }) {
 
   const fallbackBus = getBusBySlug(slug);
   const [databaseBus, setDatabaseBus] = useState(null);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
+  const [catalogError, setCatalogError] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -152,15 +157,18 @@ export default function FleetDetailPage({ params }) {
             slug: row.slug,
             name: row.name,
             image: row.image || fallbackBus?.image,
-            gallery: row.gallery?.length ? row.gallery : fallbackBus?.gallery,
-            amenities: row.amenities?.length ? row.amenities : fallbackBus?.amenities,
-            vehicleTypes: fallbackBus?.vehicleTypes || [],
+            gallery: row.content ? [row.image, ...row.gallery] : (row.gallery?.length ? row.gallery : fallbackBus?.gallery),
+            amenities: row.content ? row.content.cabinAmenities : (row.amenities?.length ? row.amenities : fallbackBus?.amenities),
+            inclusions: row.content ? row.content.bookingInclusions : fallbackBus?.inclusions,
+            vehicleTypes: row.content ? [] : (fallbackBus?.vehicleTypes || []),
           });
         }
       })
       .catch((error) => {
         console.error("Fleet detail catalog load failed:", error);
-      });
+        if (active) setCatalogError(true);
+      })
+      .finally(() => { if (active) setCatalogLoaded(true); });
     return () => {
       active = false;
     };
@@ -516,6 +524,7 @@ export default function FleetDetailPage({ params }) {
           destination: bookingData.destination,
           departureDateTime: toApiDateTime(bookingData.departureDateTime),
           returnDateTime: toApiDateTime(bookingData.returnDateTime),
+          ...(databaseBus?.content ? { fleetId: databaseBus.id } : {}),
         }),
       });
       const result = await response.json();
@@ -536,6 +545,8 @@ export default function FleetDetailPage({ params }) {
     setShowFleetModal(false);
   };
 
+  if (isBusMissing && !catalogLoaded) return <main className="flex min-h-[60vh] items-center justify-center">Loading coach...</main>;
+  if (isBusMissing && catalogError) return <main role="alert" className="flex min-h-[60vh] items-center justify-center">Unable to load coach details. Please try again later.</main>;
   if (isBusMissing) {
     return (
       <main className="mx-auto flex min-h-[60vh] max-w-360 items-center justify-center px-6">
@@ -582,9 +593,11 @@ export default function FleetDetailPage({ params }) {
                   {bus.name}
                 </span>
 
-                <span className="rounded-full bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary border border-primary/20">
+                {effectiveBus.seatLayout && <span className="rounded-full bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary border border-primary/20">
                   {effectiveBus.seatLayout} Layout
-                </span>
+                </span>}
+
+                {bus.content?.tag && <span className="rounded-full bg-primary-subtle px-3 py-1 text-[11px] font-bold text-primary">{bus.content.tag}</span>}
 
                 {bus.isPopular && (
                   <span className="flex items-center gap-1 rounded-full border border-primary/30 bg-primary-subtle px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
@@ -603,11 +616,11 @@ export default function FleetDetailPage({ params }) {
                   <Users className="h-4 w-4 text-primary" />
                   Capacity: <strong className="text-text-primary">{effectiveBus.capacity}</strong>
                 </span>
-                <span className="text-text-muted">•</span>
+                {effectiveBus.seatLayout && <><span className="text-text-muted">•</span>
                 <span className="inline-flex items-center gap-1.5">
                   <Bus className="h-4 w-4 text-primary" />
                   Seating: <strong className="text-text-primary">{effectiveBus.seatLayout} Push-back</strong>
-                </span>
+                </span></>}
               </div>
 
               {effectiveBus.description && (
@@ -617,7 +630,7 @@ export default function FleetDetailPage({ params }) {
               )}
             </div>
 
-            <Carousal bus={effectiveBus} title={effectiveBus.name} />
+            <Carousal images={effectiveBus.content ? getFleetImages(effectiveBus) : undefined} bus={effectiveBus} title={effectiveBus.name} />
 
             {effectiveBus.features && (
               <section className="rounded-2xl border border-border bg-surface p-5 sm:rounded-3xl sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
@@ -627,7 +640,9 @@ export default function FleetDetailPage({ params }) {
                   </h2>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {bus.content ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {bus.content.specifications.map((item, index) => <div key={`${item.label}-${index}`}><Specification label={item.label} value={item.value} />{item.description && <p className="mt-1 text-xs text-text-muted">{item.description}</p>}</div>)}
+                </div> : <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   <Specification
                     label="Seating Capacity"
                     value={effectiveBus.capacity}
@@ -657,7 +672,7 @@ export default function FleetDetailPage({ params }) {
                     label="Onboard Washroom"
                     value={effectiveBus.features.washroom || "Not Available"}
                   />
-                </div>
+                </div>}
 
                 <div className="mt-4 pt-3.5 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
                   <span className="text-xs text-text-muted">
@@ -673,6 +688,13 @@ export default function FleetDetailPage({ params }) {
                 </div>
               </section>
             )}
+
+            {bus.content && [["FEATURES", bus.content.features], ["INCLUSIONS", bus.content.inclusions]].map(([heading, items]) => items.length > 0 && (
+              <section key={heading} className="rounded-2xl border border-border bg-surface p-5 sm:p-6">
+                <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-text-muted">{heading}</h2>
+                <ul className="space-y-2">{items.map((item, index) => <li key={`${item}-${index}`} className="text-sm text-text-secondary">{item}</li>)}</ul>
+              </section>
+            ))}
 
             {effectiveBus.amenities?.length > 0 && (
               <section className="rounded-2xl border border-border bg-surface p-5 shadow-[0_8px_30px_rgba(0,0,0,0.03)] sm:rounded-3xl sm:p-6">

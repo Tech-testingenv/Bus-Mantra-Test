@@ -1,7 +1,6 @@
-import { notFound } from "next/navigation";
 import AdminPanel from "@/components/AdminPanel";
 
-const CATEGORIES = {
+const LEGACY_CATEGORIES = {
   "minicoach-edit": "mini-coach",
   "premiumcoach-edit": "premium-coach",
   "luxurycoach-edit": "luxury-coach",
@@ -14,7 +13,6 @@ export async function generateMetadata({ params }) {
 
 export default async function FleetCoachEditorPage({ params }) {
   const { categoryEdit, coachId } = await params;
-  const category = CATEGORIES[categoryEdit];
-  if (!category) notFound();
+  const category = LEGACY_CATEGORIES[categoryEdit] || categoryEdit;
   return <AdminPanel key={`${categoryEdit}-${coachId}`} initialSection="fleet-management" initialCategory={category} initialCoachId={coachId} />;
 }

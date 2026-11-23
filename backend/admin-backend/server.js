@@ -5,6 +5,7 @@ import * as admins from "./admins.js";
 import * as catalog from "./catalog.js";
 import * as dashboard from "./dashboard.js";
 import * as fleetApi from "./fleetApi.js";
+import * as fleetCategories from "./fleetCategories.js";
 import * as imageUploads from "./imageUploads.js";
 import * as records from "./records.js";
 import * as roles from "./roles.js";
@@ -21,6 +22,7 @@ startServer({
     ["/api/admin/dashboard", dashboard],
     ["/api/admin/fleets", { GET: fleetApi.GET, POST: fleetApi.POST }],
     ["/api/admin/fleets/:id", { GET: fleetApi.GET, PATCH: fleetApi.PATCH }],
+    ["/api/admin/fleet-categories", fleetCategories],
     ["/api/admin/records/:kind", records],
     ["/api/admin/roles", roles],
     ["/api/admin/sales", sales],

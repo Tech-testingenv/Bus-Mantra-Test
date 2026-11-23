@@ -6,11 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Bus, ChevronRight, LoaderCircle, Plus, Save, Star } from "lucide-react";
 import ImageUploadField from "./ImageUploadField";
 
-const COACH_TYPES = [
-  { id: "mini-coach", route: "minicoach-edit", name: "Mini Coach", description: "Compact coaches for smaller groups and local trips.", tone: "bg-sky-50 text-sky-700" },
-  { id: "premium-coach", route: "premiumcoach-edit", name: "Premium Coach", description: "Comfortable mid-size coaches for longer group journeys.", tone: "bg-violet-50 text-violet-700" },
-  { id: "luxury-coach", route: "luxurycoach-edit", name: "Luxury Coach", description: "Full-size luxury coaches for large groups and tours.", tone: "bg-amber-50 text-amber-700" },
-];
+const LEGACY_ROUTES = { "mini-coach": "minicoach-edit", "premium-coach": "premiumcoach-edit", "luxury-coach": "luxurycoach-edit" };
 
 const EMPTY_FLEET = {
   id: "", slug: "", coach_type: "", name: "", capacity: "", min_seats: 1,
@@ -40,27 +36,45 @@ function slugify(value) {
 }
 
 function categoryRoute(category) {
-  return COACH_TYPES.find((type) => type.id === category)?.route || "minicoach-edit";
+  return LEGACY_ROUTES[category] || category;
 }
 
 function Field({ label, children, className = "" }) {
   return <label className={`block text-sm font-semibold text-slate-700 ${className}`}>{label}{children}</label>;
 }
 
-function FleetOverview({ onNotice }) {
+function FleetOverview({ onNotice, permissions, categories, reload }) {
   const router = useRouter();
-  const [counts, setCounts] = useState({});
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState({ name: "", capacity: "", description: "" });
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    let active = true;
-    Promise.all(COACH_TYPES.map(async (type) => {
-      const result = await apiRequest(`/api/admin/fleets?type=${type.id}`);
-      return [type.id, result.coaches.length];
-    }))
-      .then((entries) => { if (active) setCounts(Object.fromEntries(entries)); })
-      .catch((error) => { if (active) onNotice(error.message, "error"); });
-    return () => { active = false; };
-  }, [onNotice]);
+  async function saveCategory(event) {
+    event.preventDefault();
+    setSaving(true);
+    try {
+      const id = editing === "new" ? slugify(form.name) : editing;
+      await apiRequest("/api/admin/fleet-categories", { method: editing === "new" ? "POST" : "PATCH", body: JSON.stringify({ ...form, id }) });
+      await reload();
+      setEditing(null);
+      onNotice("Category saved.");
+    } catch (error) {
+      onNotice(error.message, "error");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function deleteCategory(type) {
+    if (!window.confirm(`Delete category "${type.name}"?`)) return;
+    try {
+      await apiRequest(`/api/admin/fleet-categories?id=${encodeURIComponent(type.id)}`, { method: "DELETE" });
+      await reload();
+      onNotice("Category deleted.");
+    } catch (error) {
+      onNotice(error.message, "error");
+    }
+  }
 
   return (
     <div className="space-y-7">
@@ -68,26 +82,39 @@ function FleetOverview({ onNotice }) {
         <p className="text-sm font-medium text-slate-500">Manage the vehicle options displayed on the website</p>
         <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900">Fleet management</h1>
       </div>
+      {permissions?.create && <button type="button" onClick={() => { setForm({ name: "", capacity: "", description: "" }); setEditing("new"); }} className="rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-white">Add category</button>}
+      {editing && <form onSubmit={saveCategory} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5">
+        <h2 className="font-bold">{editing === "new" ? "Add category" : "Edit category"}</h2>
+        <Field label="Name"><input required value={form.name} onChange={(e) => setForm((current) => ({ ...current, name: e.target.value }))} className={inputClass} /></Field>
+        <Field label="Capacity"><input required value={form.capacity} onChange={(e) => setForm((current) => ({ ...current, capacity: e.target.value }))} className={inputClass} /></Field>
+        <Field label="One liner description"><input required value={form.description} onChange={(e) => setForm((current) => ({ ...current, description: e.target.value }))} className={inputClass} /></Field>
+        <div className="flex gap-2"><button disabled={saving} className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-bold text-white">Save category</button><button type="button" onClick={() => setEditing(null)} className="rounded-lg border px-4 py-2 text-sm">Cancel</button></div>
+      </form>}
       <div className="grid gap-5 xl:grid-cols-3">
-        {COACH_TYPES.map((type) => (
-          <button key={type.id} onClick={() => router.push(`/admin/fleet-management/${type.route}`)} className="group rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-lg">
+        {categories.map((type) => (
+          <div key={type.id} className="group rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm">
             <div className="flex items-start justify-between gap-4">
-              <span className={`flex h-12 w-12 items-center justify-center rounded-2xl ${type.tone}`}><Bus size={23} /></span>
-              <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">{counts[type.id] ?? "—"} coaches</span>
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-700"><Bus size={23} /></span>
+              <span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600">{type.count} coaches</span>
             </div>
             <h2 className="mt-6 text-xl font-black text-slate-900">{type.name}</h2>
+            {type.capacity && <p className="mt-1 text-xs font-semibold text-slate-500">{type.capacity}</p>}
             <p className="mt-2 min-h-12 text-sm leading-6 text-slate-500">{type.description}</p>
-            <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-orange-600">Manage coaches <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></span>
-          </button>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <button type="button" onClick={() => router.push(`/admin/fleet-management/${categoryRoute(type.id)}`)} className="inline-flex items-center gap-2 text-sm font-bold text-orange-600">Manage coaches <ArrowRight size={16} /></button>
+              {permissions?.edit && <button type="button" onClick={() => { setForm({ name: type.name, capacity: type.capacity, description: type.description }); setEditing(type.id); }} className="text-xs font-bold text-slate-600">Edit</button>}
+              {permissions?.delete && <button type="button" onClick={() => deleteCategory(type)} className="text-xs font-bold text-red-600">Delete</button>}
+            </div>
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-function FleetList({ category, permissions }) {
+function FleetList({ category, permissions, categories }) {
   const router = useRouter();
-  const type = COACH_TYPES.find((item) => item.id === category);
+  const type = categories.find((item) => item.id === category);
   const [coaches, setCoaches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -151,15 +178,16 @@ function FleetList({ category, permissions }) {
   );
 }
 
-function FleetEditor({ category, coachId, onNotice, permissions }) {
+function FleetEditor({ category, coachId, onNotice, permissions, categories }) {
   const router = useRouter();
-  const type = COACH_TYPES.find((item) => item.id === category);
+  const type = categories.find((item) => item.id === category);
   const isNew = coachId === "new";
   const canSave = isNew ? permissions?.create === true : permissions?.edit === true;
   const [form, setForm] = useState({ ...EMPTY_FLEET, coach_type: category });
   const [galleryText, setGalleryText] = useState("");
   const [amenitiesText, setAmenitiesText] = useState("");
   const [featuresText, setFeaturesText] = useState("");
+  const [detail, setDetail] = useState({ tag: "", specifications: [], features: "", inclusions: "", cabinAmenities: "", bookingInclusions: "" });
   const [busy, setBusy] = useState(!isNew);
   const [uploadsInProgress, setUploadsInProgress] = useState(0);
   const [error, setError] = useState("");
@@ -175,6 +203,14 @@ function FleetEditor({ category, coachId, onNotice, permissions }) {
         setGalleryText((coach.gallery || []).join("\n"));
         setAmenitiesText((coach.amenities || []).join("\n"));
         setFeaturesText(Object.entries(coach.features || {}).map(([key, value]) => `${key} = ${value}`).join("\n"));
+        setDetail({
+          tag: coach.content?.tag || "",
+          specifications: coach.content?.specifications || Object.entries(coach.features || {}).map(([label, value]) => ({ label, value: String(value), description: "" })),
+          features: (coach.content?.features || []).join("\n"),
+          inclusions: (coach.content?.inclusions || []).join("\n"),
+          cabinAmenities: (coach.content?.cabinAmenities || coach.amenities || []).join("\n"),
+          bookingInclusions: (coach.content?.bookingInclusions || []).join("\n"),
+        });
       })
       .catch((requestError) => { if (active) setError(requestError.message); })
       .finally(() => { if (active) setBusy(false); });
@@ -218,6 +254,12 @@ function FleetEditor({ category, coachId, onNotice, permissions }) {
         gallery: galleryText.split(/\r?\n/).map((item) => item.trim()).filter(Boolean),
         amenities: amenitiesText.split(/\r?\n/).map((item) => item.trim()).filter(Boolean),
         features,
+        content: {
+          ...form.content,
+          tag: detail.tag.trim(),
+          specifications: detail.specifications.map((item) => ({ label: item.label.trim(), value: item.value.trim(), description: item.description.trim() })),
+          ...Object.fromEntries(["features", "inclusions", "cabinAmenities", "bookingInclusions"].map((key) => [key, detail[key].split(/\r?\n/).map((item) => item.trim()).filter(Boolean)])),
+        },
       };
       if (isNew) {
         await apiRequest("/api/admin/fleets", { method: "POST", body: JSON.stringify(data) });
@@ -246,6 +288,7 @@ function FleetEditor({ category, coachId, onNotice, permissions }) {
           <p className="mt-1 text-sm text-slate-500">These details appear on the public fleet pages.</p>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <Field label="Coach name"><input required value={form.name || ""} onChange={(event) => updateName(event.target.value)} className={inputClass} placeholder="e.g. Executive Mini Coach" /></Field>
+            <Field label="Tag"><input value={detail.tag} onChange={(event) => setDetail((current) => ({ ...current, tag: event.target.value }))} className={inputClass} placeholder="e.g. Most popular" /></Field>
             <Field label="Displayed seat capacity"><input required value={form.capacity || ""} onChange={(event) => update("capacity", event.target.value)} className={inputClass} placeholder="e.g. 15–19 Seats" /></Field>
             {isNew && <Field label="Coach ID"><input required value={form.id || ""} onChange={(event) => update("id", slugify(event.target.value))} className={inputClass} placeholder="mini-coach-executive-mini-coach" /></Field>}
             <Field label="Minimum seats"><input required min="1" type="number" value={form.min_seats ?? ""} onChange={(event) => update("min_seats", event.target.value)} className={inputClass} /></Field>
@@ -284,6 +327,19 @@ function FleetEditor({ category, coachId, onNotice, permissions }) {
             <Field label="Specifications (one per line)" className="sm:col-span-2"><textarea rows={4} value={featuresText} onChange={(event) => setFeaturesText(event.target.value)} className={`${textareaClass} resize-y`} placeholder={"Luggage: 20 standard bags\nEntertainment: Stereo audio"} /></Field>
           </div>
         </section>
+        <section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+          <div className="flex items-center justify-between"><h2 className="text-lg font-bold">Vehicle specification cards</h2><button type="button" onClick={() => setDetail((current) => ({ ...current, specifications: [...current.specifications, { label: "", value: "", description: "" }] }))} className="rounded-lg bg-orange-50 px-3 py-2 text-sm font-bold text-orange-700">Add card</button></div>
+          {detail.specifications.map((item, index) => <div key={index} className="grid gap-3 rounded-xl border border-slate-200 p-4 sm:grid-cols-3">
+            {["label", "value", "description"].map((key) => <Field key={key} label={key === "label" ? "Label" : key === "value" ? "Value" : "Description"}><input required={key !== "description"} value={item[key]} onChange={(event) => setDetail((current) => ({ ...current, specifications: current.specifications.map((card, i) => i === index ? { ...card, [key]: event.target.value } : card) }))} className={inputClass} /></Field>)}
+            <button type="button" onClick={() => setDetail((current) => ({ ...current, specifications: current.specifications.filter((_, i) => i !== index) }))} className="text-left text-sm font-bold text-red-600">Remove card</button>
+          </div>)}
+          {[
+            ["features", "Features"],
+            ["inclusions", "Inclusions"],
+            ["cabinAmenities", "Cabin features & amenities"],
+            ["bookingInclusions", "Booking inclusions"],
+          ].map(([key, label]) => <Field key={key} label={`${label} (one per line)`}><textarea rows={3} value={detail[key]} onChange={(event) => setDetail((current) => ({ ...current, [key]: event.target.value }))} className={textareaClass} /></Field>)}
+        </section>
         {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
         <div className="flex flex-wrap justify-end gap-3 pb-8">
           <button type="button" onClick={() => router.push(backUrl)} className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50">Cancel</button>
@@ -295,7 +351,22 @@ function FleetEditor({ category, coachId, onNotice, permissions }) {
 }
 
 export default function FleetManagerPanel({ category, coachId, onNotice, permissions }) {
-  if (coachId) return <FleetEditor category={category} coachId={coachId} onNotice={onNotice} permissions={permissions} />;
-  if (category) return <FleetList category={category} permissions={permissions} />;
-  return <FleetOverview onNotice={onNotice} />;
+  const [categories, setCategories] = useState(null);
+  const [loadError, setLoadError] = useState("");
+  async function reload() {
+    const result = await apiRequest("/api/admin/fleet-categories");
+    setCategories(result.categories);
+  }
+  useEffect(() => {
+    let active = true;
+    apiRequest("/api/admin/fleet-categories")
+      .then((result) => { if (active) setCategories(result.categories); })
+      .catch((error) => { if (active) setLoadError(error.message); });
+    return () => { active = false; };
+  }, []);
+  if (loadError) return <p role="alert" className="rounded-xl bg-red-50 p-4 text-red-700">{loadError}</p>;
+  if (!categories) return <p>Loading fleet categories...</p>;
+  if (coachId) return <FleetEditor category={category} coachId={coachId} onNotice={onNotice} permissions={permissions} categories={categories} />;
+  if (category) return <FleetList category={category} permissions={permissions} categories={categories} />;
+  return <FleetOverview onNotice={onNotice} permissions={permissions} categories={categories} reload={reload} />;
 }

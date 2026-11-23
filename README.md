@@ -20,6 +20,8 @@ Open the site at [http://localhost:3000](http://localhost:3000) and the admin pa
 
 Admin access is available at `/admin` on the admin app. Fleet models are managed under `/admin/fleet-management`, with category lists at `/admin/fleet-management/minicoach-edit`, `/admin/fleet-management/premiumcoach-edit`, and `/admin/fleet-management/luxurycoach-edit`. Admin fleet edits and new coaches are stored in PostgreSQL and used by the public fleet catalog.
 
+Fleet managers can add, edit and remove categories (a category containing coaches cannot be removed). Each coach supports a tag, hero and carousel images, specification cards, and separate Features, Inclusions, Cabin Features & Amenities, and Booking Inclusions lists. Existing coaches retain their legacy data. Once a coach is saved with the new editor, its public booking page represents that individual coach rather than the old static variant selector; existing static variant URLs remain available. Bookings from managed coach pages retain the selected coach and reject passenger counts exceeding its capacity.
+
 Coach main images and gallery images can be uploaded from the fleet editor. JPG, PNG, WebP, and GIF files up to 8 MB are stored in the server's `backend/uploads/` directory and served through `/api/uploads/[filename]`; persist that directory when deploying.
 
 Fleet editors can also set an optional default round-trip distance and estimated fare for each coach. These estimates are shown until a visitor enters a pickup or destination, after which the public page calculates the fare for that route. Existing coaches without defaults continue to use route-based estimates.
@@ -28,7 +30,7 @@ Open `/admin` to sign in. The first superadmin is created from the two `ADMIN_SU
 
 The admin panel includes dedicated Fleet, Services, and Destinations management screens with add/edit forms and image upload. Service and destination edits are read from PostgreSQL by the public website. Superadmins can create custom roles, assign per-module view/create/edit/delete permissions, and assign those roles to admin accounts; backend APIs enforce the assigned permissions. The Sales module includes date-filtered booking and lead reports, booking/payment statuses, fare estimates, lead assignment and follow-up, and CSV export. Booking fare estimates are entered by staff; they are forecasts, not payment records.
 
-Service editors manage the hero, gallery, highlights, suitable-for and Why Bus Mantra sections. Destination editors manage the hero, explore-section heading and description, and structured place cards with images and pointers. Both editors support ordered FAQs; leaving the FAQ list empty shows the existing default FAQs. An empty Why Bus Mantra list uses the existing service-specific defaults, or the standard default for newly added services. Run `npm run db:init` after updating to add the destination content column without removing existing catalog data.
+Service editors manage the hero, gallery, highlights, suitable-for and Why Bus Mantra sections. Destination editors manage the hero, explore-section heading and description, and structured place cards with images and pointers. Both editors support ordered FAQs; leaving the FAQ list empty shows the existing default FAQs. An empty Why Bus Mantra list uses the existing service-specific defaults, or the standard default for newly added services. Back up the database and run `npm run db:init` after updating to apply fleet category, coach content, and destination content schema changes without reseeding the catalog. Restart the backend services afterward.
 
 ## API
 
@@ -42,6 +44,8 @@ Service editors manage the hero, gallery, highlights, suitable-for and Why Bus M
 - `/api/admin/roles` manages custom roles and module permissions (superadmin only)
 
 The schema is in `backend/database/schema.sql`; catalog seed data is in `backend/scripts/seed.mjs`.
+
+The fleet integration tests require `TEST_DATABASE_URL` pointing to an empty, disposable database whose name begins with `bus_mantra_test_`. Run `node --test backend/admin-backend/fleet.integration.test.js`; the tests modify its schema and data.
 
 ## Repository layout
 

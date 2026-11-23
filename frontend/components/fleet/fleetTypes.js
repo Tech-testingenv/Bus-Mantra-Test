@@ -31,7 +31,7 @@ export default function FleetTypes({
           setDatabaseFleets(rows.map((fleet) => ({
             ...fleet,
             href: `/fleets/${fleet.slug}`,
-            badge: fleet.isPopular ? "MOST POPULAR" : "CHARTER FLEET",
+            badge: fleet.content?.tag || (fleet.isPopular ? "MOST POPULAR" : "CHARTER FLEET"),
           })));
         }
       })
